@@ -87,7 +87,7 @@
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
             <!-- Branding Image -->
-            <img class="h-16 w-20 mx-auto" src="{{ URL::asset('/Imgs/logos/logo-sembg.png') }}" alt="Logo">
+            <img class="h-16 w-20 mx-auto" src="{{ URL::asset('/Images/logos/logo-sembg.png') }}" alt="Logo">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                 <span class="navbar-toggler-icon"></span>
             </button>
