@@ -9,3 +9,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/run-migrations', function () {
+    Artisan::call('migrate:fresh ----force');
+    return 'Migrations have been run';
+});
