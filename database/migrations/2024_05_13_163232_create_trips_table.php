@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('trips', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('start_date');
-            $table->dateTime('end_date');
-            $table->string('destination');
-            $table->string('purpose');
-            $table->integer('employee_id');
-            $table->foreignId('project_id')->constrained();
+            $table->dateTime('start_date')->nullable(false);
+            $table->dateTime('end_date')->nullable(false);
+            $table->string('destination')->nullable(false);
+            $table->string('purpose')->nullable(false);
+            $table->foreignId('employee_id')->constrained('employees')->nullable(false);
+            $table->foreignId('project_id')->constrained()->nullable(false);
 
             $table->timestamps();
         });

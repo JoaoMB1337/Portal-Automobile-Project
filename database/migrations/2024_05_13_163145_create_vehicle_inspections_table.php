@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('vehicle_inspections', function (Blueprint $table) {
             $table->id();
-            $table->date('inspection_date');
+            $table->date('inspection_date')->nullable(false);
             $table->foreignId('vehicle_id')->constrained()->cascadeOnDelete();
             $table->foreignId('vehicle_inspection_status_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
