@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('insurances', function (Blueprint $table) {
             $table->id();
-            $table->string('insurance_company');
-            $table->string('policy_number');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->decimal('cost', 10, 2);
+            $table->string('insurance_company')->nullable(false);
+            $table->string('policy_number')->nullable(false);
+            $table->date('start_date')->nullable(false);
+            $table->date('end_date')->nullable(false);
+            $table->decimal('cost', 10, 2)->nullable(false);
             $table->foreignId('vehicle_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

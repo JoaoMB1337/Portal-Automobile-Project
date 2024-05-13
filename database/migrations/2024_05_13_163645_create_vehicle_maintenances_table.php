@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('vehicle_maintenances', function (Blueprint $table) {
             $table->id();
-            $table->date('maintenance_date');
-            $table->string('description');
-            $table->decimal('cost', 10, 2);
+            $table->date('maintenance_date')->nullable(false);
+            $table->string('description')->nullable(false);
+            $table->decimal('cost', 10, 2)->nullable(false);
 
             $table->foreignId('maintenance_type_id')->constrained()->cascadeOnDelete();
             $table->foreignId('vehicle_id')->constrained()->cascadeOnDelete();

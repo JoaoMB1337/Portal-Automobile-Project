@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('address');
+            $table->string('name')->nullable(false);
+            $table->string('address')->nullable(false);
             $table->foreignId('project_status_id')->constrained();
             $table->foreignId('district_id')->constrained();
             $table->foreignId('country_id')->constrained();

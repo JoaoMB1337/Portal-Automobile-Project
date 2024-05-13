@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('trip_details', function (Blueprint $table) {
             $table->id();
-            $table->decimal('cost', 10, 2);
+            $table->decimal('cost', 10, 2)->nullable(false);
             $table->foreignId('trip_id')->constrained()->onDelete('cascade');
             $table->foreignId('cost_type_id')->constrained()->onDelete('cascade');
             $table->timestamps();
