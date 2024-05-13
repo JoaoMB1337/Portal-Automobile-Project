@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('maintenance_types', function (Blueprint $table) {
             $table->id();
             $table->string('type_name');
+            $table->string('description');
             $table->timestamps();
         });
     }
