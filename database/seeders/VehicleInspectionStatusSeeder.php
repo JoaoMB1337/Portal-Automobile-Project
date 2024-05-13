@@ -12,6 +12,16 @@ class VehicleInspectionStatusSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $vehicleInspectionStatuses = [
+            'Pendente',
+            'Aprovado',
+            'Reprovado',
+        ];
+
+        foreach ($vehicleInspectionStatuses as $vehicleInspectionStatus) {
+            \App\Models\VehicleInspectionStatus::create([
+                'status_name' => $vehicleInspectionStatus,
+            ]);
+        }
     }
 }
