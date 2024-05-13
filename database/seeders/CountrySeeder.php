@@ -11,7 +11,8 @@ class CountrySeeder extends Seeder
 
     public function run(): void
     {
-        $csvFile = fopen('storage\files\countries.csv', 'r');
+        
+        $csvFile = fopen(storage_path('files\countries.csv'), 'r');
 
         $firstline = true;
         while (($data = fgetcsv($csvFile, 2000, ",")) !== FALSE) {

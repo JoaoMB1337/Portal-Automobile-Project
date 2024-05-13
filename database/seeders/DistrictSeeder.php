@@ -13,7 +13,7 @@ class DistrictSeeder extends Seeder
      */
     public function run(): void
     {
-        $csvFile = fopen('storage\files\states.csv', 'r');
+        $csvFile = fopen(storage_path('files\states.csv'), 'r');
 
         $firstline = true;
         while (($data = fgetcsv($csvFile, 2000, ";")) !== FALSE) {

@@ -12,7 +12,7 @@ class BrandSeeder extends Seeder
      */
     public function run(): void
     {
-        $csvFile = fopen('storage\files\brands.csv', 'r');
+        $csvFile = fopen(storage_path('files\brands.csv'), 'r');
 
         $firstline = true;
         while (($data = fgetcsv($csvFile, 2000, ",")) !== FALSE) {
