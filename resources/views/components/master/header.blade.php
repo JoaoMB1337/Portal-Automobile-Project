@@ -1,4 +1,25 @@
-<nav class="bg-gray-800 h-full fixed w-64 top-0 left-0 flex flex-col md:w-56 lg:w-64 transition-all duration-300 ease-in-out">
+<style>
+    @media (max-width: 768px) {
+    #sidebar {
+    transform: translateX(-100%);
+    }
+
+    #sidebar.show {
+    transform: translateX(0);
+}
+}
+    .transparent-button {
+        opacity: 0.10;
+        transition: opacity 0.3s;
+    }
+
+    .transparent-button:hover,
+    .transparent-button:focus {
+        opacity: 1;
+    }
+</style>
+
+<nav id="sidebar" class="bg-gray-800 h-full fixed w-64 top-0 left-0 flex flex-col md:w-56 lg:w-64 transition-all duration-300 ease-in-out transform -translate-x-full md:translate-x-0">
     <div class="px-4 py-8 border-b border-gray-700 flex items-center">
         <div class="w-16 h-15 bg-white rounded-full flex-shrink-0 mr-2">
             <img src="{{ asset('images/App-logo.png') }}" alt="Logo" class="w-full h-full object-cover rounded-full">
@@ -6,16 +27,13 @@
         <a href="#" class="text-white text-xl font-bold">InnoDrive</a>
     </div>
 
-    <!-- Menu Links -->
     <div class="overflow-y-auto flex-1">
         <ul class="py-4">
             <li>
                 <a href="/home" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Home</a>
             </li>
-            <!-- Add more menu links here -->
         </ul>
     </div>
-
     <div class="mt-auto">
         @guest
             <div class="px-4 py-3 border-t border-gray-700">
@@ -49,8 +67,19 @@
     </div>
 </nav>
 
+<button id="mobile-menu-btn" class="md:hidden fixed top-4 left-4 z-50 text-white bg-gray-800 p-2 rounded focus:outline-none transparent-button">
+    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M3 5h14a1 1 0 100-2H3a1 1 0 000 2zm0 6h14a1 1 0 100-2H3a1 1 0 000 2zm0 6h14a1 1 0 100-2H3a1 1 0 000 2z" clip-rule="evenodd"></path>
+    </svg>
+</button>
 <script>
+    document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('show');
+    });
+
     document.getElementById('user-menu-btn').addEventListener('click', function() {
         document.getElementById('user-dropdown').classList.toggle('hidden');
     });
+
 </script>
