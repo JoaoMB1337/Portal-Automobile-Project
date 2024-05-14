@@ -16,7 +16,16 @@
                             </div>
                         @endif
 
-                        {{ __('Welcome') }} <strong>{{ Auth::user()->name }}</strong>
+                            <p>
+                                {{ __('Welcome') }}
+                                <span class="font-bold">{{ Auth::user()->role->name }}</span>
+                                <span class="font-bold">{{ Auth::user()->name }}</span>
+                                @if(Auth::user()->role)
+
+                                @endif
+                            </p>
+
+
                     </div>
                 </div>
             </div>
