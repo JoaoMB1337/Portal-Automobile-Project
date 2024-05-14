@@ -1,0 +1,33 @@
+@echo off
+
+echo Limpando configurações...
+php artisan config:clear
+
+echo Limpando views...
+php artisan view:clear
+
+echo Cacheando rotas...
+php artisan route:cache
+
+echo Cacheando views...
+php artisan view:cache
+
+echo Alterando permissões da pasta storage...
+icacls storage /grant:r %USERNAME%:(OI)(CI)F /T
+
+echo Alterando permissões da pasta bootstrap...
+icacls bootstrap /grant:r %USERNAME%:(OI)(CI)F /T
+
+echo Executando migrations com seed...
+php artisan migrate:fresh --seed
+
+echo Criando link simbólico para a pasta public/storage...
+mklink /D public\storage ..\storage\app\public
+
+echo Instalando dependências npm...
+npm install
+
+echo Executando script npm para construção...
+npm run build
+
+echo Concluído!
