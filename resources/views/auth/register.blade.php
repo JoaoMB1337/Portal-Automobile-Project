@@ -105,21 +105,9 @@
                     @enderror
                 </div>
 
-                <div>
-                    <label for="company_position" class="block text-sm font-semibold text-gray-700 mb-2">Company Position</label>
-                    <input id="company_position" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('company_position') border-red-500 @enderror" name="company_position" value="{{ old('company_position') }}" required>
-                    @error('company_position')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
 
-                <div>
-                    <label for="driving_license_id" class="block text-sm font-semibold text-gray-700 mb-2">Driving License ID</label>
-                    <input id="driving_license_id" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('driving_license_id') border-red-500 @enderror" name="driving_license_id" value="{{ old('driving_license_id') }}" required>
-                    @error('driving_license_id')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+
+
 
                 <div>
                     <label for="CC" class="block text-sm font-semibold text-gray-700 mb-2">CC</label>
@@ -145,13 +133,7 @@
                     @enderror
                 </div>
 
-                <div>
-                    <label for="mobile_number" class="block text-sm font-semibold text-gray-700 mb-2">Mobile Number</label>
-                    <input id="mobile_number" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('mobile_number') border-red-500 @enderror" name="mobile_number" value="{{ old('mobile_number') }}" required>
-                    @error('mobile_number')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+
 
                 <div>
                     <label for="employee_role_id" class="block text-sm font-semibold text-gray-700 mb-2">Employee Role</label>

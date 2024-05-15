@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class EmployeeDrivingLicense extends Model
 {
     use HasFactory;
+
 }
+
