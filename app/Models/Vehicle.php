@@ -38,5 +38,10 @@ class Vehicle extends Model
         return $this->belongsTo(Brand::class);
     }
 
+    public function insurances()
+    {
+        return $this->hasMany(Insurance::class);
+    }
+
 
 }
