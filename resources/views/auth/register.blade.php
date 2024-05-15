@@ -106,8 +106,6 @@
                 </div>
 
 
-
-
                 <div>
                     <label for="CC" class="block text-sm font-semibold text-gray-700 mb-2">CC</label>
                     <input id="CC" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('CC') border-red-500 @enderror" name="CC" value="{{ old('CC') }}" required>

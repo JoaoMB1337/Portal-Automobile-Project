@@ -20,6 +20,4 @@ class EmployeeRole extends Model
     {
         return $this->belongsToMany('App\Models\Permission');
     }
-
-
 }
