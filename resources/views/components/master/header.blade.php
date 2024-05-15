@@ -35,6 +35,9 @@
             <li>
                 <a href="/employees" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Employees</a>
             </li>
+            <li>
+                <a href="/vehicles" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Vehicles</a>
+            </li>
         </ul>
     </div>
 
