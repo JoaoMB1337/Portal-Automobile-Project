@@ -32,8 +32,12 @@
             <li>
                 <a href="/home" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Home</a>
             </li>
+            <li>
+                <a href="/employees" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Employees</a>
+            </li>
         </ul>
     </div>
+
     <div class="mt-auto">
         @guest
             <div class="px-4 py-3 border-t border-gray-700">

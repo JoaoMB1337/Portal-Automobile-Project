@@ -12,4 +12,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login.form');
 
+Route::resource('/employees', App\Http\Controllers\EmployeeController::class);
+
 

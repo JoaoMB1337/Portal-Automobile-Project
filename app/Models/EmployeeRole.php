@@ -9,10 +9,15 @@ class EmployeeRole extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'description'];
 
     public function employees()
     {
-        return $this->hasMany(Employee::class);
+        return $this->hasMany('App\Models\Employee');
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany('App\Models\Permission');
     }
 }

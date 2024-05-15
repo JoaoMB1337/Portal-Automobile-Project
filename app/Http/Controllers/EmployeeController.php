@@ -6,6 +6,8 @@ use App\Models\Employee;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
+use App\Models\EmployeeRole;
+use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
@@ -14,7 +16,8 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        $employees = Employee::orderby('id','asc')->paginate(15);
+        return view('pages.employees.list',['employees'=>$employees]);
     }
 
     /**
@@ -22,7 +25,8 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        $roles = EmployeeRole::all();
+        return view('pages.employees.create', ['roles' => $roles]);
     }
 
     /**
@@ -30,7 +34,19 @@ class EmployeeController extends Controller
      */
     public function store(StoreEmployeeRequest $request)
     {
-        //
+        $employee = new Employee();
+        $employee->name = $request->name;
+        $employee->gender = $request->gender;
+        $employee->birth_date = $request->birth_date;
+        $employee->CC = $request->CC;
+        $employee->NIF = $request->NIF;
+        $employee->address = $request->address;
+        $employee->employee_role_id = $request->employee_role_id;
+        $employee->email = $request->email;
+        $employee->password = bcrypt($request->password);
+        $employee->save();
+
+        return redirect()->route('employees.index');
     }
 
     /**
@@ -38,7 +54,7 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        //
+        return view('pages.employees.show', compact('employee'));
     }
 
     /**
@@ -46,7 +62,8 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
-        //
+        $roles = EmployeeRole::all();
+        return view('pages.employees.edit', ['employee' => $employee, 'roles' => $roles]);
     }
 
     /**
@@ -54,7 +71,8 @@ class EmployeeController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-        //
+        $employee->update($request->all());
+        return redirect()->route('employees.index');
     }
 
     /**
@@ -62,6 +80,7 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        //
+        $employee->delete();
+        return redirect()->route('employees.index');
     }
 }
