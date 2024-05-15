@@ -6,6 +6,10 @@ use App\Models\Vehicle;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVehicleRequest;
 use App\Http\Requests\UpdateVehicleRequest;
+use Illuminate\Http\Request;
+use App\Models\Brand;
+use App\Models\FuelType;
+use App\Models\CarCategory;
 
 class VehicleController extends Controller
 {
@@ -14,7 +18,8 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        //
+        $vehicles = Vehicle::orderby('id','asc')->paginate(15);
+        return view('pages.vehicles.list',['vehicles'=>$vehicles]);
     }
 
     /**
@@ -22,7 +27,11 @@ class VehicleController extends Controller
      */
     public function create()
     {
-        //
+        $brands = Brand::all();
+        $fuelTypes = FuelType::all();
+        $carCategories = CarCategory::all();
+        return view('pages.vehicles.create', ['brands' => $brands, 'fuelTypes' => $fuelTypes, 'carCategories' => $carCategories]);
+
     }
 
     /**
@@ -30,7 +39,33 @@ class VehicleController extends Controller
      */
     public function store(StoreVehicleRequest $request)
     {
-        //
+        $vehicle = new Vehicle();
+        $vehicle->plate = $request->plate;
+        $vehicle->km = $request->km;
+        $vehicle->condition = $request->condition;
+        $vehicle->is_external = $request->is_external;
+        $vehicle->fuel_type_id = $request->fuel_type_id;
+        $vehicle->car_category_id = $request->car_category_id;
+        $vehicle->brand_id = $request->brand_id;
+
+        // Verifica se o veículo é externo
+        if ($request->is_external) {
+            // Se sim, solicita os campos adicionais ao usuário
+            $vehicle->contract_number = $request->contract_number;
+            $vehicle->rental_price_per_day = $request->rental_price_per_day;
+            $vehicle->rental_start_date = $request->rental_start_date;
+            $vehicle->rental_end_date = $request->rental_end_date;
+            $vehicle->rental_company = $request->rental_company;
+            $vehicle->rental_contact_person = $request->rental_contact_person;
+            $vehicle->rental_contact_number = $request->rental_contact_number;
+        }
+
+        $vehicle->save();
+
+        // Retorne a resposta adequada ao usuário, como redirecioná-lo para a página correta
+
+
+        return redirect()->route('vehicles.index');
     }
 
     /**
@@ -38,7 +73,7 @@ class VehicleController extends Controller
      */
     public function show(Vehicle $vehicle)
     {
-        //
+        return view('pages.vehicles.show', compact('vehicle'));
     }
 
     /**
@@ -46,7 +81,10 @@ class VehicleController extends Controller
      */
     public function edit(Vehicle $vehicle)
     {
-        //
+        $brands = Brand::all();
+        $fuelTypes = FuelType::all();
+        $carCategories = CarCategory::all();
+        return view('pages.vehicles.edit', ['vehicle' => $vehicle, 'brands' => $brands, 'fuelTypes' => $fuelTypes, 'carCategories' => $carCategories]);
     }
 
     /**
@@ -54,7 +92,8 @@ class VehicleController extends Controller
      */
     public function update(UpdateVehicleRequest $request, Vehicle $vehicle)
     {
-        //
+        $vehicle->update($request->all());
+        return redirect()->route('vehicles.index');
     }
 
     /**
@@ -62,6 +101,7 @@ class VehicleController extends Controller
      */
     public function destroy(Vehicle $vehicle)
     {
-        //
+        $vehicle->delete();
+        return redirect()->route('vehicles.index');
     }
 }
