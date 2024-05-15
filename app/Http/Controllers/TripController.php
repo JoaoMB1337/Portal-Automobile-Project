@@ -25,11 +25,11 @@ class TripController extends Controller
      */
     public function create()
     {
-        $employees = \App\Models\Employee::all();
-        $projects = \App\Models\Project::all();
-        return view('pages.trips.create', ['employees' => $employees, 'projects' => $projects]);
+         //Associar a trip ao employee
+        $employees = Employee::all();
+        return view('pages.trips.create', ['employees' => $employees]);
 
-        
+
     }
 
     /**
@@ -40,9 +40,6 @@ class TripController extends Controller
         $trip = new Trip();
         $trip->start_date = $request->start_date;
         $trip->end_date = $request->end_date;
-        $trip->destination = $request->destination;
-        $trip->purpose = $request->purpose;
-        $trip->project_id = $request->project_id;
         $trip->employee_id = $request->employee_id;
         $trip->save();
 
