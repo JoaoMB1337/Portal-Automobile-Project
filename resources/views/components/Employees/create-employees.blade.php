@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@extends('components.master.main')
 
 @section('content')
 

@@ -18,12 +18,9 @@ class Employee extends Authenticatable
         'name',
         'gender',
         'birth_date',
-        'company_position',
-        'driving_license_id',
         'CC',
         'NIF',
         'address',
-        'mobile_number',
         'employee_role_id',
         'email',
         'password',
@@ -41,4 +38,6 @@ class Employee extends Authenticatable
     {
         return $this->belongsTo(EmployeeRole::class, 'employee_role_id');
     }
+
+
 }

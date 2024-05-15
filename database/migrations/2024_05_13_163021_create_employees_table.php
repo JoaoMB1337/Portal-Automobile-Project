@@ -16,12 +16,9 @@ return new class extends Migration
             $table->string('name')->nullable(false);
             $table->string('gender')->nullable(false);
             $table->date('birth_date')->nullable(false);
-            $table->string('company_position')->nullable(false);
-            $table->string('driving_license_id')->nullable(false)->unique();
             $table->string('CC')->nullable(false)->unique();
             $table->string('NIF')->nullable(false)->unique();
             $table->string('address')->nullable();
-            $table->string('mobile_number', 15)->nullable(false);
             $table->foreignId('employee_role_id')->constrained();
             $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
