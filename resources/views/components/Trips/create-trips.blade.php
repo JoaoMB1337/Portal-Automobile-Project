@@ -53,34 +53,46 @@
             <div class="flex justify-center mb-6">
                 <h1>Employee Register</h1>
             </div>
+            <form method="POST" action="{{ route('trips.store') }}">
+        @csrf
+        <div class="form-group">
+            <label for="start_date">Start Date:</label>
+            <input type="date" name="start_date" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="end_date">End Date:</label>
+            <input type="date" name="end_date" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="destination">Destination:</label>
+            <input type="text" name="destination" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="purpose">Purpose:</label>
+            <textarea name="purpose" class="form-control" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="employee_id">Employee:</label>
+            <select name="employee_id" class="form-control">
+                @foreach (\App\Models\Employee::all() as $employee)
+                    <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="project_id">Project:</label>
+            <select name="project_id" class="form-control">
+                @foreach (\App\Models\Project::all() as $project)
+                    <option value="{{ $project->id }}">{{ $project->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+        </div>
+    </div>
+@endsection
 
-            <form method="POST" action="{{ route('register') }}" class="space-y-6">
-                @csrf
 
-                <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                    <div class="mt-1">
-                        <input id="name" name="name" type="text" autocomplete="name" required class="form-input block w-full px-3 py-2 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                    </div>
-                </div>
-
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                    <div class="mt-1">
-                        <input id="email" name="email" type="email" autocomplete="email" required class="form-input block w-full px-3 py-2 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                    </div>
-                </div>
-
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <div class="mt-1">
-                        <input id="password" name="password" type="password" autocomplete="current-password" required class="form-input block w-full px-3 py-2 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                    </div>
-                </div>
-
-                <div>
-                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                    <div class="mt-1">
-                        <input id="password_confirmation" name="password_confirmation" type="password" autocomplete="current-password" required class="form-input block w-full px-3 py-2 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                         
 
