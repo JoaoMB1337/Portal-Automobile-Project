@@ -14,4 +14,6 @@ Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginFor
 
 Route::resource('/employees', App\Http\Controllers\EmployeeController::class);
 
+Route::resource('/trips', App\Http\Controllers\TripController::class);
+
 

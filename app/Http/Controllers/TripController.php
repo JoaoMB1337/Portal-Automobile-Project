@@ -14,7 +14,10 @@ class TripController extends Controller
      */
     public function index()
     {
-        //
+
+        $trips = Trip::orderby('id','asc')->paginate(15);
+        return view('pages.trips.list',['trips'=>$trips]);
+        
     }
 
     /**
@@ -22,7 +25,11 @@ class TripController extends Controller
      */
     public function create()
     {
-        //
+         //Associar a trip ao employee
+        $employees = Employee::all();
+        return view('pages.trips.create', ['employees' => $employees]);
+
+
     }
 
     /**
@@ -30,7 +37,13 @@ class TripController extends Controller
      */
     public function store(StoreTripRequest $request)
     {
-        //
+        $trip = new Trip();
+        $trip->start_date = $request->start_date;
+        $trip->end_date = $request->end_date;
+        $trip->employee_id = $request->employee_id;
+        $trip->save();
+
+        return redirect()->route('trips.index');
     }
 
     /**
@@ -54,7 +67,12 @@ class TripController extends Controller
      */
     public function update(UpdateTripRequest $request, Trip $trip)
     {
-        //
+        $trip->start_date = $request->start_date;
+        $trip->end_date = $request->end_date;
+        $trip->employee_id = $request->employee_id;
+        $trip->save();
+
+        return redirect()->route('trips.index');
     }
 
     /**
