@@ -58,11 +58,7 @@
                         </tr>
                     @endforeach
                     </tbody>
-                    <div class="flex justify-end mb-4">
-                        <a href="{{ url('employees/create') }}"  class="bg-gray-700 text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-500 transition duration-200">
-                            <i class="fas fa-plus mr-2"></i> Adicionar
-                        </a>
-                    </div>
+
                 </table>
             </div>
         </div>
