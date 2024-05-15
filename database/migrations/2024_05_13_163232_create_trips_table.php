@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('purpose')->nullable(false);
             $table->foreignId('employee_id')->constrained('employees')->nullable(false);
             $table->foreignId('project_id')->constrained()->nullable(false);
+
             $table->timestamps();
         });
     }
