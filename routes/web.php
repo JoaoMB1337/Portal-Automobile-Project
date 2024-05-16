@@ -20,6 +20,4 @@ Route::resource('/vehicles', App\Http\Controllers\VehicleController::class);
 
 Route::resource('insurances', App\Http\Controllers\InsuranceController::class);
 
-
-
-
+Route::resource('/projects', App\Http\Controllers\ProjectController::class);
