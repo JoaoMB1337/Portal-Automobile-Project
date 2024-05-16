@@ -66,15 +66,15 @@
             @csrf
 
             <div class="form-group">
-                <label for="start_date">Start Date:</label>
+                <label for="start_date">Data de Início:</label>
                 <input type="date" name="start_date" class="form-input" required>
             </div>
             <div class="form-group mt-3">
-                <label for="end_date">End Date:</label>
+                <label for="end_date">Data de Fim:</label>
                 <input type="date" name="end_date" class="form-input" required>
             </div>
             <div class="form-group">
-                <label for="destination">Destination:</label>
+                <label for="destination">Destino:</label>
                 <input type="text" name="destination" class="form-input" required>
             </div>
             <div class="form-group">
@@ -92,15 +92,9 @@
             <div class="form-group">
                 <label for="project_id">Project:</label>
                 <select name="project_id" class="form-control">
-                  
-
-
-
-
-
-
-
-                
+                    @foreach($projects as $project)
+                        <option value="{{$project->id}}">{{ $project->name }}</option>
+                    @endforeach
                 </select>
             </div>
             <div>

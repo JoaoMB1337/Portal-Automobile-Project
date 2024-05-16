@@ -7,13 +7,22 @@
                     <thead>
                     <tr>
                         <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
-                            Nome
-                        </th>
-                        <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Data de Início
                         </th>
                         <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Data de Fim
+                        </th>
+                        <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                            Destino
+                        </th>
+                        <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                            Propósito
+                        </th>
+                        <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                            Projeto
+                        </th>
+                        <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                            Funcionário
                         </th>
                         <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                             Ações
@@ -24,24 +33,33 @@
                     @foreach ($trips as $trip)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-start">
-                                    <div class="ml-4">
-                                        <div class="text-lg font-medium text-gray-900">
-                                            {{ $trip->name }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-lg text-gray-900">{{ $trip->start_date }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-lg text-gray-900">{{ $trip->end_date }}</div>
                             </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-lg text-gray-900">{{ $trip->destination }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-lg text-gray-900">{{ $trip->purpose }}</div>
+                            </td>
+                            
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-lg text-gray-900">
+                                    {{ $trip->project->name }}
+                                </div>
+                            </td>
+
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-lg text-gray-900">
+                                    {{ $trip->employee->name }}
+                                </div>
+                            </td>
+
                             <td class="px-6 py-4 whitespace-nowrap text-right text-lg font-medium">
-                                <a href="{{ url('trips/' . $trip->id) }}" class="text-indigo-600 hover:text-indigo-900" title="Ver">
-                                    <i class="fas fa-eye
-                                    "></i>
+                                <a href="{{ url('trips/' . $trip->id) }}" class="text-indigo-600 hover:text-indigo-900 ml-2" title="Ver">
+                                    <i class="fas fa-eye"></i>
                                 </a>
                                 <a href="{{ url('trips/' . $trip->id . '/edit') }}" class="text-indigo-600 hover:text-indigo-900 ml-2" title="Editar">
                                     <i class="fas fa-edit"></i>
