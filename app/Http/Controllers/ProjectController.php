@@ -6,6 +6,9 @@ use App\Models\Project;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\Country;
+use App\Models\District;
+use App\Models\ProjectStatus;
 
 class ProjectController extends Controller
 {
@@ -14,7 +17,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        $project = Project::orderby('id', 'asc')->paginate(15);
+        return view('pages.projects.list', ['projects' => $project]);
     }
 
     /**
@@ -22,7 +26,11 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        $countries = Country::all();
+        $districts = District::all();
+        $projectstatuses = ProjectStatus::all();
+
+        return view('pages.projects.create', ['countries' => $countries, 'districts' => $districts, 'projectstatuses' => $projectstatuses]);
     }
 
     /**
@@ -30,7 +38,16 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        //
+        $project = new Project();
+        $project->name = $request->name;
+        $project->address = $request->address;
+        $project->project_status_id = $request->projectstatus;
+        $project->district_id = $request->district;
+        $project->country_id = $request->country;
+
+        $project->save();
+
+        return redirect()->route('project.index');
     }
 
     /**
@@ -38,7 +55,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        return view('pages.projects.show', compact('project'));
     }
 
     /**
@@ -46,7 +63,11 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        $countries = Country::all();
+        $districts = District::all();
+        $projectstatuses = ProjectStatus::all();
+
+        return view('pages.projects.edit', ['project' => $project, 'countries' => $countries, 'districts' => $districts, 'projectstatuses' => $projectstatuses]);
     }
 
     /**
@@ -54,7 +75,8 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $project->update($request->all());
+        return redirect()->route('projects.index');
     }
 
     /**
@@ -62,6 +84,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+        return redirect()->route('projects.index');
     }
 }

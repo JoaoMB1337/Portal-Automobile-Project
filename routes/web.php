@@ -20,8 +20,7 @@ Route::resource('/vehicles', App\Http\Controllers\VehicleController::class);
 
 Route::resource('insurances', App\Http\Controllers\InsuranceController::class);
 
+
+Route::resource('/projects', App\Http\Controllers\ProjectController::class);
+
 Route::delete('/employees.deleteSelected', [App\Http\Controllers\EmployeeController::class, 'deleteSelected'])->name('employees.deleteSelected');
-
-
-
-
