@@ -16,7 +16,7 @@ class TripController extends Controller
     {
 
         $trips = Trip::orderby('id','asc')->paginate(15);
-        return view('pages.trips.list',['trips'=>$trips]);
+        return view('pages.trips.list',['trips'=>$trips, 'project' => \App\Models\Project::all()]);
         
     }
 
@@ -42,7 +42,7 @@ class TripController extends Controller
         $trip->end_date = $request->end_date;
         $trip->destination = $request->destination;
         $trip->purpose = $request->purpose;
-        $trip->project_id = $request->project_id;
+        $trip->project_id = 1;//$request->project_id;
         $trip->employee_id = $request->employee_id;
         $trip->save();
 
@@ -54,7 +54,9 @@ class TripController extends Controller
      */
     public function show(Trip $trip)
     {
-        //
+
+        return view('pages.trips.show', compact('trip'));
+        
     }
 
     /**
@@ -62,7 +64,11 @@ class TripController extends Controller
      */
     public function edit(Trip $trip)
     {
-        //
+        $trip = Trip::find($trip->id);
+        $employees = \App\Models\Employee::all();
+        $projects = \App\Models\Project::all();
+        return view('pages.trips.edit', ['trip' => $trip, 'employees' => $employees, 'projects' => $projects]);
+        
     }
 
     /**
@@ -83,6 +89,7 @@ class TripController extends Controller
      */
     public function destroy(Trip $trip)
     {
-        //
+        $trip->delete();
+        return redirect()->route('trips.index');
     }
 }

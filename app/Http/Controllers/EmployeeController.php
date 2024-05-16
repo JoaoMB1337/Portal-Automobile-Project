@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\EmployeeRole;
 use Illuminate\Http\Request;
 
+
 class EmployeeController extends Controller
 {
     /**
@@ -83,4 +84,15 @@ class EmployeeController extends Controller
         $employee->delete();
         return redirect()->route('employees.index');
     }
+
+    public function deleteSelected(Request $request)
+    {
+        $selected_ids = json_decode($request->input('selected_ids'),true);
+        if(!empty($selected_ids)) {
+            Employee::whereIn('id', $selected_ids)->delete();
+            return redirect()->route('employees.index');
+        }
+    }
+
+
 }
