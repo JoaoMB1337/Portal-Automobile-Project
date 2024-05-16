@@ -39,8 +39,10 @@
                 <a href="/vehicles" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Vehicles</a>
             </li>
             <li>
-                
                 <a href="/trips" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Trips</a>
+            </li>
+            <li>
+                <a href="/insurances" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Insurance</a>
             </li>
         </ul>
     </div>

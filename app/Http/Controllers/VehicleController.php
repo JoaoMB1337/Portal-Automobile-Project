@@ -39,18 +39,17 @@ class VehicleController extends Controller
      */
     public function store(StoreVehicleRequest $request)
     {
+
         $vehicle = new Vehicle();
         $vehicle->plate = $request->plate;
         $vehicle->km = $request->km;
         $vehicle->condition = $request->condition;
         $vehicle->is_external = $request->is_external;
-        $vehicle->fuel_type_id = $request->fuel_type_id;
-        $vehicle->car_category_id = $request->car_category_id;
-        $vehicle->brand_id = $request->brand_id;
+        $vehicle->fuel_type_id = $request->fuelTypes;
+        $vehicle->car_category_id = $request->carCategory;
+        $vehicle->brand_id = $request->brand;
 
-        // Verifica se o veículo é externo
         if ($request->is_external) {
-            // Se sim, solicita os campos adicionais ao usuário
             $vehicle->contract_number = $request->contract_number;
             $vehicle->rental_price_per_day = $request->rental_price_per_day;
             $vehicle->rental_start_date = $request->rental_start_date;
@@ -58,12 +57,17 @@ class VehicleController extends Controller
             $vehicle->rental_company = $request->rental_company;
             $vehicle->rental_contact_person = $request->rental_contact_person;
             $vehicle->rental_contact_number = $request->rental_contact_number;
+        } else {
+            $vehicle->contract_number = null;
+            $vehicle->rental_price_per_day = null;
+            $vehicle->rental_start_date = null;
+            $vehicle->rental_end_date = null;
+            $vehicle->rental_company = null;
+            $vehicle->rental_contact_person = null;
+            $vehicle->rental_contact_number = null;
         }
 
         $vehicle->save();
-
-        // Retorne a resposta adequada ao usuário, como redirecioná-lo para a página correta
-
 
         return redirect()->route('vehicles.index');
     }

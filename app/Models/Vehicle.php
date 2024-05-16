@@ -13,16 +13,6 @@ class Vehicle extends Model
         'plate',
         'km',
         'condition',
-        'is_external',
-        'contract_number',
-        'rental_price_per_day',
-        'rental_start_date',
-        'rental_end_date',
-        'rental_company',
-        'rental_contact_person',
-        'rental_contact_number',
-        'notes',
-        'model_id',
         'fuel_type_id',
         'car_category_id',
         'brand_id',
@@ -46,6 +36,11 @@ class Vehicle extends Model
     public function brand()
     {
         return $this->belongsTo(Brand::class);
+    }
+
+    public function insurances()
+    {
+        return $this->hasMany(Insurance::class);
     }
 
 

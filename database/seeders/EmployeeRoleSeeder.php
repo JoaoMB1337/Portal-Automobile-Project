@@ -16,7 +16,7 @@ class EmployeeRoleSeeder extends Seeder
         $employeeRoles = [
             'Administrador',
             'Gestor',
-            'Empregado',
+            'Funcionario',
         ];
 
         foreach ($employeeRoles as $employeeRole) {

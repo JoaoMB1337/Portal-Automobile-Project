@@ -22,4 +22,6 @@ class Insurance extends Model
     {
         return $this->belongsTo(Vehicle::class);
     }
+
+
 }
