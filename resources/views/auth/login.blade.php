@@ -30,6 +30,14 @@
         .custom-btn:hover {
             background-color: #222;
         }
+        .form-input, .form-control {
+            border: 2px solid #ccc;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus, .form-control:focus {
+            border-color: #888;
+        }
 
         @media (max-width: 640px) {
             .custom-logo {
