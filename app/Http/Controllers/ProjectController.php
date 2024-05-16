@@ -27,10 +27,13 @@ class ProjectController extends Controller
     public function create()
     {
         $countries = Country::all();
-        $districts = District::all();
+        $districts = District::all()->groupBy('country_id');
         $projectstatuses = ProjectStatus::all();
-
-        return view('pages.projects.create', ['countries' => $countries, 'districts' => $districts, 'projectstatuses' => $projectstatuses]);
+        return view('pages.projects.create', [
+            'countries' => $countries, 
+            'districts' => $districts, 
+            'projectstatuses' => $projectstatuses
+        ]);
     }
 
     /**
@@ -47,7 +50,7 @@ class ProjectController extends Controller
 
         $project->save();
 
-        return redirect()->route('project.index');
+        return redirect()->route('projects.index');
     }
 
     /**

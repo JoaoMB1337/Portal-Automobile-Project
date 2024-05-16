@@ -75,8 +75,7 @@
                 </div>
 
                 <div>
-                    <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">Endereço do
-                        Projeto</label>
+                    <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">Endereço do Projeto</label>
                     <input id="address" type="text"
                         class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('address') border-red-500 @enderror"
                         name="address" value="{{ old('address') }}" required autocomplete="address">
@@ -86,8 +85,7 @@
                 </div>
 
                 <div>
-                    <label for="projectstatus" class="block text-sm font-semibold text-gray-700 mb-2">Status do
-                        Projeto</label>
+                    <label for="projectstatus" class="block text-sm font-semibold text-gray-700 mb-2">Status do Projeto</label>
                     <select id="projectstatus" name="projectstatus"
                         class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('projectstatus') border-red-500 @enderror"
                         required autocomplete="projectstatus" autofocus>
@@ -124,17 +122,11 @@
                         class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('district') border-red-500 @enderror"
                         required autocomplete="district" autofocus>
                         <option value="" selected>Selecione o Distrito</option>
-                        @foreach ($districts as $district)
-                            <option value="{{ $district->id }}" @if (old('district') == $district->id) selected @endif>
-                                {{ $district->name }}</option>
-                        @endforeach
                     </select>
                     @error('district')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-
-
 
                 <div>
                     <button type="submit" class="custom-btn w-full py-2 rounded-md">
@@ -145,6 +137,29 @@
         </div>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const districts = @json($districts);
+            const countrySelect = document.getElementById('country');
+            const districtSelect = document.getElementById('district');
+
+            function updateDistricts() {
+                const selectedCountry = countrySelect.value;
+                const districtOptions = districts[selectedCountry] || [];
+
+                districtSelect.innerHTML = '<option value="" selected>Selecione o Distrito</option>';
+                districtOptions.forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district.id;
+                    option.textContent = district.name;
+                    districtSelect.appendChild(option);
+                });
+            }
+
+            countrySelect.addEventListener('change', updateDistricts);
+            updateDistricts();
+        });
+    </script>
 </body>
 
 </html>
