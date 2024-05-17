@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Models\Brand;
 use App\Models\FuelType;
 use App\Models\CarCategory;
+use Illuminate\Support\Facades\Storage;
+
 
 class VehicleController extends Controller
 {
@@ -39,7 +41,6 @@ class VehicleController extends Controller
      */
     public function store(StoreVehicleRequest $request)
     {
-
         $vehicle = new Vehicle();
         $vehicle->plate = $request->plate;
         $vehicle->km = $request->km;
@@ -57,6 +58,12 @@ class VehicleController extends Controller
             $vehicle->rental_company = $request->rental_company;
             $vehicle->rental_contact_person = $request->rental_contact_person;
             $vehicle->rental_contact_number = $request->rental_contact_number;
+
+            if ($request->hasFile('pdf_file')) {
+                $pdf = $request->file('pdf_file');
+                $pdfPath = $pdf->storeAs('pdfs', $request->plate . '.' . $pdf->getClientOriginalExtension(), 'public');
+                $vehicle->pdf_file = $pdfPath;
+            }
         } else {
             $vehicle->contract_number = null;
             $vehicle->rental_price_per_day = null;
@@ -97,9 +104,22 @@ class VehicleController extends Controller
     public function update(UpdateVehicleRequest $request, Vehicle $vehicle)
     {
         $vehicle->update($request->all());
-        return redirect()->route('vehicles.index');
-    }
 
+        if ($request->hasFile('pdf_file')) {
+            Storage::disk('public')->delete($vehicle->pdf_file);
+            $pdf = $request->file('pdf_file');
+            $pdfPath = $pdf->storeAs('pdfs', $request->plate . '.' . $pdf->getClientOriginalExtension(), 'public');
+            $vehicle->pdf_file = $pdfPath;
+        } elseif ($request->has('current_pdf')) {
+            $vehicle->pdf_file = $request->input('current_pdf');
+        } else {
+            Storage::disk('public')->delete($vehicle->pdf_file);
+            $vehicle->pdf_file = null;
+        }
+        $vehicle->save();
+
+        return redirect()->route('vehicles.index')->with('success', 'Vehicle updated successfully.');
+    }
     /**
      * Remove the specified resource from storage.
      */
@@ -107,5 +127,29 @@ class VehicleController extends Controller
     {
         $vehicle->delete();
         return redirect()->route('vehicles.index');
+    }
+
+    public function downloadPdf(Vehicle $vehicle)
+    {
+        // Verifica se o veículo tem um arquivo PDF associado
+        if ($vehicle->pdf_file) {
+            // Obtém o caminho do arquivo PDF
+            $pdfPath = $vehicle->pdf_file;
+
+            // Retorna o arquivo PDF para download
+            return Storage::disk('public')->download($pdfPath);
+        } else {
+            // Se não houver PDF associado, redirecione ou retorne uma mensagem de erro
+            return back()->withError('Este veículo não possui um PDF associado.');
+        }
+    }
+
+    public function deleteSelected(Request $request)
+    {
+        $selected_ids = json_decode($request->input('selected_ids'), true);
+        if (!empty($selected_ids)) {
+            Vehicle::whereIn('id', $selected_ids)->delete();
+            return redirect()->route('vehicles.index');
+        }
     }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
-            $table->string('plate')->nullable(false);
+            $table->string('plate')->unique()->nullable(false);
             $table->integer('km')->nullable(false);
             $table->string('condition')->nullable(false);
             $table->boolean('is_external')->nullable();
@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('rental_contact_person')->nullable();
             $table->string('rental_contact_number')->nullable();
             $table->string('notes')->nullable();
+            $table->string('pdf_file')->nullable();
             $table->foreignId('fuel_type_id')->constrained('fuel_types');
             $table->foreignId('car_category_id')->constrained('car_categories');
             $table->foreignId('brand_id')->constrained('brands');

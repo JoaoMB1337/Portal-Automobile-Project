@@ -24,3 +24,7 @@ Route::resource('insurances', App\Http\Controllers\InsuranceController::class);
 Route::resource('/projects', App\Http\Controllers\ProjectController::class);
 
 Route::delete('/employees.deleteSelected', [App\Http\Controllers\EmployeeController::class, 'deleteSelected'])->name('employees.deleteSelected');
+
+Route::delete('vehicles.deleteSelected', [App\Http\Controllers\VehicleController::class, 'deleteSelected'])->name('vehicles.deleteSelected');
+
+Route::get('/vehicles/{vehicle}/download-pdf', [App\Http\Controllers\VehicleController::class, 'downloadPdf'])->name('vehicles.downloadPdf');
