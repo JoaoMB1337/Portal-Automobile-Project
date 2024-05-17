@@ -49,14 +49,13 @@
     </style>
 
     <div class="flex justify-center items-start h-screen custom-bg">
-        <div class="max-w-md w-full bg-white rounded-xl p-7 custom-card mt-12">
+        <div class="max-w-md w-full bg-white rounded-xl p-7 custom-card mt-22">
             <div class="flex justify-center mb-6">
                 <h1>Employee Register</h1>
             </div>
 
             <form method="POST" action="{{ route('register') }}" class="space-y-6">
                 @csrf
-
                 <div>
                     <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Name</label>
                     <input id="name" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('name') border-red-500 @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -107,8 +106,6 @@
                 </div>
 
 
-
-
                 <div>
                     <label for="CC" class="block text-sm font-semibold text-gray-700 mb-2">CC</label>
                     <input id="CC" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('CC') border-red-500 @enderror" name="CC" value="{{ old('CC') }}" required>
@@ -132,8 +129,6 @@
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-
-
 
                 <div>
                     <label for="employee_role_id" class="block text-sm font-semibold text-gray-700 mb-2">Employee Role</label>
