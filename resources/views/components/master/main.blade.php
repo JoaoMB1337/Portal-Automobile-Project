@@ -16,7 +16,7 @@
     {{-- .STYLE SECTION --}}
 
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-700">
 
 
 {{-- HEADER SECTION --}}
@@ -29,19 +29,19 @@
 
 
 {{-- CONTENT SECTION --}}
-<main class="container mx-auto px-4 py-8">
+<main class="container mx-auto px-4 py-8 ">
     @yield('content')
 </main>
 {{-- .CONTENT SECTION --}}
 
 
-{{-- FOOTER SECTION --}}
+{{-- FOOTER SECTION
 <footer class="bg-light text-center text-sm text-gray-600 py-4">
     <div class="container mx-auto px-4">
         @component('components.master.footer')
         @endcomponent
     </div>
-</footer>
+</footer>--}}
 {{-- .FOOTER SECTION --}}
 
 

@@ -9,6 +9,8 @@ use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Country;
 use App\Models\District;
 use App\Models\ProjectStatus;
+use Illuminate\Http\Request;
+
 
 class ProjectController extends Controller
 {
@@ -30,8 +32,8 @@ class ProjectController extends Controller
         $districts = District::all()->groupBy('country_id');
         $projectstatuses = ProjectStatus::all();
         return view('pages.projects.create', [
-            'countries' => $countries, 
-            'districts' => $districts, 
+            'countries' => $countries,
+            'districts' => $districts,
             'projectstatuses' => $projectstatuses
         ]);
     }
@@ -90,4 +92,14 @@ class ProjectController extends Controller
         $project->delete();
         return redirect()->route('projects.index');
     }
+
+    public function deleteSelected(Request $request)
+    {
+        $selected_ids = json_decode($request->input('selected_ids'),true);
+        if(!empty($selected_ids)) {
+            Project::whereIn('id', $selected_ids)->delete();
+            return redirect()->route('projects.index');
+        }
+    }
+
 }
