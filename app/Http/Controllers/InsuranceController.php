@@ -101,6 +101,14 @@ class InsuranceController extends Controller
         //
         $insurance->delete();
         return redirect()->route('insurances.index');
+    }
 
+    public function deleteSelected(Request $request)
+    {
+        $selected_ids = json_decode($request->input('selected_ids'),true);
+        if(!empty($selected_ids)) {
+            Insurance::whereIn('id', $selected_ids)->delete();
+            return redirect()->route('insurances.index');
+        }
     }
 }

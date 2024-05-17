@@ -44,7 +44,7 @@
                 </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                @foreach ($vehicles as $vehicle)
+                @forelse ($vehicles as $vehicle)
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <input type="checkbox" name="selected_ids[]" value="{{ $vehicle->id }}" class="form-checkbox">
@@ -85,8 +85,13 @@
                             </a>
                         </td>
                     </tr>
-                @endforeach
-                </tbody>
+                @empty
+                    <tr>
+                        <td colspan="7" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                            Nenhum veiculo encontrado.
+                        </td>
+                    </tr>
+                @endforelse                </tbody>
             </table>
         </div>
     </div>

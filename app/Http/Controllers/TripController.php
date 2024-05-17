@@ -6,6 +6,8 @@ use App\Models\Trip;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTripRequest;
 use App\Http\Requests\UpdateTripRequest;
+use Illuminate\Http\Request;
+
 
 class TripController extends Controller
 {
@@ -17,7 +19,7 @@ class TripController extends Controller
 
         $trips = Trip::orderby('id','asc')->paginate(15);
         return view('pages.trips.list',['trips'=>$trips, 'project' => \App\Models\Project::all()]);
-        
+
     }
 
     /**
@@ -29,7 +31,7 @@ class TripController extends Controller
         $projects = \App\Models\Project::all();
         return view('pages.trips.create', ['employees' => $employees, 'projects' => $projects]);
 
-        
+
     }
 
     /**
@@ -42,8 +44,9 @@ class TripController extends Controller
         $trip->end_date = $request->end_date;
         $trip->destination = $request->destination;
         $trip->purpose = $request->purpose;
-        $trip->project_id = 1;//$request->project_id;
         $trip->employee_id = $request->employee_id;
+        $trip->project_id = 1;
+
         $trip->save();
 
         return redirect()->route('trips.index');
@@ -56,7 +59,7 @@ class TripController extends Controller
     {
 
         return view('pages.trips.show', compact('trip'));
-        
+
     }
 
     /**
@@ -68,7 +71,7 @@ class TripController extends Controller
         $employees = \App\Models\Employee::all();
         $projects = \App\Models\Project::all();
         return view('pages.trips.edit', ['trip' => $trip, 'employees' => $employees, 'projects' => $projects]);
-        
+
     }
 
     /**
@@ -91,5 +94,14 @@ class TripController extends Controller
     {
         $trip->delete();
         return redirect()->route('trips.index');
+    }
+
+    public function deleteSelected(Request $request)
+    {
+        $selected_ids = json_decode($request->input('selected_ids'),true);
+        if(!empty($selected_ids)) {
+            Trip::whereIn('id', $selected_ids)->delete();
+            return redirect()->route('trips.index');
+        }
     }
 }

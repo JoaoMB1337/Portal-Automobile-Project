@@ -1,6 +1,4 @@
-@extends('layouts.app') {{-- Se você estiver usando um layout --}}
 
-@section('content')
     <div class="flex">
         <div class="w-3/4 mx-auto">
             <div class="bg-white shadow overflow-hidden sm:rounded-lg">
@@ -36,4 +34,3 @@
             </div>
         </div>
     </div>
-@endsection
