@@ -1,75 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
 
-    <div class="flex">
-        <div class="w-3/4 mx-auto">
-            <div class="bg-white shadow overflow-hidden sm:rounded-lg p-6">
-                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Editar Projeto</h3>
-                <form action="{{ url('projects/' . $project->id) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
-                        <div class="col-span-2">
-                            <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
-                            <input type="text" name="name" id="name" value="{{ $project->name }}"
-                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
-                        </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Projeto</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .custom-card {
+            background-color: #ffffff;
+            box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+        }
 
-                        <div class="col-span-2">
-                            <label for="address" class="block text-sm font-medium text-gray-700">Endereço</label>
-                            <input type="text" name="address" id="address" value="{{ $project->address }}"
-                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
-                        </div>
+        .custom-logo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
 
-                        <div class="col-span-2">
-                            <label for="projectstatus" class="block text-sm font-medium text-gray-700">Status do
-                                Projeto</label>
-                            <select id="projectstatus" name="projectstatus"
-                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
-                                @foreach ($projectstatuses as $status)
-                                    <option value="{{ $status->id }}"
-                                        {{ $project->project_status_id == $status->id ? 'selected' : '' }}>
-                                        {{ $status->status_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+        .custom-btn {
+            background-color: #000;
+            color: #fff;
+            transition: background-color 0.3s ease;
+            border-radius: 30px;
+        }
 
-                        <div class="col-span-2">
-                            <label for="district" class="block text-sm font-medium text-gray-700">Distrito</label>
-                            <select id="district" name="district"
-                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
-                                @foreach ($districts as $district)
-                                    <option value="{{ $district->id }}"
-                                        {{ $project->district_id == $district->id ? 'selected' : '' }}>{{ $district->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+        .custom-btn:hover {
+            background-color: #222;
+        }
 
-                        <div class="col-span-2">
-                            <label for="country" class="block text-sm font-medium text-gray-700">País</label>
-                            <select id="country" name="country"
-                                class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
-                                @foreach ($countries as $country)
-                                    <option value="{{ $country->id }}"
-                                        {{ $project->country_id == $country->id ? 'selected' : '' }}>{{ $country->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+        .form-input:focus,
+        .form-control:focus {
+            border-color: #888;
+        }
 
+        @media (max-width: 640px) {
+            .custom-logo {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+</head>
 
-                    </div>
-
-                    <div class="mt-6">
-                        <button type="submit"
-                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            Salvar
-                        </button>
-                        <a href="{{ url('projects') }}"
-                            class="ml-2 inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            Cancelar
-                        </a>
-                    </div>
-                </form>
+<body>
+    <div class="flex justify-center items-start h-screen custom-bg">
+        <div class="max-w-md w-full bg-white rounded-xl p-7 custom-card mt-12">
+            <div class="flex justify-center mb-6">
+                <h1>Editar Projeto</h1>
             </div>
+
+            <form method="POST" action="{{ url('projects/' . $project->id) }}" class="space-y-6">
+                @csrf
+                @method('PUT')
+
+                <div>
+                    <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nome do Projeto</label>
+                    <input id="name" type="text"
+                        class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('name') border-red-500 @enderror"
+                        name="name" value="{{ old('name', $project->name) }}" required autocomplete="name" autofocus>
+                    @error('name')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">Endereço do Projeto</label>
+                    <input id="address" type="text"
+                        class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('address') border-red-500 @enderror"
+                        name="address" value="{{ old('address', $project->address) }}" required autocomplete="address">
+                    @error('address')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="projectstatus" class="block text-sm font-semibold text-gray-700 mb-2">Status do Projeto</label>
+                    <select id="projectstatus" name="projectstatus"
+                        class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('projectstatus') border-red-500 @enderror"
+                        required autocomplete="projectstatus" autofocus>
+                        <option value="" selected>Selecione o Status</option>
+                        @foreach ($projectstatuses as $status)
+                            <option value="{{ $status->id }}" @if (old('projectstatus', $project->project_status_id) == $status->id) selected @endif>
+                                {{ $status->status_name }}</option>
+                        @endforeach
+                    </select>
+                    @error('projectstatus')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="country" class="block text-sm font-semibold text-gray-700 mb-2">País</label>
+                    <select id="country" name="country"
+                        class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('country') border-red-500 @enderror"
+                        required autocomplete="country" autofocus>
+                        <option value="" selected>Selecione o País</option>
+                        @foreach ($countries as $country)
+                            <option value="{{ $country->id }}" @if (old('country', $project->country_id) == $country->id) selected @endif>
+                                {{ $country->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('country')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="district" class="block text-sm font-semibold text-gray-700 mb-2">Distrito</label>
+                    <select id="district" name="district"
+                        class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('district') border-red-500 @enderror"
+                        required autocomplete="district" autofocus>
+                        <option value="" selected>Selecione o Distrito</option>
+                    </select>
+                    @error('district')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <button type="submit" class="custom-btn w-full py-2 rounded-md">
+                        Salvar
+                    </button>
+                    <a href="{{ url('projects') }}"
+                        class="block text-center mt-4 text-sm font-semibold text-gray-700">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const districts = @json($districts);
+            const countrySelect = document.getElementById('country');
+            const districtSelect = document.getElementById('district');
+            const selectedDistrictId = {{ $project->district_id ?? 'null' }};
+
+            function updateDistricts() {
+                const selectedCountry = countrySelect.value;
+                const districtOptions = districts[selectedCountry] || [];
+
+                districtSelect.innerHTML = '<option value="" selected>Selecione o Distrito</option>';
+                districtOptions.forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district.id;
+                    option.textContent = district.name;
+                    if (district.id == selectedDistrictId) {
+                        option.selected = true;
+                    }
+                    districtSelect.appendChild(option);
+                });
+            }
+
+            countrySelect.addEventListener('change', updateDistricts);
+            updateDistricts();
+        });
+    </script>
+</body>
+
+</html>

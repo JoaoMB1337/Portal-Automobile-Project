@@ -69,10 +69,14 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $countries = Country::all();
-        $districts = District::all();
+        $districts = District::all()->groupBy('country_id');
         $projectstatuses = ProjectStatus::all();
-
-        return view('pages.projects.edit', ['project' => $project, 'countries' => $countries, 'districts' => $districts, 'projectstatuses' => $projectstatuses]);
+        return view('pages.projects.edit', [
+            'project' => $project,
+            'countries' => $countries, 
+            'districts' => $districts, 
+            'projectstatuses' => $projectstatuses
+        ]);
     }
 
     /**
@@ -80,8 +84,15 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        $project->update($request->all());
-        return redirect()->route('projects.index');
+        $project->name = $request->name;
+        $project->address = $request->address;
+        $project->project_status_id = $request->projectstatus;
+        $project->district_id = $request->district;
+        $project->country_id = $request->country;
+
+        $project->save();
+
+        return redirect()->route('projects.index')->with('success', 'Project updated successfully!');
     }
 
     /**
