@@ -49,7 +49,7 @@
             <h1>Registro de Veículo</h1>
         </div>
 
-        <form method="POST" action="{{ route('vehicles.store') }}" class="space-y-6">
+        <form method="POST" action="{{ route('vehicles.store') }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
 
             <div>
@@ -57,7 +57,9 @@
                 <input id="plate" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('plate') border-red-500 @enderror" name="plate" value="{{ old('plate') }}" required autocomplete="plate" autofocus>
                 @error('plate')
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                @enderror
+                @else
+                    <p class="text-gray-500 text-xs mt-1">A matrícula deve ser única.</p>
+                    @enderror
             </div>
 
             <div>
@@ -131,7 +133,6 @@
                 @enderror
             </div>
 
-
             <div class="external-field" style="display: none;">
                 <div>
                     <label for="contract_number" class="block text-sm font-semibold text-gray-700 mb-2">Número de Contrato</label>
@@ -150,21 +151,20 @@
                 </div>
 
                 <div>
-                    <label for="rental_start_date" class="block text-sm font-semibold text-gray-700 mb-2">Data de Início do Aluger</label>
-                    <input id="rental_start_date" type="date" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('rental_start_date') border-red-500 @enderror" name="rental_start_date" value="{{ old('rental_start_date') }}"   autocomplete="rental_start_date">
+                    <label for="rental_start_date" class="block text-sm font-semibold text-gray-700 mb-2">Data de Início do Aluguer</label>
+                    <input id="rental_start_date" type="date" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('rental_start_date') border-red-500 @enderror" name="rental_start_date" value="{{ old('rental_start_date') }}">
                     @error('rental_start_date')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div>
-                    <label for="rental_end_date" class="block text-sm font-semibold text-gray-700 mb-2">Data de Fim do Aluger</label>
-                    <input id="rental_end_date" type="date" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('rental_end_date') border-red-500 @enderror" name="rental_end_date" value="{{ old('rental_end_date') }}"   autocomplete="rental_end_date">
+                    <label for="rental_end_date" class="block text-sm font-semibold text-gray-700 mb-2">Data de Fim do Aluguer</label>
+                    <input id="rental_end_date" type="date" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('rental_end_date') border-red-500 @enderror" name="rental_end_date" value="{{ old('rental_end_date') }}">
                     @error('rental_end_date')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-
                 <div>
                     <label for="rental_company" class="block text-sm font-semibold text-gray-700 mb-2">Empresa de RentCar</label>
                     <input id="rental_company" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('rental_company') border-red-500 @enderror" name="rental_company" value="{{ old('rental_company') }}"   autocomplete="rental_company">
@@ -188,39 +188,41 @@
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-
-
+                <div>
+                    <label for="pdf_file" class="block text-sm font-semibold text-gray-700 mb-2">PDF</label>
+                    <input id="pdf_file" type="file" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('pdf_file') border-red-500 @enderror" name="pdf_file">
+                    @error('pdf_file')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
 
-            <div>
-                <button type="submit" class="custom-btn w-full py-2 rounded-md">
-                    Criar
-                </button>
+
+
+
+            <div class="pt-6">
+                <button type="submit" class="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 custom-btn">Criar</button>
             </div>
         </form>
     </div>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const isExternalCheckbox = document.getElementById('is_external');
-        const externalFields = document.querySelectorAll('.external-field');
+    document.addEventListener("DOMContentLoaded", function () {
+        const isExternalCheckbox = document.getElementById("is_external");
+        const externalFieldContainer = document.querySelector(".external-field");
 
         function toggleExternalFields() {
             if (isExternalCheckbox.checked) {
-                externalFields.forEach(field => {
-                    field.style.display = 'block';
-                });
+                externalFieldContainer.style.display = "block";
             } else {
-                externalFields.forEach(field => {
-                    field.style.display = 'none';
-                });
+                externalFieldContainer.style.display = "none";
             }
         }
 
-        isExternalCheckbox.addEventListener('change', toggleExternalFields);
+        isExternalCheckbox.addEventListener("change", toggleExternalFields);
 
-
+        // Initial call to set the correct state on page load
         toggleExternalFields();
     });
 </script>
