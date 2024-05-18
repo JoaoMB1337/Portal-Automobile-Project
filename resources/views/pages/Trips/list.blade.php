@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="w-full lg:w-3/4 mx-auto pl-10 lg:pl-64">
+    <div class=" mx-auto pl-10 lg:pl-64">
            @component('components.trips.list-trips', ['trips' => $trips, 'project' => $project])
            @endcomponent
     </div>

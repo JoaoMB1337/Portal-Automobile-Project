@@ -1,5 +1,4 @@
 <div class="flex">
-    <!-- Conteúdo principal -->
     <div class="w-3/4 mx-auto">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg p-6">
             <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Editar Funcionário</h3>
