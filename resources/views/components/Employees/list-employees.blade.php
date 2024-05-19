@@ -55,10 +55,10 @@
                                 </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-lg font-medium">
-                            <a href="{{ url('employees/' . $employee->id) }}" class="text-indigo-600 hover:text-indigo-900" title="Ver">
+                            <a href="{{ url('employees/' . $employee->id) }}" class="text-gray-700 hover:text-blue-900" title="Ver">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a href="{{ url('employees/' . $employee->id . '/edit') }}" class="text-indigo-600 hover:text-indigo-900 ml-2" title="Editar">
+                            <a href="{{ url('employees/' . $employee->id . '/edit') }}" class="text-blue-900 hover:text-indigo-900 ml-2" title="Editar">
                                 <i class="fas fa-edit"></i>
                             </a>
                         </td>

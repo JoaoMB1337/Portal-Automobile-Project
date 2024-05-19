@@ -1,63 +1,48 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<style>
+    .custom-bg {
+        background-color: #f5f5f5;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Projeto</title>
-    <style>
-        .custom-bg {
-            background-color: #f5f5f5;
-        }
+    .custom-card {
+        background-color: #ffffff;
+        box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
+        padding: 20px;
+        max-width: 800px;
+        margin: auto;
+    }
 
-        .custom-card {
-            background-color: #ffffff;
-            box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 20px;
-        }
+    .custom-btn {
+        background-color: #000;
+        color: #fff;
+        transition: background-color 0.3s ease;
+        border-radius: 30px;
+    }
 
+    .custom-btn:hover {
+        background-color: #222;
+    }
+
+    .form-input, .form-control, .form-select, .form-textarea {
+        border: 2px solid #ccc;
+        transition: border-color 0.3s ease;
+        padding: 8px;
+    }
+
+    .form-input:focus, .form-control:focus, .form-select:focus, .form-textarea:focus {
+        border-color: #888;
+    }
+
+    @media (max-width: 640px) {
         .custom-logo {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
+            width: 80px;
+            height: 80px;
         }
+    }
+</style>
 
-        .custom-btn {
-            background-color: #000;
-            color: #fff;
-            transition: background-color 0.3s ease;
-            border-radius: 30px;
-        }
-
-        .custom-btn:hover {
-            background-color: #222;
-        }
-
-        .form-input,
-        .form-control {
-            border: 2px solid #ccc;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-input:focus,
-        .form-control:focus {
-            border-color: #888;
-        }
-
-        @media (max-width: 640px) {
-            .custom-logo {
-                width: 80px;
-                height: 80px;
-            }
-        }
-    </style>
-</head>
-
-<body>
-    <div class="flex justify-center items-start h-screen custom-bg">
-        <div class="max-w-md w-full bg-white rounded-xl p-7 custom-card mt-12">
-            <div class="flex justify-center mb-6">
+<div class="w-full  rounded-xl p-7 custom-card mt-12">
+    <div class="flex justify-center mb-6">
                 <h1>Registro de Projeto</h1>
             </div>
 
@@ -135,8 +120,6 @@
                 </div>
             </form>
         </div>
-    </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const districts = @json($districts);
@@ -160,6 +143,3 @@
             updateDistricts();
         });
     </script>
-</body>
-
-</html>

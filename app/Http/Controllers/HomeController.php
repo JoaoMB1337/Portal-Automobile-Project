@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
-    }
+        $employee = Employee::find(1); // Supondo que você deseja mostrar as informações do funcionário com o ID 1
+        return view('home', compact('employee'));    }
 }

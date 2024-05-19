@@ -7,13 +7,9 @@
         background-color: #ffffff;
         box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
         border-radius: 20px;
-    }
-
-    .custom-logo {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        object-fit: cover;
+        padding: 20px;
+        max-width: 800px;
+        margin: auto;
     }
 
     .custom-btn {
@@ -26,12 +22,14 @@
     .custom-btn:hover {
         background-color: #222;
     }
-    .form-input, .form-control {
+
+    .form-input, .form-control, .form-select, .form-textarea {
         border: 2px solid #ccc;
         transition: border-color 0.3s ease;
+        padding: 8px;
     }
 
-    .form-input:focus, .form-control:focus {
+    .form-input:focus, .form-control:focus, .form-select:focus, .form-textarea:focus {
         border-color: #888;
     }
 
@@ -43,8 +41,7 @@
     }
 </style>
 
-<div class="flex justify-center items-start h-screen custom-bg">
-    <div class="max-w-md w-full bg-white rounded-xl p-7 custom-card mt-12">
+    <div class="w-full  rounded-xl p-7 custom-card mt-12">
         <div class="flex justify-center mb-6">
             <h1>Registro de Veículo</h1>
         </div>
