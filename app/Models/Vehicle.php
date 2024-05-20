@@ -18,11 +18,6 @@ class Vehicle extends Model
         'brand_id',
     ];
 
-    public function Vehiclemodel()
-    {
-        return $this->belongsTo(VehicleModel::class);
-    }
-
     public function fuelType()
     {
         return $this->belongsTo(FuelType::class);
