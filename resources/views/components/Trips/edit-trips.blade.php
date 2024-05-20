@@ -16,6 +16,7 @@
                         <input type="date" name="end_date" id="end_date" value="{{ $trip->end_date }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
                     </div>
 
+
                     <div class="col-span-2">
                         <label for="destination" class="block text-sm font-medium text-gray-700">Destino</label>
                         <input type="text" name="destination" id="destination" value="{{ $trip->destination }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>

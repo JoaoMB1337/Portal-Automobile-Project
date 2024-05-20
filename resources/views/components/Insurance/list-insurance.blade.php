@@ -50,7 +50,7 @@
                         Custo
                     </th>
                     <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
-                        Placa do Veículo
+                       Matricula
                     </th>
                     <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                         Ações

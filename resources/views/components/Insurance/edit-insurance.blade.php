@@ -85,9 +85,9 @@
                 </div>
 
                 <div>
-                    <label for="vehicle_id" class="block text-sm font-semibold text-gray-700 mb-2">Vehicle ID</label>
-                    <input id="vehicle_id" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('vehicle_id') border-red-500 @enderror" name="vehicle_id" value="{{ old('vehicle_id', $insurance->vehicle_id) }}" required>
-                    @error('vehicle_id')
+                    <label for="vehicle_plate" class="block text-sm font-semibold text-gray-700 mb-2">Matricula</label>
+                    <input id="vehicle_plate" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('vehicle_plate') border-red-500 @enderror" name="vehicle_plate" value="{{ old('vehicle_plate', $insurance->vehicle->plate ?? '') }}" required>
+                    @error('vehicle_plate')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>

@@ -1,8 +1,21 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <div class="flex justify-center">
     <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
         <div class="overflow-x-auto">
+            <div class="flex justify-center mb-4">
+                <input type="text" id="search-plate" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Pesquisar matrícula">
+                <select id="filter-external" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="" id="filter-all">Filtrar por Externo</option>
+                    <option value="1" id="filter-external-yes" class="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-red-100 text-red-800">Sim</option>
+                    <option value="0" id="filter-external-no" class="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800">Não</option>
+                </select>
+                <select id="filter-fuel" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Filtrar por Tipo de Combustível</option>
+                    @foreach($fuelTypes as $fuelType)
+                        <option value="{{ $fuelType->type }}">{{ $fuelType->type }}</option>
+                    @endforeach
+                </select>
+            </div>
             <form id="multi-delete-form" action="{{ route('vehicles.deleteSelected') }}" method="POST" style="display: inline-block;">
                 @csrf
                 @method('DELETE')
@@ -94,6 +107,7 @@
                 @endforelse                </tbody>
             </table>
         </div>
+        {{ $vehicles->links() }}
     </div>
 </div>
 
@@ -104,6 +118,15 @@
         const multiDeleteForm = document.getElementById('multi-delete-form');
         const selectedIdsInput = document.getElementById('selected-ids');
         const deleteButton = document.querySelector('.delete-button');
+        const searchInput = document.getElementById('search-plate');
+        const tableRows = document.querySelectorAll('tbody tr');
+        const filterSelect = document.getElementById('filter-external');
+        const filterFuelSelect = document.getElementById('filter-fuel');
+
+
+
+
+
 
         selectAllCheckbox.addEventListener('change', function() {
             checkboxes.forEach(checkbox => {
@@ -134,5 +157,52 @@
             const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
             deleteButton.classList.toggle('hidden', !anyChecked);
         }
+
+        searchInput.addEventListener('input', function() {
+            const searchValue = searchInput.value.toLowerCase();
+            tableRows.forEach(row => {
+                const plate = row.querySelector('td:nth-child(2) .text-lg').textContent.toLowerCase();
+                if (plate.includes(searchValue)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        filterSelect.addEventListener('change', function() {
+            const filterValue = filterSelect.value;
+
+            tableRows.forEach(row => {
+                const isExternalCell = row.querySelector('td:nth-child(6)');
+                if (!isExternalCell) return; // Verifica se a célula existe
+
+                const isExternal = isExternalCell.textContent.trim().toLowerCase();
+                if (filterValue === '' || (filterValue === '1' && isExternal === 'sim') || (filterValue === '0' && isExternal === 'não')) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        filterFuelSelect.addEventListener('change', function() {
+            const filterFuelValue = filterFuelSelect.value;
+
+            tableRows.forEach(row => {
+                const fuelTypeCell = row.querySelector('td:nth-child(5)');
+                if (!fuelTypeCell) return;
+
+                const fuelType = fuelTypeCell.textContent.trim().toLowerCase();
+
+
+                if (filterFuelValue === '' || fuelType === filterFuelValue.toLowerCase()) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
     });
+
 </script>
