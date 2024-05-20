@@ -19,6 +19,23 @@
                         <dt class="text-sm font-medium text-gray-500">Cargo</dt>
                         <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">{{ $employee->role->name }}</dd>
                     </div>
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">Data de nascimento</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">{{ $employee->birth_date}}</dd>
+                    </div>
+                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">Endereço</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">{{ $employee->address }}</dd>
+                    </div>
+                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">NIF</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">{{ $employee->NIF }}</dd>
+                    </div>
+                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">CC</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">{{ $employee->CC }}</dd>
+                    </div>
+
 
                 </dl>
             </div>
