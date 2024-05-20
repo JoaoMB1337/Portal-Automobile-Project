@@ -30,8 +30,7 @@ class DatabaseSeeder extends Seeder
         $this->call(EmployeeRoleSeeder::class);
         $this->call(CostTypeSeeder::class);
         $this->call(ProjectStatusSeeder::class);
-
-
-
+        $this->call(TypeTripSeeder::class);
+        $this->call(VehicleConditionSeeder::class);
     }
 }
