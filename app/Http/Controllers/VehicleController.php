@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\Brand;
 use App\Models\FuelType;
 use App\Models\CarCategory;
+use App\Models\VehicleCondition;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -32,7 +33,13 @@ class VehicleController extends Controller
         $brands = Brand::all();
         $fuelTypes = FuelType::all();
         $carCategories = CarCategory::all();
-        return view('pages.vehicles.create', ['brands' => $brands, 'fuelTypes' => $fuelTypes, 'carCategories' => $carCategories]);
+        $vehicleCondition = VehicleCondition::all();
+        return view('pages.vehicles.create', [
+            'brands' => $brands, 
+            'fuelTypes' => $fuelTypes, 
+            'carCategories' => $carCategories, 
+            'vehicleCondition' => $vehicleCondition
+        ]);
 
     }
 
@@ -44,7 +51,7 @@ class VehicleController extends Controller
         $vehicle = new Vehicle();
         $vehicle->plate = $request->plate;
         $vehicle->km = $request->km;
-        $vehicle->condition = $request->condition;
+        $vehicle->vehicle_condition_id = $request->condition;
         $vehicle->is_external = $request->is_external;
         $vehicle->fuel_type_id = $request->fuelTypes;
         $vehicle->car_category_id = $request->carCategory;
@@ -95,7 +102,14 @@ class VehicleController extends Controller
         $brands = Brand::all();
         $fuelTypes = FuelType::all();
         $carCategories = CarCategory::all();
-        return view('pages.vehicles.edit', ['vehicle' => $vehicle, 'brands' => $brands, 'fuelTypes' => $fuelTypes, 'carCategories' => $carCategories]);
+        $vehicleCondition = VehicleCondition::all();
+        return view('pages.vehicles.edit', [
+            'vehicle' => $vehicle, 
+            'brands' => $brands, 
+            'fuelTypes' => $fuelTypes, 
+            'carCategories' => $carCategories,
+            'vehicleCondition' => $vehicleCondition
+        ]);
     }
 
     /**
@@ -103,21 +117,50 @@ class VehicleController extends Controller
      */
     public function update(UpdateVehicleRequest $request, Vehicle $vehicle)
     {
-        $vehicle->update($request->all());
+        $vehicle->plate = $request->plate;
+        $vehicle->km = $request->km;
+        $vehicle->vehicle_condition_id = $request->condition;
+        $vehicle->is_external = $request->is_external;
+        $vehicle->fuel_type_id = $request->fuel_type_id;
+        $vehicle->car_category_id = $request->car_category_id;
+        $vehicle->brand_id = $request->brand;
 
-        if ($request->hasFile('pdf_file')) {
-            Storage::disk('public')->delete($vehicle->pdf_file);
-            $pdf = $request->file('pdf_file');
-            $pdfPath = $pdf->storeAs('pdfs', $request->plate . '.' . $pdf->getClientOriginalExtension(), 'public');
-            $vehicle->pdf_file = $pdfPath;
-        } elseif ($request->has('current_pdf')) {
-            $vehicle->pdf_file = $request->input('current_pdf');
+        if ($request->is_external) {
+            $vehicle->contract_number = $request->contract_number;
+            $vehicle->rental_price_per_day = $request->rental_price_per_day;
+            $vehicle->rental_start_date = $request->rental_start_date;
+            $vehicle->rental_end_date = $request->rental_end_date;
+            $vehicle->rental_company = $request->rental_company;
+            $vehicle->rental_contact_person = $request->rental_contact_person;
+            $vehicle->rental_contact_number = $request->rental_contact_number;
+
+            if ($request->hasFile('pdf_file')) {
+                if ($vehicle->pdf_file) {
+                    Storage::disk('public')->delete($vehicle->pdf_file);
+                }
+
+                $pdf = $request->file('pdf_file');
+                $pdfPath = $pdf->storeAs('pdfs', $request->plate . '.' . $pdf->getClientOriginalExtension(), 'public');
+                $vehicle->pdf_file = $pdfPath;
+            }
         } else {
-            Storage::disk('public')->delete($vehicle->pdf_file);
-            $vehicle->pdf_file = null;
+            $vehicle->contract_number = null;
+            $vehicle->rental_price_per_day = null;
+            $vehicle->rental_start_date = null;
+            $vehicle->rental_end_date = null;
+            $vehicle->rental_company = null;
+            $vehicle->rental_contact_person = null;
+            $vehicle->rental_contact_number = null;
+
+            if ($vehicle->pdf_file) {
+                Storage::disk('public')->delete($vehicle->pdf_file);
+                $vehicle->pdf_file = null;
+            }
         }
+
         $vehicle->save();
 
+        // Redirect with success message
         return redirect()->route('vehicles.index')->with('success', 'Vehicle updated successfully.');
     }
     /**

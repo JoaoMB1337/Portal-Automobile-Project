@@ -1,47 +1,46 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    .custom-bg {
+        background-color: #f5f5f5;
+    }
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .custom-bg {
-            background-color: #f5f5f5;
-        }
+    .custom-card {
+        background-color: #ffffff;
+        box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
+        padding: 20px;
+        max-width: 800px;
+        margin: auto;
+    }
 
-        .custom-card {
-            background-color: #ffffff;
-            box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 20px;
-            padding: 20px;
-            max-width: 800px;
-            margin: auto;
-        }
+    .custom-btn {
+        background-color: #000;
+        color: #fff;
+        transition: background-color 0.3s ease;
+        border-radius: 30px;
+    }
 
-        .custom-btn {
-            background-color: #000;
-            color: #fff;
-            transition: background-color 0.3s ease;
-            border-radius: 30px;
-        }
+    .custom-btn:hover {
+        background-color: #222;
+    }
 
-        .custom-btn:hover {
-            background-color: #222;
-        }
+    .form-input, .form-control, .form-select, .form-textarea {
+        border: 2px solid #ccc;
+        transition: border-color 0.3s ease;
+        padding: 8px;
+    }
 
-        .form-input, .form-control, .form-select, .form-textarea {
-            border: 2px solid #ccc;
-            transition: border-color 0.3s ease;
-            padding: 8px;
-        }
+    .form-input:focus, .form-control:focus, .form-select:focus, .form-textarea:focus {
+        border-color: #888;
+    }
 
-        .form-input:focus, .form-control:focus, .form-select:focus, .form-textarea:focus {
-            border-color: #888;
+    @media (max-width: 640px) {
+        .custom-logo {
+            width: 80px;
+            height: 80px;
         }
-
-        @media (max-width: 640px) {
-            .custom-logo {
-                width: 80px;
-                height: 80px;
-            }
-        }
-    </style>
+    }
+</style>
 
 <div class="flex justify-center">
     <div class="w-3/4 mx-auto">
@@ -61,7 +60,13 @@
                     </div>
                     <div class="col-span-2">
                         <label for="condition" class="block text-sm font-medium text-gray-700">Condição</label>
-                        <input type="text" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" id="condition" name="condition" value="{{ $vehicle->condition }}" required>
+                        <select class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" id="condition" name="condition" required>
+                            @foreach($vehicleCondition as $condition)
+                                <option value="{{ $condition->id }}" {{ $vehicle->vehicle_condition_id == $condition->id ? 'selected' : '' }}>
+                                    {{ $condition->condition }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col-span-2">
                         <label for="brand" class="block text-sm font-medium text-gray-700">Marca</label>

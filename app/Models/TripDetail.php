@@ -13,6 +13,7 @@ class TripDetail extends Model
         'cost',
         'trip_id',
         'cost_type_id',
+        'file',
     ];
 
     public function trip()

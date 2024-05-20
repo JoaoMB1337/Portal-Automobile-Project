@@ -29,7 +29,8 @@ class TripController extends Controller
     {
         $employees = \App\Models\Employee::all();
         $projects = \App\Models\Project::all();
-        return view('pages.trips.create', ['employees' => $employees, 'projects' => $projects]);
+        $typeTrips = \App\Models\TypeTrip::all();
+        return view('pages.trips.create', ['employees' => $employees, 'projects' => $projects, 'typeTrips' => $typeTrips]);
 
 
     }
@@ -45,7 +46,8 @@ class TripController extends Controller
         $trip->destination = $request->destination;
         $trip->purpose = $request->purpose;
         $trip->employee_id = $request->employee_id;
-        $trip->project_id = 1;
+        $trip->type_trip_id = $request->type_trip_id;
+        $trip->project_id = $request->project_id;
 
         $trip->save();
 
@@ -70,7 +72,8 @@ class TripController extends Controller
         $trip = Trip::find($trip->id);
         $employees = \App\Models\Employee::all();
         $projects = \App\Models\Project::all();
-        return view('pages.trips.edit', ['trip' => $trip, 'employees' => $employees, 'projects' => $projects]);
+        $typeTrips = \App\Models\TypeTrip::all();
+        return view('pages.trips.edit', ['trip' => $trip, 'employees' => $employees, 'projects' => $projects, 'typeTrips' => $typeTrips]);
 
     }
 
@@ -82,6 +85,8 @@ class TripController extends Controller
         $trip->start_date = $request->start_date;
         $trip->end_date = $request->end_date;
         $trip->employee_id = $request->employee_id;
+        $trip->type_trip_id = $request->type_trip_id;
+        $trip->project_id = $request->project_id;
         $trip->save();
 
         return redirect()->route('trips.index');

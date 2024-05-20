@@ -97,6 +97,16 @@
                     @endforeach
                 </select>
             </div>
+
+            <div class="form-group">
+                <label for="type_trip_id">Project:</label>
+                <select name="type_trip_id" class="form-control">
+                    @foreach($typeTrips as $typeTrip)
+                        <option value="{{$typeTrip->id}}">{{ $typeTrip->type }}</option>
+                    @endforeach
+                </select>
+            </div>
+
             <div>
                 <button type="submit" class="custom-btn w-full py-2 rounded-md">
                     Criar

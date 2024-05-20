@@ -69,11 +69,17 @@
 
             <div>
                 <label for="condition" class="block text-sm font-semibold text-gray-700 mb-2">Condição</label>
-                <input id="condition" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('condition') border-red-500 @enderror" name="condition" value="{{ old('condition') }}" required autocomplete="condition">
+                <select id="condition" name="condition" class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('condition') border-red-500 @enderror" required>
+                    <option value="" disabled selected>Selecione a condição</option>
+                    @foreach($vehicleCondition as $condition)
+                        <option value="{{ $condition->id }}" @if(old('condition') == $condition->id) selected @endif>{{ $condition->condition }}</option>
+                    @endforeach
+                </select>
                 @error('condition')
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
+
 
             <div>
                 <label for="brand" class="block text-sm font-semibold text-gray-700 mb-2">Marca</label>
