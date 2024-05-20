@@ -2,9 +2,13 @@ name: Laravel
 
 on:
   push:
-    branches: [ "main" ]
+    branches: 
+      - "main"
+      - "DEV-Main"
   pull_request:
-    branches: [ "main" ]
+    branches: 
+      - "main"
+      - "DEV-Main"
 
 jobs:
   laravel-tests:
@@ -36,3 +40,6 @@ jobs:
       run: |
         mkdir -p database
         touch database/database.sqlite
+
+    - name: Run Tests
+      run: php artisan test
