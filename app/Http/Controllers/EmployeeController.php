@@ -18,7 +18,7 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = Employee::orderby('id','asc')->paginate(15);
-        return view('pages.employees.list',['employees'=>$employees]);
+        return view('pages.employees.list',['employees'=>$employees , 'roles' => EmployeeRole::all()]);
     }
 
     /**
