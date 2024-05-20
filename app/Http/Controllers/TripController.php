@@ -87,6 +87,8 @@ class TripController extends Controller
         $trip->employee_id = $request->employee_id;
         $trip->type_trip_id = $request->type_trip_id;
         $trip->project_id = $request->project_id;
+        $trip->destination = $request->destination;
+        $trip->purpose = $request->purpose;
         $trip->save();
 
         return redirect()->route('trips.index');

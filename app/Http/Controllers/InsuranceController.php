@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreInsuranceRequest;
 use App\Http\Requests\UpdateInsuranceRequest;
 use Illuminate\Http\Request;
+use App\Models\Vehicle;
 
 
 class InsuranceController extends Controller
@@ -36,7 +37,12 @@ class InsuranceController extends Controller
      */
     public function store(StoreInsuranceRequest $request)
     {
+        // Encontrar o veículo com base na matrícula fornecida
+        $vehicle = Vehicle::where('plate', $request->vehicle_plate)->first();
 
+        if (!$vehicle) {
+            return redirect()->back()->with('error', 'Vehicle with the provided plate not found.');
+        }
 
         $insurance = new Insurance();
 
@@ -45,7 +51,20 @@ class InsuranceController extends Controller
         $insurance->start_date = $request->start_date;
         $insurance->end_date = $request->end_date;
         $insurance->cost = $request->cost;
-        $insurance->vehicle_id = $request->vehicle_id;
+
+
+        $insurance->cost = str_replace(',', '.', $insurance->cost);
+
+
+        $insuranceExists = Insurance::where('vehicle_id', $vehicle->id)->first();
+        if($insuranceExists){
+            return redirect()->back()->with('error', 'Veiculo ja tem seguro.');
+        }
+
+
+
+        // Associar o veículo encontrado ao seguro
+        $insurance->vehicle_id = $vehicle->id;
 
         $insurance->save();
 
@@ -83,12 +102,27 @@ class InsuranceController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date',
             'cost' => 'required|numeric',
-            'vehicle_id' => 'required|exists:vehicles,id'
+            'vehicle_plate' => 'required|exists:vehicles,plate'
         ]);
 
-        $insurance->update($request->all());
 
-        return redirect()->route('insurances.index');
+        $vehicle = Vehicle::where('plate', $request->vehicle_plate)->first();
+
+        if (!$vehicle) {
+            return redirect()->back()->with('error', 'Vehicle with the provided plate not found.');
+        }
+
+        $insurance->update([
+            'insurance_company' => $request->insurance_company,
+            'policy_number' => $request->policy_number,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'cost' => $request->cost,
+
+            'vehicle_id' => $vehicle->id
+        ]);
+
+        return redirect()->route('insurances.index')->with('success', 'Insurance updated successfully.');
     }
 
 

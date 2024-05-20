@@ -21,8 +21,10 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        $vehicles = Vehicle::orderby('id','asc')->paginate(15);
-        return view('pages.vehicles.list',['vehicles'=>$vehicles]);
+        $vehicles = Vehicle::orderby('id','asc')->paginate(2);
+        $fuelTypes = FuelType::all();
+
+        return view('pages.vehicles.list', compact('vehicles', 'fuelTypes'));
     }
 
     /**
@@ -35,9 +37,9 @@ class VehicleController extends Controller
         $carCategories = CarCategory::all();
         $vehicleCondition = VehicleCondition::all();
         return view('pages.vehicles.create', [
-            'brands' => $brands, 
-            'fuelTypes' => $fuelTypes, 
-            'carCategories' => $carCategories, 
+            'brands' => $brands,
+            'fuelTypes' => $fuelTypes,
+            'carCategories' => $carCategories,
             'vehicleCondition' => $vehicleCondition
         ]);
 
@@ -104,9 +106,9 @@ class VehicleController extends Controller
         $carCategories = CarCategory::all();
         $vehicleCondition = VehicleCondition::all();
         return view('pages.vehicles.edit', [
-            'vehicle' => $vehicle, 
-            'brands' => $brands, 
-            'fuelTypes' => $fuelTypes, 
+            'vehicle' => $vehicle,
+            'brands' => $brands,
+            'fuelTypes' => $fuelTypes,
             'carCategories' => $carCategories,
             'vehicleCondition' => $vehicleCondition
         ]);
@@ -120,12 +122,11 @@ class VehicleController extends Controller
         $vehicle->plate = $request->plate;
         $vehicle->km = $request->km;
         $vehicle->vehicle_condition_id = $request->condition;
-        $vehicle->is_external = $request->is_external;
         $vehicle->fuel_type_id = $request->fuel_type_id;
         $vehicle->car_category_id = $request->car_category_id;
         $vehicle->brand_id = $request->brand;
 
-        if ($request->is_external) {
+        if ($vehicle->is_external) {
             $vehicle->contract_number = $request->contract_number;
             $vehicle->rental_price_per_day = $request->rental_price_per_day;
             $vehicle->rental_start_date = $request->rental_start_date;
@@ -194,5 +195,11 @@ class VehicleController extends Controller
             Vehicle::whereIn('id', $selected_ids)->delete();
             return redirect()->route('vehicles.index');
         }
+    }
+
+    public function showVehicles()
+    {
+        $vehicles = Vehicle::all();
+        return view('pages.vehicles.list', compact('vehicles'));
     }
 }
