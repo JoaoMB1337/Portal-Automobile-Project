@@ -1,4 +1,14 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<div class="flex flex-col items-center mb-4">
+
+    <div class="flex space-x-4 mb-4">
+        <input type="text" id="filter-name" placeholder="Filtrar por nome" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <select id="filter-role" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">Filtrar por cargo</option>
+            @foreach ($roles as $role)
+                <option value="{{ $role->name }}">{{ $role->name }}</option>
+            @endforeach
+        </select>
+    </div>
 
 <div class="flex justify-center">
     <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -11,11 +21,11 @@
                     <i class="fas fa-trash-alt text-lg"></i>
                 </button>
             </form>
-            <a href="{{ route('employees.create') }}" class="text-gray-800 hover:text-green-900 ml-2" title="Adicionar">
+            <a href="{{ route('employees.create') }}" class="text-gray-800 hover:text-red-900 ml-2" title="Adicionar">
                 <i class="fas fa-plus text-lg"></i>
             </a>
 
-            <table class="min-w-full divide-y divide-gray-100 ">
+            <table class="min-w-full divide-y divide-gray-100">
                 <thead>
                 <tr>
                     <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
@@ -50,9 +60,9 @@
                             <div class="text-lg text-gray-900">{{ $employee->email }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    {{ $employee->role->name }}
-                                </span>
+                            <span class="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                {{ $employee->role->name }}
+                            </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-lg font-medium">
                             <a href="{{ url('employees/' . $employee->id) }}" class="text-gray-700 hover:text-blue-900" title="Ver">
@@ -69,23 +79,26 @@
         </div>
     </div>
 </div>
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const selectAllCheckbox = document.getElementById('select-all-checkbox');
         const checkboxes = document.querySelectorAll('.form-checkbox');
-        const multiDeleteForm = document.getElementById('multi-delete-form');
         const selectedIdsInput = document.getElementById('selected-ids');
         const deleteButton = document.querySelector('.delete-button');
+        const filterNameInput = document.getElementById('filter-name');
+        const filterRoleInput = document.getElementById('filter-role');
+        const tableRows = document.querySelectorAll('tbody tr');
 
+        // Select all checkboxes functionality
         selectAllCheckbox.addEventListener('change', function() {
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
+            checkboxes.forEach(checkbox => checkbox.checked = selectAllCheckbox.checked);
             updateSelectedIds();
             toggleDeleteButton();
         });
 
+        // Individual checkbox change event
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function() {
                 updateSelectedIds();
@@ -93,19 +106,38 @@
             });
         });
 
+        // Update selected IDs input
         function updateSelectedIds() {
-            const selectedIds = [];
-            checkboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    selectedIds.push(checkbox.value);
-                }
-            });
+            const selectedIds = Array.from(checkboxes)
+                .filter(checkbox => checkbox.checked)
+                .map(checkbox => checkbox.value);
             selectedIdsInput.value = JSON.stringify(selectedIds);
         }
 
+        // Toggle delete button visibility
         function toggleDeleteButton() {
             const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
             deleteButton.classList.toggle('hidden', !anyChecked);
+        }
+
+
+        // Filter table functionality
+        filterNameInput.addEventListener('input', filterTable);
+        filterRoleInput.addEventListener('input', filterTable);
+
+        function filterTable() {
+            const nameFilter = filterNameInput.value.toLowerCase();
+            const roleFilter = filterRoleInput.value.toLowerCase();
+
+            tableRows.forEach(row => {
+                const nameCell = row.querySelector('td:nth-child(2) .text-lg').textContent.toLowerCase();
+                const roleCell = row.querySelector('td:nth-child(4) .text-lg').textContent.toLowerCase();
+
+                const matchesName = nameCell.includes(nameFilter);
+                const matchesRole = roleCell.includes(roleFilter);
+
+                row.style.display = (matchesName && matchesRole) ? '' : 'none';
+            });
         }
     });
 </script>
