@@ -8,6 +8,7 @@ use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\EmployeeRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 
 class EmployeeController extends Controller
@@ -35,20 +36,23 @@ class EmployeeController extends Controller
      */
     public function store(StoreEmployeeRequest $request)
     {
-        $employee = new Employee();
-        $employee->name = $request->name;
-        $employee->gender = $request->gender;
-        $employee->birth_date = $request->birth_date;
-        $employee->CC = $request->CC;
-        $employee->NIF = $request->NIF;
-        $employee->address = $request->address;
-        $employee->employee_role_id = $request->employee_role_id;
-        $employee->email = $request->email;
-        $employee->password = bcrypt($request->password);
-        $employee->save();
+        $validatedData = $request->validated();
 
-        return redirect()->route('employees.index');
+            $employee = Employee::create([
+                'name' => $validatedData['name'],
+                'gender' => $validatedData['gender'],
+                'birth_date' => $validatedData['birth_date'],
+                'CC' => $validatedData['CC'],
+                'NIF' => $validatedData['NIF'],
+                'address' => $validatedData['address'] ?? null,
+                'employee_role_id' => $validatedData['employee_role_id'],
+                'email' => $validatedData['email'],
+                'password' => Hash::make($validatedData['password']),
+            ]);
+
+            return redirect()->route('employees.index')->with('success', 'Employee created successfully!');
     }
+
 
     /**
      * Display the specified resource.

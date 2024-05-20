@@ -65,13 +65,12 @@
         }
 
     </style>
-
 <div class="w-full rounded-xl p-7 custom-card mt-12">
     <div class="flex justify-center mb-6">
         <h1>Employee Register</h1>
     </div>
 
-    <form method="POST" action="{{ route('register') }}" class="space-y-6">
+    <form method="POST" action="{{ route('employees.store') }}" class="space-y-6">
         @csrf
         <div>
             <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Name</label>
@@ -100,36 +99,6 @@
         </div>
 
         <div>
-            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
-            <div class="flex">
-                <i class="fas fa-envelope icon"></i>
-                <input id="email" type="email" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('email') border-red-500 @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-            </div>
-            @error('email')
-            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div>
-            <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
-            <div class="flex">
-                <i class="fas fa-lock icon"></i>
-                <input id="password" type="password" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('password') border-red-500 @enderror" name="password" required autocomplete="new-password">
-            </div>
-            @error('password')
-            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div>
-            <label for="password-confirm" class="block text-sm font-semibold text-gray-700 mb-2">Confirm Password</label>
-            <div class="flex">
-                <i class="fas fa-lock icon"></i>
-                <input id="password-confirm" type="password" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200" name="password_confirmation" required autocomplete="new-password">
-            </div>
-        </div>
-
-        <div>
             <label for="birth_date" class="block text-sm font-semibold text-gray-700 mb-2">Birth Date</label>
             <div class="flex">
                 <i class="fas fa-calendar-alt icon"></i>
@@ -144,8 +113,7 @@
             <label for="CC" class="block text-sm font-semibold text-gray-700 mb-2">CC</label>
             <div class="flex">
                 <i class="fas fa-id-card icon"></i>
-                <input id="CC" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('CC') border-red-500 @enderror" name="CC" value
-                ="{{ old('CC') }}" required>
+                <input id="CC" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('CC') border-red-500 @enderror" name="CC" value="{{ old('CC') }}" required>
             </div>
             @error('CC')
             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -187,6 +155,36 @@
             @error('employee_role_id')
             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @enderror
+        </div>
+
+        <div>
+            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+            <div class="flex">
+                <i class="fas fa-envelope icon"></i>
+                <input id="email" type="email" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('email') border-red-500 @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+            </div>
+            @error('email')
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div>
+            <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+            <div class="flex">
+                <i class="fas fa-lock icon"></i>
+                <input id="password" type="password" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('password') border-red-500 @enderror" name="password" required autocomplete="new-password">
+            </div>
+            @error('password')
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div>
+            <label for="password-confirm" class="block text-sm font-semibold text-gray-700 mb-2">Confirm Password</label>
+            <div class="flex">
+                <i class="fas fa-lock icon"></i>
+                <input id="password-confirm" type="password" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200" name="password_confirmation" required autocomplete="new-password">
+            </div>
         </div>
 
         <div class="flex justify-center mt-6">

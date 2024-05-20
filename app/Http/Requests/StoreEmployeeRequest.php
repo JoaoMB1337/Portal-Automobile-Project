@@ -23,6 +23,15 @@ class StoreEmployeeRequest extends FormRequest
     {
         return [
             //
+            'name' => ['required', 'string', 'max:255'],
+            'gender' => ['required', 'string', 'in:male,female,other'],
+            'birth_date' => ['required', 'date'],
+            'CC' => ['required', 'string', 'max:255', 'unique:employees'],
+            'NIF' => ['required', 'string', 'max:255', 'unique:employees'],
+            'address' => ['string', 'max:255', 'nullable'],
+            'employee_role_id' => ['required', 'integer', 'exists:employee_roles,id'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:employees'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
     }
 }
