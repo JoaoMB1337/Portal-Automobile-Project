@@ -5,17 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
-class VehicleModel extends Model
+class TypeTrip extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'type',
+    ];
 
-    protected $fillable = ['name'];
-
-    public function brand()
+    public function trips()
     {
-        return $this->belongsTo(Brand::class);
+        return $this->hasMany(Trip::class);
     }
-
 }

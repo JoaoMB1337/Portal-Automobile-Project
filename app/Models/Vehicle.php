@@ -18,11 +18,6 @@ class Vehicle extends Model
         'brand_id',
     ];
 
-    public function Vehiclemodel()
-    {
-        return $this->belongsTo(VehicleModel::class);
-    }
-
     public function fuelType()
     {
         return $this->belongsTo(FuelType::class);
@@ -41,6 +36,11 @@ class Vehicle extends Model
     public function insurances()
     {
         return $this->hasMany(Insurance::class);
+    }
+
+    public function vehicleCondition()
+    {
+        return $this->belongsTo(VehicleCondition::class);
     }
 
 

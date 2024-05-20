@@ -27,4 +27,9 @@ class Trip extends Model
     {
         return $this->belongsTo(Project::class);
     }
+
+    public function typeTrip()
+    {
+        return $this->belongsTo(TypeTrip::class);
+    }
 }

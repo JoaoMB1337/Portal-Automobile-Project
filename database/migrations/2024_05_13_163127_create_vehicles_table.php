@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('plate')->unique()->nullable(false);
             $table->integer('km')->nullable(false);
-            $table->string('condition')->nullable(false);
             $table->boolean('is_external')->nullable();
             $table->string('contract_number')->nullable();
             $table->decimal('rental_price_per_day', 10, 2)->nullable();
@@ -29,6 +28,7 @@ return new class extends Migration
             $table->foreignId('fuel_type_id')->constrained('fuel_types');
             $table->foreignId('car_category_id')->constrained('car_categories');
             $table->foreignId('brand_id')->constrained('brands');
+            $table->foreignId('vehicle_condition_id')->constrained('vehicle_conditions');
             $table->timestamps();
         });
     }

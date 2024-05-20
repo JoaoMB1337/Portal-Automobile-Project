@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vehicle_inspections', function (Blueprint $table) {
+        Schema::create('type_trips', function (Blueprint $table) {
             $table->id();
-            $table->date('inspection_date')->nullable(false);
-            $table->foreignId('vehicle_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('vehicle_inspection_status_id')->constrained()->cascadeOnDelete();
+            $table->string('type');
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vehicle_inspections');
+        Schema::dropIfExists('type_trips');
     }
 };
