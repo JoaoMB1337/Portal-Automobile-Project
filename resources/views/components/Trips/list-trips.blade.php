@@ -75,9 +75,11 @@
                         </tr>
                     @endforeach
                     </tbody>
-                    <div class="flex justify-center-end mb-4">
-                        <a href="{{ route('trips.create') }}" class="custom-btn">Adicionar Viagem</a>
-                    </div>
+                    <div class="flex justify-content-end mb-4">
+                        <a href="{{ route('trips.create') }}" class="bg-gray-700 text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-500 transition duration-200">
+                        <i class="fas fa-plus mr-2"></i> Adicionar Viagem
+                        </a>
+                    </div>               
                 </table>
             </div>
         </div>
