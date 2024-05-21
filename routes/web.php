@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmployeeController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,4 +28,5 @@ Route::delete('insurances.deleteSelected', [App\Http\Controllers\InsuranceContro
 
 Route::get('/vehicles/{vehicle}/download-pdf', [App\Http\Controllers\VehicleController::class, 'downloadPdf'])->name('vehicles.downloadPdf');
 
+Route::get('/employees/{id}/export-csv', [EmployeeController::class, 'exportCsv'])->name('employees.exportCsv');
 

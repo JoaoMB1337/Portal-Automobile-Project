@@ -4,6 +4,7 @@
             <div class="px-4 py-5 sm:px-6">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">Detalhes do Funcionário</h3>
                 <p class="mt-1 max-w-2xl text-sm text-gray-500">Detalhes pessoais e informações de contato</p>
+
             </div>
             <div class="border-t border-gray-200">
                 <dl>
@@ -35,6 +36,12 @@
                         <dt class="text-sm font-medium text-gray-500">CC</dt>
                         <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">{{ $employee->CC }}</dd>
                     </div>
+                    <div class="flex justify-center">
+                        <a href="{{ route('employees.exportCsv', ['id' => $employee->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                            Exportar CSV
+                        </a>
+                    </div>
+
 
 
                 </dl>
