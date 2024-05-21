@@ -23,6 +23,7 @@ class Employee extends Authenticatable
         'address',
         'employee_role_id',
         'email',
+        'phone',
         'password',
     ];
 
@@ -37,5 +38,10 @@ class Employee extends Authenticatable
     public function role()
     {
         return $this->belongsTo(EmployeeRole::class, 'employee_role_id');
+    }
+
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
     }
 }

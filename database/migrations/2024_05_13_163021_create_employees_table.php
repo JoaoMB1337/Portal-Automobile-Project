@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->foreignId('employee_role_id')->constrained();
             $table->string('email')->unique()->nullable();
+            $table->string('phone')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

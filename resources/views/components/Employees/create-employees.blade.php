@@ -65,6 +65,7 @@
         }
 
     </style>
+
 <div class="w-full rounded-xl p-7 custom-card mt-12">
     <div class="flex justify-center mb-6">
         <h1>Employee Register</h1>
@@ -157,13 +158,26 @@
             @enderror
         </div>
 
+        <!-- Email Address Field -->
         <div>
             <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
             <div class="flex">
                 <i class="fas fa-envelope icon"></i>
-                <input id="email" type="email" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('email') border-red-500 @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                <input id="email" type="email" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('email') border-red-500 @enderror" name="email" value="{{ old('email') }}">
             </div>
             @error('email')
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <!-- Phone Number Field -->
+        <div>
+            <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+            <div class="flex">
+                <i class="fas fa-phone icon"></i>
+                <input id="phone" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('phone') border-red-500 @enderror" name="phone" value="{{ old('phone') }}">
+            </div>
+            @error('phone')
             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @enderror
         </div>
@@ -200,3 +214,17 @@
         </a>
     </div>
 </div>
+
+<script>
+    document.getElementById('contact_type').addEventListener('change', function() {
+        var emailContainer = document.getElementById('email-container');
+        var phoneContainer = document.getElementById('phone-container');
+        if (this.value === 'email') {
+            emailContainer.style.display = '';
+            phoneContainer.style.display = 'none';
+        } else if (this.value === 'phone') {
+            emailContainer.style.display = 'none';
+            phoneContainer.style.display = '';
+        }
+    });
+</script>
