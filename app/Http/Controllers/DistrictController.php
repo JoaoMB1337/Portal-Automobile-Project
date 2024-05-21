@@ -6,9 +6,16 @@ use App\Models\District;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDistrictRequest;
 use App\Http\Requests\UpdateDistrictRequest;
+use App\Models\Country;
+
 
 class DistrictController extends Controller
 {
+    //Retorna uma lista de distritos que pertence a um determinado pais
+    public function getDistrictsByCountry(Country $country)
+    {
+        return $country->districts()->pluck('name', 'id')->toArray();
+    }
     /**
      * Display a listing of the resource.
      */
