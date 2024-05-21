@@ -1,4 +1,9 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+<div>
+    <a href="{{ url('projects') }}" class="text-indigo-600 hover:text-indigo-900 ml-2" title="Voltar para trás">
+        <i class="fas fa-arrow-left"></i>
+    </a>
     <div class="flex">
         <div class="w-3/4 mx-auto">
             <div class="bg-white shadow overflow-hidden sm:rounded-lg">
@@ -18,7 +23,8 @@
                         </div>
                         <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt class="text-sm font-medium text-gray-500">Status do Projeto</dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">{{ $project->projectstatus->status_name }}
+                            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">
+                                {{ $project->projectstatus->status_name }}
                             </dd>
                         </div>
                         <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -34,3 +40,4 @@
             </div>
         </div>
     </div>
+</div>

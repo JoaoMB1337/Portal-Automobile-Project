@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DistrictController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 
@@ -30,3 +31,5 @@ Route::get('/vehicles/{vehicle}/download-pdf', [App\Http\Controllers\VehicleCont
 
 Route::get('/employees/{id}/export-csv', [EmployeeController::class, 'exportCsv'])->name('employees.exportCsv');
 
+// routes/web.php
+Route::get('/districts/{country}', [DistrictController::class, 'getDistrictsByCountry']);

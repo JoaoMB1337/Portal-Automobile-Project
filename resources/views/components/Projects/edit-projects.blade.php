@@ -59,17 +59,19 @@
                 <div>
                     <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nome do Projeto</label>
                     <input id="name" type="text"
-                        class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('name') border-red-500 @enderror"
+                        class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('name') border-red-500 @enderror p-1"
                         name="name" value="{{ old('name', $project->name) }}" required autocomplete="name" autofocus>
+                    <!-- Adicionei P-1-->
                     @error('name')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div>
-                    <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">Endereço do Projeto</label>
+                    <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">Endereço do
+                        Projeto</label>
                     <input id="address" type="text"
-                        class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('address') border-red-500 @enderror"
+                        class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('address') border-red-500 @enderror p-1"
                         name="address" value="{{ old('address', $project->address) }}" required autocomplete="address">
                     @error('address')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -77,9 +79,10 @@
                 </div>
 
                 <div>
-                    <label for="projectstatus" class="block text-sm font-semibold text-gray-700 mb-2">Status do Projeto</label>
+                    <label for="projectstatus" class="block text-sm font-semibold text-gray-700 mb-2">Status do
+                        Projeto</label>
                     <select id="projectstatus" name="projectstatus"
-                        class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('projectstatus') border-red-500 @enderror"
+                        class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('projectstatus') border-red-500 @enderror p-1"
                         required autocomplete="projectstatus" autofocus>
                         <option value="" selected>Selecione o Status</option>
                         @foreach ($projectstatuses as $status)
@@ -95,7 +98,7 @@
                 <div>
                     <label for="country" class="block text-sm font-semibold text-gray-700 mb-2">País</label>
                     <select id="country" name="country"
-                        class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('country') border-red-500 @enderror"
+                        class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('country') border-red-500 @enderror p-1"
                         required autocomplete="country" autofocus>
                         <option value="" selected>Selecione o País</option>
                         @foreach ($countries as $country)
@@ -111,7 +114,7 @@
                 <div>
                     <label for="district" class="block text-sm font-semibold text-gray-700 mb-2">Distrito</label>
                     <select id="district" name="district"
-                        class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('district') border-red-500 @enderror"
+                        class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('district') border-red-500 @enderror p-1"
                         required autocomplete="district" autofocus>
                         <option value="" selected>Selecione o Distrito</option>
                     </select>
@@ -124,8 +127,7 @@
                     <button type="submit" class="custom-btn w-full py-2 rounded-md">
                         Salvar
                     </button>
-                    <a href="{{ url('projects') }}"
-                        class="block text-center mt-4 text-sm font-semibold text-gray-700">
+                    <a href="{{ url('projects') }}" class="block text-center mt-4 text-sm font-semibold text-gray-700">
                         Cancelar
                     </a>
                 </div>
@@ -134,7 +136,7 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const districts = @json($districts);
             const countrySelect = document.getElementById('country');
             const districtSelect = document.getElementById('district');
