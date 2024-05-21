@@ -23,6 +23,7 @@ class Employee extends Authenticatable
         'address',
         'employee_role_id',
         'email',
+        'phone',
         'password',
     ];
 

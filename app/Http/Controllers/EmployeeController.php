@@ -8,6 +8,7 @@ use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\EmployeeRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Response;
 
@@ -52,23 +53,38 @@ class EmployeeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreEmployeeRequest $request)
+    public function store(Request $request)
     {
-        $validatedData = $request->validated();
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'gender' => 'required|string|max:255',
+            'birth_date' => 'required|date',
+            'CC' => 'required|string|max:255|unique:employees',
+            'NIF' => 'required|string|max:255|unique:employees',
+            'address' => 'nullable|string|max:255',
+            'employee_role_id' => 'required|integer|exists:employee_roles,id',
+            'contact_type' => 'required|string|in:email,phone',
+            'email' => 'nullable|required_if:contact_type,email|email|max:255|unique:employees',
+            'phone' => 'nullable|required_if:contact_type,phone|string|max:15|unique:employees',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
 
-            $employee = Employee::create([
-                'name' => $validatedData['name'],
-                'gender' => $validatedData['gender'],
-                'birth_date' => $validatedData['birth_date'],
-                'CC' => $validatedData['CC'],
-                'NIF' => $validatedData['NIF'],
-                'address' => $validatedData['address'] ?? null,
-                'employee_role_id' => $validatedData['employee_role_id'],
-                'email' => $validatedData['email'],
-                'password' => Hash::make($validatedData['password']),
-            ]);
+        $employee = Employee::create([
+            'name' => $request->name,
+            'gender' => $request->gender,
+            'birth_date' => $request->birth_date,
+            'CC' => $request->CC,
+            'NIF' => $request->NIF,
+            'address' => $request->address,
+            'employee_role_id' => $request->employee_role_id,
+            'email' => $request->contact_type === 'email' ? $request->email : null,
+            'phone' => $request->contact_type === 'phone' ? $request->phone : null,
+            'password' => Hash::make($request->password),
+        ]);
 
-            return redirect()->route('employees.index')->with('success', 'Employee created successfully!');
+        Auth::login($employee);
+
+        return redirect()->route('employees.index');
     }
 
 

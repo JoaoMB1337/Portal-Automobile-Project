@@ -57,9 +57,9 @@
                 @csrf
 
                 <div>
-                    <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
-                    <input id="email" type="email" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('email') border-red-500 @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                    @error('email')
+                    <label for="login" class="block text-sm font-semibold text-gray-700 mb-2">Email or Phone</label>
+                    <input id="login" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('login') border-red-500 @enderror" name="login" value="{{ old('login') }}" required autocomplete="login" autofocus>
+                    @error('login')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
