@@ -33,3 +33,6 @@ Route::get('/employees/{id}/export-csv', [EmployeeController::class, 'exportCsv'
 
 // routes/web.php
 Route::get('/districts/{country}', [DistrictController::class, 'getDistrictsByCountry']);
+
+Route::post('/employees/importCsv', [EmployeeController::class, 'importCsv'])->name('employees.importCsv');
+

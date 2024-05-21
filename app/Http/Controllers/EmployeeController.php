@@ -171,5 +171,45 @@ class EmployeeController extends Controller
         );
     }
 
+    public function importCsv(Request $request)
+    {
+
+        $request->validate([
+            'file' => 'required|file|mimes:csv,txt',
+        ]);
+
+
+        $file = $request->file('file');
+
+
+        $path = $file->getRealPath();
+
+
+        $data = array_map('str_getcsv', file($path));
+
+
+        foreach ($data as $row) {
+
+            Employee::create([
+                'name' => $row[0],
+                'gender' => $row[1],
+                'birth_date' => $row[2],
+                'CC' => $row[3],
+                'NIF' => $row[4],
+                'address' => $row[5],
+                'employee_role_id' => $row[6],
+                'email' => $row[7],
+                'phone' => $row[8],
+                'password' => Hash::make($row[9]),
+            ]);
+        }
+
+
+        return redirect()->route('employees.index');
+    }
+
+
+
+
 
 }

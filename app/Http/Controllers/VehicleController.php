@@ -28,9 +28,12 @@ class VehicleController extends Controller
             $query->where('plate', 'like', '%' . $search . '%');
         }
 
-        // Filter by is_external
         if (($isExternal = $request->input('is_external')) !== null) {
-            $query->where('is_external', $isExternal);
+
+            if ($isExternal === '0' || $isExternal === '1') {
+                $query->where('is_external', $isExternal);
+
+            }
         }
 
         // Filter by fuel type
@@ -79,6 +82,15 @@ class VehicleController extends Controller
         $vehicle->fuel_type_id = $request->fuelTypes;
         $vehicle->car_category_id = $request->carCategory;
         $vehicle->brand_id = $request->brand;
+
+
+
+        if($request->is_external == null) {
+            $vehicle->is_external = 0;
+
+        }
+
+
 
         if ($request->is_external) {
             $vehicle->contract_number = $request->contract_number;
