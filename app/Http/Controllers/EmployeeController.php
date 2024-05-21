@@ -63,11 +63,14 @@ class EmployeeController extends Controller
             'NIF' => 'required|string|max:255|unique:employees',
             'address' => 'nullable|string|max:255',
             'employee_role_id' => 'required|integer|exists:employee_roles,id',
-            'contact_type' => 'required|string|in:email,phone',
-            'email' => 'nullable|required_if:contact_type,email|email|max:255|unique:employees',
-            'phone' => 'nullable|required_if:contact_type,phone|string|max:15|unique:employees',
+            'email' => 'nullable|email|max:255|unique:employees',
+            'phone' => 'nullable|string|max:15|unique:employees',
             'password' => 'required|string|min:8|confirmed',
         ]);
+
+        if (empty($request->email) && empty($request->phone)) {
+            return back()->withErrors(['email' => 'Either email or phone must be provided.'])->withInput();
+        }
 
         $employee = Employee::create([
             'name' => $request->name,
@@ -77,8 +80,8 @@ class EmployeeController extends Controller
             'NIF' => $request->NIF,
             'address' => $request->address,
             'employee_role_id' => $request->employee_role_id,
-            'email' => $request->contact_type === 'email' ? $request->email : null,
-            'phone' => $request->contact_type === 'phone' ? $request->phone : null,
+            'email' => $request->email,
+            'phone' => $request->phone,
             'password' => Hash::make($request->password),
         ]);
 

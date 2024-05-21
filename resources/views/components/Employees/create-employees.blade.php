@@ -158,21 +158,8 @@
             @enderror
         </div>
 
+        <!-- Email Address Field -->
         <div>
-            <label for="contact_type" class="block text-sm font-semibold text-gray-700 mb-2">Contact Type</label>
-            <div class="flex">
-                <i class="fas fa-phone icon"></i>
-                <select id="contact_type" class="form-control w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('contact_type') border-red-500 @enderror" name="contact_type" required>
-                    <option value="email" {{ old('contact_type') == 'email' ? 'selected' : '' }}>Email</option>
-                    <option value="phone" {{ old('contact_type') == 'phone' ? 'selected' : '' }}>Phone</option>
-                </select>
-            </div>
-            @error('contact_type')
-            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div id="email-container" style="{{ old('contact_type') != 'phone' ? '' : 'display: none;' }}">
             <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
             <div class="flex">
                 <i class="fas fa-envelope icon"></i>
@@ -183,7 +170,8 @@
             @enderror
         </div>
 
-        <div id="phone-container" style="{{ old('contact_type') == 'phone' ? '' : 'display: none;' }}">
+        <!-- Phone Number Field -->
+        <div>
             <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
             <div class="flex">
                 <i class="fas fa-phone icon"></i>

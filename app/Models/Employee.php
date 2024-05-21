@@ -39,4 +39,9 @@ class Employee extends Authenticatable
     {
         return $this->belongsTo(EmployeeRole::class, 'employee_role_id');
     }
+
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
 }
