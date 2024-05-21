@@ -19,13 +19,34 @@ class VehicleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $vehicles = Vehicle::orderby('id','asc')->paginate(2);
+        $query = Vehicle::query();
+
+        // Search by plate
+        if ($search = $request->input('search')) {
+            $query->where('plate', 'like', '%' . $search . '%');
+        }
+
+        // Filter by is_external
+        if (($isExternal = $request->input('is_external')) !== null) {
+            $query->where('is_external', $isExternal);
+        }
+
+        // Filter by fuel type
+        if ($fuelTypeId = $request->input('fuel_type')) {
+            $query->where('fuel_type_id', $fuelTypeId);
+        }
+
+        // Pagination
+        $vehicles = $query->orderBy('id', 'asc')->paginate(15);
+
+        // Get all fuel types for the filter dropdown
         $fuelTypes = FuelType::all();
 
         return view('pages.vehicles.list', compact('vehicles', 'fuelTypes'));
     }
+
 
     /**
      * Show the form for creating a new resource.

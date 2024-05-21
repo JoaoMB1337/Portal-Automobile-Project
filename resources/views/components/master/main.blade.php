@@ -18,7 +18,7 @@
     {{-- .STYLE SECTION --}}
 
 </head>
-<body class="bg-gray-700">
+<body class="bg-gray-300">
 
 
 {{-- HEADER SECTION --}}

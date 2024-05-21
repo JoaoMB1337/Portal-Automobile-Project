@@ -9,18 +9,36 @@ use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\EmployeeRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Http\Response;
 
 class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $employees = Employee::orderby('id','asc')->paginate(15);
-        return view('pages.employees.list',['employees'=>$employees , 'roles' => EmployeeRole::all()]);
+        $query = Employee::query();
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+
+        if ($request->filled('role')) {
+            $query->whereHas('role', function ($query) use ($request) {
+                $query->where('name', $request->input('role'));
+            });
+        }
+
+        $employees = $query->orderBy('id', 'asc')->paginate(15);
+
+        return view('pages.employees.list', [
+            'employees' => $employees,
+            'roles' => EmployeeRole::all(),
+        ]);
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -96,6 +114,42 @@ class EmployeeController extends Controller
             Employee::whereIn('id', $selected_ids)->delete();
             return redirect()->route('employees.index');
         }
+    }
+    public function exportCsv($id)
+    {
+        $employee = Employee::findOrFail($id);
+        $data = [
+            [
+                'ID' => $employee->id,
+                'Nome' => $employee->name,
+                'Email' => $employee->email,
+                'Cargo' => $employee->role->name,
+                'Data de nascimento' => $employee->birth_date,
+                'Endereço' => $employee->address,
+                'NIF' => $employee->NIF,
+                'CC' => $employee->CC,
+            ]
+        ];
+
+        $fileName = 'employee_' . $employee->name . '.csv';
+
+        $file = fopen('php://temp', 'w+');
+        fputcsv($file, array_keys($data[0]));
+        foreach ($data as $row) {
+            fputcsv($file, $row);
+        }
+        rewind($file);
+
+        return response()->stream(
+            function () use ($file) {
+                fpassthru($file);
+            },
+            200,
+            [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+            ]
+        );
     }
 
 
