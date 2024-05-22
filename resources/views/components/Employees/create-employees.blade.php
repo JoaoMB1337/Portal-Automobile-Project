@@ -185,16 +185,16 @@
 
         <div>
             <label for="driving_licenses" class="block text-sm font-semibold text-gray-700 mb-2">Driving Licenses</label>
-            <div class="flex">
-                <i class="fas fa-car icon"></i>
-                <select id="driving_licenses" class="form-control w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('driving_licenses') border-red-500 @enderror" name="driving_licenses[]" multiple>
-                    @foreach($drivingLicenses as $license)
-                        <option value="{{ $license->id }}" {{ in_array($license->id, old('driving_licenses', [])) ? 'selected' : '' }}>{{ $license->name }}</option>
-                    @endforeach
-                </select>
+            <div class="flex flex-wrap gap-4">
+                @foreach($drivingLicenses as $license)
+                    <div class="flex items-center">
+                        <input id="license{{ $license->id }}" type="checkbox" class="form-checkbox h-5 w-5 text-gray-600" name="driving_licenses[]" value="{{ $license->id }}" {{ in_array($license->id, old('driving_licenses', [])) ? 'checked' : '' }}>
+                        <label for="license{{ $license->id }}" class="ml-2 text-gray-700">{{ $license->name }}</label>
+                    </div>
+                @endforeach
             </div>
             @error('driving_licenses')
-            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @enderror
         </div>
 

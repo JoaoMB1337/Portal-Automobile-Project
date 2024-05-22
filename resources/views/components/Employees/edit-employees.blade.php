@@ -66,12 +66,16 @@
 
                     <div class="col-span-2">
                         <label for="driving_licenses" class="block text-sm font-medium text-gray-700">Cartas de Condução</label>
-                        <select id="driving_licenses" name="driving_licenses[]" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" multiple>
+                        <div class="mt-2 grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-4">
                             @foreach($drivingLicenses as $license)
-                                <option value="{{ $license->id }}" {{ in_array($license->id, $employee->drivingLicenses->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $license->name }}</option>
+                                <div class="flex items-center">
+                                    <input id="license{{ $license->id }}" type="checkbox" class="form-checkbox h-5 w-5 text-indigo-600" name="driving_licenses[]" value="{{ $license->id }}" {{ in_array($license->id, $employee->drivingLicenses->pluck('id')->toArray()) ? 'checked' : '' }}>
+                                    <label for="license{{ $license->id }}" class="ml-2 text-sm text-gray-700">{{ $license->name }}</label>
+                                </div>
                             @endforeach
-                        </select>
+                        </div>
                     </div>
+
                 </div>
 
                 <div class="mt-6">
