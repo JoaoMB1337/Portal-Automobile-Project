@@ -122,17 +122,23 @@ class EmployeeController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
-{
-    $employee->update($request->all());
+    {
+        $data = $request->all();
 
-    if ($request->has('driving_licenses')) {
-        $employee->drivingLicenses()->sync($request->driving_licenses);
-    } else {
-        $employee->drivingLicenses()->detach();
+        if ($request->has('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $employee->update($data);
+
+        if ($request->has('driving_licenses')) {
+            $employee->drivingLicenses()->sync($request->driving_licenses);
+        } else {
+            $employee->drivingLicenses()->detach();
+        }
+
+        return redirect()->route('employees.index');
     }
-
-    return redirect()->route('employees.index');
-}
 
     /**
      * Remove the specified resource from storage.
