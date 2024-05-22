@@ -16,6 +16,7 @@ class EmployeeSeeder extends Seeder
         //
         Employee::create ([
             'name' => 'Diogo Sousa',
+            'employee_number' => '0001',
             'gender'=> 'Male',
             'birth_date' => '1999-07-15',
             'CC' => '123456789',
@@ -32,6 +33,7 @@ class EmployeeSeeder extends Seeder
         ]);
         Employee::create ([
             'name' => 'Joao Barbosa',
+            'employee_number' => '0002',
             'gender'=> 'Male',
             'birth_date' => '2002-07-15',
             'CC' => '223456719',
@@ -48,6 +50,7 @@ class EmployeeSeeder extends Seeder
         ]);
         Employee::create ([
             'name' => 'Marcos Carvalho',
+            'employee_number' => '0003',
             'gender'=> 'Male',
             'birth_date' => '1992-07-15',
             'CC' => '323456789',
@@ -64,6 +67,7 @@ class EmployeeSeeder extends Seeder
         ]);
         Employee::create ([
             'name' => 'Ismael Pinheiro',
+            'employee_number' => '0004',
             'gender'=> 'Male',
             'birth_date' => '2005-07-15',
             'CC' => '423456789',
@@ -80,6 +84,7 @@ class EmployeeSeeder extends Seeder
         ]);
         Employee::create ([
             'name' => 'Mariza Costa',
+            'employee_number' => '0005',
             'gender'=> 'Female',
             'birth_date' => '1995-07-15',
             'CC' => '523456789',

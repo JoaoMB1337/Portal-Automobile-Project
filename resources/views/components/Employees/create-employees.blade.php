@@ -83,6 +83,16 @@
             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @enderror
         </div>
+        <div>
+            <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Employee Number</label>
+            <div class="flex">
+                <i class="fas fa-id-badge icon"></i>
+                <input id="employee_number" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('employee_number') border-red-500 @enderror" name="employee_number" value="{{ old('employee_number') }}" required>
+            </div>
+            @error('employee_number')
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
+</div>
 
         <div>
             <label for="gender" class="block text-sm font-semibold text-gray-700 mb-2">Gender</label>
@@ -181,7 +191,7 @@
             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @enderror
         </div>
-        
+
 
         <div>
             <label for="driving_licenses" class="block text-sm font-semibold text-gray-700 mb-2">Driving Licenses</label>

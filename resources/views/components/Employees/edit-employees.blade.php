@@ -12,11 +12,18 @@
                     </div>
 
                     <div class="col-span-2 sm:col-span-1">
+                        <label for="name" class="block text-sm font-medium text-gray-700">Nr Funcionário</label>
+                        <input type="text" name="employee_number" id="employee_number" value="{{ $employee->employee_number }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
+                    </div>
+
+
+
+                    <div class="col-span-2 sm:col-span-1">
                         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                         <input type="email" name="email" id="email" value="{{ $employee->email }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
                     </div>
 
-                    <div class="col-span-2">
+                    <div class="col-span-2 sm:col-span-1">
                         <label for="gender" class="block text-sm font-medium text-gray-700">Gênero</label>
                         <select id="gender" name="gender" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
                             <option value="male" {{ $employee->gender === 'male' ? 'selected' : '' }}>Masculino</option>
