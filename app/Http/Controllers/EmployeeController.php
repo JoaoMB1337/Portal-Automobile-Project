@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Response;
 use App\Models\DrivingLicense;
+use App\Models\Contact;
+use App\Models\ContactType;
 class EmployeeController extends Controller
 {
     /**
@@ -48,7 +50,12 @@ class EmployeeController extends Controller
     {
         $roles = EmployeeRole::all();
         $drivingLicenses = DrivingLicense::all();
-        return view('pages.employees.create', ['roles' => $roles, 'drivingLicenses' => $drivingLicenses]);
+        $contactTypes = ContactType::all();
+        return view('pages.employees.create', [
+            'roles' => $roles, 
+            'drivingLicenses' => $drivingLicenses, 
+            'contactTypes' => $contactTypes
+        ]);
     }
 
     /**
@@ -70,8 +77,11 @@ class EmployeeController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'driving_licenses' => 'nullable|array',
             'driving_licenses.*' => 'exists:driving_licenses,id',
+            'contacts' => 'nullable|array',
+            'contacts.*.value' => 'required|string|max:255',
+            'contacts.*.type' => 'required|exists:contact_types,id',
         ]);
-
+    
         $employee = Employee::create([
             'name' => $request->name,
             'employee_number' => $request->employee_number,
@@ -85,11 +95,20 @@ class EmployeeController extends Controller
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
         ]);
-
+    
         if ($request->has('driving_licenses')) {
             $employee->drivingLicenses()->sync($request->driving_licenses);
         }
-
+    
+        if ($request->has('contacts')) {
+            foreach ($request->contacts as $contact) {
+                $employee->contacts()->create([
+                    'contact_value' => $contact['value'],
+                    'contact_type_id' => $contact['type']
+                ]);
+            }
+        }
+    
         return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
@@ -111,11 +130,13 @@ class EmployeeController extends Controller
         $employee = Employee::with('drivingLicenses', 'role')->findOrFail($employee->id);
         $roles = EmployeeRole::all();
         $drivingLicenses = DrivingLicense::all();
+        $contactTypes = ContactType::all();
         return view('pages.employees.edit',
         [
             'employee' => $employee,
             'roles' => $roles,
             'drivingLicenses' => $drivingLicenses,
+            'contactTypes' => $contactTypes
 
         ]);
     }
@@ -139,7 +160,18 @@ class EmployeeController extends Controller
             $employee->drivingLicenses()->detach();
         }
 
-        return redirect()->route('employees.index');
+        $employee->contacts()->delete(); // Remove os contatos antigos
+
+        if ($request->has('contacts')) {
+            foreach ($request->contacts as $contact) {
+                $employee->contacts()->create([
+                    'contact_value' => $contact['value'],
+                    'contact_type_id' => $contact['type']
+                ]);
+            }
+        }
+
+        return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
 
     /**

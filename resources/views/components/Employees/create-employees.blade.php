@@ -192,6 +192,21 @@
             @enderror
         </div>
 
+        <div>
+            <label for="contacts" class="block text-sm font-semibold text-gray-700 mb-2">Contacts</label>
+            <div id="contacts-container">
+                <div class="flex mb-2">
+                    <select name="contacts[0][type]" class="form-select mr-2">
+                        @foreach($contactTypes as $contactType)
+                            <option value="{{ $contactType->id }}">{{ $contactType->type }}</option>
+                        @endforeach
+                    </select>
+                    <input type="text" name="contacts[0][value]" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200">
+                </div>
+            </div>
+            <button type="button" id="add-contact-btn" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn">Add Contact</button>
+        </div>
+
 
         <div>
             <label for="driving_licenses" class="block text-sm font-semibold text-gray-700 mb-2">Driving Licenses</label>
@@ -242,15 +257,19 @@
 </div>
 
 <script>
-    document.getElementById('contact_type').addEventListener('change', function() {
-        var emailContainer = document.getElementById('email-container');
-        var phoneContainer = document.getElementById('phone-container');
-        if (this.value === 'email') {
-            emailContainer.style.display = '';
-            phoneContainer.style.display = 'none';
-        } else if (this.value === 'phone') {
-            emailContainer.style.display = 'none';
-            phoneContainer.style.display = '';
-        }
+    document.getElementById('add-contact-btn').addEventListener('click', function() {
+        var container = document.getElementById('contacts-container');
+        var index = container.children.length;
+        var newContact = document.createElement('div');
+        newContact.className = 'flex mb-2';
+        newContact.innerHTML = `
+            <select name="contacts[${index}][type]" class="form-select mr-2">
+                @foreach($contactTypes as $contactType)
+                    <option value="{{ $contactType->id }}">{{ $contactType->type }}</option>
+                @endforeach
+            </select>
+            <input type="text" name="contacts[${index}][value]" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200">
+        `;
+        container.appendChild(newContact);
     });
 </script>

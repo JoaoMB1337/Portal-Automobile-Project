@@ -54,5 +54,4 @@ class Employee extends Authenticatable
         return $this->belongsToMany(DrivingLicense::class, 'employee_driving_licenses');
     }
 
-
 }
