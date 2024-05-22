@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Response;
 use App\Models\DrivingLicense;
+use App\Models\Contact;
+use App\Models\ContactType;
 class EmployeeController extends Controller
 {
     /**
@@ -48,7 +50,12 @@ class EmployeeController extends Controller
     {
         $roles = EmployeeRole::all();
         $drivingLicenses = DrivingLicense::all();
-        return view('pages.employees.create', ['roles' => $roles, 'drivingLicenses' => $drivingLicenses]);
+        $contactTypes = ContactType::all();
+        return view('pages.employees.create', [
+            'roles' => $roles, 
+            'drivingLicenses' => $drivingLicenses, 
+            'contactTypes' => $contactTypes
+        ]);
     }
 
     /**
@@ -58,6 +65,7 @@ class EmployeeController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'employee_number' => 'nullable|string|max:255|unique:employees,employee_number',
             'gender' => 'required|string',
             'birth_date' => 'required|date',
             'CC' => 'required|string|max:255|unique:employees,CC',
@@ -69,10 +77,14 @@ class EmployeeController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'driving_licenses' => 'nullable|array',
             'driving_licenses.*' => 'exists:driving_licenses,id',
+            'contacts' => 'nullable|array',
+            'contacts.*.value' => 'required|string|max:255',
+            'contacts.*.type' => 'required|exists:contact_types,id',
         ]);
-
+    
         $employee = Employee::create([
             'name' => $request->name,
+            'employee_number' => $request->employee_number,
             'gender' => $request->gender,
             'birth_date' => $request->birth_date,
             'CC' => $request->CC,
@@ -83,11 +95,20 @@ class EmployeeController extends Controller
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
         ]);
-
+    
         if ($request->has('driving_licenses')) {
             $employee->drivingLicenses()->sync($request->driving_licenses);
         }
-
+    
+        if ($request->has('contacts')) {
+            foreach ($request->contacts as $contact) {
+                $employee->contacts()->create([
+                    'contact_value' => $contact['value'],
+                    'contact_type_id' => $contact['type']
+                ]);
+            }
+        }
+    
         return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
@@ -109,11 +130,13 @@ class EmployeeController extends Controller
         $employee = Employee::with('drivingLicenses', 'role')->findOrFail($employee->id);
         $roles = EmployeeRole::all();
         $drivingLicenses = DrivingLicense::all();
-        return view('pages.employees.edit', 
+        $contactTypes = ContactType::all();
+        return view('pages.employees.edit',
         [
-            'employee' => $employee, 
-            'roles' => $roles, 
-            'drivingLicenses' => $drivingLicenses, 
+            'employee' => $employee,
+            'roles' => $roles,
+            'drivingLicenses' => $drivingLicenses,
+            'contactTypes' => $contactTypes
 
         ]);
     }
@@ -137,7 +160,18 @@ class EmployeeController extends Controller
             $employee->drivingLicenses()->detach();
         }
 
-        return redirect()->route('employees.index');
+        $employee->contacts()->delete(); // Remove os contatos antigos
+
+        if ($request->has('contacts')) {
+            foreach ($request->contacts as $contact) {
+                $employee->contacts()->create([
+                    'contact_value' => $contact['value'],
+                    'contact_type_id' => $contact['type']
+                ]);
+            }
+        }
+
+        return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
 
     /**
@@ -164,6 +198,7 @@ class EmployeeController extends Controller
             [
                 'ID' => $employee->id,
                 'Nome' => $employee->name,
+                'Numero de funcionario' => $employee->employee_number,
                 'Email' => $employee->email,
                 'Cargo' => $employee->role->name,
                 'Data de nascimento' => $employee->birth_date,
@@ -215,15 +250,16 @@ class EmployeeController extends Controller
 
             Employee::create([
                 'name' => $row[0],
-                'gender' => $row[1],
-                'birth_date' => $row[2],
-                'CC' => $row[3],
-                'NIF' => $row[4],
-                'address' => $row[5],
-                'employee_role_id' => $row[6],
-                'email' => $row[7],
-                'phone' => $row[8],
-                'password' => Hash::make($row[9]),
+                'employee_number' => $row[1],
+                'gender' => $row[2],
+                'birth_date' => $row[3],
+                'CC' => $row[4],
+                'NIF' => $row[5],
+                'address' => $row[6],
+                'employee_role_id' => $row[7],
+                'email' => $row[8],
+                'phone' => $row[9],
+                'password' => Hash::make($row[10]),
             ]);
         }
 

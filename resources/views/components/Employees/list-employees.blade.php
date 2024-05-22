@@ -167,6 +167,7 @@
                     </label>
                 </th>
                 <th>Nome</th>
+                <th>Número</th>
                 <th>Email</th>
                 <th>Cargo</th>
                 <th>Ações</th>
@@ -180,6 +181,7 @@
                                class="form-checkbox">
                     </td>
                     <td><a href="{{ url('employees/' . $employee->id) }}">{{ $employee->name }}</a></td>
+                    <td>{{ $employee->employee_number }}</td>
                     <td>{{ $employee->email }}</td>
                     <td>{{ $employee->role->name }}</td>
                     <td>

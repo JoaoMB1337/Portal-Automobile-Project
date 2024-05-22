@@ -6,6 +6,7 @@
             'employee' => $employee, 
             'roles' => $roles, 
             'drivingLicenses' => $drivingLicenses,
+            'contactTypes' => $contactTypes,
         ])
         @endcomponent
     </div>

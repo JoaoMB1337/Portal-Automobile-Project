@@ -19,6 +19,7 @@ class Employee extends Authenticatable
 
     protected $fillable = [
         'name',
+        'employee_number',
         'gender',
         'birth_date',
         'CC',
@@ -53,5 +54,4 @@ class Employee extends Authenticatable
         return $this->belongsToMany(DrivingLicense::class, 'employee_driving_licenses');
     }
 
-    
 }

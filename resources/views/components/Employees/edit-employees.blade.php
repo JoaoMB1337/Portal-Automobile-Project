@@ -6,9 +6,15 @@
                 @csrf
                 @method('PUT')
                 <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
+                    <!-- Outros campos do formulário -->
                     <div class="col-span-2 sm:col-span-1">
                         <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
                         <input type="text" name="name" id="name" value="{{ $employee->name }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
+                    </div>
+
+                    <div class="col-span-2 sm:col-span-1">
+                        <label for="name" class="block text-sm font-medium text-gray-700">Nr Funcionário</label>
+                        <input type="text" name="employee_number" id="employee_number" value="{{ $employee->employee_number }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
                     </div>
 
                     <div class="col-span-2 sm:col-span-1">
@@ -16,7 +22,7 @@
                         <input type="email" name="email" id="email" value="{{ $employee->email }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
                     </div>
 
-                    <div class="col-span-2">
+                    <div class="col-span-2 sm:col-span-1">
                         <label for="gender" class="block text-sm font-medium text-gray-700">Gênero</label>
                         <select id="gender" name="gender" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
                             <option value="male" {{ $employee->gender === 'male' ? 'selected' : '' }}>Masculino</option>
@@ -55,6 +61,24 @@
                     </div>
 
                     <div class="col-span-2">
+                        <label for="contacts" class="block text-sm font-medium text-gray-700">Contatos</label>
+                        <div id="contacts-container">
+                            @foreach($employee->contacts as $index => $contact)
+                                <div class="flex mb-2">
+                                    <select name="contacts[{{ $index }}][type]" class="form-select mr-2">
+                                        @foreach($contactTypes as $contactType)
+                                            <option value="{{ $contactType->id }}" {{ $contact->contact_type_id == $contactType->id ? 'selected' : '' }}>{{ $contactType->type }}</option>
+                                        @endforeach
+                                    </select>
+                                    <input type="text" name="contacts[{{ $index }}][value]" value="{{ $contact->contact_value }}" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200">
+                                    <button type="button" class="ml-2 text-red-600 remove-contact-btn">&times;</button>
+                                </div>
+                            @endforeach
+                        </div>
+                        <button type="button" id="add-contact-btn" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn">Adicionar Contato</button>
+                    </div>
+
+                    <div class="col-span-2">
                         <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
                         <input type="password" name="password" id="password" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                     </div>
@@ -75,7 +99,6 @@
                             @endforeach
                         </div>
                     </div>
-
                 </div>
 
                 <div class="mt-6">
@@ -90,3 +113,30 @@
         </div>
     </div>
 </div>
+<script>
+    document.getElementById('add-contact-btn').addEventListener('click', function() {
+        var container = document.getElementById('contacts-container');
+        var index = container.children.length;
+        var newContact = document.createElement('div');
+        newContact.className = 'flex mb-2';
+        newContact.innerHTML = `
+            <select name="contacts[${index}][type]" class="form-select mr-2">
+                @foreach($contactTypes as $contactType)
+                    <option value="{{ $contactType->id }}">{{ $contactType->type }}</option>
+                @endforeach
+            </select>
+            <input type="text" name="contacts[${index}][value]" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200">
+            <button type="button" class="ml-2 text-red-600 remove-contact-btn">&times;</button>
+        `;
+        container.appendChild(newContact);
+        addRemoveButtonListener(newContact.querySelector('.remove-contact-btn'));
+    });
+
+    function addRemoveButtonListener(button) {
+        button.addEventListener('click', function() {
+            button.parentElement.remove();
+        });
+    }
+
+    document.querySelectorAll('.remove-contact-btn').forEach(addRemoveButtonListener);
+</script>

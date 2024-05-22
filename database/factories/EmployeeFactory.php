@@ -19,6 +19,7 @@ class EmployeeFactory extends Factory
         return [
             //
             'name' => $this->faker-> name,
+            'employee_number' => $this->faker->randomNumber,
             'gender' => $this-> faker->random,
             'birth_date' => $this->faker->date,
             'CC' => $this->faker->randomNumber,
