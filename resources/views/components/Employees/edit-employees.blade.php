@@ -56,13 +56,26 @@
 
                     <div class="col-span-2">
                         <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
-                        <input type="password" name="password" id="password" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
+                        <input type="password" name="password" id="password" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                     </div>
 
                     <div class="col-span-2">
                         <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmar Senha</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                     </div>
+
+                    <div class="col-span-2">
+                        <label for="driving_licenses" class="block text-sm font-medium text-gray-700">Cartas de Condução</label>
+                        <div class="mt-2 grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-4">
+                            @foreach($drivingLicenses as $license)
+                                <div class="flex items-center">
+                                    <input id="license{{ $license->id }}" type="checkbox" class="form-checkbox h-5 w-5 text-indigo-600" name="driving_licenses[]" value="{{ $license->id }}" {{ in_array($license->id, $employee->drivingLicenses->pluck('id')->toArray()) ? 'checked' : '' }}>
+                                    <label for="license{{ $license->id }}" class="ml-2 text-sm text-gray-700">{{ $license->name }}</label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="mt-6">

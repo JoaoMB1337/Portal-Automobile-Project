@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Response;
-
+use App\Models\DrivingLicense;
 class EmployeeController extends Controller
 {
     /**
@@ -47,7 +47,8 @@ class EmployeeController extends Controller
     public function create()
     {
         $roles = EmployeeRole::all();
-        return view('pages.employees.create', ['roles' => $roles]);
+        $drivingLicenses = DrivingLicense::all();
+        return view('pages.employees.create', ['roles' => $roles, 'drivingLicenses' => $drivingLicenses]);
     }
 
     /**
@@ -57,20 +58,18 @@ class EmployeeController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'gender' => 'required|string|max:255',
+            'gender' => 'required|string',
             'birth_date' => 'required|date',
-            'CC' => 'required|string|max:255|unique:employees',
-            'NIF' => 'required|string|max:255|unique:employees',
+            'CC' => 'required|string|max:255|unique:employees,CC',
+            'NIF' => 'required|string|max:255|unique:employees,NIF',
             'address' => 'nullable|string|max:255',
-            'employee_role_id' => 'required|integer|exists:employee_roles,id',
-            'email' => 'nullable|email|max:255|unique:employees',
-            'phone' => 'nullable|string|max:15|unique:employees',
+            'employee_role_id' => 'required|exists:employee_roles,id',
+            'email' => 'nullable|email|max:255|unique:employees,email',
+            'phone' => 'nullable|string|max:255|unique:employees,phone',
             'password' => 'required|string|min:8|confirmed',
+            'driving_licenses' => 'nullable|array',
+            'driving_licenses.*' => 'exists:driving_licenses,id',
         ]);
-
-        if (empty($request->email) && empty($request->phone)) {
-            return back()->withErrors(['email' => 'Either email or phone must be provided.'])->withInput();
-        }
 
         $employee = Employee::create([
             'name' => $request->name,
@@ -85,9 +84,11 @@ class EmployeeController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        Auth::login($employee);
+        if ($request->has('driving_licenses')) {
+            $employee->drivingLicenses()->sync($request->driving_licenses);
+        }
 
-        return redirect()->route('employees.index');
+        return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
 
@@ -96,6 +97,7 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
+        $employee = Employee::with('drivingLicenses', 'role')->findOrFail($employee->id);
         return view('pages.employees.show', compact('employee'));
     }
 
@@ -104,8 +106,16 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
+        $employee = Employee::with('drivingLicenses', 'role')->findOrFail($employee->id);
         $roles = EmployeeRole::all();
-        return view('pages.employees.edit', ['employee' => $employee, 'roles' => $roles]);
+        $drivingLicenses = DrivingLicense::all();
+        return view('pages.employees.edit', 
+        [
+            'employee' => $employee, 
+            'roles' => $roles, 
+            'drivingLicenses' => $drivingLicenses, 
+
+        ]);
     }
 
     /**
@@ -113,7 +123,20 @@ class EmployeeController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-        $employee->update($request->all());
+        $data = $request->all();
+
+        if ($request->has('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $employee->update($data);
+
+        if ($request->has('driving_licenses')) {
+            $employee->drivingLicenses()->sync($request->driving_licenses);
+        } else {
+            $employee->drivingLicenses()->detach();
+        }
+
         return redirect()->route('employees.index');
     }
 
@@ -207,9 +230,4 @@ class EmployeeController extends Controller
 
         return redirect()->route('employees.index');
     }
-
-
-
-
-
 }

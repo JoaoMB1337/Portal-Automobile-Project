@@ -181,6 +181,22 @@
             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @enderror
         </div>
+        
+
+        <div>
+            <label for="driving_licenses" class="block text-sm font-semibold text-gray-700 mb-2">Driving Licenses</label>
+            <div class="flex flex-wrap gap-4">
+                @foreach($drivingLicenses as $license)
+                    <div class="flex items-center">
+                        <input id="license{{ $license->id }}" type="checkbox" class="form-checkbox h-5 w-5 text-gray-600" name="driving_licenses[]" value="{{ $license->id }}" {{ in_array($license->id, old('driving_licenses', [])) ? 'checked' : '' }}>
+                        <label for="license{{ $license->id }}" class="ml-2 text-gray-700">{{ $license->name }}</label>
+                    </div>
+                @endforeach
+            </div>
+            @error('driving_licenses')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
+        </div>
 
         <div>
             <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
