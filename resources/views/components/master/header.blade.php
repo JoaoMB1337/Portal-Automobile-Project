@@ -10,14 +10,22 @@
     }
 
     .transparent-button {
-        opacity: 0.10;
-        transition: opacity 0.3s;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.3s ease;
     }
 
     .transparent-button:hover,
     .transparent-button:focus {
         opacity: 1;
     }
+
+    #sidebar a:hover {
+        background-color: #4a5568;
+    }
+
+
 </style>
 
 <nav id="sidebar"
@@ -100,13 +108,14 @@
 </nav>
 
 <button id="mobile-menu-btn"
-    class="md:hidden fixed top-4 left-4 z-50 text-white bg-gray-800 p-2 rounded focus:outline-none transparent-button">
+        class="md:hidden fixed top-4 left-4 z-50 text-white bg-gray-800 p-2 rounded focus:outline-none transparent-button">
     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
         <path fill-rule="evenodd"
-            d="M3 5h14a1 1 0 100-2H3a1 1 0 000 2zm0 6h14a1 1 0 100-2H3a1 1 0 000 2zm0 6h14a1 1 0 100-2H3a1 1 0 000 2z"
-            clip-rule="evenodd"></path>
+              d="M3 5h14a1 1 0 100-2H3a1 1 0 000 2zm0 6h14a1 1 0 100-2H3a1 1 0 000 2zm0 6h14a1 1 0 100-2H3a1 1 0 000 2z"
+              clip-rule="evenodd"></path>
     </svg>
 </button>
+
 <script>
     document.getElementById('mobile-menu-btn').addEventListener('click', function() {
         const sidebar = document.getElementById('sidebar');
@@ -115,5 +124,13 @@
 
     document.getElementById('user-menu-btn').addEventListener('click', function() {
         document.getElementById('user-dropdown').classList.toggle('hidden');
+    });
+
+    document.getElementById('user-menu-btn').addEventListener('mouseenter', function() {
+        document.getElementById('user-dropdown').classList.remove('hidden');
+    });
+
+    document.getElementById('user-dropdown').addEventListener('mouseleave', function() {
+        document.getElementById('user-dropdown').classList.add('hidden');
     });
 </script>

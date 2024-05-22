@@ -3,9 +3,6 @@
 @section('content')
 
     <style>
-        .custom-bg {
-            background-color: #f5f5f5;
-        }
 
         .custom-card {
             background-color: #ffffff;
@@ -47,7 +44,7 @@
         }
     </style>
 
-    <div class="flex justify-center items-start h-screen custom-bg">
+    <div class="flex justify-center items-start h-screen bg-gray-200">
         <div class="max-w-md w-full bg-white rounded-xl p-7 custom-card mt-12">
             <div class="flex justify-center mb-6">
                 <img src="{{ asset('images/App-logo.png') }}" alt="Logo" class="custom-logo">
@@ -72,34 +69,15 @@
                     @enderror
                 </div>
 
-                <div class="flex items-center justify-between mb-2">
-                    <div>
-                        <input class="mr-2 h-4 w-4" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                        <label class="text-sm text-gray-700" for="remember">
-                            {{ __('Remember Me') }}
-                        </label>
-                    </div>
-                    @if (Route::has('password.request'))
-                        <div>
-                            <a class="text-gray-800 hover:text-gray-700 text-sm transition duration-300" href="{{ route('password.request') }}">
-                                {{ __('Forgot Your Password?') }}
-                            </a>
-                        </div>
-                    @endif
-                </div>
+
 
                 <div class="flex justify-center">
                     <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-300">
-                        {{ __('Login') }}
+                         {{ __('Login') }}
                     </button>
+                </div>
             </form>
 
-            <div class="mt-6 text-center text-sm text-gray-600">
-                <a class="text-gray-800 hover:text-gray-700 font-semibold transition duration-300" href="{{ route('register') }}">
-                    {{ __('Register here') }}
-                </a>
-            </div>
-        </div>
     </div>
 @endsection
 
