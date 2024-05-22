@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-br">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sua Página de Funcionários</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-        integrity="sha512-y3kJF3B8+qvQrAOXkXGzV+ln4eXlCL7//GSz33YgTrgl6z2DphUy89zxz2ji6P5/8/eJfeT0T7XzBoSRi7Ey5Q=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -19,7 +10,6 @@
             max-width: 1200px;
             margin: auto;
             padding: 20px;
-            position: relative;
         }
 
         .form-container {
@@ -104,37 +94,9 @@
             background-color: #0056b3;
         }
 
-        .delete-button {
-            background-color: #dc3545;
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            font-size: 24px;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: fixed;
-            bottom: 100px;
-            right: 20px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            display: none;
-        }
 
-        .delete-button:hover {
-            background-color: #c82333;
-        }
-
-        .delete-button.show {
-            display: flex;
-        }
     </style>
-</head>
 
-<body>
     <div class="container">
         <div class="form-container">
             <form method="GET" action="{{ route('employees.index') }}">
@@ -145,7 +107,7 @@
                         <option value="{{ $role->name }}">{{ $role->name }}</option>
                     @endforeach
                 </select>
-                <button type="submit">Filtrar</button>
+                <button type="submit"  >Filtrar</button>
             </form>
             <a href="{{ route('employees.index', ['clear_filters' => true]) }}"
                 class="px-4 py-2 bg-blue-300 text-black-500 rounded-md shadow-sm hover:bg-blue-400">Limpar
@@ -258,6 +220,3 @@
         });
     </script>
 
-</body>
-
-</html>
