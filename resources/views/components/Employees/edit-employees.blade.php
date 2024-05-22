@@ -56,12 +56,21 @@
 
                     <div class="col-span-2">
                         <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
-                        <input type="password" name="password" id="password" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
+                        <input type="password" name="password" id="password" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                     </div>
 
                     <div class="col-span-2">
                         <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmar Senha</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    </div>
+
+                    <div class="col-span-2">
+                        <label for="driving_licenses" class="block text-sm font-medium text-gray-700">Cartas de Condução</label>
+                        <select id="driving_licenses" name="driving_licenses[]" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" multiple>
+                            @foreach($drivingLicenses as $license)
+                                <option value="{{ $license->id }}" {{ in_array($license->id, $employee->drivingLicenses->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $license->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 

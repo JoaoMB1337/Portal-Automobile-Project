@@ -6,6 +6,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\EmployeeRole;
+use App\Models\Contact;
+use App\Models\DrivingLicense;
 
 
 class Employee extends Authenticatable
@@ -44,4 +47,11 @@ class Employee extends Authenticatable
     {
         return $this->hasMany(Contact::class);
     }
+
+    public function drivingLicenses()
+    {
+        return $this->belongsToMany(DrivingLicense::class, 'employee_driving_licenses');
+    }
+
+    
 }

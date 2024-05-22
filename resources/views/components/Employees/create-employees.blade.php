@@ -181,6 +181,22 @@
             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @enderror
         </div>
+        
+
+        <div>
+            <label for="driving_licenses" class="block text-sm font-semibold text-gray-700 mb-2">Driving Licenses</label>
+            <div class="flex">
+                <i class="fas fa-car icon"></i>
+                <select id="driving_licenses" class="form-control w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('driving_licenses') border-red-500 @enderror" name="driving_licenses[]" multiple>
+                    @foreach($drivingLicenses as $license)
+                        <option value="{{ $license->id }}" {{ in_array($license->id, old('driving_licenses', [])) ? 'selected' : '' }}>{{ $license->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            @error('driving_licenses')
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
+        </div>
 
         <div>
             <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
