@@ -158,9 +158,52 @@
             <input type="file" name="file" id="file" accept=".csv">
             <button type="submit" id="fileBtn">Import</button>
         </form>
+
         @if ($errors->any())
             @foreach ($errors->all() as $error)
                 <p style="color:#c82333">{{ $error }}</p>
+
+    </div>
+    <form id="multi-delete-form" action="{{ route('employees.deleteSelected') }}" method="POST" style="display: inline-block;">
+        @csrf
+        @method('DELETE')
+        <input type="hidden" name="selected_ids" id="selected-ids">
+        <button type="submit" class="text-red-600 hover:text-red-900 ml-2 delete-link" title="Remover" style="display: none;" onclick="return confirm('Tem certeza que deseja excluir os funcionários selecionados?')">
+            <i class="fas fa-trash-alt text-lg"></i>
+        </button>
+    </form>
+    <div class="employee-table">
+        <table>
+            <thead>
+            <tr>
+                <th>
+                    <label for="select-all-checkbox">
+                        <input type="checkbox" id="select-all-checkbox" class="form-checkbox">
+                    </label>
+                </th>
+                <th>Nome</th>
+                <th>Número</th>
+                <th>Email</th>
+                <th>Cargo</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach ($employees as $employee)
+                <tr>
+                    <td>
+                        <input type="checkbox" name="selected_ids[]" value="{{ $employee->id }}"
+                               class="form-checkbox">
+                    </td>
+                    <td><a href="{{ url('employees/' . $employee->id) }}">{{ $employee->name }}</a></td>
+                    <td>{{ $employee->employee_number }}</td>
+                    <td>{{ $employee->email }}</td>
+                    <td>{{ $employee->role->name }}</td>
+                    <td>
+                        <a href="{{ url('employees/' . $employee->id . '/edit') }}"><i
+                                class="fas fa-edit"></i></a>
+                    </td>
+                </tr>
             @endforeach
         @endif
 

@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Http\Response;
+use App\Models\DrivingLicense;
+use App\Models\Contact;
+use App\Models\ContactType;
 
 class EmployeeController extends Controller
 {
@@ -53,7 +57,13 @@ class EmployeeController extends Controller
     public function create()
     {
         $roles = EmployeeRole::all();
-        return view('pages.employees.create', ['roles' => $roles]);
+        $drivingLicenses = DrivingLicense::all();
+        $contactTypes = ContactType::all();
+        return view('pages.employees.create', [
+            'roles' => $roles, 
+            'drivingLicenses' => $drivingLicenses, 
+            'contactTypes' => $contactTypes
+        ]);
     }
 
     /**
@@ -63,23 +73,26 @@ class EmployeeController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'gender' => 'required|string|max:255',
+            'employee_number' => 'nullable|string|max:255|unique:employees,employee_number',
+            'gender' => 'required|string',
             'birth_date' => 'required|date',
-            'CC' => 'required|string|max:255|unique:employees',
-            'NIF' => 'required|string|max:255|unique:employees',
+            'CC' => 'required|string|max:255|unique:employees,CC',
+            'NIF' => 'required|string|max:255|unique:employees,NIF',
             'address' => 'nullable|string|max:255',
-            'employee_role_id' => 'required|integer|exists:employee_roles,id',
-            'email' => 'nullable|email|max:255|unique:employees',
-            'phone' => 'nullable|string|max:15|unique:employees',
+            'employee_role_id' => 'required|exists:employee_roles,id',
+            'email' => 'nullable|email|max:255|unique:employees,email',
+            'phone' => 'nullable|string|max:255|unique:employees,phone',
             'password' => 'required|string|min:8|confirmed',
+            'driving_licenses' => 'nullable|array',
+            'driving_licenses.*' => 'exists:driving_licenses,id',
+            'contacts' => 'nullable|array',
+            'contacts.*.value' => 'required|string|max:255',
+            'contacts.*.type' => 'required|exists:contact_types,id',
         ]);
-
-        if (empty($request->email) && empty($request->phone)) {
-            return back()->withErrors(['email' => 'Either email or phone must be provided.'])->withInput();
-        }
-
+    
         $employee = Employee::create([
             'name' => $request->name,
+            'employee_number' => $request->employee_number,
             'gender' => $request->gender,
             'birth_date' => $request->birth_date,
             'CC' => $request->CC,
@@ -90,10 +103,21 @@ class EmployeeController extends Controller
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
         ]);
-
-        Auth::login($employee);
-
-        return redirect()->route('employees.index');
+    
+        if ($request->has('driving_licenses')) {
+            $employee->drivingLicenses()->sync($request->driving_licenses);
+        }
+    
+        if ($request->has('contacts')) {
+            foreach ($request->contacts as $contact) {
+                $employee->contacts()->create([
+                    'contact_value' => $contact['value'],
+                    'contact_type_id' => $contact['type']
+                ]);
+            }
+        }
+    
+        return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
 
@@ -102,6 +126,7 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
+        $employee = Employee::with('drivingLicenses', 'role')->findOrFail($employee->id);
         return view('pages.employees.show', compact('employee'));
     }
 
@@ -110,8 +135,18 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
+        $employee = Employee::with('drivingLicenses', 'role')->findOrFail($employee->id);
         $roles = EmployeeRole::all();
-        return view('pages.employees.edit', ['employee' => $employee, 'roles' => $roles]);
+        $drivingLicenses = DrivingLicense::all();
+        $contactTypes = ContactType::all();
+        return view('pages.employees.edit',
+        [
+            'employee' => $employee,
+            'roles' => $roles,
+            'drivingLicenses' => $drivingLicenses,
+            'contactTypes' => $contactTypes
+
+        ]);
     }
 
     /**
@@ -119,8 +154,32 @@ class EmployeeController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-        $employee->update($request->all());
-        return redirect()->route('employees.index');
+        $data = $request->all();
+
+        if ($request->has('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $employee->update($data);
+
+        if ($request->has('driving_licenses')) {
+            $employee->drivingLicenses()->sync($request->driving_licenses);
+        } else {
+            $employee->drivingLicenses()->detach();
+        }
+
+        $employee->contacts()->delete(); // Remove os contatos antigos
+
+        if ($request->has('contacts')) {
+            foreach ($request->contacts as $contact) {
+                $employee->contacts()->create([
+                    'contact_value' => $contact['value'],
+                    'contact_type_id' => $contact['type']
+                ]);
+            }
+        }
+
+        return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
 
     /**
@@ -147,6 +206,7 @@ class EmployeeController extends Controller
             [
                 'ID' => $employee->id,
                 'Nome' => $employee->name,
+                'Numero de funcionario' => $employee->employee_number,
                 'Email' => $employee->email,
                 'Cargo' => $employee->role->name,
                 'Data de nascimento' => $employee->birth_date,
@@ -293,5 +353,42 @@ class EmployeeController extends Controller
         }
 
         return back()->with('sucesso', 'Dados importados com sucesso. <br>Quantidade: ' . $numRegisto);
+      
+    public function importCsv(Request $request)
+    {
+
+        $request->validate([
+            'file' => 'required|file|mimes:csv,txt',
+        ]);
+
+
+        $file = $request->file('file');
+
+
+        $path = $file->getRealPath();
+
+
+        $data = array_map('str_getcsv', file($path));
+
+
+        foreach ($data as $row) {
+
+            Employee::create([
+                'name' => $row[0],
+                'employee_number' => $row[1],
+                'gender' => $row[2],
+                'birth_date' => $row[3],
+                'CC' => $row[4],
+                'NIF' => $row[5],
+                'address' => $row[6],
+                'employee_role_id' => $row[7],
+                'email' => $row[8],
+                'phone' => $row[9],
+                'password' => Hash::make($row[10]),
+            ]);
+        }
+
+
+        return redirect()->route('employees.index');
     }
 }

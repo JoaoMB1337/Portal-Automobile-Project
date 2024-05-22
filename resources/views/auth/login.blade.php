@@ -49,7 +49,7 @@
 
     <div class="flex justify-center items-start h-screen custom-bg">
         <div class="max-w-md w-full bg-white rounded-xl p-7 custom-card mt-12">
-            <div class="flex justify-center mb-6 ">
+            <div class="flex justify-center mb-6">
                 <img src="{{ asset('images/App-logo.png') }}" alt="Logo" class="custom-logo">
             </div>
 
@@ -57,9 +57,9 @@
                 @csrf
 
                 <div>
-                    <label for="login" class="block text-sm font-semibold text-gray-700 mb-2">Email or Phone</label>
-                    <input id="login" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('login') border-red-500 @enderror" name="login" value="{{ old('login') }}" required autocomplete="login" autofocus>
-                    @error('login')
+                    <label for="employee_number" class="block text-sm font-semibold text-gray-700 mb-2">Employee Number</label>
+                    <input id="employee_number" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('employee_number') border-red-500 @enderror" name="employee_number" value="{{ old('employee_number') }}" required autocomplete="employee_number" autofocus>
+                    @error('employee_number')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
@@ -92,7 +92,6 @@
                     <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-300">
                         {{ __('Login') }}
                     </button>
-                </div>
             </form>
 
             <div class="mt-6 text-center text-sm text-gray-600">
@@ -103,3 +102,4 @@
         </div>
     </div>
 @endsection
+

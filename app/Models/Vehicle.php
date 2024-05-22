@@ -18,6 +18,10 @@ class Vehicle extends Model
         'brand_id',
     ];
 
+    protected $attributes = [
+        'is_external' => false,
+    ];
+
     public function fuelType()
     {
         return $this->belongsTo(FuelType::class);

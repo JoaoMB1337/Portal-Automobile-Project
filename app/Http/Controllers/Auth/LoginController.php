@@ -47,10 +47,8 @@ class LoginController extends Controller
      */
     protected function attemptLogin(Request $request)
     {
-        $field = filter_var($request->input('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
-
         return $this->guard()->attempt(
-            [$field => $request->input('login'), 'password' => $request->input('password')],
+            ['employee_number' => $request->input('employee_number'), 'password' => $request->input('password')],
             $request->filled('remember')
         );
     }
@@ -65,16 +63,14 @@ class LoginController extends Controller
      */
     protected function validateLogin(Request $request)
     {
-        $field = filter_var($request->input('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
-
         $request->validate([
-            'login' => 'required',
+            'employee_number' => 'required',
             'password' => 'required',
         ]);
 
-        if (! $this->guard()->attempt([$field => $request->input('login'), 'password' => $request->input('password')], $request->filled('remember'))) {
+        if (! $this->guard()->attempt(['employee_number' => $request->input('employee_number'), 'password' => $request->input('password')], $request->filled('remember'))) {
             throw ValidationException::withMessages([
-                'login' => [trans('auth.failed')],
+                'employee_number' => [trans('auth.failed')],
             ]);
         }
     }
