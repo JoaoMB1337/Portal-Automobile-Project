@@ -69,7 +69,7 @@
                 </form>
                 <a href="{{ route('projects.create') }}" class="text-gray-800 hover:text-green-900 ml-2"
                     title="Adicionar">
-                    <i class="fas fa-plus text-lg"></i>
+                    <i class="fas fa-plus text-lg p-3 text-green-500"></i><!-- Adicionei p-3 e text-green-500-->
                 </a>
 
                 <table class="min-w-full divide-y divide-gray-100">
@@ -98,11 +98,11 @@
                                 Distrito
                             </th>
                             <th scope="col"
-                                class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                                class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-800 uppercase tracking-wider">
                                 País
                             </th>
                             <th scope="col"
-                                class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                                class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-800 uppercase tracking-wider">
                                 Ações
                             </th>
                         </tr>
@@ -162,7 +162,7 @@
                 </table>
             </div>
 
-            <div class="mt-4">
+            <div class="mt-4 p-3">
                 {{ $projects->links() }}
             </div>
         </div>
@@ -176,7 +176,7 @@
             document.querySelector('select[name="country_id"]').addEventListener('change', function() {
                 var countryId = this.value; // Obter o ID do país selecionado
                 var districtSelect = document.querySelector(
-                'select[name="district_id"]'); // Seleção de distrito
+                    'select[name="district_id"]'); // Seleção de distrito
 
                 // Limpar a lista suspensa de distritos
                 districtSelect.innerHTML = '<option value="">Selecionar Distrito</option>';
