@@ -18,6 +18,21 @@ class EmployeeFactory extends Factory
     {
         return [
             //
+            'name' => $this->faker-> name,
+            'gender' => $this-> faker->random,
+            'birth_date' => $this->faker->date,
+            'CC' => $this->faker->randomNumber,
+            'NIF' => $this->faker->randomNumber,
+            'address' => $this->faker->address,
+            'employee_role_id' => $this->faker->randomNumber,
+            'email' => $this->faker->email,
+            'phone' => $this->faker->phoneNumber,
+            'email_verified_at' => $this->faker->date,
+            'password' => $this->bcrypt('12345678'),
+            'remember_token' => $this->faker->randomNumber,
+            'created_at' => $this->faker->date,
+            'updated_at' => $this->faker->date,
+
         ];
     }
 }
