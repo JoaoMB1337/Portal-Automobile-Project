@@ -109,7 +109,13 @@ class EmployeeController extends Controller
         $employee = Employee::with('drivingLicenses', 'role')->findOrFail($employee->id);
         $roles = EmployeeRole::all();
         $drivingLicenses = DrivingLicense::all();
-        return view('pages.employees.edit', ['employee' => $employee, 'roles' => $roles, 'drivingLicenses' => $drivingLicenses]);
+        return view('pages.employees.edit', 
+        [
+            'employee' => $employee, 
+            'roles' => $roles, 
+            'drivingLicenses' => $drivingLicenses, 
+
+        ]);
     }
 
     /**
