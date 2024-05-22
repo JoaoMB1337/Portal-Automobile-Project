@@ -353,6 +353,7 @@ class EmployeeController extends Controller
         }
 
         return back()->with('sucesso', 'Dados importados com sucesso. <br>Quantidade: ' . $numRegisto);
+    }
       
     public function importCsv(Request $request)
     {
