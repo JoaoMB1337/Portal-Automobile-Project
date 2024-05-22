@@ -56,6 +56,10 @@
                 <a href="/insurances"
                     class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Insurance</a>
             </li>
+            <li>
+                <a href="/costs-types"
+                    class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Costs</a>
+            </li>
         </ul>
     </div>
 

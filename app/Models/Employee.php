@@ -44,4 +44,9 @@ class Employee extends Authenticatable
     {
         return $this->hasMany(Contact::class);
     }
+
+    public function trips()
+    {
+        return $this->belongsToMany(Trip::class, 'trip_employee_associations');
+    }
 }

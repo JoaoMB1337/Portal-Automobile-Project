@@ -51,6 +51,11 @@
                     <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                         Funcionário
                     </th>
+                   
+                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                        Veículo Matricula
+                    </th>
+                    
                     <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                         Ações
                     </th>
@@ -80,6 +85,11 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-lg text-gray-900">{{ $trip->employee->name }}</div>
                         </td>
+                        
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-lg text-gray-900">{{ $trip->vehicle }}</div>
+                        </td>
+                       
                         <td class="px-6 py-4 whitespace-nowrap text-right text-lg font-medium">
                             <a href="{{ url('trips/' . $trip->id) }}" class="text-indigo-600 hover:text-indigo-900 ml-2" title="Ver">
                                 <i class="fas fa-eye"></i>
@@ -98,8 +108,8 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
-                            Nenhunha viagem programada
+                        <td colspan="9" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                            Nenhumha viagem programada
                         </td>
                     </tr>
                 @endforelse

@@ -31,4 +31,11 @@ class Project extends Model
     {
         return $this->belongsTo(Country::class);
     }
+
+    public function trips()
+    {
+        return $this->hasMany(Trip::class);
+    }
+
+    
 }

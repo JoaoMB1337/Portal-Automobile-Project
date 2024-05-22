@@ -18,9 +18,9 @@ class Trip extends Model
         'project_id',
     ];
 
-    public function employee()
+    public function employees()
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsToMany(Employee::class, 'trip_employee_associations');
     }
 
     public function project()
@@ -31,5 +31,10 @@ class Trip extends Model
     public function typeTrip()
     {
         return $this->belongsTo(TypeTrip::class);
+    }
+
+    public function tripDetails()
+    {
+        return $this->hasMany(TripDetail::class);
     }
 }
