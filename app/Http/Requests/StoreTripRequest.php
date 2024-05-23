@@ -22,8 +22,7 @@ class StoreTripRequest extends FormRequest
     public function rules()
     {
         return [
-            'start_date' => 'required|date|after:today',
-            'end_date' => 'required|date|after_or_equal:start_date',
+
             'destination' => 'required|string|max:255',
             'purpose' => 'required|string|max:500',
             'employee_id' => 'required|exists:employees,id',
