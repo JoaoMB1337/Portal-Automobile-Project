@@ -50,7 +50,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('trip-details.store') }}" class="space-y-6">
+        <form method="POST" action="{{ route('trip-details.store') }}"  enctype="multipart/form-data" class="space-y-6">
             @csrf
 
             <div>
@@ -86,6 +86,13 @@
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
+            <div>
+                <label for="receipt" class="block text-sm font-semibold text-gray-700 mb-2">Comprovante de Gastos</label>
+                <input id="receipt" type="file" accept="image/*" capture="camera" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('receipt') border-red-500 @enderror" name="receipt">
+                @error('receipt')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
             <div>
                 <button type="submit" class="custom-btn w-full py-2 rounded-md text-white">
@@ -101,10 +108,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         const projectSelect = document.getElementById('project_id');
         const employeeSelect = document.getElementById('employee_id');
-
-        // Optional: Add an event listener if there's a need to do something when the project changes
         projectSelect.addEventListener('change', function() {
-            // Your logic here, if any
         });
     });
 </script>

@@ -6,6 +6,7 @@ use App\Models\TripDetail;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTripDetailRequest;
 use App\Http\Requests\UpdateTripDetailRequest;
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\Project;
 use App\Models\CostType;
@@ -62,17 +63,47 @@ class TripDetailController extends Controller
         $tripDetail->trip_id = $validated['trip_id'];
         $tripDetail->cost_type_id = $validated['cost_type_id'];
         $tripDetail->cost = $validated['cost'];
-        $tripDetail->save();
 
+        $trip = Trip::findOrFail($validated['trip_id']);
+        $project = $trip->project;
+
+        // Define o caminho do diretório dentro da pasta storage/app/public
+        $directory = 'projects/' . $project->id . '/trips/' . $tripDetail->trip_id . '/receipts';
+
+        if ($request->hasFile('receipt')) 
+        {
+            $validated = $request->validate([
+                'receipt' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            ]);
+            $file = $request->file('receipt');
+
+            // Gera um nome único para o arquivo
+            $fileName = hash('sha256', time() . '_' . $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
+
+            // Armazena o arquivo no diretório específico dentro de storage/app/public
+            $file->storeAs($directory, $fileName, 'public'); 
+            $tripDetail->file = $fileName; 
+        }
+
+        $tripDetail->save();
         return redirect()->route('trip-details.index')->with('success', 'Detalhe de viagem criado com sucesso!');
     }
+
+
 
     /**
      * Display the specified resource.
      */
     public function show(TripDetail $tripDetail)
     {
-        //
+        $tripDetail = TripDetail::findOrFail($tripDetail->id);
+        $trip = $tripDetail->trip;
+        $project = $trip->project;
+        return view('pages.TripDetails.show', [
+            'tripDetail' => $tripDetail,
+            'trip' => $trip,
+            'project' => $project
+        ]);
     }
 
     /**
@@ -98,4 +129,6 @@ class TripDetailController extends Controller
     {
         //
     }
+
+    
 }

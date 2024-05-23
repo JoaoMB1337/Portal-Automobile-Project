@@ -27,6 +27,9 @@
                     <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                         Viagem
                     </th>
+                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                        Ações
+                    </th>
                 </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">     
@@ -45,6 +48,9 @@
                         <td class="px-6 py-4 whitespace-nowrap">{{ $costTypeName }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $cost }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $tripName }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a href="{{ route('trip-details.show', $tripDetail->id) }}" class="text-indigo-600 hover:text-indigo-900">Detalhes</a>
+                        </td>
                     </tr>
                 @endforeach
                 @if($tripDetails->isEmpty())
