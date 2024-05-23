@@ -33,9 +33,13 @@ Route::get('/vehicles/{vehicle}/download-pdf', [App\Http\Controllers\VehicleCont
 
 Route::get('/employees/{id}/export-csv', [EmployeeController::class, 'exportCsv'])->name('employees.exportCsv');
 
+
 Route::get('/districts/{country}', [DistrictController::class, 'getDistrictsByCountry']);
 
+Route::post('employees-import', [EmployeeController::class, 'import'])->name('employee.import');
 
+Route::get('/districts/{country}', [DistrictController::class, 'getDistrictsByCountry']);
 
+Route::post('/employees/importCsv', [EmployeeController::class, 'importCsv'])->name('employees.importCsv');
 
 

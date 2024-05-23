@@ -2,7 +2,12 @@
 
 @section('content')
     <div class=" mx-auto pl-10 lg:pl-64">
-        @component('components.employees.edit-employees', ['employee' => $employee, 'roles' => $roles])
+        @component('components.employees.edit-employees', [
+            'employee' => $employee, 
+            'roles' => $roles, 
+            'drivingLicenses' => $drivingLicenses,
+            'contactTypes' => $contactTypes,
+        ])
         @endcomponent
     </div>
 @endsection
