@@ -49,9 +49,16 @@ class Employee extends Authenticatable
         return $this->hasMany(Contact::class);
     }
 
+
+    public function trips()
+    {
+        return $this->belongsToMany(Trip::class, 'trip_employee_associations');
+    }
+
     public function drivingLicenses()
     {
         return $this->belongsToMany(DrivingLicense::class, 'employee_driving_licenses');
     }
+
 
 }

@@ -11,7 +11,7 @@ class StoreCostTypeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class StoreCostTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'type_name' => 'required|string|max:255',
+            'project_id' => 'required|exists:projects,id',
+            'total_cost' => 'required|numeric',
         ];
+        
+        return redirect()->route('costs-types.index');
     }
 }

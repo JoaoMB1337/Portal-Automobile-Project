@@ -11,5 +11,10 @@ class CostType extends Model
 
     protected $fillable = ['type_name'];
 
+    public function tripDetails()
+    {
+        return $this->hasMany(TripDetail::class);
+    }
+
 
 }

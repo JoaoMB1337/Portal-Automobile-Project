@@ -8,6 +8,9 @@ use App\Http\Requests\StoreTripRequest;
 use App\Http\Requests\UpdateTripRequest;
 use Illuminate\Http\Request;
 
+use App\Models\Project;
+use App\Models\Employee;
+use App\Models\TypeTrip;
 
 class TripController extends Controller
 {
@@ -16,9 +19,14 @@ class TripController extends Controller
      */
     public function index()
     {
-
         $trips = Trip::orderby('id','asc')->paginate(15);
-        return view('pages.trips.list',['trips'=>$trips, 'project' => \App\Models\Project::all()]);
+        $employees = Employee::all();
+        $projects = Project::all();
+        return view('pages.trips.list',[
+            'trips'=>$trips, 
+            'employees' => Employee::all(),
+            'project' => Project::all()
+        ]);
 
     }
 
@@ -27,10 +35,14 @@ class TripController extends Controller
      */
     public function create()
     {
-        $employees = \App\Models\Employee::all();
-        $projects = \App\Models\Project::all();
-        $typeTrips = \App\Models\TypeTrip::all();
-        return view('pages.trips.create', ['employees' => $employees, 'projects' => $projects, 'typeTrips' => $typeTrips]);
+        $employees = Employee::all();
+        $projects = Project::all();
+        $typeTrips = TypeTrip::all();
+        return view('pages.trips.create', [
+            'employees' => $employees, 
+            'projects' => $projects, 
+            'typeTrips' => $typeTrips
+        ]);
 
 
     }
@@ -45,12 +57,12 @@ class TripController extends Controller
         $trip->end_date = $request->end_date;
         $trip->destination = $request->destination;
         $trip->purpose = $request->purpose;
-        $trip->employee_id = $request->employee_id;
-        $trip->type_trip_id = $request->type_trip_id;
         $trip->project_id = $request->project_id;
-
+        $trip->type_trip_id = $request->type_trip_id;
         $trip->save();
-
+    
+        $trip->employees()->attach($request->employee_id);
+    
         return redirect()->route('trips.index');
     }
 
@@ -70,10 +82,15 @@ class TripController extends Controller
     public function edit(Trip $trip)
     {
         $trip = Trip::find($trip->id);
-        $employees = \App\Models\Employee::all();
-        $projects = \App\Models\Project::all();
-        $typeTrips = \App\Models\TypeTrip::all();
-        return view('pages.trips.edit', ['trip' => $trip, 'employees' => $employees, 'projects' => $projects, 'typeTrips' => $typeTrips]);
+        $employees = Employee::all();
+        $projects = Project::all();
+        $typeTrips = TypeTrip::all();
+        return view('pages.trips.edit', [
+            'trip' => $trip, 
+            'employees' => $employees, 
+            'projects' => $projects, 
+            'typeTrips' => $typeTrips
+        ]);
 
     }
 
@@ -84,12 +101,14 @@ class TripController extends Controller
     {
         $trip->start_date = $request->start_date;
         $trip->end_date = $request->end_date;
-        $trip->employee_id = $request->employee_id;
-        $trip->type_trip_id = $request->type_trip_id;
-        $trip->project_id = $request->project_id;
         $trip->destination = $request->destination;
         $trip->purpose = $request->purpose;
+        $trip->project_id = $request->project_id;
+        $trip->type_trip_id = $request->type_trip_id;
         $trip->save();
+
+        // Atualizar associações empregado-viagem
+        $trip->employees()->sync($request->employee_id);
 
         return redirect()->route('trips.index');
     }
