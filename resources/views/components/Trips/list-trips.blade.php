@@ -82,8 +82,11 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-lg text-gray-900">{{ $trip->project->name }}</div>
                         </td>
+                        
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-lg text-gray-900">{{ $trip->employee->name }}</div>
+                            @foreach ($trip->employees as $employee)
+                                <div class="text-lg text-gray-900">{{ $employee->name }}</div>
+                            @endforeach
                         </td>
                         
                         <td class="px-6 py-4 whitespace-nowrap">

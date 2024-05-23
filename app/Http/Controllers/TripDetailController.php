@@ -67,7 +67,6 @@ class TripDetailController extends Controller
         $trip = Trip::findOrFail($validated['trip_id']);
         $project = $trip->project;
 
-        // Define o caminho do diretório dentro da pasta storage/app/public
         $directory = 'projects/' . $project->id . '/trips/' . $tripDetail->trip_id . '/receipts';
 
         if ($request->hasFile('receipt')) 
@@ -77,10 +76,8 @@ class TripDetailController extends Controller
             ]);
             $file = $request->file('receipt');
 
-            // Gera um nome único para o arquivo
             $fileName = hash('sha256', time() . '_' . $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
 
-            // Armazena o arquivo no diretório específico dentro de storage/app/public
             $file->storeAs($directory, $fileName, 'public'); 
             $tripDetail->file = $fileName; 
         }
