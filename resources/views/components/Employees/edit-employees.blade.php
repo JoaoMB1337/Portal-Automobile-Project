@@ -79,14 +79,15 @@
                     </div>
 
                     <div class="col-span-2">
-                        <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Nova Senha (opcional)</label>
                         <input type="password" name="password" id="password" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                     </div>
 
                     <div class="col-span-2">
-                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmar Senha</label>
+                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmar Nova Senha</label>
                         <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                     </div>
+
 
                     <div class="col-span-2">
                         <label for="driving_licenses" class="block text-sm font-medium text-gray-700">Cartas de Condução</label>
