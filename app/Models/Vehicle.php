@@ -22,6 +22,7 @@ class Vehicle extends Model
         'is_external' => false,
     ];
 
+
     public function fuelType()
     {
         return $this->belongsTo(FuelType::class);
@@ -45,6 +46,11 @@ class Vehicle extends Model
     public function vehicleCondition()
     {
         return $this->belongsTo(VehicleCondition::class);
+    }
+
+    public function trips()
+    {
+        return $this->belongsToMany(Trip::class, 'trip_vehicle_associations');
     }
 
 

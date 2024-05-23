@@ -190,6 +190,108 @@
                 <input type="text" name="purpose" id="filter-purpose" placeholder="Filtrar por propósito">
                 <button type="submit">Filtrar</button>
             </form>
+
+            <a href="{{ route('trips.create') }}" class="text-gray-800 hover:text-green-900 ml-2" title="Adicionar">
+                <i class="fas fa-plus text-lg"></i>
+            </a>
+
+            <table class="min-w-full divide-y divide-gray-100">
+                <thead>
+                <tr>
+                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                        <label for="select-all-checkbox">
+                            <input type="checkbox" id="select-all-checkbox" class="form-checkbox">
+                        </label>
+                    </th>
+                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                        Data de Início
+                    </th>
+                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                        Data de Fim
+                    </th>
+                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                        Destino
+                    </th>
+                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                        Propósito
+                    </th>
+                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                        Projeto
+                    </th>
+                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                        Funcionário
+                    </th>
+
+                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                        Veículo Matricula
+                    </th>
+
+                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                        Ações
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                @forelse ($trips as $trip)
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <input type="checkbox" name="selected_ids[]" value="{{ $trip->id }}" class="form-checkbox">
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-lg text-gray-900">{{ $trip->start_date }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-lg text-gray-900">{{ $trip->end_date }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-lg text-gray-900">{{ $trip->destination }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-lg text-gray-900">{{ $trip->purpose }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-lg text-gray-900">{{ $trip->project->name }}</div>
+                        </td>
+
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            @foreach ($trip->employees as $employee)
+                                <div class="text-lg text-gray-900">{{ $employee->name }}</div>
+                            @endforeach
+                        </td>
+
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            @foreach ($trip->vehicles as $vehicle)
+                                <div class="text-lg text-gray-900">{{ $vehicle->plate }}</div>
+                            @endforeach
+                        </td>
+
+
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-lg font-medium">
+                            <a href="{{ url('trips/' . $trip->id) }}" class="text-indigo-600 hover:text-indigo-900 ml-2" title="Ver">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a href="{{ url('trips/' . $trip->id . '/edit') }}" class="text-indigo-600 hover:text-indigo-900 ml-2" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form action="{{ url('trips/' . $trip->id) }}" method="POST" style="display: inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:text-red-900 ml-2" title="Remover">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="9" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                            Nenhumha viagem programada
+                        </td>
+                    </tr>
+                @endforelse
+                </tbody>
+            </table>
+
         </div>
     </div>
 

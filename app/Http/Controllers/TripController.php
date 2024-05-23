@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Employee;
 use App\Models\TypeTrip;
+use App\Models\Vehicle;
+
 
 class TripController extends Controller
 {
@@ -23,9 +25,10 @@ class TripController extends Controller
         $employees = Employee::all();
         $projects = Project::all();
         return view('pages.trips.list',[
-            'trips'=>$trips, 
+            'trips'=>$trips,
             'employees' => Employee::all(),
-            'project' => Project::all()
+            'project' => Project::all(),
+            'vehicles' => Vehicle::all(),
         ]);
 
     }
@@ -33,15 +36,22 @@ class TripController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         $employees = Employee::all();
         $projects = Project::all();
         $typeTrips = TypeTrip::all();
+        $vehicles = Vehicle::all();
+
+        if ($search = $request->input('search')) {
+
+            $vehicles = Vehicle::where('plate', 'like', '%' . $search . '%')->get();
+        }
         return view('pages.trips.create', [
-            'employees' => $employees, 
-            'projects' => $projects, 
-            'typeTrips' => $typeTrips
+            'employees' => $employees,
+            'projects' => $projects,
+            'typeTrips' => $typeTrips,
+            'vehicles' => $vehicles
         ]);
 
 
@@ -60,10 +70,11 @@ class TripController extends Controller
         $trip->project_id = $request->project_id;
         $trip->type_trip_id = $request->type_trip_id;
         $trip->save();
-    
+
         $trip->employees()->attach($request->employee_id);
-    
-        return redirect()->route('trips.index');
+        $trip->vehicles()->attach($request->vehicle_id);
+
+         dd($request->all());
     }
 
     /**
@@ -85,11 +96,13 @@ class TripController extends Controller
         $employees = Employee::all();
         $projects = Project::all();
         $typeTrips = TypeTrip::all();
+        $vehicles = Vehicle::all();
         return view('pages.trips.edit', [
-            'trip' => $trip, 
-            'employees' => $employees, 
-            'projects' => $projects, 
-            'typeTrips' => $typeTrips
+            'trip' => $trip,
+            'employees' => $employees,
+            'projects' => $projects,
+            'typeTrips' => $typeTrips,
+            'vehicles' => $vehicles
         ]);
 
     }
@@ -105,10 +118,12 @@ class TripController extends Controller
         $trip->purpose = $request->purpose;
         $trip->project_id = $request->project_id;
         $trip->type_trip_id = $request->type_trip_id;
+        $trip->vehicle_id = $request->vehicle_id;
         $trip->save();
 
         // Atualizar associações empregado-viagem
         $trip->employees()->sync($request->employee_id);
+        $trip->vehicles()->sync($request->vehicle_id);
 
         return redirect()->route('trips.index');
     }

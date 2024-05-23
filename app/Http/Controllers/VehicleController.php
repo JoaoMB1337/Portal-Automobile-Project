@@ -60,6 +60,8 @@ class VehicleController extends Controller
         $fuelTypes = FuelType::all();
         $carCategories = CarCategory::all();
         $vehicleCondition = VehicleCondition::all();
+
+
         return view('pages.vehicles.create', [
             'brands' => $brands,
             'fuelTypes' => $fuelTypes,

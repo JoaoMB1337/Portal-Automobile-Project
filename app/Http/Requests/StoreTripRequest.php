@@ -28,6 +28,7 @@ class StoreTripRequest extends FormRequest
             'employee_id' => 'required|exists:employees,id',
             'type_trip_id' => 'required|exists:type_trips,id',
             'project_id' => 'nullable|exists:projects,id',
+            'vehicle_id' => 'nullable|exists:vehicles,id',
         ];
     }
 
