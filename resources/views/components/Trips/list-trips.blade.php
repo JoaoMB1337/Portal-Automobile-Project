@@ -51,11 +51,11 @@
                     <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                         Funcionário
                     </th>
-                   
+
                     <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                         Veículo Matricula
                     </th>
-                    
+
                     <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                         Ações
                     </th>
@@ -82,17 +82,20 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-lg text-gray-900">{{ $trip->project->name }}</div>
                         </td>
-                        
+
                         <td class="px-6 py-4 whitespace-nowrap">
                             @foreach ($trip->employees as $employee)
                                 <div class="text-lg text-gray-900">{{ $employee->name }}</div>
                             @endforeach
                         </td>
-                        
+
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-lg text-gray-900">{{ $trip->vehicle }}</div>
+                            @foreach ($trip->vehicles as $vehicle)
+                                <div class="text-lg text-gray-900">{{ $vehicle->plate }}</div>
+                            @endforeach
                         </td>
-                       
+
+
                         <td class="px-6 py-4 whitespace-nowrap text-right text-lg font-medium">
                             <a href="{{ url('trips/' . $trip->id) }}" class="text-indigo-600 hover:text-indigo-900 ml-2" title="Ver">
                                 <i class="fas fa-eye"></i>

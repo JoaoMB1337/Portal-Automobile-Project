@@ -57,6 +57,15 @@
                         </select>
                     </div>
 
+                    <div class="col-span-2">
+                        <label for="vehicle_id" class="block text-sm font-medium text-gray-700">Veiculo</label>
+                        <select name="vehicle_id" id="vehicle_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                            @foreach($vehicles as $vehicle)
+                                <option value="{{ $vehicle->id }}" {{ $trip->vehicle_id == $vehicle->id ? 'selected' : '' }}>{{ $vehicle->plate }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
 
                     <div class="col-span-2">
                         <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">

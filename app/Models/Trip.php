@@ -16,6 +16,7 @@ class Trip extends Model
         'purpose',
         'employee_id',
         'project_id',
+        'vehicle_id',
     ];
 
     public function employees()
@@ -37,4 +38,11 @@ class Trip extends Model
     {
         return $this->hasMany(TripDetail::class);
     }
+
+    public function vehicles()
+    {
+        return $this->belongsToMany(Vehicle::class, 'trip_vehicle_associations');
+    }
+
+
 }
