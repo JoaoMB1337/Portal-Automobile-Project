@@ -2,9 +2,9 @@
 
 @section('content')
     <div class=" mx-auto pl-10 lg:pl-64">
-        @component('components.CostTypes.create-costTypes', [
+        @component('components.trip-details.create-trip-detail', [
             'costTypes' => $costTypes,
-            'projects' => $projects,
+            'trips' => $trips,
             'employees' => $employees,
         ])
         @endcomponent

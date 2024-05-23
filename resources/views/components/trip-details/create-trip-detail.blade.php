@@ -1,9 +1,3 @@
-@props(['costTypes', 'projects'])
-
-@extends('components.master.main')
-
-@section('content')
-
 <style>
     .custom-bg {
         background-color: #f5f5f5;
@@ -56,32 +50,18 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('costs-types.store') }}" class="space-y-6">
+        <form method="POST" action="{{ route('trip-details.store') }}" class="space-y-6">
             @csrf
 
             <div>
-                <label for="project_id" class="block text-sm font-semibold text-gray-700 mb-2">Projeto</label>
-                <select name="project_id" id="project_id" class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('project_id') border-red-500 @enderror" required>
-                    <option value="">Selecione o Projeto</option>
-                    @foreach ($projects as $project)
-                        <option value="{{ $project->id }}" data-employees="{{ json_encode($project->trips->flatMap->employees->pluck('name', 'id')) }}">{{ $project->name }}</option>
+                <label for="trip_id" class="block text-sm font-semibold text-gray-700 mb-2">Viagem</label>
+                <select name="trip_id" id="trip_id" class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('trip_id') border-red-500 @enderror" required>
+                    <option value="">Selecione a Viagem</option>
+                    @foreach ($trips as $trip)
+                        <option value="{{ $trip->id }}">{{ $trip->destination}}</option>
                     @endforeach
                 </select>
-                @error('project_id')
-                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div>
-                <label for="employee_id" class="block text-sm font-semibold text-gray-700 mb-2">Funcionário</label>
-                <select name="employee_id" id="employee_id" class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('employee_id') border-red-500 @enderror" required>
-                    <option value="">Selecione o Funcionário</option>
-                    @foreach ($employees as $employee)
-                        <option value="{{ $employee->id }}">{{ $employee->name }}</option>
-                    @endforeach
-                    <!-- Os funcionários serão carregados dinamicamente aqui -->
-                </select>
-                @error('employee_id')
+                @error('trip_id')
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
@@ -100,9 +80,9 @@
             </div>
 
             <div>
-                <label for="total_cost" class="block text-sm font-semibold text-gray-700 mb-2">Custo Total</label>
-                <input id="total_cost" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('total_cost') border-red-500 @enderror" name="total_cost" value="{{ old('total_cost') }}" required>
-                @error('total_cost')
+                <label for="cost" class="block text-sm font-semibold text-gray-700 mb-2">Custo Total</label>
+                <input id="cost" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('cost') border-red-500 @enderror" name="cost" value="{{ old('cost') }}" required>
+                @error('cost')
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
@@ -116,4 +96,15 @@
         </form>
     </div>
 </div>
-@endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const projectSelect = document.getElementById('project_id');
+        const employeeSelect = document.getElementById('employee_id');
+
+        // Optional: Add an event listener if there's a need to do something when the project changes
+        projectSelect.addEventListener('change', function() {
+            // Your logic here, if any
+        });
+    });
+</script>
