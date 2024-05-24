@@ -24,7 +24,7 @@ class TripController extends Controller
         $trips = Trip::orderby('id','asc')->paginate(15);
         $employees = Employee::all();
         $projects = Project::all();
-        return view('pages.trips.list',[
+        return view('pages.Trips.list',[
             'trips'=>$trips,
             'employees' => Employee::all(),
             'project' => Project::all(),
@@ -47,7 +47,7 @@ class TripController extends Controller
 
             $vehicles = Vehicle::where('plate', 'like', '%' . $search . '%')->get();
         }
-        return view('pages.trips.create', [
+        return view('pages.Trips.create', [
             'employees' => $employees,
             'projects' => $projects,
             'typeTrips' => $typeTrips,
@@ -83,7 +83,7 @@ class TripController extends Controller
     public function show(Trip $trip)
     {
 
-        return view('pages.trips.show', compact('trip'));
+        return view('pages.Trips.show', compact('trip'));
 
     }
 
@@ -97,7 +97,7 @@ class TripController extends Controller
         $projects = Project::all();
         $typeTrips = TypeTrip::all();
         $vehicles = Vehicle::all();
-        return view('pages.trips.edit', [
+        return view('pages.Trips.edit', [
             'trip' => $trip,
             'employees' => $employees,
             'projects' => $projects,

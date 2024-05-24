@@ -46,7 +46,7 @@ class VehicleController extends Controller
         // Get all fuel types for the filter dropdown
         $fuelTypes = FuelType::all();
 
-        return view('pages.vehicles.list', compact('vehicles', 'fuelTypes'));
+        return view('pages.Vehicles.list', compact('vehicles', 'fuelTypes'));
     }
 
 
@@ -61,7 +61,7 @@ class VehicleController extends Controller
         $vehicleCondition = VehicleCondition::all();
 
 
-        return view('pages.vehicles.create', [
+        return view('pages.Vehicles.create', [
             'brands' => $brands,
             'fuelTypes' => $fuelTypes,
             'carCategories' => $carCategories,
@@ -122,7 +122,7 @@ class VehicleController extends Controller
      */
     public function show(Vehicle $vehicle)
     {
-        return view('pages.vehicles.show', compact('vehicle'));
+        return view('pages.Vehicles.show', compact('vehicle'));
     }
 
     /**
@@ -224,6 +224,6 @@ class VehicleController extends Controller
     public function showVehicles()
     {
         $vehicles = Vehicle::all();
-        return view('pages.vehicles.list', compact('vehicles'));
+        return view('pages.Vehicles.list', compact('vehicles'));
     }
 }

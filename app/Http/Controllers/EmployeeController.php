@@ -43,7 +43,7 @@ class EmployeeController extends Controller
 
         $employees = $query->orderBy('id', 'asc')->paginate(15);
 
-        return view('pages.employees.list', [
+        return view('pages.Employees.list', [
             'employees' => $employees,
             'roles' => EmployeeRole::all(),
         ]);
@@ -132,7 +132,7 @@ class EmployeeController extends Controller
     public function show(Employee $employee)
     {
         $employee = Employee::with('drivingLicenses', 'role')->findOrFail($employee->id);
-        return view('pages.employees.show', compact('employee'));
+        return view('pages.Employees.show', compact('employee'));
     }
 
     /**
@@ -144,7 +144,7 @@ class EmployeeController extends Controller
         $roles = EmployeeRole::all();
         $drivingLicenses = DrivingLicense::all();
         $contactTypes = ContactType::all();
-        return view('pages.employees.edit',
+        return view('pages.Employees.edit',
         [
             'employee' => $employee,
             'roles' => $roles,

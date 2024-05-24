@@ -76,7 +76,7 @@ class ProjectController extends Controller
         $districts = District::all();
         $projectstatuses = ProjectStatus::all();
 
-        return view('pages.projects.list', [
+        return view('pages.Projects.list', [
             'projects'          => $projects,
             'countries'         => $countries,
             'districts'         => $districts,
@@ -92,7 +92,7 @@ class ProjectController extends Controller
         $countries = Country::all();
         $districts = District::all()->groupBy('country_id');
         $projectstatuses = ProjectStatus::all();
-        return view('pages.projects.create', [
+        return view('pages.Projects.create', [
             'countries'         => $countries,
             'districts'         => $districts,
             'projectstatuses'   => $projectstatuses
@@ -121,7 +121,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return view('pages.projects.show', compact('project'));
+        return view('pages.Projects.show', compact('project'));
     }
 
     /**

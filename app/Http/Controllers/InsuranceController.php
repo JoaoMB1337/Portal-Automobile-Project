@@ -19,7 +19,7 @@ class InsuranceController extends Controller
     {
         //
         $insurance = Insurance::orderby('id','asc')->paginate(15);
-        return view('pages.insurance.list',['insurance'=>$insurance]);
+        return view('pages.Insurance.list',['insurance'=>$insurance]);
 
     }
 
@@ -29,7 +29,7 @@ class InsuranceController extends Controller
     public function create()
     {
         //
-        return view('pages.insurance.create');
+        return view('pages.Insurance.create');
     }
 
     /**
@@ -78,7 +78,7 @@ class InsuranceController extends Controller
     public function show(Insurance $insurance)
     {
         //
-        return view('pages.insurance.show', compact('insurance'));
+        return view('pages.Insurance.show', compact('insurance'));
     }
 
     /**
@@ -87,7 +87,7 @@ class InsuranceController extends Controller
     public function edit(Insurance $insurance)
     {
         //
-        return view('pages.insurance.edit', compact('insurance'));
+        return view('pages.Insurance.edit', compact('insurance'));
 
     }
 
