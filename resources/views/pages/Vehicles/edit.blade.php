@@ -2,7 +2,7 @@
 
 @section('content')
     <div class=" mx-auto pl-10 lg:pl-64">
-        @component('components.vehicles.edit-vehicles', [
+        @component('components.Vehicles.edit-vehicles', [
             'vehicle' => $vehicle, 
             'brands' => $brands, 
             'carCategories' => $carCategories, 
