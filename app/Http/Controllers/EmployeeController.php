@@ -59,7 +59,7 @@ class EmployeeController extends Controller
         $roles = EmployeeRole::all();
         $drivingLicenses = DrivingLicense::all();
         $contactTypes = ContactType::all();
-        return view('pages.employees.create', [
+        return view('pages.Employees.create', [
             'roles' => $roles,
             'drivingLicenses' => $drivingLicenses,
             'contactTypes' => $contactTypes

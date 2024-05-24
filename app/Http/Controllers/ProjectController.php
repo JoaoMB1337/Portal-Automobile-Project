@@ -132,7 +132,7 @@ class ProjectController extends Controller
         $countries = Country::all();
         $districts = District::all()->groupBy('country_id');
         $projectstatuses = ProjectStatus::all();
-        return view('pages.projects.edit', [
+        return view('pages.Projects.edit', [
             'project' => $project,
             'countries' => $countries,
             'districts' => $districts,
