@@ -27,10 +27,11 @@ class DatabaseSeeder extends Seeder
         $this->call(DrivingLicenseSeeder::class);
         $this->call(CarCategorySeeder::class);
         $this->call(ContactTypeSeeder::class);
-        $this->call(MaintenanceTypeSeeder::class);
         $this->call(EmployeeRoleSeeder::class);
-        $this->call(VehicleInspectionStatusSeeder::class);
         $this->call(CostTypeSeeder::class);
         $this->call(ProjectStatusSeeder::class);
+        $this->call(TypeTripSeeder::class);
+        $this->call(VehicleConditionSeeder::class);
+        $this->call(EmployeeSeeder::class);
     }
 }

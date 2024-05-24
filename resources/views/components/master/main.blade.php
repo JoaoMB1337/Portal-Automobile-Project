@@ -11,12 +11,14 @@
     {{-- STYLE SECTION --}}
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 
     @yield('styles')
     {{-- .STYLE SECTION --}}
 
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-300">
 
 
 {{-- HEADER SECTION --}}
@@ -29,19 +31,19 @@
 
 
 {{-- CONTENT SECTION --}}
-<main class="container mx-auto px-4 py-8">
+<main class="container mx-auto px-4 py-8 ">
     @yield('content')
 </main>
 {{-- .CONTENT SECTION --}}
 
 
-{{-- FOOTER SECTION --}}
+{{-- FOOTER SECTION
 <footer class="bg-light text-center text-sm text-gray-600 py-4">
     <div class="container mx-auto px-4">
         @component('components.master.footer')
         @endcomponent
     </div>
-</footer>
+</footer>--}}
 {{-- .FOOTER SECTION --}}
 
 

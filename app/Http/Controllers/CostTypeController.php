@@ -7,14 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCostTypeRequest;
 use App\Http\Requests\UpdateCostTypeRequest;
 
+
 class CostTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
+    {   
     }
 
     /**
@@ -22,7 +22,8 @@ class CostTypeController extends Controller
      */
     public function create()
     {
-        //
+
+
     }
 
     /**
@@ -30,15 +31,17 @@ class CostTypeController extends Controller
      */
     public function store(StoreCostTypeRequest $request)
     {
-        //
-    }
+
+       }
 
     /**
      * Display the specified resource.
      */
     public function show(CostType $costType)
     {
-        //
+
+        
+        
     }
 
     /**
@@ -46,7 +49,7 @@ class CostTypeController extends Controller
      */
     public function edit(CostType $costType)
     {
-        //
+     
     }
 
     /**
@@ -54,7 +57,7 @@ class CostTypeController extends Controller
      */
     public function update(UpdateCostTypeRequest $request, CostType $costType)
     {
-        //
+     
     }
 
     /**
@@ -62,6 +65,8 @@ class CostTypeController extends Controller
      */
     public function destroy(CostType $costType)
     {
-        //
+       
     }
+
+    
 }

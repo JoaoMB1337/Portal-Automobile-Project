@@ -18,6 +18,7 @@ class FuelTypeSeeder extends Seeder
             'Gasóleo',
             'Electrico',
             'Hybrido',
+            'GPL',
 
 
         );

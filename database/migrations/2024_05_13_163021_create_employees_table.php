@@ -14,15 +14,18 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable(false);
+            $table->string('employee_number')->unique()->nullable();
             $table->string('gender')->nullable(false);
             $table->date('birth_date')->nullable(false);
-            $table->string('company_position')->nullable(false);
-            $table->string('driving_license_id')->nullable(false)->unique();
             $table->string('CC')->nullable(false)->unique();
             $table->string('NIF')->nullable(false)->unique();
             $table->string('address')->nullable();
-            $table->string('mobile_number', 15)->nullable(false);
             $table->foreignId('employee_role_id')->constrained();
+            $table->string('email')->unique()->nullable();
+            $table->string('phone')->unique()->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
         });
     }

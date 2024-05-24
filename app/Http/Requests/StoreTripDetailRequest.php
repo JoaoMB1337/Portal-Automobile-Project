@@ -11,7 +11,7 @@ class StoreTripDetailRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class StoreTripDetailRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'trip_id' => 'required|exists:trips,id',
+            'cost_type_id' => 'required|exists:cost_types,id',
+            'cost' => 'required|numeric',
         ];
     }
 }

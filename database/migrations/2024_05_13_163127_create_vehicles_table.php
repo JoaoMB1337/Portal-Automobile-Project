@@ -13,22 +13,22 @@ return new class extends Migration
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
-            $table->string('plate')->nullable(false);
+            $table->string('plate')->unique()->nullable(false);
             $table->integer('km')->nullable(false);
-            $table->string('condition')->nullable(false);
-            $table->boolean('is_external')->nullable(false);
-            $table->string('contract_number')->nullable(false);
-            $table->decimal('rental_price_per_day', 10, 2)->nullable(false);
-            $table->date('rental_start_date')->nullable(false);
-            $table->date('rental_end_date')->nullable(false);
-            $table->string('rental_company')->nullable(false);
-            $table->string('rental_contact_person')->nullable(false);
-            $table->string('rental_contact_number')->nullable(false);
-            $table->string('notes');
-            $table->foreignId('model_id')->nullable(false)->constrained('models');
-            $table->foreignId('fuel_type_id')->nullable(false)->constrained('fuel_types');
-            $table->foreignId('car_category_id')->nullable(false)->constrained('car_categories');
-            $table->foreignId('brand_id')->nullable(false)->constrained('brands');
+            $table->boolean('is_external')->nullable();
+            $table->string('contract_number')->nullable();
+            $table->decimal('rental_price_per_day', 10, 2)->nullable();
+            $table->date('rental_start_date')->nullable();
+            $table->date('rental_end_date')->nullable();
+            $table->string('rental_company')->nullable();
+            $table->string('rental_contact_person')->nullable();
+            $table->string('rental_contact_number')->nullable();
+            $table->string('notes')->nullable();
+            $table->string('pdf_file')->nullable();
+            $table->foreignId('fuel_type_id')->constrained('fuel_types');
+            $table->foreignId('car_category_id')->constrained('car_categories');
+            $table->foreignId('brand_id')->constrained('brands');
+            $table->foreignId('vehicle_condition_id')->constrained('vehicle_conditions');
             $table->timestamps();
         });
     }
