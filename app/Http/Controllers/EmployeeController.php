@@ -251,7 +251,8 @@ class EmployeeController extends Controller
         //Validações de arquivos
         $request->validate([
             'file' => 'required|mimes:csv,txt|max:2048',
-        ], [
+        ], 
+        [
             'file.required' => 'O campo arquivo é obrigatório.',
             'file.mimes'    => 'Arquivo inválido, necessário enciar arquivo CSV.',
             'file.max'      => 'Tamanho do arquivo execede :max Mb'

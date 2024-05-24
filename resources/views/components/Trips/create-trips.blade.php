@@ -115,20 +115,22 @@
                     <input type="text" name="destination" class="form-input" required>
                 </div>
                 <div class="form-group">
-                    <label for="purpose">Purpose:</label>
+                    <label for="purpose">Proposito da viagem:</label>
                     <textarea name="purpose" class="form-control" required></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="employee_id">Employee:</label>
+                    <label for="employee_id">Funcionario:</label>
                     <select name="employee_id" class="form-control">
+                        <option value="" disabled selected>Selecione um funcionário</option>
                         @foreach($employees as $employee)
                             <option value="{{$employee->id}}">{{ $employee->name }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="project_id">Project:</label>
+                    <label for="project_id">Projeto:</label>
                     <select name="project_id" class="form-control">
+                    <option value="" disabled selected>Selecione um projeto</option>
                         @foreach($projects as $project)
                             <option value="{{$project->id}}">{{ $project->name }}</option>
                         @endforeach
@@ -136,8 +138,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="type_trip_id">Project:</label>
+                    <label for="type_trip_id">Tipo de viagem:</label>
                     <select name="type_trip_id" class="form-control">
+                    <option value="" disabled selected>Selecione um tipo de viagem:</option>
                         @foreach($typeTrips as $typeTrip)
                             <option value="{{$typeTrip->id}}">{{ $typeTrip->type }}</option>
                         @endforeach

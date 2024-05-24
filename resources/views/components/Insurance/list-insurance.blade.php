@@ -1,4 +1,9 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurances</title>
     <style>
         body {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -172,7 +177,8 @@
             color: #a71d2a;
         }
     </style>
-
+</head>
+<body>
 <div class="container">
     <div class="form-container">
         <button id="filterBtn" class="filter-button">Filtrar</button>
@@ -220,28 +226,33 @@
             </tr>
             </thead>
             <tbody>
-            @foreach ($insurances as $insurance)
-                <tr onclick="window.location='{{ url('insurances/' . $insurance->id) }}';" style="cursor:pointer;">
-
-                <td>
-                        <input type="checkbox" name="selected_ids[]" value="{{ $insurance->id }}" class="form-checkbox">
-                    </td>
-                    <td>{{ $insurance->insurance_company }}</td>
-                    <td>{{ $insurance->policy_number }}</td>
-                    <td>{{ $insurance->start_date }}</td>
-                    <td>{{ $insurance->end_date }}</td>
-                    <td>{{ $insurance->cost }}</td>
-                    <td>{{ $insurance->vehicle->plate }}</td>
-                    <td>
-                        <a href="{{ route('insurances.edit', $insurance->id) }}"><i class="fas fa-edit"></i></a>
-                        <form action="{{ route('insurances.destroy', $insurance->id) }}" method="POST" style="display: inline-block;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Tem certeza que deseja excluir este seguro?')"><i class="fas fa-trash-alt"></i></button>
-                        </form>
-                    </td>
+            @if ($insurances->isEmpty())
+                <tr>
+                    <td colspan="8" style="text-align: center; padding: 20px;">Nenhum seguro encontrado</td>
                 </tr>
-            @endforeach
+            @else
+                @foreach ($insurances as $insurance)
+                    <tr onclick="window.location='{{ url('insurances/' . $insurance->id) }}';" style="cursor:pointer;">
+                        <td>
+                            <input type="checkbox" name="selected_ids[]" value="{{ $insurance->id }}" class="form-checkbox">
+                        </td>
+                        <td>{{ $insurance->insurance_company }}</td>
+                        <td>{{ $insurance->policy_number }}</td>
+                        <td>{{ $insurance->start_date }}</td>
+                        <td>{{ $insurance->end_date }}</td>
+                        <td>{{ $insurance->cost }}</td>
+                        <td>{{ $insurance->vehicle->plate }}</td>
+                        <td>
+                            <a href="{{ route('insurances.edit', $insurance->id) }}"><i class="fas fa-edit"></i></a>
+                            <form action="{{ route('insurances.destroy', $insurance->id) }}" method="POST" style="display: inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Tem certeza que deseja excluir este seguro?')"><i class="fas fa-trash-alt"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
             </tbody>
         </table>
     </div>

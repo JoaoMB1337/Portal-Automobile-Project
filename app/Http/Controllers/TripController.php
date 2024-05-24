@@ -74,7 +74,7 @@ class TripController extends Controller
         $trip->employees()->attach($request->employee_id);
         $trip->vehicles()->attach($request->vehicle_id);
 
-         dd($request->all());
+        return redirect()->route('trips.index');
     }
 
     /**

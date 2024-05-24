@@ -248,12 +248,6 @@
             </button>
         </div>
     </form>
-
-    <div class="mt-6 text-center text-sm text-gray-600">
-        <a class="text-gray-800 hover:text-gray-700 font-semibold transition duration-300" href="{{ route('login') }}">
-            {{ __('Already have an account? Login here') }}
-        </a>
-    </div>
 </div>
 
 <script>

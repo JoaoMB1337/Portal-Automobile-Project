@@ -15,6 +15,24 @@ class EmployeeSeeder extends Seeder
     {
         //
         Employee::create ([
+            'name' => 'Admin',
+            'employee_number' => '0000',
+            'gender'=> 'Male',
+            'birth_date' => '1999-07-15',
+            'CC' => '987654321',
+            'NIF' => '987654321',
+            'address' => 'Rua da Atec, 123',
+            'employee_role_id' => 2,
+            'email' => 'admin@innodrive.com',
+            'phone' => '913333459',
+            'email_verified_at' => '2021-01-01',
+            'password' => bcrypt('12345678'),
+            'remember_token' => '123456789',
+            'created_at' => '2021-01-01',
+            'updated_at' => '2021-01-01',
+        ]);
+
+        Employee::create ([
             'name' => 'Diogo Sousa',
             'employee_number' => '0001',
             'gender'=> 'Male',

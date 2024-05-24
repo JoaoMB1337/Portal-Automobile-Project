@@ -45,28 +45,28 @@
             </li>
             <li>
                 <a href="/employees"
-                    class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Employees</a>
+                    class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Funcionarios</a>
             </li>
             <li>
                 <a href="/vehicles"
-                    class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Vehicles</a>
+                    class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Veiculos</a>
             </li>
 
             <li>
                 <a href="/projects"
-                    class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Projects</a>
+                    class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Projetos</a>
             </li>
             <li>
                 <a href="/trips"
-                    class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Trips</a>
+                    class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Viagens</a>
             </li>
             <li>
                 <a href="/insurances"
-                    class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Insurance</a>
+                    class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Seguros</a>
             </li>
             <li>
                 <a href="/trip-details"
-                    class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Trip Details</a>
+                    class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Detalhes Viagem</a>
             </li>
         </ul>
     </div>

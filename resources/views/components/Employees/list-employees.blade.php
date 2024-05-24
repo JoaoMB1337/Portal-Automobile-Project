@@ -239,6 +239,7 @@
                 <th>Email</th>
                 <th>Cargo</th>
                 <th>Ações</th>
+                
             </tr>
             </thead>
             <tbody>

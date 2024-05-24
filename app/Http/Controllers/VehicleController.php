@@ -13,7 +13,6 @@ use App\Models\CarCategory;
 use App\Models\VehicleCondition;
 use Illuminate\Support\Facades\Storage;
 
-
 class VehicleController extends Controller
 {
     /**
@@ -85,14 +84,9 @@ class VehicleController extends Controller
         $vehicle->car_category_id = $request->carCategory;
         $vehicle->brand_id = $request->brand;
 
-
-
         if($request->is_external == null) {
             $vehicle->is_external = 0;
-
         }
-
-
 
         if ($request->is_external) {
             $vehicle->contract_number = $request->contract_number;
@@ -210,15 +204,10 @@ class VehicleController extends Controller
 
     public function downloadPdf(Vehicle $vehicle)
     {
-        // Verifica se o veículo tem um arquivo PDF associado
         if ($vehicle->pdf_file) {
-            // Obtém o caminho do arquivo PDF
             $pdfPath = $vehicle->pdf_file;
-
-            // Retorna o arquivo PDF para download
             return Storage::disk('public')->download($pdfPath);
         } else {
-            // Se não houver PDF associado, redirecione ou retorne uma mensagem de erro
             return back()->withError('Este veículo não possui um PDF associado.');
         }
     }
