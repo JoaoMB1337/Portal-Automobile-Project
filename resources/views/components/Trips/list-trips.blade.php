@@ -55,7 +55,7 @@
                 </tr>
             @else
                 @foreach ($trips as $trip)
-                    <tr onclick="window.location='{{ url('trips/' . $trip->id) }}';" style="cursor:pointer;">
+                    <tr data-url={{ url('trips/' . $trip->id) }}' style="cursor:pointer;">
                         <td>
                             <input type="checkbox" name="selected_ids[]" value="{{ $trip->id }}" class="form-checkbox">
                         </td>
