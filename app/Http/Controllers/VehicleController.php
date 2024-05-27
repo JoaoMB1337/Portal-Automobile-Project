@@ -215,11 +215,13 @@ class VehicleController extends Controller
     public function deleteSelected(Request $request)
     {
         $selected_ids = json_decode($request->input('selected_ids'), true);
-        if (!empty($selected_ids)) {
-            Vehicle::whereIn('id', $selected_ids)->delete();
-            return redirect()->route('vehicles.index');
-        }
+        var_dump($selected_ids);
+       // if (!empty($selected_ids)) {
+            //Vehicle::whereIn('id', $selected_ids)->delete();
+            //return redirect()->route('vehicles.index');
+        //}
     }
+
 
     public function showVehicles()
     {
