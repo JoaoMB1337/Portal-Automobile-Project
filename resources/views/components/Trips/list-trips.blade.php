@@ -28,7 +28,7 @@
         </button>
     </form>
 
-    <div class="trip-table">
+    <div class="list-table">
         <table>
             <thead>
             <tr>
