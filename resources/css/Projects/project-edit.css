@@ -1,0 +1,35 @@
+.custom-card {
+    background-color: #ffffff;
+    box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+}
+
+.custom-logo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.custom-btn {
+    background-color: #000;
+    color: #fff;
+    transition: background-color 0.3s ease;
+    border-radius: 30px;
+}
+
+.custom-btn:hover {
+    background-color: #222;
+}
+
+.form-input:focus,
+.form-control:focus {
+    border-color: #888;
+}
+
+@media (max-width: 640px) {
+    .custom-logo {
+        width: 80px;
+        height: 80px;
+    }
+}

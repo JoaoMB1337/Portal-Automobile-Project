@@ -1,3 +1,4 @@
+@vite('resources/js/Employees/employees-edit.js')
 <div class="flex">
     <div class="w-3/4 mx-auto">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg p-6">
@@ -115,29 +116,5 @@
     </div>
 </div>
 <script>
-    document.getElementById('add-contact-btn').addEventListener('click', function() {
-        var container = document.getElementById('contacts-container');
-        var index = container.children.length;
-        var newContact = document.createElement('div');
-        newContact.className = 'flex mb-2';
-        newContact.innerHTML = `
-            <select name="contacts[${index}][type]" class="form-select mr-2">
-                @foreach($contactTypes as $contactType)
-                    <option value="{{ $contactType->id }}">{{ $contactType->type }}</option>
-                @endforeach
-            </select>
-            <input type="text" name="contacts[${index}][value]" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200">
-            <button type="button" class="ml-2 text-red-600 remove-contact-btn">&times;</button>
-        `;
-        container.appendChild(newContact);
-        addRemoveButtonListener(newContact.querySelector('.remove-contact-btn'));
-    });
-
-    function addRemoveButtonListener(button) {
-        button.addEventListener('click', function() {
-            button.parentElement.remove();
-        });
-    }
-
-    document.querySelectorAll('.remove-contact-btn').forEach(addRemoveButtonListener);
+    window.contactTypes = @json($contactTypes);
 </script>

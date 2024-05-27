@@ -1,52 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Projeto</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        .custom-card {
-            background-color: #ffffff;
-            box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 20px;
-        }
-
-        .custom-logo {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .custom-btn {
-            background-color: #000;
-            color: #fff;
-            transition: background-color 0.3s ease;
-            border-radius: 30px;
-        }
-
-        .custom-btn:hover {
-            background-color: #222;
-        }
-
-        .form-input:focus,
-        .form-control:focus {
-            border-color: #888;
-        }
-
-        @media (max-width: 640px) {
-            .custom-logo {
-                width: 80px;
-                height: 80px;
-            }
-        }
-    </style>
-</head>
-
-<body>
-    <div class="flex justify-center items-start h-screen custom-bg">
+<div class="flex justify-center items-start h-screen custom-bg">
         <div class="max-w-md w-full bg-white rounded-xl p-7 custom-card mt-12">
             <div class="flex justify-center mb-6">
                 <h1>Editar Projeto</h1>
@@ -162,6 +114,4 @@
             updateDistricts();
         });
     </script>
-</body>
 
-</html>
