@@ -6,6 +6,7 @@ use App\Models\TripDetail;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTripDetailRequest;
 use App\Http\Requests\UpdateTripDetailRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 use App\Models\Project;
@@ -38,17 +39,20 @@ class TripDetailController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         $projects = Project::all();
         $costTypes = CostType::all();
         $trips = Trip::all();
         $employees = Employee::all();
+        $tripId = $request->input('trip_id');
 
+        
         return view('pages.TripDetails.create', [
             'costTypes' => $costTypes,
             'trips' => $trips,
-            'employees' => $employees
+            'employees' => $employees,
+            'tripId' => $tripId,
         ]);
     }
 

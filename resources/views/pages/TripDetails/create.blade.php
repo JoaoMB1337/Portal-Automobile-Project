@@ -6,6 +6,7 @@
             'costTypes' => $costTypes,
             'trips' => $trips,
             'employees' => $employees,
+            'tripId' => $tripId,
         ])
         @endcomponent
     </div>

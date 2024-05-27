@@ -83,6 +83,8 @@ class TripController extends Controller
      */
     public function show(Trip $trip)
     {
+        $totalCost = $trip->tripDetails->sum('cost');
+
         return view('pages.Trips.show', [
             'trip' => $trip,
             'employees' => $trip->employees,
@@ -90,6 +92,7 @@ class TripController extends Controller
             'tripDetails' => $trip->tripDetails,
             'projects' => Project::all(),
             'costTypes' => CostType::all(),
+            'totalCost' => $totalCost,
         ]);
 
     }
