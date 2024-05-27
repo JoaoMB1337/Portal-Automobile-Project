@@ -9,6 +9,22 @@ export default defineConfig({
                 'resources/sass/app.scss',
                 'resources/js/app.js',
                 'resources/css/app.css',
+
+                'resources/css/Employees/employee-list.css',
+                'resources/js/Employees/employees-list.js',
+                'resources/css/Employees/employee-create.css',
+                'resources/js/Employees/employees-create.js',
+                'resources/js/Employees/employees-edit.js',
+
+                'resources/js/Vehicles/vehicles-create.js',
+
+                'resources/css/Projects/project-edit.css',
+
+                'resources/css/Trips/trip-create.css',
+
+
+
+
             ],
             refresh: true,
         }),
