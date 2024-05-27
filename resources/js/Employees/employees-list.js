@@ -17,38 +17,52 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    const selectAllCheckbox = document.getElementById('select-all-checkbox');
+    const deleteForm = document.getElementById('multi-delete-form');
+    const selectedIdsField = document.getElementById('selected-ids');
     const checkboxes = document.querySelectorAll('input[name="selected_ids[]"]');
-    const selectedIdsInput = document.getElementById('selected-ids');
-    const deleteButton = document.querySelector('.delete-link');
+    const deleteModal = document.getElementById('deleteModal');
+    const closeModalDelete = deleteModal.querySelector('.close');
+    const confirmDeleteButton = document.getElementById('confirmDelete');
+    const cancelDeleteButton = document.getElementById('cancelDelete');
 
-    selectAllCheckbox.addEventListener('change', function() {
-        checkboxes.forEach(checkbox => checkbox.checked = this.checked);
-        updateSelectedIds();
-        toggleDeleteButton();
-    });
-
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            if (!this.checked) {
-                selectAllCheckbox.checked = false;
+    function collectSelectedIds() {
+        let selectedIds = [];
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedIds.push(checkbox.value);
             }
-            updateSelectedIds();
-            toggleDeleteButton();
         });
+        selectedIdsField.value = selectedIds.join(',');
+    }
+
+    const deleteButton = deleteForm.querySelector('button[type="submit"]');
+    deleteButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        collectSelectedIds();
+        if (selectedIdsField.value) {
+            deleteModal.style.display = 'block';
+        }
+
+
     });
 
-    function updateSelectedIds() {
-        const selectedIds = Array.from(checkboxes)
-            .filter(checkbox => checkbox.checked)
-            .map(checkbox => checkbox.value);
-        selectedIdsInput.value = JSON.stringify(selectedIds);
-    }
+    closeModalDelete.addEventListener('click', function() {
+        deleteModal.style.display = 'none';
+    });
 
-    function toggleDeleteButton() {
-        const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
-        deleteButton.style.display = anyChecked ? 'inline-block' : 'none';
-    }
+    cancelDeleteButton.addEventListener('click', function() {
+        deleteModal.style.display = 'none';
+    });
+
+    confirmDeleteButton.addEventListener('click', function() {
+        deleteForm.submit();
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target === deleteModal) {
+            deleteModal.style.display = 'none';
+        }
+    });
 
     const rows = document.querySelectorAll('.list-table tbody tr');
     rows.forEach(row => {

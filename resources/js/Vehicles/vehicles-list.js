@@ -43,9 +43,9 @@ document.addEventListener('DOMContentLoaded', function() {
         collectSelectedIds();
         if (selectedIdsField.value) {
             deleteModal.style.display = 'block';
-        } else {
-            alert('Por favor, selecione pelo menos um veículo para excluir.');
         }
+
+
     });
 
     closeModalDelete.addEventListener('click', function() {
