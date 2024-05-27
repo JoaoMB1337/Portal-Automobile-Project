@@ -1,70 +1,4 @@
-<style>
-        .custom-bg {
-            background-color: #f5f5f5;
-        }
-
-        .custom-card {
-            background-color: #ffffff;
-            box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 20px;
-            padding: 20px;
-            max-width: 800px;
-            margin: auto;
-        }
-
-        .custom-btn {
-            background-color: #000;
-            color: #fff;
-            transition: background-color 0.3s ease;
-            border-radius: 30px;
-        }
-
-        .custom-btn:hover {
-            background-color: #222;
-        }
-
-        .form-input,
-        .form-control,
-        .form-select,
-        .form-textarea {
-            border: 2px solid #ccc;
-            transition: border-color 0.3s ease;
-            padding: 8px;
-        }
-
-        .form-input:focus,
-        .form-control:focus,
-        .form-select:focus,
-        .form-textarea:focus {
-            border-color: #888;
-        }
-
-        .icon {
-            color: #888;
-            top: 4px;
-            margin-right: 8px;
-            padding-top: 15px;
-        }
-
-        @media (max-width: 1200px) {
-            .custom-card {
-                width: 90%;
-            }
-            .form-input,
-            .form-control,
-            .form-select,
-            .form-textarea {
-                width: 100%;
-            }
-        }
-        @media (min-height: 900px) {
-            .custom-card {
-                height: 90vh; /* Define a altura da carta para 90% da altura da janela de visualização */
-                overflow-y: auto; /* Adiciona uma barra de rolagem vertical caso a altura da carta seja excedida */
-            }
-        }
-
-    </style>
+@vite('resources/js/Employees/employees-create.js')
 
 <div class="w-full rounded-xl p-7 custom-card mt-12">
     <div class="flex justify-center mb-6">
@@ -251,19 +185,5 @@
 </div>
 
 <script>
-    document.getElementById('add-contact-btn').addEventListener('click', function() {
-        var container = document.getElementById('contacts-container');
-        var index = container.children.length;
-        var newContact = document.createElement('div');
-        newContact.className = 'flex mb-2';
-        newContact.innerHTML = `
-            <select name="contacts[${index}][type]" class="form-select mr-2">
-                @foreach($contactTypes as $contactType)
-                    <option value="{{ $contactType->id }}">{{ $contactType->type }}</option>
-                @endforeach
-            </select>
-            <input type="text" name="contacts[${index}][value]" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200">
-        `;
-        container.appendChild(newContact);
-    });
+    window.contactTypes = @json($contactTypes);
 </script>

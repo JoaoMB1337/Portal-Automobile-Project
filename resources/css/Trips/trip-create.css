@@ -1,0 +1,78 @@
+
+.custom-card {
+    background-color: #ffffff;
+    box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+}
+
+.custom-btn {
+    background-color: #000;
+    color: #fff;
+    transition: background-color 0.3s ease;
+    border-radius: 30px;
+}
+
+.custom-btn:hover {
+    background-color: #222;
+}
+.form-input, .form-control {
+    border: 2px solid #ccc;
+    transition: border-color 0.3s ease;
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border-radius: 0.25rem;
+}
+
+.form-input:focus, .form-control:focus {
+    border-color: #888;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 10px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+@media (max-width: 640px) {
+    .custom-logo {
+        width: 80px;
+        height: 80px;
+    }
+}
+
