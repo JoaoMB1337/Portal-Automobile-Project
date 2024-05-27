@@ -24,11 +24,11 @@
         @method('DELETE')
         <input type="hidden" name="selected_ids" id="selected-ids">
         <button type="submit" class="text-red-600 hover:text-red-900 ml-2 delete-link" title="Remover" style="display: none;" onclick="return confirm('Tem certeza que deseja excluir as viagens selecionadas?')">
-            <i class="fas fa-trash-alt text-lg"></i>
+            <i class="fas fa-trash-aslt text-lg"></i>
         </button>
     </form>
 
-    <div class="list-table">
+    <div class="trip-table">
         <table>
             <thead>
             <tr>
@@ -95,4 +95,3 @@
     </div>
     <a href="{{ route('trips.create') }}" class="add-button"><i class="fas fa-plus"></i></a>
 </div>
-
