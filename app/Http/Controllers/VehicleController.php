@@ -217,12 +217,11 @@ class VehicleController extends Controller
 
         if ($request->has('selected_ids')) {
 
-            $selected_ids = json_decode($request->selected_ids);
 
 
-            if (!empty($selected_ids)) {
+            if (!empty($request->selected_ids)) {
 
-                Vehicle::whereIn('id', $selected_ids)->delete();
+                Vehicle::whereIn('id', $request->selected_ids)->delete();
             }
         }
 

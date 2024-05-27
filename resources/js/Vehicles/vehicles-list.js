@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     window.onclick = function(event) {
-        if (event.target == filterModal) {
+        if (event.target === filterModal) {
             filterModal.style.display = 'none';
         }
     }
