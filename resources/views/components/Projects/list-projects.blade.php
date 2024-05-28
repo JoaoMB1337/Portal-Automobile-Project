@@ -7,7 +7,7 @@
         </a>
     </div>
 
-    <div id="filterModal" class="modal">
+    <div id="filterModal" class="modal mx-auto pl-10 lg:pl-64">
         <div class="modal-content">
             <span class="close">&times;</span>
             <form method="GET" action="{{ route('projects.index') }}">
