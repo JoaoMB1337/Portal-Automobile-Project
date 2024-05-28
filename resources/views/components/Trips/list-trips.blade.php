@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,8 +56,13 @@
         }
 
         @keyframes fadeIn {
-            from {opacity: 0;}
-            to {opacity: 1;}
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         .modal-content {
@@ -71,8 +77,13 @@
         }
 
         @keyframes slideIn {
-            from {transform: translateY(-50px);}
-            to {transform: translateY(0);}
+            from {
+                transform: translateY(-50px);
+            }
+
+            to {
+                transform: translateY(0);
+            }
         }
 
         .close {
@@ -178,146 +189,155 @@
         }
     </style>
 </head>
+
 <body>
-<div class="container">
-    <div class="form-container">
-        <button id="filterBtn" class="filter-button">Filtrar</button>
-        <a href="{{ route('trips.index', ['clear_filters' => true]) }}"
-           class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Limpar
-        </a>
-    </div>
-
-    <div id="filterModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <form method="GET" action="{{ route('trips.index') }}">
-                <input type="text" name="destination" id="filter-destination" placeholder="Filtrar por destino">
-                <input type="text" name="purpose" id="filter-purpose" placeholder="Filtrar por propósito">
-                <button type="submit">Filtrar</button>
-            </form>
+    <div class="container">
+        <div class="form-container">
+            <button id="filterBtn" class="filter-button">Filtrar</button>
+            <a href="{{ route('trips.index', ['clear_filters' => true]) }}"
+                class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Limpar
+            </a>
         </div>
-    </div>
 
-    <form id="multi-delete-form" action="{{ route('trips.deleteSelected') }}" method="POST" style="display: inline-block;">
-        @csrf
-        @method('DELETE')
-        <input type="hidden" name="selected_ids" id="selected-ids">
-        <button type="submit" class="text-red-600 hover:text-red-900 ml-2 delete-link" title="Remover" style="display: none;" onclick="return confirm('Tem certeza que deseja excluir as viagens selecionadas?')">
-            <i class="fas fa-trash-alt text-lg"></i>
-        </button>
-    </form>
+        <div id="filterModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form method="GET" action="{{ route('trips.index') }}">
+                    <input type="text" name="destination" id="filter-destination" placeholder="Filtrar por destino">
+                    <input type="text" name="purpose" id="filter-purpose" placeholder="Filtrar por propósito">
+                    <button type="submit">Filtrar</button>
+                </form>
+            </div>
+        </div>
 
-    <div class="trip-table">
-        <table>
-            <thead>
-            <tr>
-                <th>
-                    <label for="select-all-checkbox">
-                        <input type="checkbox" id="select-all-checkbox" class="form-checkbox">
-                    </label>
-                </th>
-                <th>Data de Início</th>
-                <th>Data de Fim</th>
-                <th>Destino</th>
-                <th>Propósito</th>
-                <th>Projeto</th>
-                <th>Funcionário</th>
-                <th>Veículo Matrícula</th>
-                <th>Ações</th>
-            </tr>
-            </thead>
-            <tbody>
-            @if ($trips->isEmpty())
-                <tr>
-                    <td colspan="9" style="text-align: center; padding: 20px;">Nenhum projeto encontrado</td>
-                </tr>
-            @else
-                @foreach ($trips as $trip)
-                    <tr onclick="window.location='{{ url('trips/' . $trip->id) }}';" style="cursor:pointer;">
-                        <td>
-                            <input type="checkbox" name="selected_ids[]" value="{{ $trip->id }}" class="form-checkbox">
-                        </td>
-                        <td>{{ $trip->start_date }}</td>
-                        <td>{{ $trip->end_date }}</td>
-                        <td>{{ $trip->destination }}</td>
-                        <td>{{ $trip->purpose }}</td>
-                        <td>{{ $trip->project->name }}</td>
-                        <td>
-                            @foreach ($trip->employees as $employee)
-                                {{ $employee->name }}
-                            @endforeach
-                        </td>
-                        <td>{{ $trip->vehicle }}</td>
-                        <td>
-                            <a href="{{ url('trips/' . $trip->id . '/edit') }}"><i class="fas fa-edit"></i></a>
-                            <form action="{{ url('trips/' . $trip->id) }}" method="POST" style="display: inline-block;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Tem certeza que deseja excluir esta viagem?')"><i class="fas fa-trash-alt"></i></button>
-                            </form>
-                        </td>
+        <form id="multi-delete-form" action="{{ route('trips.deleteSelected') }}" method="POST"
+            style="display: inline-block;">
+            @csrf
+            @method('DELETE')
+            <input type="hidden" name="selected_ids" id="selected-ids">
+            <button type="submit" class="text-red-600 hover:text-red-900 ml-2 delete-link" title="Remover"
+                style="display: none;"
+                onclick="return confirm('Tem certeza que deseja excluir as viagens selecionadas?')">
+                <i class="fas fa-trash-alt text-lg"></i>
+            </button>
+        </form>
+
+        <div class="trip-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            <label for="select-all-checkbox">
+                                <input type="checkbox" id="select-all-checkbox" class="form-checkbox">
+                            </label>
+                        </th>
+                        <th>Data de Início</th>
+                        <th>Data de Fim</th>
+                        <th>Destino</th>
+                        <th>Propósito</th>
+                        <th>Projeto</th>
+                        <th>Funcionário</th>
+                        <th>Veículo Matrícula</th>
+                        <th>Ações</th>
                     </tr>
-                @endforeach
-            @endif
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @if ($trips->isEmpty())
+                        <tr>
+                            <td colspan="9" style="text-align: center; padding: 20px;">Nenhum projeto encontrado</td>
+                        </tr>
+                    @else
+                        @foreach ($trips as $trip)
+                            <tr onclick="window.location='{{ url('trips/' . $trip->id) }}';" style="cursor:pointer;">
+                                <td>
+                                    <input type="checkbox" name="selected_ids[]" value="{{ $trip->id }}"
+                                        class="form-checkbox">
+                                </td>
+                                <td>{{ $trip->start_date }}</td>
+                                <td>{{ $trip->end_date }}</td>
+                                <td>{{ $trip->destination }}</td>
+                                <td>{{ $trip->purpose }}</td>
+                                <td>{{ $trip->project->name }}</td>
+                                <td>
+                                    @foreach ($trip->employees as $employee)
+                                        {{ $employee->name }}
+                                    @endforeach
+                                </td>
+                                <td>{{ $trip->vehicle }}</td>
+                                <td>
+                                    <a href="{{ url('trips/' . $trip->id . '/edit') }}"><i class="fas fa-edit"></i></a>
+                                    <form action="{{ url('trips/' . $trip->id) }}" method="POST"
+                                        style="display: inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:text-red-900"
+                                            onclick="return confirm('Tem certeza que deseja excluir esta viagem?')"><i
+                                                class="fas fa-trash-alt"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+            </table>
+        </div>
+        <a href="{{ route('trips.create') }}" class="add-button"><i class="fas fa-plus"></i></a>
     </div>
-    <a href="{{ route('trips.create') }}" class="add-button"><i class="fas fa-plus"></i></a>
-</div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const filterBtn = document.getElementById('filterBtn');
-        const filterModal = document.getElementById('filterModal');
-        const closeModal = document.getElementsByClassName('close')[0];
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterBtn = document.getElementById('filterBtn');
+            const filterModal = document.getElementById('filterModal');
+            const closeModal = document.getElementsByClassName('close')[0];
 
-        filterBtn.onclick = function() {
-            filterModal.style.display = 'block';
-        }
+            filterBtn.onclick = function() {
+                filterModal.style.display = 'block';
+            }
 
-        closeModal.onclick = function() {
-            filterModal.style.display = 'none';
-        }
-
-        window.onclick = function(event) {
-            if (event.target == filterModal) {
+            closeModal.onclick = function() {
                 filterModal.style.display = 'none';
             }
-        }
 
-        const selectAllCheckbox = document.getElementById('select-all-checkbox');
-        const checkboxes = document.querySelectorAll('input[name="selected_ids[]"]');
-        const selectedIdsInput = document.getElementById('selected-ids');
-        const deleteButton = document.querySelector('.delete-link');
-
-        selectAllCheckbox.addEventListener('change', function() {
-            checkboxes.forEach(checkbox => checkbox.checked = this.checked);
-            updateSelectedIds();
-            toggleDeleteButton();
-        });
-
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                if (!this.checked) {
-                    selectAllCheckbox.checked = false;
+            window.onclick = function(event) {
+                if (event.target == filterModal) {
+                    filterModal.style.display = 'none';
                 }
+            }
+
+            const selectAllCheckbox = document.getElementById('select-all-checkbox');
+            const checkboxes = document.querySelectorAll('input[name="selected_ids[]"]');
+            const selectedIdsInput = document.getElementById('selected-ids');
+            const deleteButton = document.querySelector('.delete-link');
+
+            selectAllCheckbox.addEventListener('change', function() {
+                checkboxes.forEach(checkbox => checkbox.checked = this.checked);
                 updateSelectedIds();
                 toggleDeleteButton();
             });
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (!this.checked) {
+                        selectAllCheckbox.checked = false;
+                    }
+                    updateSelectedIds();
+                    toggleDeleteButton();
+                });
+            });
+
+            function updateSelectedIds() {
+                const selectedIds = Array.from(checkboxes)
+                    .filter(checkbox => checkbox.checked)
+                    .map(checkbox => checkbox.value);
+                selectedIdsInput.value = JSON.stringify(selectedIds);
+            }
+
+            function toggleDeleteButton() {
+                const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+                deleteButton.style.display = anyChecked ? 'inline-block' : 'none';
+            }
         });
-
-        function updateSelectedIds() {
-            const selectedIds = Array.from(checkboxes)
-                .filter(checkbox => checkbox.checked)
-                .map(checkbox => checkbox.value);
-            selectedIdsInput.value = JSON.stringify(selectedIds);
-        }
-
-        function toggleDeleteButton() {
-            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
-            deleteButton.style.display = anyChecked ? 'inline-block' : 'none';
-        }
-    });
-</script>
+    </script>
 </body>
+
 </html>

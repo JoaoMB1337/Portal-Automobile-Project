@@ -21,16 +21,15 @@ class TripController extends Controller
      */
     public function index()
     {
-        $trips = Trip::orderby('id','asc')->paginate(15);
-        $employees = Employee::all();
-        $projects = Project::all();
-        return view('pages.Trips.list',[
-            'trips'=>$trips,
+        $trips = Trip::orderby('id', 'asc')->paginate(15);
+        /* $employees = Employee::all();
+        $projects = Project::all(); */
+        return view('pages.Trips.list', [
+            'trips' => $trips,
             'employees' => Employee::all(),
             'project' => Project::all(),
             'vehicles' => Vehicle::all(),
         ]);
-
     }
 
     /**
@@ -53,8 +52,6 @@ class TripController extends Controller
             'typeTrips' => $typeTrips,
             'vehicles' => $vehicles
         ]);
-
-
     }
 
     /**
@@ -84,7 +81,6 @@ class TripController extends Controller
     {
 
         return view('pages.Trips.show', compact('trip'));
-
     }
 
     /**
@@ -104,13 +100,30 @@ class TripController extends Controller
             'typeTrips' => $typeTrips,
             'vehicles' => $vehicles
         ]);
-
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTripRequest $request, Trip $trip)
+
+    public function update(StoreTripRequest $request, $id)
+    {
+        $trip = Trip::findOrFail($id);
+        $trip->start_date = $request->start_date;
+        $trip->end_date = $request->end_date;
+        $trip->destination = $request->destination;
+        $trip->purpose = $request->purpose;
+        $trip->project_id = $request->project_id;
+        $trip->type_trip_id = $request->type_trip_id;
+        $trip->save();
+
+        $trip->employees()->sync([$request->employee_id]);
+        $trip->vehicles()->sync([$request->vehicle_id]);
+
+        return redirect()->route('trips.index');
+    }
+
+    /* public function update(UpdateTripRequest $request, Trip $trip)
     {
         $trip->start_date = $request->start_date;
         $trip->end_date = $request->end_date;
@@ -126,7 +139,7 @@ class TripController extends Controller
         $trip->vehicles()->sync($request->vehicle_id);
 
         return redirect()->route('trips.index');
-    }
+    } */
 
     /**
      * Remove the specified resource from storage.
@@ -139,8 +152,8 @@ class TripController extends Controller
 
     public function deleteSelected(Request $request)
     {
-        $selected_ids = json_decode($request->input('selected_ids'),true);
-        if(!empty($selected_ids)) {
+        $selected_ids = json_decode($request->input('selected_ids'), true);
+        if (!empty($selected_ids)) {
             Trip::whereIn('id', $selected_ids)->delete();
             return redirect()->route('trips.index');
         }
