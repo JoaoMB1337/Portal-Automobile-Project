@@ -1,34 +1,12 @@
-@vite(['resources/js/Employees/employees-list.js'])
 <div class="container">
-
     <!-- Filtros -->
     <div class="form-container">
         <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
-        <a href="{{ route('employees.index', ['clear_filters' => true]) }}"
-           class="px-4 py-2 bg-gray-800 text-white rounded-md shadow-sm hover:bg-gray-700">Limpar
-        </a>
+        <a href="{{ route('employees.index', ['clear_filters' => true]) }}" class="px-4 py-2 bg-gray-800 text-white rounded-md shadow-sm hover:bg-gray-700">Limpar</a>
     </div>
 
     <!-- IMPORT -->
-    <form id="importCsvForm" action="{{ route('employee.import') }}" method="POST" enctype="multipart/form-data" style="display: none;">
-        @csrf
-        <input type="file" name="file" id="file" accept=".csv">
-        <button type="submit" id="fileBtn">Importar</button>
-    </form>
-
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            <p style="color:#c82333">{{ $error }}</p>
-        @endforeach
-    @endif
-
-    @if (session()->has('error'))
-        <p style="color:#c82333">{!! session('error') !!}</p>
-    @endif
-
-    @if (session()->has('sucesso'))
-        <p style="color:#28a745">{!! session('sucesso') !!}</p>
-    @endif
+    <!-- Removido o formulário de importação -->
 
     <div id="filterModal" class="modal mx-auto pl-10 lg:pl-64">
         <div class="modal-content">
@@ -60,46 +38,38 @@
     <div class="list-table">
         <table>
             <thead>
-            <tr>
-                <th>
-                    <label for="select-all-checkbox">
-                        <input type="checkbox" id="select-all-checkbox" class="form-checkbox">
-                    </label>
-                </th>
-                <th>Nome</th>
-                <th>Número</th>
-                <th>Email</th>
-                <th>Cargo</th>
-                <th>Ações</th>
-
-            </tr>
+                <tr>
+                    <th>
+                        <label for="select-all-checkbox">
+                            <input type="checkbox" id="select-all-checkbox" class="form-checkbox">
+                        </label>
+                    </th>
+                    <th>Nome</th>
+                    <th>Número</th>
+                    <th>Email</th>
+                    <th>Cargo</th>
+                    <th>Ações</th>
+                </tr>
             </thead>
             <tbody>
-            @foreach ($employees as $employee)
-                <tr data-url="{{ url('employees/' . $employee->id) }}" style="cursor:pointer;">
-                    <td>
-                        <input type="checkbox" name="selected_ids[]" value="{{ $employee->id }}" class="form-checkbox select-checkbox">
-                    </td>
-                    <td><a href="{{ url('employees/' . $employee->id) }}">{{ $employee->name }}</a></td>
-                    <td>{{ $employee->employee_number }}</td>
-                    <td>{{ $employee->email }}</td>
-                    <td>{{ $employee->role->name }}</td>
-                    <td>
-                        <a href="{{ url('employees/' . $employee->id . '/edit') }}"><i class="fas fa-edit"></i></a>
-                    </td>
-                </tr>
-            @endforeach
-
+                @foreach ($employees as $employee)
+                    <tr data-url="{{ url('employees/' . $employee->id) }}" style="cursor:pointer;">
+                        <td>
+                            <input type="checkbox" name="selected_ids[]" value="{{ $employee->id }}" class="form-checkbox select-checkbox">
+                        </td>
+                        <td><a href="{{ url('employees/' . $employee->id) }}">{{ $employee->name }}</a></td>
+                        <td>{{ $employee->employee_number }}</td>
+                        <td>{{ $employee->email }}</td>
+                        <td>{{ $employee->role->name }}</td>
+                        <td>
+                            <a href="{{ url('employees/' . $employee->id . '/edit') }}"><i class="fas fa-edit"></i></a>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
 </div>
-
-
-
-
-
-
 
 <!-- Botão "Adicionar" com opções -->
 <div class="add-button-container">
@@ -111,7 +81,6 @@
 </div>
 
 <style>
-
     .add-options {
         position: absolute;
         right: 0;
@@ -140,25 +109,61 @@
         background-color: #f0f0f0;
     }
 </style>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var addOptions = document.getElementById("addOptions");
-        // Adiciona evento de clique no botão "Adicionar"
+
         document.getElementById("addButton").addEventListener("click", function() {
-            // Alterna a exibição das opções ao lado do botão
             if (addOptions.style.display === "block") {
-                addOptions.style.display = "none"; // Esconde as opções
+                addOptions.style.display = "none"; 
             } else {
-                addOptions.style.display = "block"; // Exibe as opções
+                addOptions.style.display = "block"; 
             }
         });
 
-        // Adiciona evento de clique no botão de importar CSV
-        document.getElementById("importCsvBtn").addEventListener("click", function() {
-            // Exibe o formulário de importação de CSV
-            document.getElementById("importCsvForm").style.display = "block";
-            // Esconde as opções de adicionar
-            addOptions.style.display = "none";
+        document.getElementById("importCsvBtn").addEventListener("click", function(event) {
+            // Impede o comportamento padrão de submissão do formulário
+            event.preventDefault();
+            
+            console.log("Botão Importar CSV clicado");
+
+            // Criação do formulário de importação por CSV
+            var importCsvForm = document.createElement("form");
+            importCsvForm.method = "POST";
+            importCsvForm.action = "{{ route('employees.importCsv') }}"; // Defina o endpoint correto para o processamento do CSV
+            importCsvForm.enctype = "multipart/form-data";
+            importCsvForm.style.display = "none";
+
+            var csrfTokenInput = document.createElement("input");
+            csrfTokenInput.type = "hidden";
+            csrfTokenInput.name = "_token";
+            csrfTokenInput.value = "{{ csrf_token() }}";
+
+            var fileInput = document.createElement("input");
+            fileInput.type = "file";
+            fileInput.name = "file";
+            fileInput.accept = ".csv";
+
+            var submitButton = document.createElement("button");
+            submitButton.type = "submit";
+            submitButton.textContent = "Importar";
+
+            importCsvForm.appendChild(csrfTokenInput);
+            importCsvForm.appendChild(fileInput);
+            importCsvForm.appendChild(submitButton);
+
+            document.body.appendChild(importCsvForm);
+
+            // Submete o formulário quando um arquivo é selecionado
+            fileInput.addEventListener("change", function() {
+                console.log("Formulário de importação CSV enviado");
+                importCsvForm.submit();
+            });
+
+            // Simula o clique no elemento de arquivo após o botão de importação ser clicado
+            fileInput.click();
+            console.log("Clique no elemento de arquivo simulado");
         });
     });
 </script>
