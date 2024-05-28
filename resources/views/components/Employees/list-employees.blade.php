@@ -1,6 +1,8 @@
 @vite(['resources/js/Employees/employees-list.js'])
 
 <div class="container">
+
+    <!-- Filtros -->
     <div class="form-container">
         <button id="filterBtn" class="filter-button">Filtrar</button>
         <a href="{{ route('employees.index', ['clear_filters' => true]) }}"
@@ -29,7 +31,7 @@
         <p style="color:#28a745">{!! session('sucesso') !!}</p>
     @endif
 
-    <div id="filterModal" class="modal">
+    <div id="filterModal" class="modal mx-auto pl-10 lg:pl-64">
         <div class="modal-content">
             <span class="close">&times;</span>
             <form method="GET" action="{{ route('employees.index') }}">
@@ -53,6 +55,7 @@
             <i class="fas fa-trash-alt text-lg"></i>
         </button>
     </form>
+
     @include('components.modals.modal-delete')
 
     <div class="list-table">
