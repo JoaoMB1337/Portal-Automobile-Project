@@ -125,7 +125,6 @@ class TripController extends Controller
         $trip->purpose = $request->purpose;
         $trip->project_id = $request->project_id;
         $trip->type_trip_id = $request->type_trip_id;
-        $trip->vehicle_id = $request->vehicle_id;
         $trip->save();
 
         $trip->employees()->sync([$request->employee_id]);
