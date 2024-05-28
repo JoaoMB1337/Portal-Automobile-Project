@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CostTypeController;
@@ -23,7 +24,7 @@ Route::resource('projects', App\Http\Controllers\ProjectController::class);
 Route::resource('trip-details', App\Http\Controllers\TripDetailController::class);
 
 Route::delete('employees.deleteSelected', [App\Http\Controllers\EmployeeController::class, 'deleteSelected'])->name('employees.deleteSelected');
-Route::delete('vehicles.deleteSelected', [App\Http\Controllers\VehicleController::class, 'deleteSelected'])->name('vehicles.deleteSelected');
+Route::delete('vehicles.deleteSelected', [VehicleController::class, 'deleteSelected'])->name('vehicles.deleteSelected');
 Route::delete('projects.deleteSelected', [App\Http\Controllers\ProjectController::class, 'deleteSelected'])->name('projects.deleteSelected');
 Route::delete('trips.deleteSelected', [App\Http\Controllers\TripController::class, 'deleteSelected'])->name('trips.deleteSelected');
 Route::delete('insurances.deleteSelected', [App\Http\Controllers\InsuranceController::class, 'deleteSelected'])->name('insurances.deleteSelected');

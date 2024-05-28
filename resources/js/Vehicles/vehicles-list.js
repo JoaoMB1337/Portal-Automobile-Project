@@ -1,13 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
+
     const filterBtn = document.getElementById('filterBtn');
     const filterModal = document.getElementById('filterModal');
-    const closeModal = document.getElementsByClassName('close')[0];
+    const closeModalFilter = filterModal.querySelector('.close');
 
     filterBtn.onclick = function() {
         filterModal.style.display = 'block';
     }
 
-    closeModal.onclick = function() {
+    closeModalFilter.onclick = function() {
         filterModal.style.display = 'none';
     }
 
@@ -16,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
             filterModal.style.display = 'none';
         }
     }
+
 
     const deleteForm = document.getElementById('multi-delete-form');
     const selectedIdsField = document.getElementById('selected-ids');
@@ -64,22 +66,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    const rows = document.querySelectorAll('.list-table tbody tr');
-    rows.forEach(row => {
-        row.addEventListener('click', function(event) {
-            //  clique foi em uma checkbox
-            if (event.target.type === 'checkbox') {
-                event.stopPropagation();
-            } else {
-
-                window.location = row.dataset.url;
-            }
-        });
-    });
-
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('click', function(event) {
             event.stopPropagation();
         });
     });
+
+
 });

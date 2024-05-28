@@ -149,10 +149,18 @@ class TripController extends Controller
 
     public function deleteSelected(Request $request)
     {
-        $selected_ids = json_decode($request->input('selected_ids'),true);
-        if(!empty($selected_ids)) {
-            Trip::whereIn('id', $selected_ids)->delete();
-            return redirect()->route('trips.index');
+
+        if ($request->has('selected_ids')) {
+
+
+
+            if (!empty($request->selected_ids)) {
+
+                Trip::whereIn('id', $request->selected_ids)->delete();
+            }
         }
+
+
+        return redirect()->route('trips.index');
     }
 }

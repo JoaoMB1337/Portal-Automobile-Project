@@ -1,5 +1,6 @@
 @extends('components.master.main')
 @vite(['resources/css/Employees/employee-list.css'])
+@vite('resources/css/Modals/modal.css')
 
 @section('content')
 
