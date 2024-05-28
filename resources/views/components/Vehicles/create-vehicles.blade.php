@@ -1,45 +1,4 @@
-<style>
-    .custom-bg {
-        background-color: #f5f5f5;
-    }
-
-    .custom-card {
-        background-color: #ffffff;
-        box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
-        border-radius: 20px;
-        padding: 20px;
-        max-width: 800px;
-        margin: auto;
-    }
-
-    .custom-btn {
-        background-color: #000;
-        color: #fff;
-        transition: background-color 0.3s ease;
-        border-radius: 30px;
-    }
-
-    .custom-btn:hover {
-        background-color: #222;
-    }
-
-    .form-input, .form-control, .form-select, .form-textarea {
-        border: 2px solid #ccc;
-        transition: border-color 0.3s ease;
-        padding: 8px;
-    }
-
-    .form-input:focus, .form-control:focus, .form-select:focus, .form-textarea:focus {
-        border-color: #888;
-    }
-
-    @media (max-width: 640px) {
-        .custom-logo {
-            width: 80px;
-            height: 80px;
-        }
-    }
-</style>
+@vite('resources/js/Vehicles/vehicles-create.js')
 
     <div class="w-full  rounded-xl p-7 custom-card mt-12">
         <div class="flex justify-center mb-6">
@@ -200,32 +159,9 @@
                 </div>
             </div>
 
-
-
-
             <div class="pt-6">
-                <button type="submit" class="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 custom-btn">Criar</button>
+                <button type="submit" class="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-700 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 custom-btn">Criar</button>
             </div>
         </form>
     </div>
-</div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const isExternalCheckbox = document.getElementById("is_external");
-        const externalFieldContainer = document.querySelector(".external-field");
-
-        function toggleExternalFields() {
-            if (isExternalCheckbox.checked) {
-                externalFieldContainer.style.display = "block";
-            } else {
-                externalFieldContainer.style.display = "none";
-            }
-        }
-
-        isExternalCheckbox.addEventListener("change", toggleExternalFields);
-
-        // Initial call to set the correct state on page load
-        toggleExternalFields();
-    });
-</script>

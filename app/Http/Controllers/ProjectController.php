@@ -121,7 +121,11 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return view('pages.Projects.show', compact('project'));
+        $trips = $project->trips;
+        return view('pages.Projects.show', [
+            'project' => $project,
+            'trips' => $trips,
+        ]);
     }
 
     /**
@@ -167,10 +171,18 @@ class ProjectController extends Controller
 
     public function deleteSelected(Request $request)
     {
-        $selected_ids = json_decode($request->input('selected_ids'), true);
-        if (!empty($selected_ids)) {
-            Project::whereIn('id', $selected_ids)->delete();
-            return redirect()->route('projects.index');
+
+        if ($request->has('selected_ids')) {
+
+
+
+            if (!empty($request->selected_ids)) {
+
+                Project::whereIn('id', $request->selected_ids)->delete();
+            }
         }
+
+
+        return redirect()->route('projects.index');
     }
 }

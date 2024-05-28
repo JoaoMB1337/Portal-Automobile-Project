@@ -77,13 +77,7 @@
                                     <a href="{{ route('vehicles.downloadPdf', $vehicle) }}">Download PDF</a>
                                 </dd>
                             </div>
-
-
-
-
                     @endif
-
-
                 </dl>
             </div>
         </div>

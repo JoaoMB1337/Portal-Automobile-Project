@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CostType;
 use App\Models\Trip;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTripRequest;
@@ -79,8 +80,17 @@ class TripController extends Controller
      */
     public function show(Trip $trip)
     {
+        $totalCost = $trip->tripDetails->sum('cost');
+        return view('pages.Trips.show', [
+            'trip' => $trip,
+            'employees' => $trip->employees,
+            'vehicles' => $trip->vehicles,
+            'tripDetails' => $trip->tripDetails,
+            'projects' => Project::all(),
+            'costTypes' => CostType::all(),
+            'totalCost' => $totalCost,
+        ]);
 
-        return view('pages.Trips.show', compact('trip'));
     }
 
     /**
@@ -152,10 +162,11 @@ class TripController extends Controller
 
     public function deleteSelected(Request $request)
     {
-        $selected_ids = json_decode($request->input('selected_ids'), true);
-        if (!empty($selected_ids)) {
+			$selected_ids = json_decode($request->input('selected_ids'),true);
+        if(!empty($selected_ids)) {
             Trip::whereIn('id', $selected_ids)->delete();
             return redirect()->route('trips.index');
         }
+        return redirect()->route('trips.index');
     }
 }

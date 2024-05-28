@@ -1,177 +1,4 @@
-<style>
-        body {
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 20px;
-        }
-
-        .form-container {
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-            gap: 10px;
-        }
-
-        .filter-button {
-            padding: 10px 20px;
-            background-color: #232f3a;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .filter-button:hover {
-            background-color: #333940;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding-top: 60px;
-            animation: fadeIn 0.5s;
-        }
-
-        @keyframes fadeIn {
-            from {opacity: 0;}
-            to {opacity: 1;}
-        }
-
-        .modal-content {
-            background-color: #e3e0e0;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 600px;
-            border-radius: 10px;
-            animation: slideIn 0.2s;
-        }
-
-        @keyframes slideIn {
-            from {transform: translateY(-50px);}
-            to {transform: translateY(0);}
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .modal form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .modal input[type="text"],
-        .modal select {
-            padding: 10px;
-            width: 100%;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .modal button[type="submit"] {
-            padding: 10px;
-            background-color: #232f3a;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .modal button[type="submit"]:hover {
-            background-color: #393e43;
-        }
-
-        .employee-table {
-            border: 1px solid #eee;
-            border-radius: 10px;
-            overflow-x: auto;
-        }
-
-        .employee-table table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .employee-table th,
-        .employee-table td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-
-        .employee-table th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-
-        .employee-table tr:hover {
-            background-color: #f9f9f9;
-        }
-
-        .add-button {
-            background-color: #232f3a;
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            font-size: 24px;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            .transition: background-color 0.3s ease;
-        }
-
-        .add-button:hover {
-            background-color: #101d2b;
-        }
-
-        .delete-link {
-            color: #c82333;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .delete-link:hover {
-            color: #a71d2a;
-        }
-    </style>
-
+@vite('resources/js/Employees/employees-list.js')
 <div class="container">
     <div class="form-container">
         <button id="filterBtn" class="filter-button">Filtrar</button>
@@ -180,7 +7,7 @@
         </a>
     </div>
 
-    <div id="filterModal" class="modal">
+    <div id="filterModal" class="modal mx-auto pl-10 lg:pl-64">
         <div class="modal-content">
             <span class="close">&times;</span>
             <form method="GET" action="{{ route('projects.index') }}">
@@ -204,22 +31,21 @@
         </div>
     </div>
 
-    <form id="multi-delete-form" action="{{ route('projects.deleteSelected') }}" method="POST"
-          style="display: inline-block;">
+    <form id="multi-delete-form" action="{{ route('projects.deleteSelected') }}" method="POST" style="display: inline-block;">
         @csrf
         @method('DELETE')
-        <input type="hidden" name="selected_ids" id="selected-ids">
-        <button type="submit" class="text-red-600 hover:text-red-900 ml-2 delete-link" title="Remover"
-                style="display: none;" onclick="return confirm('Tem certeza que deseja excluir os projetos selecionados?')">
+        <input type="hidden" name="selected_ids[]" id="selected-ids">
+        <button id="deleteButton" type="submit" class="text-red-600 hover:text-red-900 ml-2 delete-link" title="Remover">
             <i class="fas fa-trash-alt text-lg"></i>
         </button>
     </form>
+    @include('components.modals.modal-delete')
 
     <a href="{{ route('projects.create') }}" class="add-button">
         <i class="fas fa-plus"></i>
     </a>
 
-    <div class="employee-table">
+    <div class="list-table">
         <table>
             <thead>
             <tr>
@@ -233,13 +59,14 @@
                 <th>Status do Projeto</th>
                 <th>Distrito</th>
                 <th>País</th>
+                <th>Add Viagem</th>
                 <th>Ações</th>
             </tr>
             </thead>
             <tbody>
             @forelse ($projects as $project)
 
-                <tr onclick="window.location='{{ url('projects/' . $project->id) }}';" style="cursor:pointer;">
+                <tr data-url='{{ url('projects/' . $project->id) }}'  style="cursor:pointer;">
                     <td>
                         <input type="checkbox" name="selected_ids[]" value="{{ $project->id }}"
                                class="form-checkbox">
@@ -249,6 +76,11 @@
                     <td>{{ $project->projectstatus->status_name }}</td>
                     <td>{{ $project->district->name }}</td>
                     <td>{{ $project->country->name }}</td>
+                    <td>
+                        <a href="{{ route('trips.create', ['project_id' => $project->id]) }}"
+                           class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-green-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150">
+                            Adicionar Viagem
+                        </a>
                     <td>
                         <a href="{{ route('projects.edit', $project->id) }}"><i class="fas fa-edit"></i></a>
                         <form action="{{ route('projects.destroy', $project->id) }}" method="POST"
@@ -271,60 +103,5 @@
         </table>
     </div>
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const filterBtn = document.getElementById('filterBtn');
-        const filterModal = document.getElementById('filterModal');
-        const closeModal = document.querySelector('.close');
-        const selectAllCheckbox = document.getElementById('select-all-checkbox');
-        const checkboxes = document.querySelectorAll('.form-checkbox');
-        const multiDeleteForm = document.getElementById('multi-delete-form');
-        const selectedIdsInput = document.getElementById('selected-ids');
-        const deleteButton = document.querySelector('.delete-link');
 
-        filterBtn.addEventListener('click', function() {
-            filterModal.style.display = 'block';
-        });
-
-        closeModal.addEventListener('click', function() {
-            filterModal.style.display = 'none';
-        });
-
-        window.addEventListener('click', function(event) {
-            if (event.target === filterModal) {
-                filterModal.style.display = 'none';
-            }
-        });
-
-        selectAllCheckbox.addEventListener('change', function() {
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
-            updateSelectedIds();
-            toggleDeleteButton();
-        });
-
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                updateSelectedIds();
-                toggleDeleteButton();
-            });
-        });
-
-        function updateSelectedIds() {
-            const selectedIds = [];
-            checkboxes.forEach(checkbox => {
-                if (checkbox.checked && checkbox !== selectAllCheckbox) {
-                    selectedIds.push(checkbox.value);
-                }
-            });
-            selectedIdsInput.value = JSON.stringify(selectedIds);
-        }
-
-        function toggleDeleteButton() {
-            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked && checkbox !== selectAllCheckbox);
-            deleteButton.style.display = anyChecked ? 'inline-block' : 'none';
-        }
-    });
-</script>
 
