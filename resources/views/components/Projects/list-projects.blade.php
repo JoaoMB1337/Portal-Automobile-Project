@@ -59,6 +59,7 @@
                 <th>Status do Projeto</th>
                 <th>Distrito</th>
                 <th>País</th>
+                <th>Add Viagem</th>
                 <th>Ações</th>
             </tr>
             </thead>
@@ -75,6 +76,11 @@
                     <td>{{ $project->projectstatus->status_name }}</td>
                     <td>{{ $project->district->name }}</td>
                     <td>{{ $project->country->name }}</td>
+                    <td>
+                        <a href="{{ route('trips.create', ['project_id' => $project->id]) }}"
+                           class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-green-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150">
+                            Adicionar Viagem
+                        </a>
                     <td>
                         <a href="{{ route('projects.edit', $project->id) }}"><i class="fas fa-edit"></i></a>
                         <form action="{{ route('projects.destroy', $project->id) }}" method="POST"

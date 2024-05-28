@@ -6,6 +6,7 @@ use App\Models\TripDetail;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTripDetailRequest;
 use App\Http\Requests\UpdateTripDetailRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 use App\Models\Project;
@@ -38,17 +39,20 @@ class TripDetailController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        $projects = Project::all(); 
+        $projects = Project::all();
         $costTypes = CostType::all();
         $trips = Trip::all();
         $employees = Employee::all();
+        $tripId = $request->input('trip_id');
+
         
         return view('pages.TripDetails.create', [
             'costTypes' => $costTypes,
             'trips' => $trips,
-            'employees' => $employees
+            'employees' => $employees,
+            'tripId' => $tripId,
         ]);
     }
 
@@ -58,7 +62,7 @@ class TripDetailController extends Controller
     public function store(StoreTripDetailRequest $request)
     {
         $validated = $request->validated();
-        
+
         $tripDetail = new TripDetail();
         $tripDetail->trip_id = $validated['trip_id'];
         $tripDetail->cost_type_id = $validated['cost_type_id'];
@@ -69,7 +73,7 @@ class TripDetailController extends Controller
 
         $directory = 'projects/' . $project->id . '/trips/' . $tripDetail->trip_id . '/receipts';
 
-        if ($request->hasFile('receipt')) 
+        if ($request->hasFile('receipt'))
         {
             $validated = $request->validate([
                 'receipt' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
@@ -78,12 +82,12 @@ class TripDetailController extends Controller
 
             $fileName = hash('sha256', time() . '_' . $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
 
-            $file->storeAs($directory, $fileName, 'public'); 
-            $tripDetail->file = $fileName; 
+            $file->storeAs($directory, $fileName, 'public');
+            $tripDetail->file = $fileName;
         }
 
         $tripDetail->save();
-        return redirect()->route('trip-details.index')->with('success', 'Detalhe de viagem criado com sucesso!');
+        return redirect()->route('trips.show', ['trip' => $trip->id])->with('success', 'Detalhe de viagem criado com sucesso!');
     }
 
 
@@ -127,5 +131,5 @@ class TripDetailController extends Controller
         //
     }
 
-    
+
 }

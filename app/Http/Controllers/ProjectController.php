@@ -121,7 +121,11 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return view('pages.Projects.show', compact('project'));
+        $trips = $project->trips;
+        return view('pages.Projects.show', [
+            'project' => $project,
+            'trips' => $trips,
+        ]);
     }
 
     /**

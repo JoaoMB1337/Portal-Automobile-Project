@@ -43,4 +43,3 @@ Route::get('/districts/{country}', [DistrictController::class, 'getDistrictsByCo
 
 Route::post('/employees/importCsv', [EmployeeController::class, 'importCsv'])->name('employees.importCsv');
 
-
