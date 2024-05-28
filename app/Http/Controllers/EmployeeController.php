@@ -202,12 +202,20 @@ class EmployeeController extends Controller
 
     public function deleteSelected(Request $request)
     {
-        $selected_ids = json_decode($request->input('selected_ids'), true);
-        if (!empty($selected_ids)) {
-            Employee::whereIn('id', $selected_ids)->delete();
-            return redirect()->route('employees.index');
+        if ($request->has('selected_ids')) {
+
+
+
+            if (!empty($request->selected_ids)) {
+
+                Employee::whereIn('id', $request->selected_ids)->delete();
+            }
         }
+
+
+        return redirect()->route('employees.index');
     }
+
     public function exportCsv($id)
     {
         $employee = Employee::findOrFail($id);
@@ -251,7 +259,7 @@ class EmployeeController extends Controller
         //Validações de arquivos
         $request->validate([
             'file' => 'required|mimes:csv,txt|max:2048',
-        ], 
+        ],
         [
             'file.required' => 'O campo arquivo é obrigatório.',
             'file.mimes'    => 'Arquivo inválido, necessário enciar arquivo CSV.',
