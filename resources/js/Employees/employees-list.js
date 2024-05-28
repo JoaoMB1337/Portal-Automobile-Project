@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     window.onclick = function(event) {
-        if (event.target == filterModal) {
+        if (event.target === filterModal) {
             filterModal.style.display = 'none';
         }
     }
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (event.target.type === 'checkbox') {
                 event.stopPropagation();
             } else {
-                //  navega para a página de show
+
                 window.location = row.dataset.url;
             }
         });

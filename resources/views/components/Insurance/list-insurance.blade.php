@@ -23,11 +23,12 @@
     <form id="multi-delete-form" action="{{ route('insurances.deleteSelected') }}" method="POST" style="display: inline-block;">
         @csrf
         @method('DELETE')
-        <input type="hidden" name="selected_ids" id="selected-ids">
-        <button type="submit" class="text-red-600 hover:text-red-900 ml-2 delete-link" title="Remover" style="display: none;" onclick="return confirm('Tem certeza que deseja excluir os seguros selecionados?')">
+        <input type="hidden" name="selected_ids[]" id="selected-ids">
+        <button id="deleteButton" type="submit" class="text-red-600 hover:text-red-900 ml-2 delete-link" title="Remover">
             <i class="fas fa-trash-alt text-lg"></i>
         </button>
     </form>
+    @include('components.modals.modal-delete')
 
     <div class="list-table">
         <table>
@@ -69,7 +70,7 @@
                             <form action="{{ route('insurances.destroy', $insurance->id) }}" method="POST" style="display: inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Tem certeza que deseja excluir este seguro?')"><i class="fas fa-trash-alt"></i></button>
+
                             </form>
                         </td>
                     </tr>
