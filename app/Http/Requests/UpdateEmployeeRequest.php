@@ -25,6 +25,7 @@ class UpdateEmployeeRequest extends FormRequest
             'name' => 'required|string|max:255|min:3',
             'employee_number' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:employees,email,' . $this->employee->id,
+            'phone_number' => 'required|numeric|digits_between:9,12',
             'gender' => 'required|string|in:male,female,other',
             'birth_date' => 'required|date|before_or_equal:today - 100 years',
             'CC' => 'required|string|max:255|different:NIF', // Ensure CC is different from NIF
@@ -48,6 +49,8 @@ class UpdateEmployeeRequest extends FormRequest
             'name.max' => 'O nome do funcionário não pode ter mais de 255 caracteres.',
             'employee_number.required' => 'Por favor, insira o número de funcionário.',
             'employee_number.max' => 'O número de funcionário não pode ter mais de 255 caracteres.',
+            'phone_number.required' => 'Por favor, insira o número de telefone do funcionário.',
+            'phone_number.numeric' => 'O número de telefone do funcionário deve conter apenas números.',
             'email.required' => 'Por favor, insira o email do funcionário.',
             'email.email' => 'O email do funcionário deve ser um email válido.',
             'email.max' => 'O email do funcionário não pode ter mais de 255 caracteres.',

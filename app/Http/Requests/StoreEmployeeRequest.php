@@ -30,6 +30,7 @@ class StoreEmployeeRequest extends FormRequest
             'NIF' => ['required', 'numeric', 'digits:9', 'unique:employees', 'different:CC'], 
             'address' => ['string', 'max:255', 'nullable'],
             'employee_role_id' => ['required', 'integer', 'exists:employee_roles,id'],
+            'phone_number' => ['required', 'numeric', 'digits_between:9,12'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:employees'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
@@ -66,6 +67,8 @@ class StoreEmployeeRequest extends FormRequest
             'email.email' => 'O email do funcionário deve ser um email válido.',
             'email.max' => 'O email do funcionário não pode ter mais de 255 caracteres.',
             'email.unique' => 'Este email já está em uso. Por favor, escolha outro.',
+            'phone_number.required' => 'Por favor, insira o número de telefone do funcionário.',
+            'phone_number.numeric' => 'O número de telefone do funcionário deve conter apenas números.',
             'password.required' => 'Por favor, insira a senha do funcionário.',
             'password.string' => 'A senha deve ser uma string.',
             'password.min' => 'A senha deve ter pelo menos 8 caracteres.',
