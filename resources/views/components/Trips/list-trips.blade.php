@@ -2,9 +2,9 @@
 
 <div class="container">
     <div class="form-container">
-        <button id="filterBtn" class="filter-button">Filtrar</button>
+        <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
         <a href="{{ route('trips.index', ['clear_filters' => true]) }}"
-           class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Limpar
+           class="px-4 py-2 bg-gray-700 text-white rounded-md shadow-sm hover:bg-gray-800">Limpar
         </a>
     </div>
 
@@ -68,7 +68,9 @@
                                 {{ $employee->name }}
                             @endforeach
                         </td>
-                        <td>{{ $trip->vehicle }}</td>
+                        <td>@foreach ($vehicles as $vehicle)
+                            {{ $vehicle->plate }}@if (!$loop->last), @endif
+                        @endforeach</td>
                         <td>
                             <a href="{{ url('trips/' . $trip->id . '/edit') }}"><i class="fas fa-edit"></i></a>
                             <form action="{{ url('trips/' . $trip->id) }}" method="POST" style="display: inline-block;">

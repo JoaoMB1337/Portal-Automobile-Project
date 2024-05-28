@@ -1,9 +1,9 @@
 @vite('resources/js/Employees/employees-list.js')
 <div class="container">
     <div class="form-container">
-        <button id="filterBtn" class="filter-button">Filtrar</button>
+        <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
         <a href="{{ route('projects.index', ['clear_filters' => true]) }}"
-           class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Limpar
+           class="px-4 py-2 bg-gray-700 text-white rounded-md shadow-sm hover:bg-gray-800">Limpar
         </a>
     </div>
 
@@ -78,7 +78,7 @@
                     <td>{{ $project->country->name }}</td>
                     <td>
                         <a href="{{ route('trips.create', ['project_id' => $project->id]) }}"
-                           class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-green-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150">
+                           class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-700 ">
                             Adicionar Viagem
                         </a>
                     <td>

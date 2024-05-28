@@ -8,6 +8,7 @@
       'trips' => $trips,
       'employees' => $employees,
       'project' => $project,
+        'vehicles' => $vehicles,
       ])
         @endcomponent
     </div>
