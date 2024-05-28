@@ -20,7 +20,7 @@ Route::resource('trips', App\Http\Controllers\TripController::class);
 Route::resource('vehicles', App\Http\Controllers\VehicleController::class);
 Route::resource('insurances', App\Http\Controllers\InsuranceController::class);
 Route::resource('projects', App\Http\Controllers\ProjectController::class);
-Route::resource('trip-details', App\Http\Controllers\TripDetailController::class); 
+Route::resource('trip-details', App\Http\Controllers\TripDetailController::class);
 
 Route::delete('employees.deleteSelected', [App\Http\Controllers\EmployeeController::class, 'deleteSelected'])->name('employees.deleteSelected');
 Route::delete('vehicles.deleteSelected', [App\Http\Controllers\VehicleController::class, 'deleteSelected'])->name('vehicles.deleteSelected');
@@ -41,5 +41,4 @@ Route::post('employees-import', [EmployeeController::class, 'import'])->name('em
 Route::get('/districts/{country}', [DistrictController::class, 'getDistrictsByCountry']);
 
 Route::post('/employees/importCsv', [EmployeeController::class, 'importCsv'])->name('employees.importCsv');
-
 
