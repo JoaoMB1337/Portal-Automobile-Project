@@ -22,7 +22,6 @@
     <form id="multi-delete-form" action="{{ route('trips.deleteSelected') }}" method="POST" style="display: inline-block;">
         @csrf
         @method('DELETE')
-
         <input type="hidden" name="selected_ids[]" id="selected-ids">
         <button id="deleteButton" type="submit" class="text-red-600 hover:text-red-900 ml-2 delete-link" title="Remover">
             <i class="fas fa-trash-alt text-lg"></i>
@@ -45,7 +44,6 @@
                 <th>Projeto</th>
                 <th>Funcionário</th>
                 <th>Veículo Matrícula</th>
-                <th>Custo da Viagem</th>
                 <th>Ações</th>
             </tr>
             </thead>
@@ -56,7 +54,7 @@
                 </tr>
             @else
                 @foreach ($trips as $trip)
-                    <tr data-url={{ url('trips/' . $trip->id) }} style="cursor:pointer;">
+                    <tr data-url={{ url('trips/' . $trip->id) }}' style="cursor:pointer;">
                         <td>
                             <input type="checkbox" name="selected_ids[]" value="{{ $trip->id }}" class="form-checkbox">
                         </td>
@@ -70,16 +68,7 @@
                                 {{ $employee->name }}
                             @endforeach
                         </td>
-                        <td>
-                            @foreach ($trip->vehicles as $vehicle)
-                                {{ $vehicle->plate }}
-                            @endforeach
-                        </td>
-                        <td>
-                            <a href="{{ route('trip-details.create', ['trip_id' => $trip->id]) }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-green-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150">
-                                Adicionar
-                            </a>
-                        </td>
+                        <td>{{ $trip->vehicle }}</td>
                         <td>
                             <a href="{{ url('trips/' . $trip->id . '/edit') }}"><i class="fas fa-edit"></i></a>
                             <form action="{{ url('trips/' . $trip->id) }}" method="POST" style="display: inline-block;">
