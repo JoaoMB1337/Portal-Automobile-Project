@@ -22,15 +22,10 @@
     <form id="multi-delete-form" action="{{ route('trips.deleteSelected') }}" method="POST" style="display: inline-block;">
         @csrf
         @method('DELETE')
-<<<<<<< trip-model-custo
-        <input type="hidden" name="selected_ids" id="selected-ids">
-        <button type="submit" class="text-red-600 hover:text-red-900 ml-2 delete-link" title="Remover" style="display: none;" onclick="return confirm('Tem certeza que deseja excluir as viagens selecionadas?')">
-            <i class="fas fa-trash-aslt text-lg"></i>
-=======
+
         <input type="hidden" name="selected_ids[]" id="selected-ids">
         <button id="deleteButton" type="submit" class="text-red-600 hover:text-red-900 ml-2 delete-link" title="Remover">
             <i class="fas fa-trash-alt text-lg"></i>
->>>>>>> DEV-Main
         </button>
     </form>
     @include('components.modals.modal-delete')

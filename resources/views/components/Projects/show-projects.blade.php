@@ -50,7 +50,7 @@
                 </a>
             </div>
         </div>
-        <div class="border-t border-gray-200">
+        <div class="list-table">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                 <tr>
@@ -61,7 +61,7 @@
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                 @foreach ($trips as $trip)
-                    <tr data-url="{{ route('trips.show', $trip->id) }}" style="cursor:pointer;"> /* tem  de ser em url */
+                    <tr data-url="{{ url('trips/' . $trip->id) }}" style="cursor:pointer;">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $trip->destination }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $trip->start_date }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $trip->end_date }}</td>
@@ -80,14 +80,4 @@
     }
 </style>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const rows = document.querySelectorAll('tr[data-url]');
-        rows.forEach(row => {
-            row.addEventListener('click', () => {
-                window.location.href = row.getAttribute('data-url');
-            });
-        });
-    });
-</script>
 
