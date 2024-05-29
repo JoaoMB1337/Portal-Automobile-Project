@@ -3,7 +3,11 @@
 @section('content')
     <div class=" mx-auto pl-10 lg:pl-64">
 
-        @component('components.Projects.show-projects', ['project' => $project, 'trips' => $trips])
+        @component('components.Projects.show-projects', [
+            'project' => $project,
+            'trips' => $trips,
+            'totalProjectCost' => $totalProjectCost,
+        ])
         @endcomponent
 
     </div>
