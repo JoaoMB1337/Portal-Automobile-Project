@@ -22,14 +22,13 @@ class UpdateEmployeeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|min:3',
+            'name' => 'required|string|max:255',
             'employee_number' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:employees,email,' . $this->employee->id,
-            'phone_number' => 'required|numeric|digits_between:9,12',
             'gender' => 'required|string|in:male,female,other',
-            'birth_date' => 'required|date|before_or_equal:today - 100 years',
-            'CC' => 'required|string|max:255|different:NIF', // Ensure CC is different from NIF
-            'NIF' => 'required|string|max:255|different:CC', // Ensure NIF is different from CC
+            'birth_date' => 'required|date',
+            'CC' => 'required|string|max:255',
+            'NIF' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'employee_role_id' => 'required|exists:employee_roles,id',
             'password' => 'nullable|string|min:8|confirmed',
