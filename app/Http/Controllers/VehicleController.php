@@ -24,7 +24,7 @@ class VehicleController extends Controller
 
         // Search by plate
         if ($search = $request->input('search')) {
-            $query->where('plate', 'like', '%' . $search . '%');
+            $query->where('plate', 'ilike', '%' . $search . '%');
         }
 
         if (($isExternal = $request->input('is_external')) !== null) {

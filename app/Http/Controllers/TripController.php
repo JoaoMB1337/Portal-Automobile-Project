@@ -20,11 +20,28 @@ class TripController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $trips = Trip::orderby('id', 'asc')->paginate(15);
-        /* $employees = Employee::all();
-        $projects = Project::all(); */
+
+
+        $query = Trip::query();
+
+        if ($request->has('clear_filters')) {
+            $request->session()->forget(['destination', 'project']);
+        }
+
+        if ($request->filled('destination')) {
+            $query->where('destination', 'ilike', '%' . $request->input('destination') . '%');
+        }
+
+        if ($request->filled('project')) {
+            $query->whereHas('project', function ($q) use ($request) {
+                $q->where('name', 'ilike', '%' . $request->input('project') . '%');
+            });
+        }
+
+        $trips = $query->orderBy('id', 'asc')->paginate(15);
+
         return view('pages.Trips.list', [
             'trips' => $trips,
             'employees' => Employee::all(),
@@ -132,7 +149,7 @@ class TripController extends Controller
 
         return redirect()->route('trips.index');
     }
-     
+
 
     /**
      * Remove the specified resource from storage.

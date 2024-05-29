@@ -32,7 +32,7 @@ class EmployeeController extends Controller
         }
 
         if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . $request->input('name') . '%');
+            $query->where('name', 'ilike', '%' . $request->input('name') . '%');
         }
 
         if ($request->filled('role')) {

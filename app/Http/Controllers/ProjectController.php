@@ -51,7 +51,7 @@ class ProjectController extends Controller
         if ($request->has('search') && $request->search) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', '%' . $search . '%')
+                $q->where('name', 'ilike', '%' . $search . '%')
                     ->orWhere('address', 'like', '%' . $search . '%')
                     ->orWhereHas('projectstatus', function ($q) use ($search) {
                         $q->where('status_name', 'like', '%' . $search . '%');
