@@ -1,5 +1,3 @@
-@vite(['resources/js/Employees/employees-list.js'])
-
 <div class="container">
     <div class="form-container">
         <button id="filterBtn" class="filter-button">Filtrar</button>
@@ -65,17 +63,16 @@
                         <td>{{ $trip->project->name }}</td>
                         <td>
                             @foreach ($trip->employees as $employee)
-                                {{ $employee->name }}
+                                {{ $employee->name }}<br>
                             @endforeach
                         </td>
-                        <td>{{ $trip->vehicle }}</td>
+                        <td>
+                            @foreach ($trip->vehicles as $vehicle)
+                                {{ $vehicle->plate }}<br>
+                            @endforeach
+                        </td>
                         <td>
                             <a href="{{ url('trips/' . $trip->id . '/edit') }}"><i class="fas fa-edit"></i></a>
-                            <form action="{{ url('trips/' . $trip->id) }}" method="POST" style="display: inline-block;">
-                                @csrf
-                                @method('DELETE')
-
-                            </form>
                         </td>
                     </tr>
                 @endforeach

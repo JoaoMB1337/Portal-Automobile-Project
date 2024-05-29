@@ -44,5 +44,4 @@ class Trip extends Model
         return $this->belongsToMany(Vehicle::class, 'trip_vehicle_associations');
     }
 
-
 }
