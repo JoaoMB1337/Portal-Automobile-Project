@@ -61,17 +61,12 @@
                     <div class="col-span-2">
                         <label for="type_trip_id" class="block text-sm font-medium text-gray-700">Tipo de
                             Viagem</label>
-                        <select name="type_trip_id" id="project_id"
-                            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            required>
-                            @foreach ($typeTrips as $typeTrip)
-                                <option value="{{ $typeTrip->id }}"
-                                    {{ $trip->type_trip_id == $typeTrip->id ? 'selected' : '' }}>{{ $typeTrip->type }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
+                            <select name="type_trip_id" id="type_trip_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                                @foreach ($typeTrips as $typeTrip)
+                                    <option value="{{ $typeTrip->id }}" {{ $trip->type_trip_id == $typeTrip->id ? 'selected' : '' }}>{{ $typeTrip->type }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
                     {{--  <div class="col-span-2">
                         <label for="type_trip_id" class="block text-sm font-medium text-gray-700">Projeto</label>

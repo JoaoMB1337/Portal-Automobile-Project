@@ -114,7 +114,6 @@ body {
 }
 
 .list-table {
-    border: 1px solid #eee;
     border-radius: 10px;
     overflow-x: auto;
 }
@@ -132,12 +131,16 @@ body {
 }
 
 .list-table th {
-    background-color: #f2f2f2;
+    background-color: #717070;
     font-weight: bold;
+    color: #fff;
 }
 
 .list-table tr:hover {
-    background-color: #f9f9f9;
+    background-color: #f3f1f1;
+}
+.list-table tr{
+background-color: #f6f8fa;
 }
 
 .add-button {

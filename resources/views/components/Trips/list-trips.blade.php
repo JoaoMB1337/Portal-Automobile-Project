@@ -2,9 +2,9 @@
 
 <div class="container">
     <div class="form-container">
-        <button id="filterBtn" class="filter-button">Filtrar</button>
+        <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
         <a href="{{ route('trips.index', ['clear_filters' => true]) }}"
-           class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Limpar
+           class="px-4 py-2 bg-gray-700 text-white rounded-md shadow-sm hover:bg-gray-800">Limpar
         </a>
     </div>
 
@@ -54,7 +54,7 @@
                 </tr>
             @else
                 @foreach ($trips as $trip)
-                    <tr data-url={{ url('trips/' . $trip->id) }}' style="cursor:pointer;">
+                    <tr data-url={{ url('trips/' . $trip->id)}} style="cursor:pointer;">
                         <td>
                             <input type="checkbox" name="selected_ids[]" value="{{ $trip->id }}" class="form-checkbox">
                         </td>
@@ -65,17 +65,16 @@
                         <td>{{ $trip->project->name }}</td>
                         <td>
                             @foreach ($trip->employees as $employee)
-                                {{ $employee->name }}
+                                {{ $employee->name }}<br>
                             @endforeach
                         </td>
-                        <td>{{ $trip->vehicle }}</td>
+                        <td>
+                            @foreach ($trip->vehicles as $vehicle)
+                                {{ $vehicle->plate }}<br>
+                            @endforeach
+                        </td>
                         <td>
                             <a href="{{ url('trips/' . $trip->id . '/edit') }}"><i class="fas fa-edit"></i></a>
-                            <form action="{{ url('trips/' . $trip->id) }}" method="POST" style="display: inline-block;">
-                                @csrf
-                                @method('DELETE')
-
-                            </form>
                         </td>
                     </tr>
                 @endforeach
