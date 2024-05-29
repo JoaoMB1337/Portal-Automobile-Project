@@ -21,30 +21,7 @@ class StoreVehicleRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rules = [
-            'plate' => 'required|string|max:255|unique:vehicles,plate',
-            'km' => 'required|integer|min:0',
-            'condition' => 'required|integer|exists:vehicle_conditions,id',
-            'is_external' => 'nullable|boolean',
-            'fuelTypes' => 'required|integer|exists:fuel_types,id',
-            'carCategory' => 'required|integer|exists:car_categories,id',
-            'brand' => 'required|integer|exists:brands,id',
-        ];
 
-        if ($this->is_external) {
-            $rules = array_merge($rules, [
-                'contract_number' => 'required|string|max:255',
-                'rental_price_per_day' => 'required|numeric|min:0',
-                'rental_start_date' => 'required|date',
-                'rental_end_date' => 'required|date|after:rental_start_date',
-                'rental_company' => 'required|string|max:255',
-                'rental_contact_person' => 'required|string|regex:/^[a-zA-Z\s]{3,}$/',
-                'rental_contact_number' => 'required|string|max:255',
-                'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
-            ]);
-        }
-
-        return $rules;
     }
 
     public function messages()

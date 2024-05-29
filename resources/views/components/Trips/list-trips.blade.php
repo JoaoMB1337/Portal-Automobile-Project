@@ -13,7 +13,7 @@
             <span class="close">&times;</span>
             <form method="GET" action="{{ route('trips.index') }}">
                 <input type="text" name="destination" id="filter-destination" placeholder="Filtrar por destino">
-                <input type="text" name="purpose" id="filter-purpose" placeholder="Filtrar por propósito">
+                <input type="text" name="project" id="filter-project" placeholder="Filtrar por projeto">
                 <button type="submit">Filtrar</button>
             </form>
         </div>

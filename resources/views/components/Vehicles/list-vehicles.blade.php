@@ -1,3 +1,4 @@
+@vite(['resources/js/Employees/employees-list.js'])
 
 @vite(['resources/js/Vehicles/vehicles-list.js'])
 

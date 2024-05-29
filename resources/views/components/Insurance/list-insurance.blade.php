@@ -15,6 +15,11 @@
             <form method="GET" action="{{ route('insurances.index') }}">
                 <input type="text" name="insurance_company" id="filter-insurance_company" placeholder="Filtrar por Companhia de Seguro">
                 <input type="text" name="policy_number" id="filter-policy_number" placeholder="Filtrar por Número da Apólice">
+                <select  name="ativo" id="filter-ativo">
+                    <option disabled selected>Filtrar por Ativo</option>
+                    <option value="1">Ativo</option>
+                    <option value="0">Inativo</option>
+                </select>
                 <button type="submit">Filtrar</button>
             </form>
         </div>

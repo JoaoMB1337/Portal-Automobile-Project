@@ -65,7 +65,6 @@
             </thead>
             <tbody>
             @forelse ($projects as $project)
-
                 <tr data-url='{{ url('projects/' . $project->id) }}'  style="cursor:pointer;">
                     <td>
                         <input type="checkbox" name="selected_ids[]" value="{{ $project->id }}"

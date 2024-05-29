@@ -8,6 +8,7 @@ use App\Http\Requests\StoreInsuranceRequest;
 use App\Http\Requests\UpdateInsuranceRequest;
 use Illuminate\Http\Request;
 use App\Models\Vehicle;
+use Carbon\Carbon;
 
 
 class InsuranceController extends Controller
@@ -15,12 +16,40 @@ class InsuranceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $insurance = Insurance::orderby('id','asc')->paginate(15);
-        return view('pages.Insurance.list',['insurance'=>$insurance]);
 
+        // Obtém todos os seguros
+        $query = Insurance::query();
+
+        // Filtra por companhia de seguro, se fornecido
+        if ($request->filled('insurance_company')) {
+            $query->where('insurance_company', 'like', '%'.$request->input('insurance_company').'%');
+        }
+
+        // Filtra por número da apólice, se fornecido
+        if ($request->filled('policy_number')) {
+            $query->where('policy_number', 'like', '%'.$request->input('policy_number').'%');
+        }
+
+        // Filtra por seguros expirados
+        if ($request->has('expired')) {
+            $query->where('end_date', '<', Carbon::now());
+        }
+
+        // Filtra por seguros ativos ou inativos com base na data de término
+        if ($request->has('ativo')) {
+            if ($request->input('ativo') == '1') {
+                $query->where('end_date', '>=', Carbon::now());
+            } elseif ($request->input('ativo') == '0') {
+                $query->where('end_date', '<', Carbon::now());
+            }
+        }
+
+        // Ordena por ID em ordem ascendente e paginates os resultados
+        $insurances = $query->orderBy('id', 'asc')->paginate(15);
+
+        return view('pages.Insurance.list', ['insurance'=>$insurances]);
     }
 
     /**

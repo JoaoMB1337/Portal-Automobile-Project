@@ -1,11 +1,8 @@
-@vite('resources/js/Employees/employees-list.js')
-
 <div class="container">
 
     <div class="form-container">
         <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
-        <a href="{{ route('trip-details.index', ['clear_filters' => true]) }}" class="px-4 py-2 bg-gray-700 text-white rounded-md shadow-sm hover:bg-gray-800">Limpar
-        </a>
+        <a href="{{ route('trip-details.index', ['clear_filters' => true]) }}" class="px-4 py-2 bg-gray-700 text-white rounded-md shadow-sm hover:bg-gray-800">Limpar</a>
     </div>
 
     <div id="filterModal" class="modal mx-auto pl-10 lg:pl-64">
@@ -23,7 +20,6 @@
         <table>
             <thead>
             <tr>
-
                 <th>Nome do Funcionário</th>
                 <th>Tipo de Custo</th>
                 <th>Custo Total</th>
@@ -33,8 +29,6 @@
             </thead>
             <tbody>
             @foreach ($tripDetails as $tripDetail)
-                <tr onclick="window.location='{{ url('tripDetails/' . $tripDetail->id) }}';" style="cursor:pointer;">
-
                 @php
                     $employeeName = $tripDetail->trip && $tripDetail->trip->employee ? $tripDetail->trip->employee->name : 'Funcionário não encontrado';
                     $tripName = $tripDetail->trip ? $tripDetail->trip->destination : 'Viagem não encontrada';
@@ -42,12 +36,12 @@
                     $cost = $tripDetail->cost;
                 @endphp
                 <tr>
-
                     <td>{{ $employeeName }}</td>
                     <td>{{ $costTypeName }}</td>
                     <td>{{ $cost }}</td>
                     <td>{{ $tripName }}</td>
                     <td>
+                        <!-- Ações -->
                         <a href="{{ route('trip-details.show', $tripDetail->id) }}" class="text-indigo-600 hover:text-indigo-900">Detalhes</a>
                     </td>
                 </tr>
@@ -63,4 +57,3 @@
 
     <a href="{{ route('trip-details.create') }}" class="add-button"><i class="fas fa-plus"></i></a>
 </div>
-
