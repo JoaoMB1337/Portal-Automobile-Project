@@ -4,9 +4,9 @@
 
     <!-- Filtros -->
     <div class="form-container">
-        <button id="filterBtn" class="filter-button">Filtrar</button>
+        <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
         <a href="{{ route('employees.index', ['clear_filters' => true]) }}"
-           class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Limpar
+           class="px-4 py-2 bg-gray-700 text-white rounded-md shadow-sm hover:bg-gray-800">Limpar
         </a>
     </div>
 
