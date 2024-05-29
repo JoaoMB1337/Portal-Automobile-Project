@@ -116,7 +116,7 @@ class TripController extends Controller
      * Update the specified resource in storage.
      */
 
-    public function update(StoreTripRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $trip = Trip::findOrFail($id);
         $trip->start_date = $request->start_date;
@@ -132,24 +132,7 @@ class TripController extends Controller
 
         return redirect()->route('trips.index');
     }
-
-    /* public function update(UpdateTripRequest $request, Trip $trip)
-    {
-        $trip->start_date = $request->start_date;
-        $trip->end_date = $request->end_date;
-        $trip->destination = $request->destination;
-        $trip->purpose = $request->purpose;
-        $trip->project_id = $request->project_id;
-        $trip->type_trip_id = $request->type_trip_id;
-        $trip->vehicle_id = $request->vehicle_id;
-        $trip->save();
-
-        // Atualizar associações empregado-viagem
-        $trip->employees()->sync($request->employee_id);
-        $trip->vehicles()->sync($request->vehicle_id);
-
-        return redirect()->route('trips.index');
-    } */
+     
 
     /**
      * Remove the specified resource from storage.
