@@ -1,3 +1,5 @@
+@vite(['resources/js/Employees/employees-list.js'])
+
 <div class="container">
     <div class="form-container">
         <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>

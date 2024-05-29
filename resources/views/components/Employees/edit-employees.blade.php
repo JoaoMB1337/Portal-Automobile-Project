@@ -38,6 +38,12 @@
                     </div>
 
                     <div class="col-span-2">
+                        <label for="phone" class="block text-sm font-medium text-gray-700">Telefone</label>
+                        <input type="text" name="phone" id="phone" value="{{ $employee->phone }}" class="mt-1 block
+                        w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
+                    </div>
+
+                    <div class="col-span-2">
                         <label for="CC" class="block text-sm font-medium text-gray-700">CC</label>
                         <input type="text" name="CC" id="CC" value="{{ $employee->CC }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
                     </div>

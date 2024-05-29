@@ -159,13 +159,11 @@ class EmployeeController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-
         $data = $request->all();
 
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
-        }
-        else{
+        } else {
             unset($data['password']);
         }
 
@@ -181,16 +179,16 @@ class EmployeeController extends Controller
 
         if ($request->has('contacts')) {
             foreach ($request->contacts as $contact) {
-                $employee->contacts()->create([
-                    'contact_value' => $contact['value'],
-                    'contact_type_id' => $contact['type']
-                ]);
+                if (isset($contact['value']) && isset($contact['type'])) {
+                    $employee->contacts()->create([
+                        'contact_value' => $contact['value'],
+                        'contact_type_id' => $contact['type']
+                    ]);
+                }
             }
         }
-
         return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
-
     /**
      * Remove the specified resource from storage.
      */
