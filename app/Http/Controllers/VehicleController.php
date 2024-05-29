@@ -238,6 +238,7 @@ class VehicleController extends Controller
 
     public function deleteSelected(Request $request)
     {
+
         if ($request->has('selected_ids')) {
 
             if (!empty($request->selected_ids)) {
