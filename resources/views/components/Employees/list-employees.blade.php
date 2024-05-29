@@ -1,12 +1,14 @@
+@vite(['resources/js/Employees/employees-list.js'])
+
 <div class="container">
+
     <!-- Filtros -->
     <div class="form-container">
-        <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
-        <a href="{{ route('employees.index', ['clear_filters' => true]) }}" class="px-4 py-2 bg-gray-800 text-white rounded-md shadow-sm hover:bg-gray-700">Limpar</a>
+        <button id="filterBtn" class="filter-button">Filtrar</button>
+        <a href="{{ route('employees.index', ['clear_filters' => true]) }}"
+           class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Limpar
+        </a>
     </div>
-
-    <!-- IMPORT -->
-    <!-- Removido o formulário de importação -->
 
     <div id="filterModal" class="modal mx-auto pl-10 lg:pl-64">
         <div class="modal-content">
@@ -81,6 +83,40 @@
 </div>
 
 <style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
     .add-options {
         position: absolute;
         right: 0;
@@ -90,7 +126,7 @@
         padding: 10px;
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        transition: top 0.8s ease-in-out; /* Transição suave de movimento */
+        transition: top 0.8s ease-in-out;
     }
 
     .add-options a,
@@ -112,26 +148,44 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        var addOptions = document.getElementById("addOptions");
+        // Modal Filter
+        var filterBtn = document.getElementById("filterBtn");
+        var filterModal = document.getElementById("filterModal");
+        var closeSpan = document.getElementsByClassName("close")[0];
 
-        document.getElementById("addButton").addEventListener("click", function() {
-            if (addOptions.style.display === "block") {
-                addOptions.style.display = "none"; 
-            } else {
-                addOptions.style.display = "block"; 
+        filterBtn.onclick = function() {
+            filterModal.style.display = "block";
+        }
+
+        closeSpan.onclick = function() {
+            filterModal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == filterModal) {
+                filterModal.style.display = "none";
             }
-        });
+        }
 
-        document.getElementById("importCsvBtn").addEventListener("click", function(event) {
-            // Impede o comportamento padrão de submissão do formulário
+        // Add Button Options
+        var addButton = document.getElementById("addButton");
+        var addOptions = document.getElementById("addOptions");
+        var importCsvBtn = document.getElementById("importCsvBtn");
+
+        addButton.onclick = function() {
+            if (addOptions.style.display === "block") {
+                addOptions.style.display = "none";
+            } else {
+                addOptions.style.display = "block";
+            }
+        }
+
+        importCsvBtn.onclick = function(event) {
             event.preventDefault();
-            
-            console.log("Botão Importar CSV clicado");
 
-            // Criação do formulário de importação por CSV
             var importCsvForm = document.createElement("form");
             importCsvForm.method = "POST";
-            importCsvForm.action = "{{ route('employees.importCsv') }}"; // Defina o endpoint correto para o processamento do CSV
+            importCsvForm.action = "{{ route('employees.importCsv') }}";
             importCsvForm.enctype = "multipart/form-data";
             importCsvForm.style.display = "none";
 
@@ -155,15 +209,11 @@
 
             document.body.appendChild(importCsvForm);
 
-            // Submete o formulário quando um arquivo é selecionado
             fileInput.addEventListener("change", function() {
-                console.log("Formulário de importação CSV enviado");
                 importCsvForm.submit();
             });
 
-            // Simula o clique no elemento de arquivo após o botão de importação ser clicado
             fileInput.click();
-            console.log("Clique no elemento de arquivo simulado");
-        });
+        }
     });
 </script>
