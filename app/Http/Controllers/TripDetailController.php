@@ -33,7 +33,6 @@ class TripDetailController extends Controller
             'trips' => $trips,
             'employees' => $employees
         ]);
-
     }
 
     /**
@@ -47,7 +46,7 @@ class TripDetailController extends Controller
         $employees = Employee::all();
         $tripId = $request->input('trip_id');
 
-        
+
         return view('pages.TripDetails.create', [
             'costTypes' => $costTypes,
             'trips' => $trips,
@@ -73,8 +72,7 @@ class TripDetailController extends Controller
 
         $directory = 'projects/' . $project->id . '/trips/' . $tripDetail->trip_id . '/receipts';
 
-        if ($request->hasFile('receipt'))
-        {
+        if ($request->hasFile('receipt')) {
             $validated = $request->validate([
                 'receipt' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
             ]);
@@ -130,6 +128,4 @@ class TripDetailController extends Controller
     {
         //
     }
-
-
 }
