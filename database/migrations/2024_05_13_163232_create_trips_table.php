@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('end_date')->nullable(false);
             $table->string('destination')->nullable(false);
             $table->string('purpose')->nullable(false);
-            $table->foreignId('project_id')->constrained()->nullable(false);
+            $table->foreignId('project_id')->constrained()->onDelete('cascade')->nullable(false);
             $table->foreignId('type_trip_id')->constrained()->nullable(false);
             $table->timestamps();
         });

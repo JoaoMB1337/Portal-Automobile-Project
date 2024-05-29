@@ -214,18 +214,13 @@ class VehicleController extends Controller
 
     public function deleteSelected(Request $request)
     {
-
         if ($request->has('selected_ids')) {
-
-
 
             if (!empty($request->selected_ids)) {
 
                 Vehicle::whereIn('id', $request->selected_ids)->delete();
             }
         }
-
-
         return redirect()->route('vehicles.index');
     }
 
