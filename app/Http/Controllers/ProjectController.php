@@ -70,7 +70,7 @@ class ProjectController extends Controller
             $query->where('project_status_id', $project_status_id);
         }
 
-        $projects = $query->orderBy('id', 'asc')->paginate(3);
+        $projects = $query->orderBy('id', 'asc')->paginate(15);
 
         $countries = Country::all();
         $districts = District::all();

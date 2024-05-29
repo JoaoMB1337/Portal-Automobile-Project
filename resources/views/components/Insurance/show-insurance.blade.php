@@ -1,7 +1,4 @@
-@extends('layouts.app')
-@extends('components.master.main')
 
-@section('content')
     <div class="flex justify-center items-start h-screen custom-bg">
         <div class="max-w-md w-full bg-white rounded-xl p-7 custom-card mt-12">
             <div class="flex justify-center mb-6">
@@ -45,4 +42,3 @@
             </div>
         </div>
     </div>
-@endsection

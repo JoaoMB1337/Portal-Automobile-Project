@@ -1,10 +1,10 @@
 
-<form method="POST" action="{{ route('trip-details.store') }}" enctype="multipart/form-data" class="space-y-6 bg-white p-6 rounded-lg shadow-md">
+<form method="POST" action="{{ route('trip-details.store') }}" enctype="multipart/form-data" class="space-y-10 bg-white p-6 rounded-lg shadow-md">
     @csrf
 
     <div>
         <label for="trip_id" class="block text-sm font-semibold text-gray-700 mb-2">Viagem</label>
-        <select name="trip_id" id="trip_id" class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('trip_id') border-red-500 @enderror" required {{ isset($tripId) ? 'disabled' : '' }}>
+        <select name="trip_id" id="trip_id" class="form-select w-full rounded-md  focus:border-gray-400 focus:ring focus:ring-gray-200 @error('trip_id') border-red-500 @enderror" required {{ isset($tripId) ? 'disabled' : '' }}>
             <option value="">Selecione a Viagem</option>
             @foreach ($trips as $trip)
                 <option value="{{ $trip->id }}" {{ isset($tripId) && $trip->id == $tripId ? 'selected' : '' }}>{{ $trip->destination }}</option>
@@ -21,7 +21,7 @@
 
     <div>
         <label for="cost_type_id" class="block text-sm font-semibold text-gray-700 mb-2">Tipo de Custo</label>
-        <select name="cost_type_id" id="cost_type_id" class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('cost_type_id') border-red-500 @enderror" required>
+        <select name="cost_type_id" id="cost_type_id" class="form-select w-full rounded-md  focus:border-gray-400 focus:ring focus:ring-gray-200 @error('cost_type_id') border-red-500 @enderror" required>
             <option value="">Selecione o Tipo de Custo</option>
             @foreach ($costTypes as $costType)
                 <option value="{{ $costType->id }}">{{ $costType->type_name }}</option>
@@ -39,7 +39,7 @@
             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
         @enderror
     </div>
-    
+
     <div>
         <label for="receipt" class="block text-sm font-semibold text-gray-700 mb-2">Comprovante de Gastos</label>
         <input id="receipt" type="file" accept="image/*" capture="camera" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('receipt') border-red-500 @enderror" name="receipt">
@@ -49,7 +49,7 @@
     </div>
 
     <div>
-        <button type="submit" class="custom-btn w-full py-2 rounded-md bg-blue-500 hover:bg-blue-600 text-white font-semibold">
+        <button type="submit" class=" w-full py-2 rounded-md bg-gray-800 hover:bg-gray-700 text-white font-semibold">
             Salvar
         </button>
     </div>

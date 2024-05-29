@@ -73,8 +73,29 @@ class VehicleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreVehicleRequest $request)
+    public function store(Request $request)
     {
+        $request->validate([
+            'plate' => 'required|string|max:255',
+            'km' => 'required|numeric|min:0',
+            'condition' => 'required|exists:vehicle_conditions,id',
+            'is_external' => 'nullable|boolean',
+            'fuelTypes' => 'required|exists:fuel_types,id',
+            'carCategory' => 'required|exists:car_categories,id',
+            'brand' => 'required|exists:brands,id',
+            'rental_price_per_day' => [
+                'nullable',
+                'regex:/^\d{1,6}([.,]\d{1,2})?$/',
+            ],
+            'contract_number' => 'nullable|string|max:255',
+            'rental_start_date' => 'nullable|date',
+            'rental_end_date' => 'nullable|date|after_or_equal:rental_start_date',
+            'rental_company' => 'nullable|string|max:255',
+            'rental_contact_person' => 'nullable|string|max:255',
+            'rental_contact_number' => 'nullable|string|max:255',
+            'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
+        ]);
+
         $vehicle = new Vehicle();
         $vehicle->plate = $request->plate;
         $vehicle->km = $request->km;
@@ -90,7 +111,8 @@ class VehicleController extends Controller
 
         if ($request->is_external) {
             $vehicle->contract_number = $request->contract_number;
-            $vehicle->rental_price_per_day = $request->rental_price_per_day;
+            $rental_price_per_day = str_replace(',', '.', $request->rental_price_per_day);
+            $vehicle->rental_price_per_day = $rental_price_per_day;
             $vehicle->rental_start_date = $request->rental_start_date;
             $vehicle->rental_end_date = $request->rental_end_date;
             $vehicle->rental_company = $request->rental_company;
@@ -116,6 +138,8 @@ class VehicleController extends Controller
 
         return redirect()->route('vehicles.index');
     }
+
+
 
     /**
      * Display the specified resource.
