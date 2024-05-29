@@ -71,9 +71,6 @@
                                 {{ $vehicle->plate }}<br>
                             @endforeach
                         </td>
-                        <td>@foreach ($vehicles as $vehicle)
-                            {{ $vehicle->plate }}@if (!$loop->last), @endif
-                        @endforeach</td>
                         <td>
                             <a href="{{ url('trips/' . $trip->id . '/edit') }}"><i class="fas fa-edit"></i></a>
                         </td>
