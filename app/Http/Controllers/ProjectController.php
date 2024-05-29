@@ -70,7 +70,9 @@ class ProjectController extends Controller
             $query->where('project_status_id', $project_status_id);
         }
 
+
         $projects = $query->orderBy('id', 'asc')->paginate(15);
+
 
         $countries = Country::all();
         $districts = District::all();
@@ -89,6 +91,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
+
         $countries = Country::all();
         $districts = District::all()->groupBy('country_id');
         $projectstatuses = ProjectStatus::all();
@@ -122,9 +125,13 @@ class ProjectController extends Controller
     public function show(Project $project)
     {
         $trips = $project->trips;
+        $totalProjectCost = $trips->sum(function ($trip) {
+            return $trip->tripDetails->sum('cost');
+        });
         return view('pages.Projects.show', [
-            'project' => $project,
-            'trips' => $trips,
+            'project'           => $project,
+            'trips'             => $trips,
+            'totalProjectCost'  => $totalProjectCost,
         ]);
     }
 

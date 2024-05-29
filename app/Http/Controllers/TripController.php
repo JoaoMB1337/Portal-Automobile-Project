@@ -55,6 +55,8 @@ class TripController extends Controller
      */
     public function create(Request $request)
     {
+        $project_id = $request->input('project_id');
+
         $employees = Employee::all();
         $projects = Project::all();
         $typeTrips = TypeTrip::all();
@@ -68,7 +70,8 @@ class TripController extends Controller
             'employees' => $employees,
             'projects' => $projects,
             'typeTrips' => $typeTrips,
-            'vehicles' => $vehicles
+            'vehicles' => $vehicles,
+            'project_id' => $project_id,
         ]);
     }
 
@@ -107,7 +110,6 @@ class TripController extends Controller
             'costTypes' => CostType::all(),
             'totalCost' => $totalCost,
         ]);
-
     }
 
     /**
@@ -162,6 +164,7 @@ class TripController extends Controller
 
     public function deleteSelected(Request $request)
     {
+
 		$selected_ids = json_decode($request->input('selected_ids'),true);
         if(!empty($selected_ids)) {
             Trip::whereIn('id', $selected_ids)->delete();
