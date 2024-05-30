@@ -200,17 +200,9 @@ class EmployeeController extends Controller
 
     public function deleteSelected(Request $request)
     {
-        $selected_ids = $request->input('selected_ids');
-
-        if (is_string($selected_ids)) {
-            $selected_ids = json_decode($selected_ids, true);
-        }
-
-        if (!empty($selected_ids) && is_array($selected_ids)) {
-            $selected_ids = array_map('intval', $selected_ids);
-            Employee::whereIn('id', $selected_ids)->delete();
-        }
-        return redirect()->route('employees.index');
+        $ids = $request->input('selected_ids', []);
+        Employee::whereIn('id', $ids)->delete();
+        return redirect()->route('employees.index')->with('success', 'Funcionários excluídos com sucesso.');
     }
 
 

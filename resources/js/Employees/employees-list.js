@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const deleteForm = document.getElementById('multi-delete-form');
-    const selectedIdsField = document.getElementById('selected-ids');
     const checkboxes = document.querySelectorAll('input[name="selected_ids[]"]');
     const deleteModal = document.getElementById('deleteModal');
     const closeModalDelete = deleteModal ? deleteModal.querySelector('.close') : null;
@@ -28,22 +27,28 @@ document.addEventListener('DOMContentLoaded', function() {
     const cancelDeleteButton = document.getElementById('cancelDelete');
 
     function collectSelectedIds() {
-        let selectedIds = [];
+        // Remove old hidden inputs if any
+        const oldInputs = document.querySelectorAll('#multi-delete-form input[type="hidden"][name="selected_ids[]"]');
+        oldInputs.forEach(input => input.remove());
+
         checkboxes.forEach(checkbox => {
             if (checkbox.checked) {
-                selectedIds.push(checkbox.value);
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'selected_ids[]';
+                input.value = checkbox.value;
+                deleteForm.appendChild(input);
             }
         });
-        selectedIdsField.value = selectedIds.join(',');
     }
 
-    if (deleteForm && selectedIdsField && deleteModal && closeModalDelete && confirmDeleteButton && cancelDeleteButton) {
+    if (deleteForm && deleteModal && closeModalDelete && confirmDeleteButton && cancelDeleteButton) {
         const deleteButton = deleteForm.querySelector('button[type="submit"]');
 
         deleteButton.addEventListener('click', function(event) {
             event.preventDefault();
             collectSelectedIds();
-            if (selectedIdsField.value) {
+            if (document.querySelectorAll('#multi-delete-form input[type="hidden"][name="selected_ids[]"]').length > 0) {
                 deleteModal.style.display = 'block';
             }
         });
