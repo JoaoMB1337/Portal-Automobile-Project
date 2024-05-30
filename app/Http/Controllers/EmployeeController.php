@@ -41,7 +41,7 @@ class EmployeeController extends Controller
             });
         }
 
-        $employees = $query->orderBy('id', 'asc')->paginate(15);
+        $employees = $query->orderBy('id', 'asc')->paginate(10);
 
         return view('pages.Employees.list', [
             'employees' => $employees,
