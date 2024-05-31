@@ -42,44 +42,22 @@
             <div class="form-group">
                 <label for="project_id">Projeto:</label>
                 <select name="project_id" class="form-control @error('project_id') border-red-500 @enderror" required {{ isset($project_id) ? 'disabled' : '' }}>
-                @if (isset($project_id))
-                    <select name="project_id" class="form-control @error('project_id') border-red-500 @enderror"
-                        required disabled>
-                        @foreach ($projects as $project)
-                            <option value="{{ $project->id }}" {{ $project->id == $project_id ? 'selected' : '' }}>
-                                {{ $project->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <input type="hidden" name="project_id" value="{{ $project_id }}">
-                @else
-                    <select name="project_id" class="form-control @error('project_id') border-red-500 @enderror"
-                        required>
+                    @if (isset($project_id))
+                        <option value="{{ $project_id }}" selected>{{ $projects->firstWhere('id', $project_id)->name }}</option>
+                    @else
                         <option value="" disabled selected>Selecione um projeto</option>
                         @foreach ($projects as $project)
                             <option value="{{ $project->id }}">{{ $project->name }}</option>
                         @endforeach
-                    </select>
+                    @endif
+                </select>
+                @if (isset($project_id))
+                    <input type="hidden" name="project_id" value="{{ $project_id }}">
                 @endif
                 @error('project_id')
                     <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
-
-            {{--  <div class="form-group">
-                <label for="project_id">Projeto:</label>
-                <select name="project_id" class="form-control @error('project_id') border-red-500 @enderror" required
-                    {{ isset($project_id) ? 'disabled' : '' }}>
-                    <option value="" disabled selected>Selecione um projeto</option>
-                    @foreach ($projects as $project)
-                        <option value="{{ $project->id }}" {{ isset($project_id) && $project->id == $project_id ? 'selected' : '' }}>
-                            {{ $project->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            </div> --}}
 
             <div class="form-group">
                 <label for="type_trip_id">Tipo de viagem:</label>
