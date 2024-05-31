@@ -17,7 +17,8 @@ export default defineConfig({
                 'resources/js/Employees/employees-edit.js',
 
                 'resources/js/Vehicles/vehicles-create.js',
-
+                'resources/js/Vehicles/vehicles-list.js',  // Adicionando vehicles-list.js aqui
+                
                 'resources/css/Projects/project-edit.css',
 
                 'resources/css/Trips/trip-create.css',
