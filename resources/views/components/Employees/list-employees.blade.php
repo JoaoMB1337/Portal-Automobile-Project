@@ -72,6 +72,10 @@
         </table>
     </div>
 </div>
+<div class="flex justify-center mr-10 ">
+    {{ $employees->links() }}
+</div>
+
 
 <!-- Botão "Adicionar" com opções -->
 <div class="add-button-container">

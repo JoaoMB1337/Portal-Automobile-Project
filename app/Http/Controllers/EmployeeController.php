@@ -41,7 +41,7 @@ class EmployeeController extends Controller
             });
         }
 
-        $employees = $query->orderBy('id', 'asc')->paginate(15);
+        $employees = $query->orderBy('id', 'asc')->paginate(10);
 
         return view('pages.Employees.list', [
             'employees' => $employees,
@@ -200,19 +200,12 @@ class EmployeeController extends Controller
 
     public function deleteSelected(Request $request)
     {
-        if ($request->has('selected_ids')) {
-
-
-
-            if (!empty($request->selected_ids)) {
-
-                Employee::whereIn('id', $request->selected_ids)->delete();
-            }
-        }
-
-
-        return redirect()->route('employees.index');
+        $ids = $request->input('selected_ids', []);
+        Employee::whereIn('id', $ids)->delete();
+        return redirect()->route('employees.index')->with('success', 'Funcionários excluídos com sucesso.');
     }
+
+
 
     public function exportCsv($id)
     {
