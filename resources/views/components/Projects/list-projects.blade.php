@@ -39,7 +39,7 @@
             <i class="fas fa-trash-alt text-lg"></i>
         </button>
     </form>
-    @include('components.modals.modal-delete')
+    @include('components.Modals.modal-delete')
 
     <a href="{{ route('projects.create') }}" class="add-button">
         <i class="fas fa-plus"></i>

@@ -35,7 +35,7 @@
         </button>
     </form>
 
-    @include('components.modals.modal-delete')
+    @include('components.Modals.modal-delete')
 
     <div class="list-table">
         <table>
