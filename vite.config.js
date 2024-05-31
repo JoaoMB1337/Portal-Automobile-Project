@@ -22,9 +22,7 @@ export default defineConfig({
 
                 'resources/css/Trips/trip-create.css',
 
-
-
-
+                'resources/css/Modals/Modal.css', 
             ],
             refresh: true,
         }),
