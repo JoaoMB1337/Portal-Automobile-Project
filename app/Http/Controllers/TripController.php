@@ -80,6 +80,19 @@ class TripController extends Controller
      */
     public function store(StoreTripRequest $request)
     {
+        \Log::info('Request Data:', $request->all());
+
+        $validatedData = $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'destination' => 'required|string|max:255',
+            'purpose' => 'required|string',
+            'project_id' => 'required|exists:projects,id',
+            'type_trip_id' => 'required|exists:type_trips,id',
+            'employee_id' => 'required|exists:employees,id',
+            'vehicle_id' => 'required|exists:vehicles,id'
+        ]);
+
         $trip = new Trip();
         $trip->start_date = $request->start_date;
         $trip->end_date = $request->end_date;
@@ -89,8 +102,17 @@ class TripController extends Controller
         $trip->type_trip_id = $request->type_trip_id;
         $trip->save();
 
-        $trip->employees()->attach($request->employee_id);
-        $trip->vehicles()->attach($request->vehicle_id);
+
+        /* 
+            O QUE ESTAVA ANTES
+
+            $trip->employees()->attach($request->employee_id);
+            $trip->vehicles()->attach($request->vehicle_id);
+        */
+
+        /* ADICIONEI*/
+        $trip->employees()->attach($validatedData['employee_id']);
+        $trip->vehicles()->attach($validatedData['vehicle_id']);
 
         return redirect()->route('trips.index');
     }
@@ -165,8 +187,8 @@ class TripController extends Controller
     public function deleteSelected(Request $request)
     {
 
-		$selected_ids = json_decode($request->input('selected_ids'),true);
-        if(!empty($selected_ids)) {
+        $selected_ids = json_decode($request->input('selected_ids'), true);
+        if (!empty($selected_ids)) {
             Trip::whereIn('id', $selected_ids)->delete();
             return redirect()->route('trips.index');
         }
