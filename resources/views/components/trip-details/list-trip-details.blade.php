@@ -28,7 +28,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach ($tripDetails as $tripDetail)
+            @forelse ($tripDetails as $tripDetail)
                 @php
                     $employeeName = $tripDetail->trip && $tripDetail->trip->employee ? $tripDetail->trip->employee->name : 'Funcionário não encontrado';
                     $tripName = $tripDetail->trip ? $tripDetail->trip->destination : 'Viagem não encontrada';
@@ -45,12 +45,13 @@
                         <a href="{{ route('trip-details.show', $tripDetail->id) }}" class="text-indigo-600 hover:text-indigo-900">Detalhes</a>
                     </td>
                 </tr>
-            @endforeach
-            @if($tripDetails->isEmpty())
+            @empty
                 <tr>
-                    <td colspan="6" class="text-sm text-gray-500 px-6 py-4 whitespace-nowrap">Nenhum detalhe de viagem encontrado.</td>
+                    <td colspan="9" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                        Nenhum detalhe encontrado.
+                    </td>
                 </tr>
-            @endif
+            @endforelse
             </tbody>
         </table>
     </div>

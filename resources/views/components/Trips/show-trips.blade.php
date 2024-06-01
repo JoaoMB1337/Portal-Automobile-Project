@@ -1,9 +1,6 @@
 <div class="container mx-auto px-4 py-8">
 
-    <a href="{{ url('trips') }}" class="text-indigo-600 hover:text-indigo-900 flex items-center mb-4"
-        title="Voltar para trás">
-        <i class="fas fa-arrow-left mr-2"></i> Voltar
-    </a>
+
     <div class="bg-white shadow-md rounded-lg overflow-hidden">
         <div class="px-6 py-4">
             <a href="{{ route('trips.index') }}">

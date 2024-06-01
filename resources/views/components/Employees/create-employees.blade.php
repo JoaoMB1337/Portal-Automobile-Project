@@ -8,7 +8,7 @@
     <form method="POST" action="{{ route('employees.store') }}" class="space-y-6">
         @csrf
         <div>
-            <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Name</label>
+            <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nome</label>
             <div class="flex">
                 <i class="fas fa-user icon"></i>
                 <input id="name" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('name') border-red-500 @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -18,7 +18,7 @@
             @enderror
         </div>
         <div>
-            <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Employee Number</label>
+            <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Número de funcionário</label>
             <div class="flex">
                 <i class="fas fa-id-badge icon"></i>
                 <input id="employee_number" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('employee_number') border-red-500 @enderror" name="employee_number" value="{{ old('employee_number') }}" required>
@@ -29,13 +29,13 @@
 </div>
 
         <div>
-            <label for="gender" class="block text-sm font-semibold text-gray-700 mb-2">Gender</label>
+            <label for="gender" class="block text-sm font-semibold text-gray-700 mb-2">Género</label>
             <div class="flex">
                 <i class="fas fa-venus-mars icon"></i>
                 <select id="gender" class="form-control w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('gender') border-red-500 @enderror" name="gender" required>
-                    <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
-                    <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
-                    <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Other</option>
+                    <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Masculino</option>
+                    <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Feminino</option>
+                    <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Outro</option>
                 </select>
             </div>
             @error('gender')
@@ -44,7 +44,7 @@
         </div>
 
         <div>
-            <label for="birth_date" class="block text-sm font-semibold text-gray-700 mb-2">Birth Date</label>
+            <label for="birth_date" class="block text-sm font-semibold text-gray-700 mb-2">Data de Nascimento</label>
             <div class="flex">
                 <i class="fas fa-calendar-alt icon"></i>
                 <input id="birth_date" type="date" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('birth_date') border-red-500 @enderror" name="birth_date" value="{{ old('birth_date') }}" required>
@@ -55,7 +55,7 @@
         </div>
 
         <div>
-            <label for="CC" class="block text-sm font-semibold text-gray-700 mb-2">CC</label>
+            <label for="CC" class="block text-sm font-semibold text-gray-700 mb-2">Número de cartão de cidadão</label>
             <div class="flex">
                 <i class="fas fa-id-card icon"></i>
                 <input id="CC" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('CC') border-red-500 @enderror" name="CC" value="{{ old('CC') }}" required>
@@ -66,7 +66,7 @@
         </div>
 
         <div>
-            <label for="NIF" class="block text-sm font-semibold text-gray-700 mb-2">NIF</label>
+            <label for="NIF" class="block text-sm font-semibold text-gray-700 mb-2">Número de identificação fiscal </label>
             <div class="flex">
                 <i class="fas fa-id-card icon"></i>
                 <input id="NIF" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('NIF') border-red-500 @enderror" name="NIF" value="{{ old('NIF') }}" required>
@@ -77,7 +77,7 @@
         </div>
 
         <div>
-            <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">Address</label>
+            <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">Morada</label>
             <div class="flex">
                 <i class="fas fa-home icon"></i>
                 <input id="address" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('address') border-red-500 @enderror" name="address" value="{{ old('address') }}">
@@ -88,7 +88,7 @@
         </div>
 
         <div>
-            <label for="employee_role_id" class="block text-sm font-semibold text-gray-700 mb-2">Employee Role</label>
+            <label for="employee_role_id" class="block text-sm font-semibold text-gray-700 mb-2">Função do funcionário</label>
             <div class="flex">
                 <i class="fas fa-briefcase icon"></i>
                 <select id="employee_role_id" class="form-control w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('employee_role_id') border-red-500 @enderror" name="employee_role_id" required>
@@ -104,7 +104,7 @@
 
         <!-- Email Address Field -->
         <div>
-            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
             <div class="flex">
                 <i class="fas fa-envelope icon"></i>
                 <input id="email" type="email" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('email') border-red-500 @enderror" name="email" value="{{ old('email') }}">
@@ -116,7 +116,7 @@
 
         <!-- Phone Number Field -->
         <div>
-            <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+            <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">Número de telemóvel</label>
             <div class="flex">
                 <i class="fas fa-phone icon"></i>
                 <input id="phone" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('phone') border-red-500 @enderror" name="phone" value="{{ old('phone') }}">
@@ -127,7 +127,7 @@
         </div>
 
         <div>
-            <label for="contacts" class="block text-sm font-semibold text-gray-700 mb-2">Contacts</label>
+            <label for="contacts" class="block text-sm font-semibold text-gray-700 mb-2">Contactos</label>
             <div id="contacts-container">
                 <div class="flex mb-2">
                     <select name="contacts[0][type]" class="form-select mr-2">
@@ -138,12 +138,12 @@
                     <input type="text" name="contacts[0][value]" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200">
                 </div>
             </div>
-            <button type="button" id="add-contact-btn" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn">Add Contact</button>
+            <button type="button" id="add-contact-btn" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn">Adicionar contacto</button>
         </div>
 
 
         <div>
-            <label for="driving_licenses" class="block text-sm font-semibold text-gray-700 mb-2">Driving Licenses</label>
+            <label for="driving_licenses" class="block text-sm font-semibold text-gray-700 mb-2">Carta de condução</label>
             <div class="flex flex-wrap gap-4">
                 @foreach($drivingLicenses as $license)
                     <div class="flex items-center">
@@ -169,7 +169,7 @@
         </div>
 
         <div>
-            <label for="password-confirm" class="block text-sm font-semibold text-gray-700 mb-2">Confirm Password</label>
+            <label for="password-confirm" class="block text-sm font-semibold text-gray-700 mb-2">Confirmação de Password</label>
             <div class="flex">
                 <i class="fas fa-lock icon"></i>
                 <input id="password-confirm" type="password" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200" name="password_confirmation" required autocomplete="new-password">

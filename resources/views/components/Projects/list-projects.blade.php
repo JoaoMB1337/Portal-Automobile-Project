@@ -95,7 +95,9 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7">Nenhum projeto encontrado.</td>
+                    <td colspan="7" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                        Nenhum projeto encontrado.
+                    </td>
                 </tr>
             @endforelse
             </tbody>
