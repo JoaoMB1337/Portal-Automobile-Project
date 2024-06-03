@@ -7,14 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreEmployeeRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
@@ -26,8 +18,8 @@ class StoreEmployeeRequest extends FormRequest
             'employee_number' => ['required', 'numeric', 'unique:employees'],
             'gender' => ['required', 'string', 'in:male,female,other'],
             'birth_date' => ['required', 'date', 'before_or_equal:today - 100 years'],
-            'CC' => ['required', 'numeric', 'digits:9', 'unique:employees', 'different:NIF'], 
-            'NIF' => ['required', 'numeric', 'digits:9', 'unique:employees', 'different:CC'], 
+            'CC' => ['required', 'numeric', 'digits:9', 'unique:employees', 'different:NIF'],
+            'NIF' => ['required', 'numeric', 'digits:9', 'unique:employees', 'different:CC'],
             'address' => ['string', 'max:255', 'nullable'],
             'employee_role_id' => ['required', 'integer', 'exists:employee_roles,id'],
             'phone_number' => ['required', 'numeric', 'digits_between:9,12'],
