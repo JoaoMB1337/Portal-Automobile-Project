@@ -85,10 +85,11 @@
                     <td>{{ $project->country->name }}</td>
                     <td>
                         <a href="{{ route('trips.create', ['project_id' => $project->id]) }}"
-                           class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-700 ">
+                        class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-700">
                             Adicionar Viagem
                         </a>
                     </td>
+
 
                     <td>
                         @if(Auth::check() && Auth::user()->employee_role_id == 2)
@@ -108,7 +109,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                    <td colspan="8" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
                         Nenhum projeto encontrado.
                     </td>
                 </tr>
