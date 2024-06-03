@@ -105,7 +105,7 @@
                     <label for="district" class="block text-sm font-semibold text-gray-700 mb-2">Distrito</label>
                     <select id="district" name="district"
                         class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('district') border-red-500 @enderror"
-                        required autocomplete="district" autofocus>
+                         autocomplete="district" autofocus>
                         <option value="" selected>Selecione o Distrito</option>
                     </select>
                     @error('district')

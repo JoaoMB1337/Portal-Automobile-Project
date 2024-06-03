@@ -2,10 +2,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <div class="container mx-auto px-4 py-8">
-    <a href="{{ url('projects') }}" class="text-indigo-600 hover:text-indigo-900 flex items-center mb-4"
-        title="Voltar para trás">
-        <i class="fas fa-arrow-left mr-2"></i> Voltar
-    </a>
+    
     <div class="bg-white shadow-md rounded-lg overflow-hidden">
         <div class="px-6 py-4">
             <a href="{{ route('projects.index') }}">
@@ -36,7 +33,7 @@
                 </div>
                 <div class="bg-white px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">Distrito</dt>
-                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $project->district->name }}</dd>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><td>{{ optional($project->district)->name ?? 'Sem Distrito' }}</td></dd>
                 </div>
                 <div class="bg-gray-50 px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">País</dt>

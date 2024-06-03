@@ -81,7 +81,7 @@
                     <td><a href="{{ route('projects.show', $project->id) }}">{{ $project->name }}</a></td>
                     <td>{{ $project->address }}</td>
                     <td>{{ $project->projectstatus->status_name }}</td>
-                    <td>{{ $project->district->name }}</td>
+                    <td>{{ optional($project->district)->name ?? 'Sem Distrito' }}</td>
                     <td>{{ $project->country->name }}</td>
                     <td>
                         <a href="{{ route('trips.create', ['project_id' => $project->id]) }}"
@@ -89,8 +89,6 @@
                             Adicionar Viagem
                         </a>
                     </td>
-
-
                     <td>
                         @if(Auth::check() && Auth::user()->employee_role_id == 2)
                             <a href="{{ route('projects.edit', $project->id) }}"><i class="fas fa-edit"></i></a>
