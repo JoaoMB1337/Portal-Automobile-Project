@@ -1,5 +1,7 @@
 @extends('components.master.main')
 
+@if(Auth::check() && Auth::user()->employee_role_id == 2)
+
 <div class=" mx-auto pl-10 lg:pl-64">
 
     <div class="p-6">
@@ -209,4 +211,33 @@
         </div>
     </div>
 </div>
+@else
+
+<div class=" mx-auto pl-10 lg:pl-64">
+
+    <div class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+            <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
+                <div class="flex justify-between mb-6">
+                    <div>
+                        <div class="flex items center mb-1">
+
+                            <div class=" font-semibold">
+                                <p class="text-gray-800 font-bold">{{ Auth::user()->name }}</p>
+                                <p class="text-gray-600">{{ Auth::user()->employee_number }}</p>
+                                <p class="text-gray-600">{{ Auth::user()->role->name }}</p>
+                                <br>
+                                <a href="{{ route('employees.show', Auth::user()->id) }}" class="text-[#f84525] font-medium text-sm hover:text-red-800">Show profile</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
+
+
 

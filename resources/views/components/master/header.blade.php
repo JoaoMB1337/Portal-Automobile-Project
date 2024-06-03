@@ -39,31 +39,46 @@
 
     <div class="overflow-y-auto flex-1">
         <ul class="py-4">
+
+            @if(Auth::check() && Auth::user()->employee_role_id == 2)
             <li>
                 <a href="/home"
                     class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Home</a>
             </li>
+            @endif
+
+            @if(Auth::check() && Auth::user()->employee_role_id == 2)
             <li>
                 <a href="/employees"
                     class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Funcionarios</a>
             </li>
+            @endif
+
+            @if(Auth::check() && Auth::user()->employee_role_id == 2)
             <li>
                 <a href="/vehicles"
                     class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Veiculos</a>
             </li>
+            @endif
 
             <li>
                 <a href="/projects"
                     class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Projetos</a>
             </li>
+
             <li>
                 <a href="/trips"
                     class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Viagens</a>
             </li>
+
+            @if(Auth::check() && Auth::user()->employee_role_id == 2)
             <li>
                 <a href="/insurances"
                     class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Seguros</a>
             </li>
+            @endif
+
+
             <li>
                 <a href="/trip-details"
                     class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Detalhes Viagem</a>
