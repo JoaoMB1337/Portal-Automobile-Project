@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Employee;
 use Illuminate\Auth\Access\Response;
 use App\Models\Vehicle;
 use App\Models\User;
@@ -11,56 +12,68 @@ class VehiclePolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(Employee $employee): bool
     {
-        //
+        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Vehicle $vehicle): bool
+    public function view( Employee $employee): bool
     {
         //
+        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
+
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(Employee $employee): bool
     {
         //
+        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
+
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Vehicle $vehicle): bool
+    public function update( Employee $employee): bool
     {
         //
+        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
+
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Vehicle $vehicle): bool
+    public function delete( Employee $employee): bool
     {
         //
+        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
+
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Vehicle $vehicle): bool
+    public function restore( Employee $employee): bool
     {
         //
+        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
+
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Vehicle $vehicle): bool
+    public function forceDelete( Employee $employee): bool
     {
         //
+        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
+
     }
 }

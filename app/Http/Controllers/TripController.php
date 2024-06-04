@@ -13,6 +13,8 @@ use App\Models\Project;
 use App\Models\Employee;
 use App\Models\TypeTrip;
 use App\Models\Vehicle;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 
 
 class TripController extends Controller
@@ -22,7 +24,6 @@ class TripController extends Controller
      */
     public function index(Request $request)
     {
-
 
         $query = Trip::query();
 
@@ -55,6 +56,7 @@ class TripController extends Controller
      */
     public function create(Request $request)
     {
+
         $project_id = $request->input('project_id');
 
         $employees = Employee::all();
@@ -103,7 +105,7 @@ class TripController extends Controller
         $trip->save();
 
 
-        /* 
+        /*
             O QUE ESTAVA ANTES
 
             $trip->employees()->attach($request->employee_id);
@@ -122,6 +124,7 @@ class TripController extends Controller
      */
     public function show(Trip $trip)
     {
+
         $totalCost = $trip->tripDetails->sum('cost');
         return view('pages.Trips.show', [
             'trip' => $trip,
@@ -139,6 +142,7 @@ class TripController extends Controller
      */
     public function edit(Trip $trip)
     {
+
         $trip = Trip::find($trip->id);
         $employees = Employee::all();
         $projects = Project::all();
@@ -180,6 +184,7 @@ class TripController extends Controller
      */
     public function destroy(Trip $trip)
     {
+
         $trip->delete();
         return redirect()->route('trips.index');
     }

@@ -1,3 +1,4 @@
+/* Estilos para todos os tamanhos de tela */
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin: 0;
@@ -5,7 +6,7 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 100%;
     margin: auto;
     padding: 20px;
 }
@@ -44,28 +45,15 @@ body {
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5);
     padding-top: 60px;
-    animation: fadeIn 0.5s;
-}
-
-@keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity: 1;}
 }
 
 .modal-content {
     background-color: #e3e0e0;
-    margin: 5% auto;
+    margin: 10% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
+    max-width: 90%;
     border-radius: 10px;
-    animation: slideIn 0.2s;
-}
-
-@keyframes slideIn {
-    from {transform: translateY(-50px);}
-    to {transform: translateY(0);}
 }
 
 .close {
@@ -85,9 +73,7 @@ body {
 .modal form {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    padding: 5px;
-    margin-right: 5px;
+    gap: 10px;
 }
 
 .modal input[type="text"],
@@ -99,7 +85,6 @@ body {
 }
 
 .modal button[type="submit"] {
-    margin-top: 10px;
     padding: 10px;
     background-color: #232f3a;
     color: #fff;
@@ -139,8 +124,9 @@ body {
 .list-table tr:hover {
     background-color: #f3f1f1;
 }
-.list-table tr{
-background-color: #f6f8fa;
+
+.list-table tr {
+    background-color: #f6f8fa;
 }
 
 .add-button {
@@ -174,4 +160,22 @@ background-color: #f6f8fa;
 
 .delete-link:hover {
     color: #a71d2a;
+}
+
+/* Media queries para dispositivos móveis */
+@media only screen and (max-width: 600px) {
+    .container {
+        margin-top: 20px;
+        margin-right: 50px;
+
+        padding: 10px;
+
+    }
+    .list-table th,
+    .list-table td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+
+    }
 }
