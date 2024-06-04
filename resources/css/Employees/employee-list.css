@@ -162,7 +162,7 @@ body {
     color: #a71d2a;
 }
 
-/* Media queries para dispositivos móveis */
+
 @media only screen and (max-width: 600px) {
     .container {
         margin-top: 20px;
@@ -179,3 +179,6 @@ body {
 
     }
 }
+
+
+

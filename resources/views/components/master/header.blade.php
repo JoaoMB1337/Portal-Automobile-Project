@@ -2,13 +2,35 @@
     @media (max-width: 768px) {
         #sidebar {
             transform: translateX(-100%);
+            width: 100vw;
         }
 
         #sidebar.show {
             transform: translateX(0);
         }
+
+        #sidebar a {
+            font-size: 30px;
+            padding: 10px 20px;
+        }
+
+        .content {
+            margin-top: 64px;
+        }
+        .logo {
+            width: 3rem;
+            height: 3rem;
+        }
     }
 
+    .logo {
+        width: 4rem;
+        height: 4rem;
+        background-color: white;
+        border-radius: 50%;
+        object-cover: cover;
+        flex-shrink: 0;
+    }
     .transparent-button {
         background-color: transparent;
         border: none;
@@ -24,16 +46,15 @@
     #sidebar a:hover {
         background-color: #4a5568;
     }
-
-
 </style>
 
 <nav id="sidebar"
     class="bg-gray-800 h-full fixed w-64 top-0 left-0 flex flex-col md:w-56 lg:w-64 transition-all duration-300 ease-in-out transform -translate-x-full md:translate-x-0">
     <div class="px-4 py-8 border-b border-gray-700 flex items-center">
-        <div class="w-16 h-15 bg-white rounded-full flex-shrink-0 mr-2">
-            <img src="{{ asset('images/App-logo.png') }}" alt="Logo" class="w-full h-full object-cover rounded-full">
+        <div class="w-16 h-15 bg-white rounded-full flex-shrink-0 mr-2 logo">
+            <img src="{{ asset('images/App-logo.png') }}" alt="Logo" class="w-full h-full object-cover rounded-full logo">
         </div>
+
         <a href="#" class="text-white text-xl font-bold">InnoDrive</a>
     </div>
 
