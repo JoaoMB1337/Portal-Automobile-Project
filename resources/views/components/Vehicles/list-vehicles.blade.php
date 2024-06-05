@@ -74,7 +74,7 @@
                     <td>
                         <input type="checkbox" name="selected_ids[]" value="{{ $vehicle->id }}" class="form-checkbox">
                     </td>
-                    <td><a href="{{ url('vehicles/' . $vehicle->id) }}">{{ $vehicle->plate }}</a></td>
+                    <td>{{ $vehicle->plate }}</a></td>
                     <td>{{ $vehicle->brand->name }}</td>
                     <td>{{ $vehicle->carCategory->category }}</td>
                     <td>{{ $vehicle->fuelType->type }}</td>

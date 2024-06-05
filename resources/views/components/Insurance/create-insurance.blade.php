@@ -15,7 +15,7 @@
                 @csrf
 
                 <div>
-                    <label for="insurance_company" class="block text-sm font-semibold text-gray-700 mb-2">Insurance Company</label>
+                    <label for="insurance_company" class="block text-sm font-semibold text-gray-700 mb-2">Companhia de seguros</label>
                     <input id="insurance_company" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('insurance_company') border-red-500 @enderror" name="insurance_company" value="{{ old('insurance_company') }}" required>
                     @error('insurance_company')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -23,7 +23,7 @@
                 </div>
 
                 <div>
-                    <label for="policy_number" class="block text-sm font-semibold text-gray-700 mb-2">Policy Number</label>
+                    <label for="policy_number" class="block text-sm font-semibold text-gray-700 mb-2">Número da apólice de seguro</label>
                     <input id="policy_number" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('policy_number') border-red-500 @enderror" name="policy_number" value="{{ old('policy_number') }}" required>
                     @error('policy_number')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -31,7 +31,7 @@
                 </div>
 
                 <div>
-                    <label for="start_date" class="block text-sm font-semibold text-gray-700 mb-2">Start Date</label>
+                    <label for="start_date" class="block text-sm font-semibold text-gray-700 mb-2">Data de Inicio</label>
                     <input id="start_date" type="date" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('start_date') border-red-500 @enderror" name="start_date" value="{{ old('start_date') }}" required>
                     @error('start_date')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -39,7 +39,7 @@
                 </div>
 
                 <div>
-                    <label for="end_date" class="block text-sm font-semibold text-gray-700 mb-2">End Date</label>
+                    <label for="end_date" class="block text-sm font-semibold text-gray-700 mb-2">Data de Fim</label>
                     <input id="end_date" type="date" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('end_date') border-red-500 @enderror" name="end_date" value="{{ old('end_date') }}" required>
                     @error('end_date')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -47,7 +47,7 @@
                 </div>
 
                 <div>
-                    <label for="cost" class="block text-sm font-semibold text-gray-700 mb-2">Cost</label>
+                    <label for="cost" class="block text-sm font-semibold text-gray-700 mb-2">Custo total</label>
                     <input id="cost" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('cost') border-red-500 @enderror" name="cost" value="{{ old('cost') }}" required>
                     @error('cost')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="vehicle_plate" class="block text-sm font-semibold text-gray-700 mb-2">Plate</label>
+                    <label for="vehicle_plate" class="block text-sm font-semibold text-gray-700 mb-2">Matrícula</label>
                     <input id="vehicle_plate" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('vehicle_plate') border-red-500 @enderror" name="vehicle_plate" value="{{ old('vehicle_plate') }}" required>
                     @error('vehicle_plate')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>

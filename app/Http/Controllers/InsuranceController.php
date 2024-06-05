@@ -9,15 +9,20 @@ use App\Http\Requests\UpdateInsuranceRequest;
 use Illuminate\Http\Request;
 use App\Models\Vehicle;
 use Carbon\Carbon;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 
 
 class InsuranceController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Insurance::class);
 
         // Obtém todos os seguros
         $query = Insurance::query();
@@ -58,6 +63,8 @@ class InsuranceController extends Controller
     public function create()
     {
         //
+        $this->authorize('create', Insurance::class);
+
         return view('pages.Insurance.create');
     }
 
@@ -106,7 +113,8 @@ class InsuranceController extends Controller
      */
     public function show(Insurance $insurance)
     {
-        //
+        $this -> authorize('view', $insurance);
+
         return view('pages.Insurance.show', compact('insurance'));
     }
 
@@ -115,7 +123,9 @@ class InsuranceController extends Controller
      */
     public function edit(Insurance $insurance)
     {
-        //
+
+        $this->authorize('update', $insurance);
+
         return view('pages.Insurance.edit', compact('insurance'));
 
     }
@@ -161,7 +171,9 @@ class InsuranceController extends Controller
      */
     public function destroy(Insurance $insurance)
     {
-        //
+
+        $this->authorize('delete', $insurance);
+
         $insurance->delete();
         return redirect()->route('insurances.index');
     }

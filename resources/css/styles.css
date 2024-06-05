@@ -1,0 +1,7 @@
+@media (max-width: 640px) {
+    .btn-projects {
+        width: auto !important;
+        padding: 0.25rem 0.5rem !important;
+        font-size: 0.75rem !important;
+    }
+}

@@ -1,4 +1,5 @@
 <div class="container">
+    @if(Auth::check() && Auth::user()->isAdmin())
 
     <div class="form-container">
         <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
@@ -15,7 +16,7 @@
             </form>
         </div>
     </div>
-
+    @endif
     <div class="list-table">
         <table>
             <thead>
@@ -24,11 +25,12 @@
                 <th>Tipo de Custo</th>
                 <th>Custo Total</th>
                 <th>Viagem</th>
+
                 <th>Ações</th>
             </tr>
             </thead>
             <tbody>
-            @foreach ($tripDetails as $tripDetail)
+            @forelse ($tripDetails as $tripDetail)
                 @php
                     $employeeName = $tripDetail->trip && $tripDetail->trip->employee ? $tripDetail->trip->employee->name : 'Funcionário não encontrado';
                     $tripName = $tripDetail->trip ? $tripDetail->trip->destination : 'Viagem não encontrada';
@@ -45,15 +47,17 @@
                         <a href="{{ route('trip-details.show', $tripDetail->id) }}" class="text-indigo-600 hover:text-indigo-900">Detalhes</a>
                     </td>
                 </tr>
-            @endforeach
-            @if($tripDetails->isEmpty())
+            @empty
                 <tr>
-                    <td colspan="6" class="text-sm text-gray-500 px-6 py-4 whitespace-nowrap">Nenhum detalhe de viagem encontrado.</td>
+                    <td colspan="9" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                        Nenhum detalhe encontrado.
+                    </td>
                 </tr>
-            @endif
+            @endforelse
             </tbody>
         </table>
     </div>
-
+        @if(Auth::check() && Auth::user()->isAdmin())
     <a href="{{ route('trip-details.create') }}" class="add-button"><i class="fas fa-plus"></i></a>
+    @endif
 </div>
