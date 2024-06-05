@@ -22,22 +22,21 @@ class StoreTripRequest extends FormRequest
     public function rules()
     {
         return [
-
+            'start_date' => 'nullable|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
             'destination' => 'required|string|max:255',
-            'purpose' => 'required|string|max:500',
-            'employee_id' => 'required|exists:employees,id',
+            'purpose' => 'required|string',
+            'project_id' => 'required|exists:projects,id',
             'type_trip_id' => 'required|exists:type_trips,id',
-            'project_id' => 'nullable|exists:projects,id',
-            'vehicle_id' => 'nullable|exists:vehicles,id',
+            'employee_id' => 'required|exists:employees,id',
+            'vehicle_id' => 'required|exists:vehicles,id',
         ];
     }
 
     public function messages()
     {
         return [
-            'start_date.required' => 'A data de início é obrigatória.',
             'start_date.date' => 'A data de início deve ser uma data válida.',
-            'start_date.after' => 'A data de início deve ser uma data futura.',
             'end_date.required' => 'A data de término é obrigatória.',
             'end_date.date' => 'A data de término deve ser uma data válida.',
             'end_date.after_or_equal' => 'A data de término deve ser igual ou posterior à data de início.',
@@ -52,6 +51,7 @@ class StoreTripRequest extends FormRequest
             'type_trip_id.required' => 'O tipo de viagem é obrigatório.',
             'type_trip_id.exists' => 'O ID do tipo de viagem deve existir na tabela de tipos de viagem.',
             'project_id.exists' => 'O ID do projeto deve existir na tabela de projetos, se fornecido.',
+            'vehicle_id.exists' => 'O ID do veículo deve existir na tabela de veículos, se fornecido.',
         ];
     }
 }

@@ -33,9 +33,7 @@
             <thead>
             <tr>
                 <th>
-                    <label for="select-all-checkbox">
-                        <input type="checkbox" id="select-all-checkbox" class="form-checkbox">
-                    </label>
+                    <!-- Checkbox removed from here -->
                 </th>
                 <th>Data de Início</th>
                 <th>Data de Fim</th>
@@ -83,4 +81,3 @@
         </table>
     </div>
     <a href="{{ route('trips.create') }}" class="add-button"><i class="fas fa-plus"></i></a>
-</div>
