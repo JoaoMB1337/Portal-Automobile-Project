@@ -10,6 +10,7 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/css/app.css',
 
+
                 'resources/css/Employees/employee-list.css',
                 'resources/js/Employees/employees-list.js',
                 'resources/css/Employees/employee-create.css',
@@ -17,13 +18,15 @@ export default defineConfig({
                 'resources/js/Employees/employees-edit.js',
 
                 'resources/js/Vehicles/vehicles-create.js',
-                'resources/js/Vehicles/vehicles-list.js',  // Adicionando vehicles-list.js aqui
-                
+                'resources/js/Vehicles/vehicles-list.js',
+
                 'resources/css/Projects/project-edit.css',
 
                 'resources/css/Trips/trip-create.css',
 
-                'resources/css/Modals/Modal.css', 
+                'resources/css/Modals/Modal.css',
+                'resources/css/styles.css',
+
             ],
             refresh: true,
         }),

@@ -9,10 +9,13 @@ use App\Http\Requests\StoreTripRequest;
 use App\Http\Requests\UpdateTripRequest;
 use Illuminate\Http\Request;
 
+
 use App\Models\Project;
 use App\Models\Employee;
 use App\Models\TypeTrip;
 use App\Models\Vehicle;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 
 
 class TripController extends Controller
@@ -22,7 +25,6 @@ class TripController extends Controller
      */
     public function index(Request $request)
     {
-
 
         $query = Trip::query();
 
@@ -55,6 +57,7 @@ class TripController extends Controller
      */
     public function create(Request $request)
     {
+
         $project_id = $request->input('project_id');
 
         $employees = Employee::all();
@@ -82,37 +85,28 @@ class TripController extends Controller
     {
         \Log::info('Request Data:', $request->all());
 
-        $validatedData = $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'destination' => 'required|string|max:255',
-            'purpose' => 'required|string',
-            'project_id' => 'required|exists:projects,id',
-            'type_trip_id' => 'required|exists:type_trips,id',
-            'employee_id' => 'required|exists:employees,id',
-            'vehicle_id' => 'required|exists:vehicles,id'
-        ]);
+        $validatedData = $request->validated();
 
         $trip = new Trip();
-        $trip->start_date = $request->start_date;
-        $trip->end_date = $request->end_date;
-        $trip->destination = $request->destination;
-        $trip->purpose = $request->purpose;
-        $trip->project_id = $request->project_id;
-        $trip->type_trip_id = $request->type_trip_id;
+        $trip->start_date = $validatedData['start_date'] ?? null;
+        $trip->end_date = $validatedData['end_date'];
+        $trip->destination = $validatedData['destination'];
+        $trip->purpose = $validatedData['purpose'];
+        $trip->project_id = $validatedData['project_id'];
+        $trip->type_trip_id = $validatedData['type_trip_id'];
         $trip->save();
 
+        if (isset($validatedData['employee_id'])) {
+            $trip->employees()->attach($validatedData['employee_id']);
+        }
 
-        /* 
-            O QUE ESTAVA ANTES
-
-            $trip->employees()->attach($request->employee_id);
-            $trip->vehicles()->attach($request->vehicle_id);
-        */
-
-        /* ADICIONEI*/
-        $trip->employees()->attach($validatedData['employee_id']);
-        $trip->vehicles()->attach($validatedData['vehicle_id']);
+        if (isset($validatedData['vehicle_id'])) {
+            $trip->vehicles()->attach($validatedData['vehicle_id']);
+        }
+        
+        // /* ADICIONEI*/
+        // $trip->employees()->attach($validatedData['employee_id']);
+        // $trip->vehicles()->attach($validatedData['vehicle_id']);
 
         return redirect()->route('trips.index');
     }
@@ -122,6 +116,7 @@ class TripController extends Controller
      */
     public function show(Trip $trip)
     {
+
         $totalCost = $trip->tripDetails->sum('cost');
         return view('pages.Trips.show', [
             'trip' => $trip,
@@ -139,6 +134,7 @@ class TripController extends Controller
      */
     public function edit(Trip $trip)
     {
+
         $trip = Trip::find($trip->id);
         $employees = Employee::all();
         $projects = Project::all();
@@ -159,17 +155,38 @@ class TripController extends Controller
 
     public function update(Request $request, $id)
     {
+        $validatedData = $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'destination' => 'required|string|max:255',
+            'purpose' => 'required|string|max:500',
+            'project_id' => 'required|integer|exists:projects,id',
+            'type_trip_id' => 'required|integer|exists:type_trips,id',
+            'employee_id' => 'nullable|integer|exists:employees,id',
+            'vehicle_id' => 'nullable|integer|exists:vehicles,id',
+        ]);
+
+        if ($validatedData['end_date'] < $validatedData['start_date']) {
+            return redirect()->back()->withInput()->withErrors(['end_date' => 'A data de fim deve ser posterior à data de início.']);
+        }
+
         $trip = Trip::findOrFail($id);
-        $trip->start_date = $request->start_date;
-        $trip->end_date = $request->end_date;
-        $trip->destination = $request->destination;
-        $trip->purpose = $request->purpose;
-        $trip->project_id = $request->project_id;
-        $trip->type_trip_id = $request->type_trip_id;
+
+        $trip->start_date = $validatedData['start_date'];
+        $trip->end_date = $validatedData['end_date'];
+        $trip->destination = $validatedData['destination'];
+        $trip->purpose = $validatedData['purpose'];
+        $trip->project_id = $validatedData['project_id'];
+        $trip->type_trip_id = $validatedData['type_trip_id'];
         $trip->save();
 
-        $trip->employees()->sync([$request->employee_id]);
-        $trip->vehicles()->sync([$request->vehicle_id]);
+        if (isset($validatedData['employee_id'])) {
+            $trip->employees()->sync([$validatedData['employee_id']]);
+        }
+
+        if (isset($validatedData['vehicle_id'])) {
+            $trip->vehicles()->sync([$validatedData['vehicle_id']]);
+        }
 
         return redirect()->route('trips.index');
     }
@@ -180,6 +197,7 @@ class TripController extends Controller
      */
     public function destroy(Trip $trip)
     {
+
         $trip->delete();
         return redirect()->route('trips.index');
     }

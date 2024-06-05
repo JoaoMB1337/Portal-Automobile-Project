@@ -84,7 +84,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (event.target.type === 'checkbox') {
                 event.stopPropagation();
             } else {
-                window.location = row.dataset.url;
+                if (row.dataset.url){
+                    window.location = row.dataset.url;
+                } 
             }
         });
     });

@@ -54,12 +54,7 @@
             </tr>
             </thead>
             <tbody>
-            @if ($insurances->isEmpty())
-                <tr>
-                    <td colspan="8" style="text-align: center; padding: 20px;">Nenhum seguro encontrado</td>
-                </tr>
-            @else
-                @foreach ($insurances as $insurance)
+                @forelse ($insurances as $insurance)
                     <tr data-url='{{ url('insurances/' . $insurance->id) }}' style="cursor:pointer;">
                         <td>
                             <input type="checkbox" name="selected_ids[]" value="{{ $insurance->id }}" class="form-checkbox">
@@ -75,13 +70,16 @@
                             <form action="{{ route('insurances.destroy', $insurance->id) }}" method="POST" style="display: inline-block;">
                                 @csrf
                                 @method('DELETE')
-
                             </form>
                         </td>
                     </tr>
-                @endforeach
-            @endif
-            </tbody>
+                @empty
+                    <tr>
+                        <td colspan="9" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                            Nenhum seguro encontrado.
+                        </td>
+                    </tr>
+                @endforelse            </tbody>
         </table>
     </div>
     <a href="{{ route('insurances.create') }}" class="add-button"><i class="fas fa-plus"></i></a>

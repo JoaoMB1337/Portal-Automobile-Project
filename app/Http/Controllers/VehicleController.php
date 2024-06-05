@@ -12,14 +12,19 @@ use App\Models\FuelType;
 use App\Models\CarCategory;
 use App\Models\VehicleCondition;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class VehicleController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this -> authorize('viewAny', Vehicle::class);
+
         $query = Vehicle::query();
 
         // Search by plate
@@ -55,6 +60,8 @@ class VehicleController extends Controller
      */
     public function create()
     {
+        $this -> authorize('create', Vehicle::class);
+
         $brands = Brand::all();
         $fuelTypes = FuelType::all();
         $carCategories = CarCategory::all();
@@ -146,6 +153,8 @@ class VehicleController extends Controller
      */
     public function show(Vehicle $vehicle)
     {
+        $this -> authorize('view', $vehicle);
+
         return view('pages.Vehicles.show', compact('vehicle'));
     }
 
@@ -154,6 +163,8 @@ class VehicleController extends Controller
      */
     public function edit(Vehicle $vehicle)
     {
+        $this -> authorize('update', $vehicle);
+
         $brands = Brand::all();
         $fuelTypes = FuelType::all();
         $carCategories = CarCategory::all();
@@ -222,6 +233,7 @@ class VehicleController extends Controller
      */
     public function destroy(Vehicle $vehicle)
     {
+        $this -> authorize('delete', $vehicle);
         $vehicle->delete();
         return redirect()->route('vehicles.index');
     }

@@ -25,7 +25,6 @@ class UpdateProjectRequest extends FormRequest
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'projectstatus' => 'required|exists:project_statuses,id',
-            'district' => 'required|exists:districts,id',
             'country' => 'required|exists:countries,id',
         ];
     }
@@ -39,8 +38,6 @@ class UpdateProjectRequest extends FormRequest
             'address.max' => 'O endereço do projeto não pode ter mais de 255 caracteres.',
             'projectstatus.required' => 'Selecione o status do projeto.',
             'projectstatus.exists' => 'O status selecionado é inválido.',
-            'district.required' => 'Selecione o distrito do projeto.',
-            'district.exists' => 'O distrito selecionado é inválido.',
             'country.required' => 'Selecione o país do projeto.',
             'country.exists' => 'O país selecionado é inválido.',
         ];
