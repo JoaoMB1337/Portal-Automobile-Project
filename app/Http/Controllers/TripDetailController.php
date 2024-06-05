@@ -74,19 +74,19 @@ class TripDetailController extends Controller
 
         if ($request->hasFile('receipt')) {
             $validated = $request->validate([
-                'receipt' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+                'receipt' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
             $file = $request->file('receipt');
 
             $fileName = hash('sha256', time() . '_' . $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
-
-            $file->storeAs($directory, $fileName, 'public');
+            $path = $file->storeAs($directory, $fileName, 's3');
             $tripDetail->file = $fileName;
         }
 
         $tripDetail->save();
         return redirect()->route('trips.show', ['trip' => $trip->id])->with('success', 'Detalhe de viagem criado com sucesso!');
     }
+
 
 
 
