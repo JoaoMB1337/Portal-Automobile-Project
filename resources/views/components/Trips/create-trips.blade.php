@@ -18,27 +18,37 @@
             </div>
             <div class="form-group mt-3">
                 <label for="end_date">Data de Fim:</label>
-                <input type="date" name="end_date" class="form-input" required>
+                <input type="date" name="end_date" class="form-input @error('end_date') border-red-500 @enderror" required>
+                @error('end_date')
+                <div class="text-red-500">{{ $message }}</div>
+                @enderror
             </div>
             <div class="form-group">
                 <label for="destination">Destino:</label>
-                <input type="text" name="destination" class="form-input" required>
+                <input type="text" name="destination" class="form-input @error('destination') border-red-500 @enderror" required>
+                @error('destination')
+                <div class="text-red-500">{{ $message }}</div>
+                @enderror
             </div>
             <div class="form-group">
                 <label for="purpose">Proposito da viagem:</label>
-                <textarea name="purpose" class="form-control" required></textarea>
+                <textarea name="purpose" class="form-control @error('purpose') border-red-500 @enderror" required></textarea>
+                @error('purpose')
+                <div class="text-red-500">{{ $message }}</div>
+                @enderror
             </div>
             <div class="form-group">
                 <label for="employee_id">Funcionario:</label>
-                <select name="employee_id" class="form-control">
+                <select name="employee_id" class="form-control @error('employee_id') border-red-500 @enderror" required>
                     <option value="" disabled selected>Selecione um funcionário</option>
                     @foreach ($employees as $employee)
                         <option value="{{ $employee->id }}">{{ $employee->name }}</option>
                     @endforeach
                 </select>
+                @error('employee_id')
+                <div class="text-red-500">{{ $message }}</div>
+                @enderror
             </div>
-
-            {{-- NOVO CODIGO --}}
             <div class="form-group">
                 <label for="project_id">Projeto:</label>
                 <select name="project_id" class="form-control @error('project_id') border-red-500 @enderror" required {{ isset($project_id) ? 'disabled' : '' }}>
@@ -55,18 +65,20 @@
                     <input type="hidden" name="project_id" value="{{ $project_id }}">
                 @endif
                 @error('project_id')
-                    <div class="text-red-500">{{ $message }}</div>
+                <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
-
             <div class="form-group">
                 <label for="type_trip_id">Tipo de viagem:</label>
-                <select name="type_trip_id" class="form-control">
+                <select name="type_trip_id" class="form-control @error('type_trip_id') border-red-500 @enderror" required>
                     <option value="" disabled selected>Selecione um tipo de viagem:</option>
                     @foreach ($typeTrips as $typeTrip)
                         <option value="{{ $typeTrip->id }}">{{ $typeTrip->type }}</option>
                     @endforeach
                 </select>
+                @error('type_trip_id')
+                <div class="text-red-500">{{ $message }}</div>
+                @enderror
             </div>
             <div class="form-group">
                 <label for="search_vehicle">Pesquisar Veículo por Matrícula:</label>
@@ -74,7 +86,15 @@
             </div>
             <div class="form-group">
                 <label for="vehicle_id">Veículo:</label>
-                <select name="vehicle_id" id="vehicle_id" class="form-control"></select>
+                <select name="vehicle_id" id="vehicle_id" class="form-control @error('vehicle_id') border-red-500 @enderror">
+                    <option value="" disabled selected>Selecione um veículo</option>
+                    @foreach ($vehicles as $vehicle)
+                        <option value="{{ $vehicle->id }}">{{ $vehicle->plate }}</option>
+                    @endforeach
+                </select>
+                @error('vehicle_id')
+                <div class="text-red-500">{{ $message }}</div>
+                @enderror
             </div>
             <div>
                 <button type="submit" class="custom-btn w-full py-2 rounded-md">
@@ -93,13 +113,13 @@
         selectElement.innerHTML = '';
 
         @foreach ($vehicles as $vehicle)
-            var vehiclePlate = '{{ $vehicle->plate }}'.toLowerCase();
-            if (vehiclePlate.includes(searchValue)) {
-                var option = document.createElement('option');
-                option.value = '{{ $vehicle->id }}';
-                option.text = '{{ $vehicle->plate }}';
-                selectElement.appendChild(option);
-            }
+        var vehiclePlate = '{{ $vehicle->plate }}'.toLowerCase();
+        if (vehiclePlate.includes(searchValue)) {
+            var option = document.createElement('option');
+            option.value = '{{ $vehicle->id }}';
+            option.text = '{{ $vehicle->plate }}';
+            selectElement.appendChild(option);
+        }
         @endforeach
     });
 </script>
