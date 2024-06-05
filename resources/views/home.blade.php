@@ -2,15 +2,8 @@
 
 @if(Auth::check() && Auth::user()->employee_role_id == 2)
 
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <body class="bg-gray-100 h-screen">
 <div class="lg:pl-64 overflow-x-auto">
     <div class="container mx-auto p-4">
