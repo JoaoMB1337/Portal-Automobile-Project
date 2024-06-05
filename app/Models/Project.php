@@ -13,7 +13,6 @@ class Project extends Model
         'name',
         'address',
         'project_status_id',
-        'district_id',
         'country_id',
     ];
 

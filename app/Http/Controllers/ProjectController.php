@@ -111,7 +111,9 @@ class ProjectController extends Controller
         $project->name = $request->name;
         $project->address = $request->address;
         $project->project_status_id = $request->projectstatus;
-        $project->district_id = $request->district;
+        if($request->district){
+            $project->district_id = $request->district;
+        }
         $project->country_id = $request->country;
 
         $project->save();
