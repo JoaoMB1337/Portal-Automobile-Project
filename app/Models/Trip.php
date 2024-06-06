@@ -19,6 +19,10 @@ class Trip extends Model
         'vehicle_id',
     ];
 
+    public static function count()
+    {
+    }
+
     public function employees()
     {
         return $this->belongsToMany(Employee::class, 'trip_employee_associations');
