@@ -1,6 +1,7 @@
 @vite(['resources/js/Employees/employees-list.js'])
 
 <div class="container">
+    @if(Auth::check() && Auth::user()->isAdmin())
     <div class="form-container">
         <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
         <a href="{{ route('trips.index', ['clear_filters' => true]) }}" class="px-4 py-2 bg-gray-700 text-white rounded-md shadow-sm hover:bg-gray-800">Limpar</a>
@@ -25,6 +26,7 @@
             <i class="fas fa-trash-alt text-lg"></i>
         </button>
     </form>
+    @endif
 
     @include('components.Modals.modal-delete')
 
@@ -33,9 +35,7 @@
             <thead>
             <tr>
                 <th>
-                    <label for="select-all-checkbox">
-                        <input type="checkbox" id="select-all-checkbox" class="form-checkbox">
-                    </label>
+                    <!-- Checkbox removed from here -->
                 </th>
                 <th>Data de Início</th>
                 <th>Data de Fim</th>
@@ -44,7 +44,9 @@
                 <th>Projeto</th>
                 <th>Funcionário</th>
                 <th>Veículo Matrícula</th>
+                @if(Auth::check() && Auth::user()->isAdmin())
                 <th>Ações</th>
+                @endif
             </tr>
             </thead>
             <tbody>
@@ -68,9 +70,11 @@
                             {{ $vehicle->plate }}<br>
                         @endforeach
                     </td>
+                    @if(Auth::check() && Auth::user()->isAdmin())
                     <td>
                         <a href="{{ url('trips/' . $trip->id . '/edit') }}"><i class="fas fa-edit"></i></a>
                     </td>
+                    @endif
                 </tr>
             @empty
                 <tr>
@@ -82,5 +86,8 @@
             </tbody>
         </table>
     </div>
+        @if(Auth::check() && Auth::user()->isAdmin())
+
     <a href="{{ route('trips.create') }}" class="add-button"><i class="fas fa-plus"></i></a>
+    @endif
 </div>

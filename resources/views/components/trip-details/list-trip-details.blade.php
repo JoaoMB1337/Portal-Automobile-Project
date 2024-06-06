@@ -1,4 +1,5 @@
 <div class="container">
+    @if(Auth::check() && Auth::user()->isAdmin())
 
     <div class="form-container">
         <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
@@ -15,7 +16,7 @@
             </form>
         </div>
     </div>
-
+    @endif
     <div class="list-table">
         <table>
             <thead>
@@ -24,6 +25,7 @@
                 <th>Tipo de Custo</th>
                 <th>Custo Total</th>
                 <th>Viagem</th>
+
                 <th>Ações</th>
             </tr>
             </thead>
@@ -55,6 +57,7 @@
             </tbody>
         </table>
     </div>
-
+        @if(Auth::check() && Auth::user()->isAdmin())
     <a href="{{ route('trip-details.create') }}" class="add-button"><i class="fas fa-plus"></i></a>
+    @endif
 </div>

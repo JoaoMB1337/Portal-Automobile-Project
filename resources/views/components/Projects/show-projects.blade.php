@@ -1,20 +1,16 @@
 @vite(['resources/js/Employees/employees-list.js'])
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-<div class="container mx-auto px-4 py-8">
-    
+<div class="container  py-8">
     <div class="bg-white shadow-md rounded-lg overflow-hidden">
-        <div class="px-6 py-4">
+        <div class="px-6 py-4 ">
             <a href="{{ route('projects.index') }}">
-                <button  type="button" class="flex items-center justify-center w-1/2 mb-3 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-gray-600 border rounded-lg gap-x-2 sm:w-auto hover:bg-gray-500">
+                <button  type="button" class=" btn-projects flex items-center justify-center w-1/2 mb-3 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-gray-600 border rounded-lg gap-x-2 sm:w-auto hover:bg-gray-500">
                     <svg class="w-5 h-5 rtl:rotate-180 text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
                     </svg>
                 </button>
             </a>
-
             <h3 class="text-2xl font-semibold text-gray-900">Detalhes do Projeto</h3>
-            <p class="mt-1 text-gray-600">Detalhes Principais</p>
         </div>
         <div class="border-t border-gray-200">
             <dl>
@@ -52,6 +48,7 @@
         <div class="px-6 py-4">
             <h3 class="text-2xl font-semibold text-gray-900">Viagem</h3>
             <p class="mt-1 text-gray-600">Lista de viagem associada ao projeto</p>
+            @if(Auth::check() && Auth::user()->isAdmin())
             <div class="flex justify-between items-center mt-4">
                 <a href="{{ route('trips.create', ['project_id' => $project->id]) }}"
                     class="flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-green-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150">
@@ -61,9 +58,11 @@
                     </svg>
                     Adicionar Viagem
                 </a>
+
             </div>
+            @endif
         </div>
-        <div class="list-table">
+        <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
@@ -98,10 +97,3 @@
         </div>
     </div>
 </div>
-
-<style>
-    .container {
-        max-width: 900px;
-        margin: 0 auto;
-    }
-</style>

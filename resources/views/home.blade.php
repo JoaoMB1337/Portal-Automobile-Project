@@ -133,7 +133,7 @@
                                     <br>
                                     <a href="{{ route('employees.show', Auth::user()->id) }}" class="text-[#f84525] font-medium text-sm hover:text-red-800">Show profile</a>
                                 </div>
-                            </div>
+                            </div>  
                         </div>
                     </div>
                 </div>
