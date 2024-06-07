@@ -81,29 +81,8 @@ class VehicleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreVehicleRequest $request)
     {
-        $request->validate([
-            'plate' => 'required|string|max:255',
-            'km' => 'required|numeric|min:0',
-            'condition' => 'required|exists:vehicle_conditions,id',
-            'is_external' => 'nullable|boolean',
-            'fuelTypes' => 'required|exists:fuel_types,id',
-            'carCategory' => 'required|exists:car_categories,id',
-            'brand' => 'required|exists:brands,id',
-            'rental_price_per_day' => [
-                'nullable',
-                'regex:/^\d{1,6}([.,]\d{1,2})?$/',
-            ],
-            'contract_number' => 'nullable|string|max:255',
-            'rental_start_date' => 'nullable|date',
-            'rental_end_date' => 'nullable|date|after_or_equal:rental_start_date',
-            'rental_company' => 'nullable|string|max:255',
-            'rental_contact_person' => 'nullable|string|max:255',
-            'rental_contact_number' => 'nullable|string|max:255',
-            'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
-        ]);
-
         try {
             $vehicle = new Vehicle();
             $vehicle->plate = $request->plate;
@@ -114,7 +93,7 @@ class VehicleController extends Controller
             $vehicle->car_category_id = $request->carCategory;
             $vehicle->brand_id = $request->brand;
 
-            if($request->is_external == null) {
+            if ($request->is_external == null) {
                 $vehicle->is_external = 0;
             }
 
@@ -147,9 +126,7 @@ class VehicleController extends Controller
 
             return redirect()->route('vehicles.index');
         } catch (QueryException $e) {
-            if ($e->errorInfo[1] == 1062) { 
-                return back()->withErrors(['plate' => 'A matrícula já está registrada.'])->withInput();
-            }
+            // Aqui você pode tratar exceções adicionais se necessário
             throw $e;
         }
     }
