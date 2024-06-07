@@ -13,6 +13,7 @@ use App\Models\CarCategory;
 use App\Models\VehicleCondition;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Database\QueryException;
 
 class VehicleController extends Controller
 {
@@ -103,47 +104,54 @@ class VehicleController extends Controller
             'pdf_file' => 'nullable|file|mimes:pdf|max:2048',
         ]);
 
-        $vehicle = new Vehicle();
-        $vehicle->plate = $request->plate;
-        $vehicle->km = $request->km;
-        $vehicle->vehicle_condition_id = $request->condition;
-        $vehicle->is_external = $request->is_external;
-        $vehicle->fuel_type_id = $request->fuelTypes;
-        $vehicle->car_category_id = $request->carCategory;
-        $vehicle->brand_id = $request->brand;
+        try {
+            $vehicle = new Vehicle();
+            $vehicle->plate = $request->plate;
+            $vehicle->km = $request->km;
+            $vehicle->vehicle_condition_id = $request->condition;
+            $vehicle->is_external = $request->is_external;
+            $vehicle->fuel_type_id = $request->fuelTypes;
+            $vehicle->car_category_id = $request->carCategory;
+            $vehicle->brand_id = $request->brand;
 
-        if($request->is_external == null) {
-            $vehicle->is_external = 0;
-        }
-
-        if ($request->is_external) {
-            $vehicle->contract_number = $request->contract_number;
-            $rental_price_per_day = str_replace(',', '.', $request->rental_price_per_day);
-            $vehicle->rental_price_per_day = $rental_price_per_day;
-            $vehicle->rental_start_date = $request->rental_start_date;
-            $vehicle->rental_end_date = $request->rental_end_date;
-            $vehicle->rental_company = $request->rental_company;
-            $vehicle->rental_contact_person = $request->rental_contact_person;
-            $vehicle->rental_contact_number = $request->rental_contact_number;
-
-            if ($request->hasFile('pdf_file')) {
-                $pdf = $request->file('pdf_file');
-                $pdfPath = $pdf->storeAs('pdfs', $request->plate . '.' . $pdf->getClientOriginalExtension(), 'public');
-                $vehicle->pdf_file = $pdfPath;
+            if($request->is_external == null) {
+                $vehicle->is_external = 0;
             }
-        } else {
-            $vehicle->contract_number = null;
-            $vehicle->rental_price_per_day = null;
-            $vehicle->rental_start_date = null;
-            $vehicle->rental_end_date = null;
-            $vehicle->rental_company = null;
-            $vehicle->rental_contact_person = null;
-            $vehicle->rental_contact_number = null;
+
+            if ($request->is_external) {
+                $vehicle->contract_number = $request->contract_number;
+                $rental_price_per_day = str_replace(',', '.', $request->rental_price_per_day);
+                $vehicle->rental_price_per_day = $rental_price_per_day;
+                $vehicle->rental_start_date = $request->rental_start_date;
+                $vehicle->rental_end_date = $request->rental_end_date;
+                $vehicle->rental_company = $request->rental_company;
+                $vehicle->rental_contact_person = $request->rental_contact_person;
+                $vehicle->rental_contact_number = $request->rental_contact_number;
+
+                if ($request->hasFile('pdf_file')) {
+                    $pdf = $request->file('pdf_file');
+                    $pdfPath = $pdf->storeAs('pdfs', $request->plate . '.' . $pdf->getClientOriginalExtension(), 'public');
+                    $vehicle->pdf_file = $pdfPath;
+                }
+            } else {
+                $vehicle->contract_number = null;
+                $vehicle->rental_price_per_day = null;
+                $vehicle->rental_start_date = null;
+                $vehicle->rental_end_date = null;
+                $vehicle->rental_company = null;
+                $vehicle->rental_contact_person = null;
+                $vehicle->rental_contact_number = null;
+            }
+
+            $vehicle->save();
+
+            return redirect()->route('vehicles.index');
+        } catch (QueryException $e) {
+            if ($e->errorInfo[1] == 1062) { 
+                return back()->withErrors(['plate' => 'A matrícula já está registrada.'])->withInput();
+            }
+            throw $e;
         }
-
-        $vehicle->save();
-
-        return redirect()->route('vehicles.index');
     }
 
 
