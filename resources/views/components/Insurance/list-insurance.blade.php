@@ -42,6 +42,17 @@
     <div class="list-table">
         <table>
             <thead>
+            <tr>
+                <th>
+                </th>
+                <th>Companhia</th>
+                <th>Número da Apólice</th>
+                <th>Data de Início</th>
+                <th>Data de Fim</th>
+                <th>Custo</th>
+                <th>Matrícula</th>
+                <th>Ações</th>
+            </tr>
                 <tr>
                     <th>
                         <label for="select-all-checkbox">
@@ -56,6 +67,7 @@
                     <th>Matrícula</th>
                     <th>Ações</th>
                 </tr>
+
             </thead>
             <tbody>
                 @forelse ($insurances as $insurance)

@@ -55,9 +55,6 @@
             <tr>
                 @if(Auth::check() && Auth::user()->isAdmin())
                     <th>
-                        <label for="select-all-checkbox">
-                            <input type="checkbox" id="select-all-checkbox" class="form-checkbox">
-                        </label>
                     </th>
                 @endif
                 <th>Nome</th>
