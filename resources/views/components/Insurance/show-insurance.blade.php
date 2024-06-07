@@ -29,13 +29,13 @@
         <div class="mb-6">
             <div class="font-semibold">End Date:</div>
             <div>{{ $insurance->end_date }}</div>
+
         </div>
 
         <div class="mb-6">
             <div class="font-semibold">Cost:</div>
             <div>{{ $insurance->cost }}</div>
         </div>
-
         <div class="mb-6">
             <div class="font-semibold">Vehicle Plate:</div>
             <div>{{ $insurance->vehicle->plate }}</div>
