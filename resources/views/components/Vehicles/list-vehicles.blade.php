@@ -56,9 +56,6 @@
             <thead>
             <tr>
                 <th>
-                    <label for="select-all-checkbox">
-                        <input type="checkbox" id="select-all-checkbox" class="form-checkbox">
-                    </label>
                 </th>
                 <th>Matrícula</th>
                 <th>Marca</th>

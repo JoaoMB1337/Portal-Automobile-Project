@@ -35,7 +35,6 @@
             <thead>
             <tr>
                 <th>
-                    <!-- Checkbox removed from here -->
                 </th>
                 <th>Data de Início</th>
                 <th>Data de Fim</th>

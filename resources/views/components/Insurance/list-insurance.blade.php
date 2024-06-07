@@ -40,9 +40,6 @@
             <thead>
             <tr>
                 <th>
-                    <label for="select-all-checkbox">
-                        <input type="checkbox" id="select-all-checkbox" class="form-checkbox">
-                    </label>
                 </th>
                 <th>Companhia</th>
                 <th>Número da Apólice</th>
