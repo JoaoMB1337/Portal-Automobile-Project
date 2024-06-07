@@ -36,19 +36,10 @@
             <label for="gender" class="block text-sm font-semibold text-gray-700 mb-2">Género</label>
             <div class="flex">
                 <i class="fas fa-venus-mars icon"></i>
-<<<<<<< CRUD-Employee-Validações
-                <select id="gender"
-                    class="form-control w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('gender') border-red-500 @enderror"
-                    name="gender" required>
-                    <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
-                    <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
-                    <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Other</option>
-=======
                 <select id="gender" class="form-control w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('gender') border-red-500 @enderror" name="gender" required>
                     <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Masculino</option>
                     <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Feminino</option>
                     <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Outro</option>
->>>>>>> DEV-Main
                 </select>
             </div>
             @error('gender')
@@ -167,23 +158,12 @@
                         class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200">
                 </div>
             </div>
-<<<<<<< CRUD-Employee-Validações
-            <button type="button" id="add-contact-btn"
-                class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn">Add
-                Contact</button>
-=======
             <button type="button" id="add-contact-btn" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn">Adicionar contacto</button>
->>>>>>> DEV-Main
         </div>
 
 
         <div>
-<<<<<<< CRUD-Employee-Validações
-            <label for="driving_licenses" class="block text-sm font-semibold text-gray-700 mb-2">Driving
-                Licenses</label>
-=======
             <label for="driving_licenses" class="block text-sm font-semibold text-gray-700 mb-2">Carta de condução</label>
->>>>>>> DEV-Main
             <div class="flex flex-wrap gap-4">
                 @foreach ($drivingLicenses as $license)
                     <div class="flex items-center">
@@ -215,12 +195,7 @@
         </div>
 
         <div>
-<<<<<<< CRUD-Employee-Validações
-            <label for="password-confirm" class="block text-sm font-semibold text-gray-700 mb-2">Confirm
-                Password</label>
-=======
             <label for="password-confirm" class="block text-sm font-semibold text-gray-700 mb-2">Confirmação de Password</label>
->>>>>>> DEV-Main
             <div class="flex">
                 <i class="fas fa-lock icon"></i>
                 <input id="password-confirm" type="password"
