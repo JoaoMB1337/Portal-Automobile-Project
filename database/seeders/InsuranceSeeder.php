@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Insurance;
 
 class InsuranceSeeder extends Seeder
 {
@@ -12,6 +13,6 @@ class InsuranceSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Insurance::factory()->count(500)->create();
     }
 }

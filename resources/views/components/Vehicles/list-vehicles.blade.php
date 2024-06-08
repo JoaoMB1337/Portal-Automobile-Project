@@ -101,5 +101,8 @@
         </table>
     </div>
 </div>
+<div class="flex justify-center mr-10 ">
+    {{ $vehicles->links() }}
+</div>
 
 

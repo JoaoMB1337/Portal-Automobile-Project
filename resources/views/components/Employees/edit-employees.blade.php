@@ -10,7 +10,9 @@
                     </svg>
                 </button>
             </a>
-            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Editar Funcionário</h3>
+            <div class="text-center flex-grow mb-4">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Editar Funcionário</h3>
+            </div>
             <form action="{{ url('employees/' . $employee->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')

@@ -52,7 +52,7 @@ class InsuranceController extends Controller
         }
 
         // Ordena por ID em ordem ascendente e paginates os resultados
-        $insurances = $query->orderBy('id', 'asc')->paginate(15);
+        $insurances = $query->orderBy('id', 'asc')->paginate(10);
 
         return view('pages.Insurance.list', ['insurance' => $insurances]);
     }
