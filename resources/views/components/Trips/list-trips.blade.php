@@ -84,9 +84,13 @@
             @endforelse
             </tbody>
         </table>
+        <div class="flex justify-center mr-10 mt-4">
+            {{ $trips->links() }}
+        </div>
     </div>
         @if(Auth::check() && Auth::user()->isAdmin())
 
     <a href="{{ route('trips.create') }}" class="add-button"><i class="fas fa-plus"></i></a>
     @endif
 </div>
+

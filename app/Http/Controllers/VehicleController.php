@@ -52,6 +52,8 @@ class VehicleController extends Controller
         // Get all fuel types for the filter dropdown
         $fuelTypes = FuelType::all();
 
+        $vehicles = $query->orderBy('id', 'asc')->paginate(10);
+
         return view('pages.Vehicles.list', compact('vehicles', 'fuelTypes'));
     }
 

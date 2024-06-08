@@ -89,6 +89,9 @@
                 @endforelse
             </tbody>
         </table>
+        <div class="flex justify-center mr-10 mt-4">
+            {{ $insurances->links() }}
+        </div>
     </div>
     <a href="{{ route('insurances.create') }}" class="add-button"><i class="fas fa-plus"></i></a>
 </div>

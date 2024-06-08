@@ -71,7 +71,7 @@ class ProjectController extends Controller
         }
 
 
-        $projects = $query->orderBy('id', 'asc')->paginate(15);
+        $projects = $query->orderBy('id', 'asc')->paginate(10);
 
 
         $countries = Country::all();

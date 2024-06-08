@@ -42,7 +42,7 @@ class TripController extends Controller
             });
         }
 
-        $trips = $query->orderBy('id', 'asc')->paginate(15);
+        $trips = $query->orderBy('id', 'asc')->paginate(10);
 
         return view('pages.Trips.list', [
             'trips' => $trips,
@@ -103,7 +103,7 @@ class TripController extends Controller
         if (isset($validatedData['vehicle_id'])) {
             $trip->vehicles()->attach($validatedData['vehicle_id']);
         }
-        
+
         // /* ADICIONEI*/
         // $trip->employees()->attach($validatedData['employee_id']);
         // $trip->vehicles()->attach($validatedData['vehicle_id']);

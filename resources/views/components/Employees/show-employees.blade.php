@@ -9,7 +9,7 @@
                         </svg>
                     </button>
                 </a>
-                <div class="text-center flex-grow mb-4">
+                <div class="text-center flex-grow">
                     <h3 class="text-lg leading-6 font-medium text-gray-900">Detalhes Principais</h3>
                 </div>
             </div>
