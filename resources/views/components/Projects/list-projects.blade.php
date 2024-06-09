@@ -58,8 +58,6 @@
                     </th>
                 @endif
                 <th>Nome</th>
-                <th>Endereço</th>
-                <th>Status do Projeto</th>
                 <th>Distrito</th>
                 <th>País</th>
                     @if(Auth::check() && Auth::user()->isAdmin())
@@ -79,8 +77,6 @@
                         </td>
                     @endif
                     <td><a href="{{ route('projects.show', $project->id) }}">{{ $project->name }}</a></td>
-                    <td>{{ $project->address }}</td>
-                    <td>{{ $project->projectstatus->status_name }}</td>
                     <td>{{ optional($project->district)->name ?? 'Sem Distrito' }}</td>
                     <td>{{ $project->country->name }}</td>
                         @if(Auth::check() && Auth::user()->isAdmin())
@@ -97,10 +93,11 @@
                                   style="display: inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="delete-link" title="Remover"
-                                        onclick="return confirm('Tem certeza que deseja excluir este projeto?')">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
+                                <form method="post" action="{{ route('projects.destroy', $project->id) }}" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" ><i class="fas fa-trash-alt"></i></button>
+                                </form>
                             </form>
                         @endif
                     </td>

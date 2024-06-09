@@ -88,6 +88,11 @@
                     </td>
                     <td>
                         <a href="{{ url('vehicles/' . $vehicle->id . '/edit') }}"><i class="fas fa-edit"></i></a>
+                        <form method="post" action="{{ route('vehicles.destroy', $vehicle->id) }}" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" ><i class="fas fa-trash-alt"></i></button>
+                        </form>
                     </td>
                 </tr>
             @empty

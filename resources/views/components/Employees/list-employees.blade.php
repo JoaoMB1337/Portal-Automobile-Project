@@ -62,6 +62,11 @@
                         <td>{{ $employee->role->name }}</td>
                         <td>
                             <a href="{{ url('employees/' . $employee->id . '/edit') }}"><i class="fas fa-edit"></i></a>
+                            <form method="post" action="{{ route('employees.destroy', $employee->id) }}" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" ><i class="fas fa-trash-alt"></i></button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

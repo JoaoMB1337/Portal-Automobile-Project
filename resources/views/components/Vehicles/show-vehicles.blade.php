@@ -43,6 +43,31 @@
                         </dd>
                     </div>
 
+                    @if(!$vehicle-> is_external)
+                        <div class="flex justify-center py-4 gap-2 pt-10">
+                            <a href="{{ route('vehicles.edit', ['vehicle' => $vehicle->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                                Editar
+                            </a>
+                            <form method="POST" action="{{ route('vehicles.destroy', ['vehicle' => $vehicle->id]) }}" class="inline-block">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                                    Eliminar
+                                </button>
+                            </form>
+
+
+                            <a href="{{ route('vehicles.downloadPdf', ['vehicle' =>$vehicle->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                                Exportar CSV
+                            </a>
+                        </div>
+                    @endif
+
+
+
+
+
+
                     @if($vehicle->is_external)
                         <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt class="text-sm font-medium text-gray-500">Contrato</dt>
@@ -85,6 +110,24 @@
                                     <a href="{{ route('vehicles.downloadPdf', $vehicle) }}">Download PDF</a>
                                 </dd>
                             </div>
+
+                        <div class="flex justify-center py-4 gap-2 pt-10">
+                            <a href="{{ route('vehicles.edit', ['vehicle' => $vehicle->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                                Editar
+                            </a>
+                            <form method="POST" action="{{ route('vehicles.destroy', ['vehicle' => $vehicle->id]) }}" class="inline-block">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                                    Eliminar
+                                </button>
+                            </form>
+
+
+                            <a href="{{ route('vehicles.downloadPdf', ['vehicle' =>$vehicle->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                                Exportar CSV
+                            </a>
+                        </div>
                     @endif
                 </dl>
             </div>
