@@ -66,8 +66,6 @@
                             @method('DELETE')
                         </form>
                         <a href="{{ url('employees/' . $employee->id) }}"><i class="fas fa-eye"></i></a>
-
-
                     </td>
                 </tr>
             @endforeach
@@ -75,6 +73,7 @@
         </table>
     </div>
 </div>
+
 <div class="flex justify-center mr-10">
     {{ $employees->links() }}
 </div>
