@@ -36,10 +36,6 @@
             <tr>
                 <th>
                 </th>
-                <th>Data de Início</th>
-                <th>Data de Fim</th>
-                <th>Destino</th>
-                <th>Propósito</th>
                 <th>Projeto</th>
                 <th>Funcionário</th>
                 <th>Veículo Matrícula</th>
@@ -54,10 +50,6 @@
                     <td>
                         <input type="checkbox" name="selected_ids[]" value="{{ $trip->id }}" class="form-checkbox">
                     </td>
-                    <td>{{ $trip->start_date }}</td>
-                    <td>{{ $trip->end_date }}</td>
-                    <td>{{ $trip->destination }}</td>
-                    <td>{{ $trip->purpose }}</td>
                     <td>{{ $trip->project->name }}</td>
                     <td>
                         @foreach ($trip->employees as $employee)
@@ -72,6 +64,11 @@
                     @if(Auth::check() && Auth::user()->isAdmin())
                     <td>
                         <a href="{{ url('trips/' . $trip->id . '/edit') }}"><i class="fas fa-edit"></i></a>
+                        <form method="post" action="{{ route('trips.destroy', $trip->id) }}" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" ><i class="fas fa-trash-alt"></i></button>
+                        </form>
                     </td>
                     @endif
                 </tr>

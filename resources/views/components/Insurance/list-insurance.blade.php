@@ -50,8 +50,6 @@
                     </th>
                     <th>Companhia</th>
                     <th>Número da Apólice</th>
-                    <th>Data de Início</th>
-                    <th>Data de Fim</th>
                     <th>Custo</th>
                     <th>Matrícula</th>
                     <th>Ações</th>
@@ -66,16 +64,14 @@
                         </td>
                         <td>{{ $insurance->insurance_company }}</td>
                         <td>{{ $insurance->policy_number }}</td>
-                        <td>{{ $insurance->start_date }}</td>
-                        <td>{{ $insurance->end_date }}</td>
                         <td>{{ number_format($insurance->cost, 2, ',', '.') }}</td>
                         <td>{{ $insurance->vehicle->plate }}</td>
                         <td>
                             <a href="{{ route('insurances.edit', $insurance->id) }}"><i class="fas fa-edit"></i></a>
-                            <form action="{{ route('insurances.destroy', $insurance->id) }}" method="POST"
-                                style="display: inline-block;">
+                            <form method="post" action="{{ route('insurances.destroy', $insurance->id) }}" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
+                                <button type="submit" ><i class="fas fa-trash-alt"></i></button>
                             </form>
                         </td>
                     </tr>

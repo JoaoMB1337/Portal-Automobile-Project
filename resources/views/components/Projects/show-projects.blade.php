@@ -42,6 +42,18 @@
                 </div>
             </dl>
         </div>
+            <div class="px-6 py-4">
+                <a href="{{ route('projects.edit', ['project' => $project->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                    Editar
+                </a>
+                <form method="POST" action="{{ route('projects.destroy', ['project' => $project->id]) }}" class="inline-block">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                        Eliminar
+                    </button>
+                </form>
+            </div>
     </div>
 
     <div class="bg-white shadow-md rounded-lg overflow-hidden mt-8">
@@ -65,7 +77,7 @@
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
-                    <tr>
+                    <tr >
                         <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Destino</th>

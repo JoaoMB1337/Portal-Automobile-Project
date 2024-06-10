@@ -47,6 +47,19 @@
             <div>{{ $insurance->vehicle->plate }}</div>
         </div>
 
+        <div class="px-6 py-4">
+            <a href="{{ route('insurances.edit', ['insurance' => $insurance->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                Editar
+            </a>
+            <form method="POST" action="{{ route('insurances.destroy', ['insurance' => $insurance->id]) }}" class="inline-block">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                    Eliminar
+                </button>
+            </form>
+        </div>
+
 
     </div>
 </div>
