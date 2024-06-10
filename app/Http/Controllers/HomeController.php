@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Vehicle;
+use App\Models\Project;
+use App\Models\Trip;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,6 +27,35 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $employee = Employee::find(1); // Supondo que você deseja mostrar as informações do funcionário com o ID 1
-        return view('home', compact('employee'));    }
+        $employee = Employee::find(1);
+
+
+        $internalVehiclesCount = Vehicle::where('is_external', 0)->count();
+        $externalVehiclesCount = Vehicle::where('is_external', 1)->count();
+
+        $totalTrips = Trip::all()->count();
+
+        $projectsNotStarted = Project::where('project_status_id', 1)->count();
+        $projectsInProgress = Project::where('project_status_id', 2)->count();
+        $projectsCompleted = Project::where('project_status_id', 3)->count();
+        $projectsCancelled = Project::where('project_status_id', 4)->count();
+        $projectsOnHold = Project::where('project_status_id', 5)->count();
+
+        return view('home', compact(
+            'internalVehiclesCount',
+            'externalVehiclesCount',
+            'totalTrips',
+            'projectsNotStarted',
+            'projectsInProgress',
+            'projectsCompleted',
+            'projectsCancelled',
+            'projectsOnHold'
+        ));
+
+
+
+
+
+
+    }
 }

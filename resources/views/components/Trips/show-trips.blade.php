@@ -1,19 +1,21 @@
 <div class="container py-8">
-    <div class="bg-white shadow-md rounded-lg overflow-hidden">
-        <div class="px-6 py-4">
-            <a href="{{ route('trips.index') }}">
-                <button type="button" class="btn-projects flex items-center justify-center w-1/2 mb-3 px-3 py-1 text-xs text-gray-700 transition-colors duration-200 bg-gray-600 border rounded-lg gap-x-2 sm:w-auto hover:bg-gray-500">
-                    <svg class="w-4 h-4 rtl:rotate-180 text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg p-6">
+        <div class="flex items-center justify-between mb-4">
+            <a href="{{ route('trips.index') }}" class="mr-3">
+                <button type="button" class="flex items-center justify-center px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-gray-600 border rounded-lg gap-x-2 hover:bg-gray-500">
+                    <svg class="w-5 h-5 rtl:rotate-180 text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
                     </svg>
                 </button>
             </a>
-
-
-
-            <h3 class="text-2xl font-semibold text-gray-900">Detalhes da Viagem</h3>
-            <p class="mt-1 text-gray-600">Detalhes da viagem</p>
+            <div class="text-center flex-grow mb-4">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Detalhes da Viagem</h3>
+            </div>
         </div>
+
+
+
+        Detalhes do Projeto
         <div class="border-t border-gray-200">
             <dl>
                 <div class="bg-gray-50 px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -61,6 +63,19 @@
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                         {{ number_format($totalCost, 2, ',', '.') }}</dd>
                 </div>
+
+                <div class=" mt-10">
+                    <a href="{{ route('trips.edit', ['trip' => $trip->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                        Editar
+                    </a>
+                    <form method="POST" action="{{ route('trips.destroy', ['trip' => $trip->id]) }}" class="inline-block">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                            Eliminar
+                        </button>
+                    </form>
+                </div>
             </dl>
         </div>
     </div>
@@ -72,7 +87,7 @@
             <div class="flex justify-between items-center mt-4">
                 <!-- Adicionado um div para manter o botão na mesma linha -->
                 <a href="{{ route('trip-details.create', ['trip_id' => $trip->id]) }}"
-                    class="flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-green-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150">
+                    class="flex items-center px-4 py-2 bg-green-700 hover:bg-green-600  border  rounded-md font-semibold text-xs text-white uppercase tracking-widest  disabled:opacity-25 transition ease-in-out duration-150">
                     <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>

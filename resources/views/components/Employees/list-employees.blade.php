@@ -1,7 +1,6 @@
 @vite(['resources/js/Employees/employees-list.js'])
 
 <div class="container">
-
     <!-- Filtros -->
     <div class="form-container">
         <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
@@ -40,42 +39,45 @@
     <div class="list-table">
         <table>
             <thead>
-                <tr>
-                    <th>
-                        <label for="select-all-checkbox">
-                            <input type="checkbox" id="select-all-checkbox" class="form-checkbox">
-                        </label>
-                    </th>
-                    <th>Nome</th>
-                    <th>Número</th>
-                    <th>Email</th>
-                    <th>Cargo</th>
-                    <th>Ações</th>
-                </tr>
+            <tr>
+                <th></th>
+                <th>Nome</th>
+                <th>Número</th>
+                <th>Email</th>
+                <th>Cargo</th>
+                <th>Ações</th>
+            </tr>
             </thead>
             <tbody>
-                @foreach ($employees as $employee)
-                    <tr data-url="{{ url('employees/' . $employee->id) }}" style="cursor:pointer;">
-                        <td>
-                            <input type="checkbox" name="selected_ids[]" value="{{ $employee->id }}" class="form-checkbox select-checkbox">
-                        </td>
-                        <td><a href="{{ url('employees/' . $employee->id) }}">{{ $employee->name }}</a></td>
-                        <td>{{ $employee->employee_number }}</td>
-                        <td>{{ $employee->email }}</td>
-                        <td>{{ $employee->role->name }}</td>
-                        <td>
-                            <a href="{{ url('employees/' . $employee->id . '/edit') }}"><i class="fas fa-edit"></i></a>
-                        </td>
-                    </tr>
-                @endforeach
+            @foreach ($employees as $employee)
+                <tr>
+                    <td>
+                        <input type="checkbox" name="selected_ids[]" value="{{ $employee->id }}" class="form-checkbox select-checkbox">
+                    </td>
+                    <td><a href="{{ url('employees/' . $employee->id) }}">{{ $employee->name }}</a></td>
+                    <td>{{ $employee->employee_number }}</td>
+                    <td>{{ $employee->email }}</td>
+                    <td>{{ $employee->role->name }}</td>
+                    <td>
+                        <a href="{{ url('employees/' . $employee->id . '/edit') }}"><i class="fas fa-edit"></i></a>
+                        <button type="button" class="btn-delete" data-id="{{ $employee->id }}"><i class="fas fa-trash-alt"></i></button>
+                        <form id="delete-form-{{ $employee->id }}" method="post" action="{{ route('employees.destroy', $employee->id) }}" style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                        <a href="{{ url('employees/' . $employee->id) }}"><i class="fas fa-eye"></i></a>
+
+
+                    </td>
+                </tr>
+            @endforeach
             </tbody>
         </table>
     </div>
 </div>
-<div class="flex justify-center mr-10 ">
+<div class="flex justify-center mr-10">
     {{ $employees->links() }}
 </div>
-
 
 <!-- Botão "Adicionar" com opções -->
 <div class="add-button-container">
@@ -150,74 +152,5 @@
     }
 </style>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Modal Filter
-        var filterBtn = document.getElementById("filterBtn");
-        var filterModal = document.getElementById("filterModal");
-        var closeSpan = document.getElementsByClassName("close")[0];
 
-        filterBtn.onclick = function() {
-            filterModal.style.display = "block";
-        }
-
-        closeSpan.onclick = function() {
-            filterModal.style.display = "none";
-        }
-
-        window.onclick = function(event) {
-            if (event.target == filterModal) {
-                filterModal.style.display = "none";
-            }
-        }
-
-        // Add Button Options
-        var addButton = document.getElementById("addButton");
-        var addOptions = document.getElementById("addOptions");
-        var importCsvBtn = document.getElementById("importCsvBtn");
-
-        addButton.onclick = function() {
-            if (addOptions.style.display === "block") {
-                addOptions.style.display = "none";
-            } else {
-                addOptions.style.display = "block";
-            }
-        }
-
-        importCsvBtn.onclick = function(event) {
-            event.preventDefault();
-
-            var importCsvForm = document.createElement("form");
-            importCsvForm.method = "POST";
-            importCsvForm.action = "{{ route('employees.importCsv') }}";
-            importCsvForm.enctype = "multipart/form-data";
-            importCsvForm.style.display = "none";
-
-            var csrfTokenInput = document.createElement("input");
-            csrfTokenInput.type = "hidden";
-            csrfTokenInput.name = "_token";
-            csrfTokenInput.value = "{{ csrf_token() }}";
-
-            var fileInput = document.createElement("input");
-            fileInput.type = "file";
-            fileInput.name = "file";
-            fileInput.accept = ".csv";
-
-            var submitButton = document.createElement("button");
-            submitButton.type = "submit";
-            submitButton.textContent = "Importar";
-
-            importCsvForm.appendChild(csrfTokenInput);
-            importCsvForm.appendChild(fileInput);
-            importCsvForm.appendChild(submitButton);
-
-            document.body.appendChild(importCsvForm);
-
-            fileInput.addEventListener("change", function() {
-                importCsvForm.submit();
-            });
-
-            fileInput.click();
-        }
-    });
-</script>
+@include('components.Modals.modal-delete')

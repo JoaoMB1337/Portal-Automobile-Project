@@ -29,12 +29,12 @@ class InsuranceController extends Controller
 
         // Filtra por companhia de seguro, se fornecido
         if ($request->filled('insurance_company')) {
-            $query->where('insurance_company', 'like', '%'.$request->input('insurance_company').'%');
+            $query->where('insurance_company', 'like', '%' . $request->input('insurance_company') . '%');
         }
 
         // Filtra por número da apólice, se fornecido
         if ($request->filled('policy_number')) {
-            $query->where('policy_number', 'like', '%'.$request->input('policy_number').'%');
+            $query->where('policy_number', 'like', '%' . $request->input('policy_number') . '%');
         }
 
         // Filtra por seguros expirados
@@ -52,9 +52,9 @@ class InsuranceController extends Controller
         }
 
         // Ordena por ID em ordem ascendente e paginates os resultados
-        $insurances = $query->orderBy('id', 'asc')->paginate(15);
+        $insurances = $query->orderBy('id', 'asc')->paginate(10);
 
-        return view('pages.Insurance.list', ['insurance'=>$insurances]);
+        return view('pages.Insurance.list', ['insurance' => $insurances]);
     }
 
     /**
@@ -86,14 +86,15 @@ class InsuranceController extends Controller
         $insurance->policy_number = $request->policy_number;
         $insurance->start_date = $request->start_date;
         $insurance->end_date = $request->end_date;
-        $insurance->cost = $request->cost;
+        //$insurance->cost = $request->cost;
 
+        $insurance->cost = str_replace(',', '.', str_replace('.', '', $request->cost));
 
-        $insurance->cost = str_replace(',', '.', $insurance->cost);
+        //$insurance->cost = str_replace(',', '.', $insurance->cost);
 
 
         $insuranceExists = Insurance::where('vehicle_id', $vehicle->id)->first();
-        if($insuranceExists){
+        if ($insuranceExists) {
             return redirect()->back()->with('error', 'Veiculo ja tem seguro.');
         }
 
@@ -108,12 +109,13 @@ class InsuranceController extends Controller
     }
 
 
+
     /**
      * Display the specified resource.
      */
     public function show(Insurance $insurance)
     {
-        $this -> authorize('view', $insurance);
+        $this->authorize('view', $insurance);
 
         return view('pages.Insurance.show', compact('insurance'));
     }
@@ -127,7 +129,6 @@ class InsuranceController extends Controller
         $this->authorize('update', $insurance);
 
         return view('pages.Insurance.edit', compact('insurance'));
-
     }
 
     /**
@@ -140,7 +141,8 @@ class InsuranceController extends Controller
             'policy_number' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date',
-            'cost' => 'required|numeric',
+            //'cost' => 'required|numeric',
+            'cost' => ['required', 'regex:/^\d{1,3}(\.\d{3})*(\,\d{2})?$/'],
             'vehicle_plate' => 'required|exists:vehicles,plate'
         ]);
 
@@ -156,7 +158,8 @@ class InsuranceController extends Controller
             'policy_number' => $request->policy_number,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
-            'cost' => $request->cost,
+            //'cost' => $request->cost,
+            'cost' => str_replace(',', '.', str_replace('.', '', $request->cost)),
 
             'vehicle_id' => $vehicle->id
         ]);
