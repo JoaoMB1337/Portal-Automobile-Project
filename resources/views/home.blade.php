@@ -28,8 +28,8 @@
                 </div>
                 <!-- Seção Viagens -->
                 <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-                    <h2 class="text-2xl font-semibold mb-4 text-gray-900">Viagens </h2>
-                    <h2 class="text-center text-4xl font-bold text-gray-900">{{ $totalTrips }}</h2>
+                    <h2 class="text-2xl font-semibold mb-4 text-gray-900">Veiculos Em Uso </h2>
+                    <h2 class="text-center text-4xl font-bold text-gray-900">{{ $vehicleactive }}</h2>
                 </div>
             </div>
 
@@ -133,7 +133,7 @@
                                     <br>
                                     <a href="{{ route('employees.show', Auth::user()->id) }}" class="text-[#f84525] font-medium text-sm hover:text-red-800">Show profile</a>
                                 </div>
-                            </div>  
+                            </div>
                         </div>
                     </div>
                 </div>
