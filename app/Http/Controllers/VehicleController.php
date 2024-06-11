@@ -13,17 +13,19 @@ use App\Models\CarCategory;
 use App\Models\VehicleCondition;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class VehicleController extends Controller
 {
     use AuthorizesRequests;
+    use SoftDeletes;
 
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $this -> authorize('viewAny', Vehicle::class);
+        $this->authorize('viewAny', Vehicle::class);
 
         $query = Vehicle::query();
 
@@ -36,7 +38,6 @@ class VehicleController extends Controller
 
             if ($isExternal === '0' || $isExternal === '1') {
                 $query->where('is_external', $isExternal);
-
             }
         }
 
@@ -60,7 +61,7 @@ class VehicleController extends Controller
      */
     public function create()
     {
-        $this -> authorize('create', Vehicle::class);
+        $this->authorize('create', Vehicle::class);
 
         $brands = Brand::all();
         $fuelTypes = FuelType::all();
@@ -74,7 +75,6 @@ class VehicleController extends Controller
             'carCategories' => $carCategories,
             'vehicleCondition' => $vehicleCondition
         ]);
-
     }
 
     /**
@@ -112,7 +112,7 @@ class VehicleController extends Controller
         $vehicle->car_category_id = $request->carCategory;
         $vehicle->brand_id = $request->brand;
 
-        if($request->is_external == null) {
+        if ($request->is_external == null) {
             $vehicle->is_external = 0;
         }
 
@@ -153,7 +153,7 @@ class VehicleController extends Controller
      */
     public function show(Vehicle $vehicle)
     {
-        $this -> authorize('view', $vehicle);
+        $this->authorize('view', $vehicle);
 
         return view('pages.Vehicles.show', compact('vehicle'));
     }
@@ -163,7 +163,7 @@ class VehicleController extends Controller
      */
     public function edit(Vehicle $vehicle)
     {
-        $this -> authorize('update', $vehicle);
+        $this->authorize('update', $vehicle);
 
         $brands = Brand::all();
         $fuelTypes = FuelType::all();
@@ -233,7 +233,7 @@ class VehicleController extends Controller
      */
     public function destroy(Vehicle $vehicle)
     {
-        $this -> authorize('delete', $vehicle);
+        $this->authorize('delete', $vehicle);
         $vehicle->delete();
         return redirect()->route('vehicles.index');
     }
