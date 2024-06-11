@@ -1,3 +1,4 @@
+
 <div class="container py-8">
     <div class="w-3/4 mx-auto">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg p-6">
@@ -68,24 +69,26 @@
                         </dd>
                     </div>
                     <div class="flex justify-center py-4 gap-2 pt-10">
+
                         <a href="{{ route('employees.edit', ['employee' => $employee->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
                             Editar
                         </a>
-                        <form method="POST" action="{{ route('employees.destroy', ['employee' => $employee->id]) }}" class="inline-block">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
-                                Eliminar
-                            </button>
-                        </form>
-
 
                         <a href="{{ route('employees.exportCsv', ['id' => $employee->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
                             Exportar CSV
                         </a>
+
+                        <button id="openModalBtn" class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-32">
+                            Eliminar
+                        </button>
                     </div>
                 </dl>
             </div>
         </div>
     </div>
 </div>
+@include('components.Modals.modal-delete-single')
+
+
+
+

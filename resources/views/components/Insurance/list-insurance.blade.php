@@ -62,17 +62,18 @@
                             <input type="checkbox" name="selected_ids[]" value="{{ $insurance->id }}"
                                 class="form-checkbox">
                         </td>
-                        <td>{{ $insurance->insurance_company }}</td>
+                        <td><a href="{{ route('insurances.show', $insurance->id) }}">{{ $insurance->insurance_company }}</td>
                         <td>{{ $insurance->policy_number }}</td>
                         <td>{{ number_format($insurance->cost, 2, ',', '.') }}</td>
                         <td>{{ $insurance->vehicle->plate }}</td>
                         <td>
                             <a href="{{ route('insurances.edit', $insurance->id) }}"><i class="fas fa-edit"></i></a>
-                            <form method="post" action="{{ route('insurances.destroy', $insurance->id) }}" style="display: inline;">
+                            <button type="button" class="btn-delete" data-id="{{ $insurance->id }}"><i class="fas fa-trash-alt"></i></button>
+                            <form id="delete-form-{{ $insurance->id }}" method="post" action="{{ route('insurances.destroy', $insurance->id) }}" style="display: none;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" ><i class="fas fa-trash-alt"></i></button>
                             </form>
+                            <a href="{{ url('insurances/' . $insurance->id) }}"><i class="fas fa-eye"></i></a>
                         </td>
                     </tr>
                 @empty

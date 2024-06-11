@@ -61,7 +61,7 @@
                 <th>Distrito</th>
                 <th>País</th>
                     @if(Auth::check() && Auth::user()->isAdmin())
-                        <th>Add Viagem</th>
+                        <th>Viagem</th>
                         <th>Ações</th>
                     @endif
 
@@ -82,23 +82,19 @@
                         @if(Auth::check() && Auth::user()->isAdmin())
                         <td>
                         <a href="{{ route('trips.create', ['project_id' => $project->id]) }}"
-                        class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-                            Adicionar Viagem
+                        class="inline-flex items-center px-4 py-2 bg-gray-700 border rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-800">
+                            Adicionar
                         </a>
                     </td>
                     <td>
                         @if(Auth::check() && Auth::user()->isAdmin())
                             <a href="{{ route('projects.edit', $project->id) }}"><i class="fas fa-edit"></i></a>
-                            <form action="{{ route('projects.destroy', $project->id) }}" method="POST"
-                                  style="display: inline-block;">
+                            <button type="button" class="btn-delete" data-id="{{ $project->id }}"><i class="fas fa-trash-alt"></i></button>
+                            <form id="delete-form-{{ $project->id }}" method="post" action="{{ route('projects.destroy', $project->id) }}" style="display: none;">
                                 @csrf
                                 @method('DELETE')
-                                <form method="post" action="{{ route('projects.destroy', $project->id) }}" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" ><i class="fas fa-trash-alt"></i></button>
-                                </form>
                             </form>
+                            <a href="{{ url('projects/' . $project->id) }}"><i class="fas fa-eye"></i></a>
                         @endif
                     </td>
                     @endif
@@ -118,3 +114,6 @@
 <div class="flex justify-center mr-10 ">
     {{ $projects->links() }}
 </div>
+
+
+@include('components.Modals.modal-delete')

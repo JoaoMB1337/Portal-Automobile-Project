@@ -38,7 +38,7 @@
                 </th>
                 <th>Projeto</th>
                 <th>Funcionário</th>
-                <th>Veículo Matrícula</th>
+                <th>Veiculo</th>
                 @if(Auth::check() && Auth::user()->isAdmin())
                 <th>Ações</th>
                 @endif
@@ -50,7 +50,7 @@
                     <td>
                         <input type="checkbox" name="selected_ids[]" value="{{ $trip->id }}" class="form-checkbox">
                     </td>
-                    <td>{{ $trip->project->name }}</td>
+                    <td><a href="{{ route('trips.show', $trip->id) }}">{{ $trip->project->name }}</td>
                     <td>
                         @foreach ($trip->employees as $employee)
                             {{ $employee->name }}<br>
@@ -64,11 +64,12 @@
                     @if(Auth::check() && Auth::user()->isAdmin())
                     <td>
                         <a href="{{ url('trips/' . $trip->id . '/edit') }}"><i class="fas fa-edit"></i></a>
-                        <form method="post" action="{{ route('trips.destroy', $trip->id) }}" style="display: inline;">
+                        <button type="button" class="btn-delete" data-id="{{ $trip->id }}"><i class="fas fa-trash-alt"></i></button>
+                        <form id="delete-form-{{ $trip->id }}" method="post" action="{{ route('trips.destroy', $trip->id) }}" style="display: none;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" ><i class="fas fa-trash-alt"></i></button>
                         </form>
+                        <a href="{{ url('trips/' . $trip->id) }}"><i class="fas fa-eye"></i></a>
                     </td>
                     @endif
                 </tr>

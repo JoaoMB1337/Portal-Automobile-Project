@@ -68,17 +68,14 @@
                     <a href="{{ route('trips.edit', ['trip' => $trip->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
                         Editar
                     </a>
-                    <form method="POST" action="{{ route('trips.destroy', ['trip' => $trip->id]) }}" class="inline-block">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
-                            Eliminar
-                        </button>
-                    </form>
+                    <button id="openModalBtn" class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-32">
+                        Eliminar
+                    </button>
                 </div>
             </dl>
         </div>
     </div>
+    @include('components.Modals.modal-delete-single')
 
     <div class="bg-white shadow-md rounded-lg overflow-hidden mt-8">
         <div class="px-6 py-4">
@@ -135,6 +132,7 @@
         </div>
     </div>
 </div>
+
 
 <style>
     .container {
