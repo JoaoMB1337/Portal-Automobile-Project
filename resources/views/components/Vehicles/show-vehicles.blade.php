@@ -1,3 +1,4 @@
+
 <div class="flex">
     <div class="w-3/4 mx-auto">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg">
@@ -115,13 +116,73 @@
                                 Eliminar
                             </button>
 
-                            <a href="{{ route('vehicles.downloadPdf', ['vehicle' =>$vehicle->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
-                                Exportar CSV
-                            </a>
-                        </div>
-                    @endif
-                </dl>
+    <div class="bg-white shadow-md rounded-lg overflow-hidden mt-8">
+        <div class="px-6 py-4">
+            <h3 class="text-2xl font-semibold text-gray-900">Seguros</h3>
+            <p class="mt-1 text-gray-600">Lista de seguros associados ao veículo</p>
+            @if(Auth::check() && Auth::user()->isAdmin())
+            <div class="flex justify-between items-center mt-4">
+                <a href="{{ route('insurances.create', ['vehicle_id' => $vehicle->id]) }}"
+                    class="flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-green-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150">
+                    <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Adicionar Seguro
+                </a>
             </div>
+            @endif
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Companhia</th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Número da Apólice
+                        </th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Custo
+                        </th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ativo
+                        </th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse ($vehicle->insurances as $insurance)
+                        <tr data-url="{{ url('insurances/' . $insurance->id) }}" style="cursor:pointer;">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $insurance->insurance_company }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $insurance->policy_number }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                {{ number_format($insurance->cost, 2, ',', '.') }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                {{ $insurance->ativo ? 'Sim' : 'Não' }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                <a href="{{ route('insurances.edit', $insurance->id) }}"><i class="fas fa-edit"></i></a>
+                                <form method="post" action="{{ route('insurances.destroy', $insurance->id) }}" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"><i class="fas fa-trash-alt"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                                Nenhum seguro encontrado.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
