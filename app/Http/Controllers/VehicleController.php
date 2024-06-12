@@ -174,7 +174,9 @@ class VehicleController extends Controller
             // Aqui você pode tratar exceções adicionais se necessário
             throw $e;
         }
+        }
     }
+
 
 
 
