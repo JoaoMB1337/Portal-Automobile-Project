@@ -15,11 +15,13 @@ use App\Models\Employee;
 use App\Models\TypeTrip;
 use App\Models\Vehicle;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 
 class TripController extends Controller
 {
+    use SoftDeletes;
     /**
      * Display a listing of the resource.
      */
@@ -104,6 +106,7 @@ class TripController extends Controller
             $trip->vehicles()->attach($validatedData['vehicle_id']);
 
         }
+
 
         $vehicle = Vehicle::find($validatedData['vehicle_id']);
         $vehicle->is_active = true;

@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Trip extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'start_date',
@@ -47,5 +48,4 @@ class Trip extends Model
     {
         return $this->belongsToMany(Vehicle::class, 'trip_vehicle_associations');
     }
-
 }

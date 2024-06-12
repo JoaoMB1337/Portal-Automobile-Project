@@ -9,11 +9,12 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\EmployeeRole;
 use App\Models\Contact;
 use App\Models\DrivingLicense;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Employee extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     protected $table = 'employees';
 
@@ -60,11 +61,8 @@ class Employee extends Authenticatable
         return $this->belongsToMany(DrivingLicense::class, 'employee_driving_licenses');
     }
 
-    public function isAdmin() {
+    public function isAdmin()
+    {
         return $this->employee_role_id == 2;
     }
-
-
-
-
 }

@@ -19,16 +19,18 @@ use Illuminate\Http\Response;
 use App\Models\DrivingLicense;
 use App\Models\Contact;
 use App\Models\ContactType;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EmployeeController extends Controller
 {
     use AuthorizesRequests;
+    use SoftDeletes;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $this -> authorize('viewAny', Employee::class);
+        $this->authorize('viewAny', Employee::class);
 
         $query = Employee::query();
 
@@ -61,7 +63,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        $this -> authorize('create', Employee::class);
+        $this->authorize('create', Employee::class);
 
         $roles = EmployeeRole::all();
         $drivingLicenses = DrivingLicense::all();
@@ -119,7 +121,7 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        $this -> authorize('view', $employee);
+        $this->authorize('view', $employee);
 
         $employee = Employee::with('drivingLicenses', 'role')->findOrFail($employee->id);
         return view('pages.Employees.show', compact('employee'));
@@ -131,7 +133,7 @@ class EmployeeController extends Controller
     public function edit(Employee $employee)
     {
 
-        $this -> authorize('update', $employee);
+        $this->authorize('update', $employee);
 
         $employee = Employee::with('drivingLicenses', 'role')->findOrFail($employee->id);
         $roles = EmployeeRole::all();
@@ -189,7 +191,7 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        $this -> authorize('delete', $employee);
+        $this->authorize('delete', $employee);
         $employee->delete();
         return redirect()->route('employees.index');
     }
@@ -197,7 +199,7 @@ class EmployeeController extends Controller
     public function deleteSelected(Request $request)
     {
 
-        $this -> authorize('delete', Employee::class);
+        $this->authorize('delete', Employee::class);
         $ids = $request->input('selected_ids', []);
         Employee::whereIn('id', $ids)->delete();
         return redirect()->route('employees.index')->with('success', 'Funcionários excluídos com sucesso.');
