@@ -71,21 +71,24 @@
             @endforeach
             </tbody>
         </table>
+
+
+        <!-- Botão "Adicionar" com opções -->
+        <div class="add-button-container">
+            <button id="addButton" class="add-button"><i class="fas fa-plus"></i></button>
+            <div id="addOptions" class="add-options" style="display: none;">
+                <a href="{{ route('employees.create') }}">Criar Manualmente</a>
+                <button id="importCsvBtn">Importar CSV</button>
+            </div>
+        </div>
+    </div>
+    <div class="flex justify-center mt-4">
+        {{ $employees->links() }}
     </div>
 </div>
 
-<div class="flex justify-center mr-10">
-    {{ $employees->links() }}
-</div>
 
-<!-- Botão "Adicionar" com opções -->
-<div class="add-button-container">
-    <button id="addButton" class="add-button"><i class="fas fa-plus"></i></button>
-    <div id="addOptions" class="add-options" style="display: none;">
-        <a href="{{ route('employees.create') }}">Criar Manualmente</a>
-        <button id="importCsvBtn">Importar CSV</button>
-    </div>
-</div>
+
 
 <style>
     .modal {
@@ -145,10 +148,19 @@
         cursor: pointer;
     }
 
-    .add-options a:hover,
-    .add-options button:hover {
-        background-color: #f0f0f0;
+
+    .add-button-container {
+        z-index: 10;
+        position: relative;
+        margin-top: 20px;
     }
+
+    @media (max-width: 768px) {
+        .add-button-container {
+            margin-top: 10px;
+        }
+    }
+
 </style>
 
 

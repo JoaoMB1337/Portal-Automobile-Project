@@ -4,7 +4,6 @@
 
 @section('content')
     <div class="lg:pl-64">
-
     @component('components.Trips.show-trips', [
         'trip' => $trip,
         'employees' => $employees,

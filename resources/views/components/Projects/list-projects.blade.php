@@ -10,7 +10,7 @@
     </div>
 
     @if(Auth::check() && Auth::user()->isAdmin())
-        <div id="filterModal" class="modal mx-auto pl-10 lg:pl-64">
+        <div id="filterModal" class="modal mx-auto lg:pl-64">
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <form method="GET" action="{{ route('projects.index') }}">
