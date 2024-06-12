@@ -15,7 +15,6 @@ class StoreEmployeeRequest extends FormRequest
     public function rules(): array
     {
         return [
-<<<<<<< CRUD-Employee-Validações
             'name' => 'required|string|regex:/^[a-zA-Z\s]+$/|max:255',
             'employee_number' => 'required|nullable|string|max:255|unique:employees,employee_number',
             'gender' => 'required|string',
@@ -47,19 +46,6 @@ class StoreEmployeeRequest extends FormRequest
             'contacts' => 'nullable|array',
             'contacts.*.value' => 'nullable|string|max:255',
             'contacts.*.type' => 'nullable|exists:contact_types,id',
-=======
-            'name' => ['required', 'string', 'min:3', 'max:255'],
-            'employee_number' => ['required', 'numeric', 'unique:employees'],
-            'gender' => ['required', 'string', 'in:male,female,other'],
-            'birth_date' => ['required', 'date', 'before_or_equal:today - 100 years'],
-            'CC' => ['required', 'numeric', 'digits:9', 'unique:employees', 'different:NIF'],
-            'NIF' => ['required', 'numeric', 'digits:9', 'unique:employees', 'different:CC'],
-            'address' => ['string', 'max:255', 'nullable'],
-            'employee_role_id' => ['required', 'integer', 'exists:employee_roles,id'],
-            'phone_number' => ['required', 'numeric', 'digits_between:9,12'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:employees'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
->>>>>>> DEV-Main
         ];
     }
 
