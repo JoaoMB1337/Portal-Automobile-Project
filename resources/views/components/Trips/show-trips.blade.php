@@ -63,9 +63,19 @@
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                         {{ number_format($totalCost, 2, ',', '.') }}</dd>
                 </div>
+
+                <div class=" mt-10">
+                    <a href="{{ route('trips.edit', ['trip' => $trip->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                        Editar
+                    </a>
+                    <button id="openModalBtn" class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-32">
+                        Eliminar
+                    </button>
+                </div>
             </dl>
         </div>
     </div>
+    @include('components.Modals.modal-delete-single')
 
     <div class="bg-white shadow-md rounded-lg overflow-hidden mt-8">
         <div class="px-6 py-4">
@@ -74,7 +84,7 @@
             <div class="flex justify-between items-center mt-4">
                 <!-- Adicionado um div para manter o botão na mesma linha -->
                 <a href="{{ route('trip-details.create', ['trip_id' => $trip->id]) }}"
-                    class="flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-green-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150">
+                    class="flex items-center px-4 py-2 bg-green-700 hover:bg-green-600  border  rounded-md font-semibold text-xs text-white uppercase tracking-widest  disabled:opacity-25 transition ease-in-out duration-150">
                     <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -122,6 +132,7 @@
         </div>
     </div>
 </div>
+
 
 <style>
     .container {

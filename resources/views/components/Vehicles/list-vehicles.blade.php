@@ -1,6 +1,5 @@
 @vite(['resources/js/Employees/employees-list.js'])
 
-@vite(['resources/js/Vehicles/vehicles-list.js'])
 
 <div class="container">
     <div class="form-container">
@@ -67,11 +66,11 @@
             </thead>
             <tbody>
             @forelse ($vehicles as $vehicle)
-                <tr data-url="{{ url('vehicles/' . $vehicle->id) }}" style="cursor:pointer;">
+                <tr data-url='{{ url('vehicles/' . $vehicle->id) }}' style="cursor:pointer;">
                     <td>
                         <input type="checkbox" name="selected_ids[]" value="{{ $vehicle->id }}" class="form-checkbox">
                     </td>
-                    <td>{{ $vehicle->plate }}</a></td>
+                    <td><a href="{{ url('vehicles/' . $vehicle->id) }}">{{ $vehicle->plate }}</a></td>
                     <td>{{ $vehicle->brand->name }}</td>
                     <td>{{ $vehicle->carCategory->category }}</td>
                     <td>{{ $vehicle->fuelType->type }}</td>
@@ -88,6 +87,13 @@
                     </td>
                     <td>
                         <a href="{{ url('vehicles/' . $vehicle->id . '/edit') }}"><i class="fas fa-edit"></i></a>
+                        <button type="button" class="btn-delete" data-id="{{ $vehicle->id }}"><i class="fas fa-trash-alt"></i></button>
+                        <form id="delete-form-{{ $vehicle->id }}" method="post" action="{{ route('vehicles.destroy', $vehicle->id) }}" style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                        <a href="{{ url('vehicles/' . $vehicle->id) }}"><i class="fas fa-eye"></i></a>
+
                     </td>
                 </tr>
             @empty
@@ -104,5 +110,8 @@
 <div class="flex justify-center mr-10 ">
     {{ $vehicles->links() }}
 </div>
+
+
+@include('components.Modals.modal-delete')
 
 

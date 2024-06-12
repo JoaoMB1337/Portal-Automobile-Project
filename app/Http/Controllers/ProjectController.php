@@ -10,10 +10,12 @@ use App\Models\Country;
 use App\Models\District;
 use App\Models\ProjectStatus;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class ProjectController extends Controller
 {
+    use SoftDeletes;
     /**
      * Display a listing of the resource.
      */
@@ -111,7 +113,7 @@ class ProjectController extends Controller
         $project->name = $request->name;
         $project->address = $request->address;
         $project->project_status_id = $request->projectstatus;
-        if($request->district){
+        if ($request->district) {
             $project->district_id = $request->district;
         }
         $project->country_id = $request->country;

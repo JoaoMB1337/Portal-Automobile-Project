@@ -30,35 +30,26 @@
 
     @include('components.Modals.modal-delete')
 
-    <div class="list-table-container">
-        <div class="list-table">
-            <table>
-                <thead>
+    <div class="list-table">
+        <table>
+            <thead>
                 <tr>
                     <th></th>
-                    <th>Data de Início</th>
-                    <th>Data de Fim</th>
-                    <th>Destino</th>
-                    <th>Propósito</th>
                     <th>Projeto</th>
                     <th>Funcionário</th>
-                    <th>Veículo Matrícula</th>
+                    <th>Veículo</th>
                     @if(Auth::check() && Auth::user()->isAdmin())
                         <th>Ações</th>
                     @endif
                 </tr>
-                </thead>
-                <tbody>
+            </thead>
+            <tbody>
                 @forelse ($trips as $trip)
                     <tr data-url="{{ url('trips/' . $trip->id) }}" style="cursor:pointer;">
                         <td>
                             <input type="checkbox" name="selected_ids[]" value="{{ $trip->id }}" class="form-checkbox">
                         </td>
-                        <td>{{ $trip->start_date }}</td>
-                        <td>{{ $trip->end_date }}</td>
-                        <td>{{ $trip->destination }}</td>
-                        <td>{{ $trip->purpose }}</td>
-                        <td>{{ $trip->project->name }}</td>
+                        <td><a href="{{ route('trips.show', $trip->id) }}">{{ $trip->project->name }}</a></td>
                         <td>
                             @foreach ($trip->employees as $employee)
                                 {{ $employee->name }}<br>
@@ -72,25 +63,32 @@
                         @if(Auth::check() && Auth::user()->isAdmin())
                             <td>
                                 <a href="{{ url('trips/' . $trip->id . '/edit') }}"><i class="fas fa-edit"></i></a>
+                                <button type="button" class="btn-delete" data-id="{{ $trip->id }}"><i class="fas fa-trash-alt"></i></button>
+                                <form id="delete-form-{{ $trip->id }}" method="post" action="{{ route('trips.destroy', $trip->id) }}" style="display: none;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                                <a href="{{ url('trips/' . $trip->id) }}"><i class="fas fa-eye"></i></a>
                             </td>
                         @endif
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="9" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                        <td colspan="5" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
                             Nenhuma viagem encontrada.
                         </td>
                     </tr>
                 @endforelse
-                </tbody>
-            </table>
-        </div>
-        <div class="pagination-container">
-            <div class="flex justify-center mt-4">
-                {{ $trips->links() }}
-            </div>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination-container">
+        <div class="flex justify-center mt-4">
+            {{ $trips->links() }}
         </div>
     </div>
+
     @if(Auth::check() && Auth::user()->isAdmin())
         <a href="{{ route('trips.create') }}" class="add-button"><i class="fas fa-plus"></i></a>
     @endif
