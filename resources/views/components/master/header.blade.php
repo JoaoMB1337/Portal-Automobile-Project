@@ -165,9 +165,7 @@
                 </li>
             @endif
 
-            <li>
-                <a href="/trip-details" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Detalhes Viagem</a>
-            </li>
+
         </ul>
     </div>
 

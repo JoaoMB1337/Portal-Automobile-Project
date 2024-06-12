@@ -104,18 +104,38 @@
             <div class="flex">
                 <i class="fas fa-briefcase icon"></i>
                 <select id="employee_role_id"
-                    class="form-control w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('employee_role_id') border-red-500 @enderror"
-                    name="employee_role_id" required>
+                        class="form-control w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('employee_role_id') border-red-500 @enderror"
+                        name="employee_role_id" required>
                     @foreach ($roles as $role)
-                        <option value="{{ $role->id }}"
-                            {{ old('employee_role_id') == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
+                        @if(Auth::check() && Auth::user()->isManager())
+                            @if ($role->name !== 'Administrador')
+                                <option value="{{ $role->id }}" {{ old('employee_role_id') == $role->id ? 'selected' : '' }}>
+                                    {{ $role->name }}
+                                </option>
+                            @else
+                                @if(Auth::check() && Auth::user()->isAdmin())
+                                    <option value="{{ $role->id }}" {{ old('employee_role_id') == $role->id ? 'selected' : '' }}>
+                                        {{ $role->name }}
+                                    </option>
+                                @endif
+                            @endif
+
+
+                        @endif
                     @endforeach
                 </select>
+
+
+
+
+
+
             </div>
             @error('employee_role_id')
-                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @enderror
         </div>
+
 
         <!-- Email Address Field -->
         <div>

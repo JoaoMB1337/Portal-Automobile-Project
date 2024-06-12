@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTripRequest;
 use App\Http\Requests\UpdateTripRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 use App\Models\Project;
@@ -27,11 +28,18 @@ class TripController extends Controller
      */
     public function index(Request $request)
     {
+        // Verifica se o usuário logado é administrador
+        $isAdmin = Auth::user()->isAdmin(); // Supondo que existe um método isAdmin() no modelo User ou no sistema de autenticação
 
+        // Construir a consulta para listar as viagens
         $query = Trip::query();
 
-        if ($request->has('clear_filters')) {
-            $request->session()->forget(['destination', 'project']);
+        if (!$isAdmin) {
+            // Se não for administrador, filtra apenas as viagens associadas ao funcionário logado
+            $employeeId = Auth::id();
+            $query->whereHas('employees', function ($query) use ($employeeId) {
+                $query->where('employees.id', $employeeId);
+            });
         }
 
         if ($request->filled('destination')) {
@@ -48,9 +56,9 @@ class TripController extends Controller
 
         return view('pages.Trips.list', [
             'trips' => $trips,
-            'employees' => Employee::all(),
-            'project' => Project::all(),
-            'vehicles' => Vehicle::all(),
+            'employees' => Employee::all(), // Isso pode ser otimizado conforme necessário
+            'project' => Project::all(), // Isso pode ser otimizado conforme necessário
+            'vehicles' => Vehicle::all(), // Isso pode ser otimizado conforme necessário
         ]);
     }
 

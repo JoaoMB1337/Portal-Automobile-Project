@@ -42,6 +42,7 @@
                 </div>
             </dl>
         </div>
+        @if(Auth::check() && Auth::user()->isAdmin())
             <div class="px-6 py-4">
                 <a href="{{ route('projects.edit', ['project' => $project->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
                     Editar
@@ -50,6 +51,7 @@
                     Eliminar
                 </button>
             </div>
+        @endif
     </div>
     @include('components.Modals.modal-delete-single')
 
@@ -92,7 +94,7 @@
                 <tbody class="bg-white divide-y divide-gray-200">
                     @foreach ($trips as $trip)
                         <tr data-url="{{ url('trips/' . $trip->id) }}" style="cursor:pointer;">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $trip->destination }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800"><a href="{{ route('trips.show', $trip->id) }}">{{ $trip->destination }}</a></td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $trip->start_date }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $trip->end_date }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">

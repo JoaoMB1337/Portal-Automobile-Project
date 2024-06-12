@@ -63,7 +63,7 @@
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                         {{ number_format($totalCost, 2, ',', '.') }}</dd>
                 </div>
-
+                @if(Auth::check() && Auth::user()->isAdmin())
                 <div class=" mt-10">
                     <a href="{{ route('trips.edit', ['trip' => $trip->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
                         Editar
@@ -72,6 +72,7 @@
                         Eliminar
                     </button>
                 </div>
+                @endif
             </dl>
         </div>
     </div>

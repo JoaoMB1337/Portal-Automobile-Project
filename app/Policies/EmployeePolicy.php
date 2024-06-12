@@ -13,17 +13,15 @@ class EmployeePolicy
      */
     public function viewAny(Employee $employee): bool
     {
-        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
+        return $this->hasPermission($employee);
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view( Employee $employee): bool
+    public function view(Employee $employee): bool
     {
-        //
-        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
-
+        return $this->hasPermission($employee);
     }
 
     /**
@@ -31,48 +29,46 @@ class EmployeePolicy
      */
     public function create(Employee $employee): bool
     {
-        //
-        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
-
+        return $this->hasPermission($employee);
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update( Employee $employee): bool
+    public function update(Employee $employee): bool
     {
-        //
-        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
-
+        return $this->hasPermission($employee);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete( Employee $employee): bool
+    public function delete(Employee $employee): bool
     {
-        //
-        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
-
+        return $this->hasPermission($employee);
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore( Employee $employee): bool
+    public function restore(Employee $employee): bool
     {
-        //
-        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
-
+        return $this->hasPermission($employee);
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete( Employee $employee): bool
+    public function forceDelete(Employee $employee): bool
     {
-        //
-        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
+        return $this->hasPermission($employee);
+    }
 
+    /**
+     * Check if the user has permission based on employee_role_id.
+     */
+    private function hasPermission(Employee $employee): bool
+    {
+        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
     }
 }
