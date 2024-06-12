@@ -6,7 +6,10 @@ use App\Models\Employee;
 use App\Models\Vehicle;
 use App\Models\Project;
 use App\Models\Trip;
+use App\Models\Insurance;
+
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -29,7 +32,6 @@ class HomeController extends Controller
     {
         $employee = Employee::find(1);
 
-
         $internalVehiclesCount = Vehicle::where('is_external', 0)->count();
         $externalVehiclesCount = Vehicle::where('is_external', 1)->count();
 
@@ -41,6 +43,10 @@ class HomeController extends Controller
         $projectsCancelled = Project::where('project_status_id', 4)->count();
         $projectsOnHold = Project::where('project_status_id', 5)->count();
 
+        $today = Carbon::today();
+        $nextMonth = Carbon::today()->addDays(30);
+        $endingInsurances = Insurance::whereBetween('end_date', [$today, $nextMonth])->get();
+
         return view('home', compact(
             'internalVehiclesCount',
             'externalVehiclesCount',
@@ -49,13 +55,8 @@ class HomeController extends Controller
             'projectsInProgress',
             'projectsCompleted',
             'projectsCancelled',
-            'projectsOnHold'
+            'projectsOnHold',
+            'endingInsurances'
         ));
-
-
-
-
-
-
     }
 }
