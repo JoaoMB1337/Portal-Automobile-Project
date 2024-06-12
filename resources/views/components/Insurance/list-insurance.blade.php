@@ -50,8 +50,6 @@
                     </th>
                     <th>Companhia</th>
                     <th>Número da Apólice</th>
-                    <th>Data de Início</th>
-                    <th>Data de Fim</th>
                     <th>Custo</th>
                     <th>Matrícula</th>
                     <th>Ações</th>
@@ -64,19 +62,18 @@
                             <input type="checkbox" name="selected_ids[]" value="{{ $insurance->id }}"
                                 class="form-checkbox">
                         </td>
-                        <td>{{ $insurance->insurance_company }}</td>
+                        <td><a href="{{ route('insurances.show', $insurance->id) }}">{{ $insurance->insurance_company }}</td>
                         <td>{{ $insurance->policy_number }}</td>
-                        <td>{{ $insurance->start_date }}</td>
-                        <td>{{ $insurance->end_date }}</td>
                         <td>{{ number_format($insurance->cost, 2, ',', '.') }}</td>
                         <td>{{ $insurance->vehicle->plate }}</td>
                         <td>
                             <a href="{{ route('insurances.edit', $insurance->id) }}"><i class="fas fa-edit"></i></a>
-                            <form action="{{ route('insurances.destroy', $insurance->id) }}" method="POST"
-                                style="display: inline-block;">
+                            <button type="button" class="btn-delete" data-id="{{ $insurance->id }}"><i class="fas fa-trash-alt"></i></button>
+                            <form id="delete-form-{{ $insurance->id }}" method="post" action="{{ route('insurances.destroy', $insurance->id) }}" style="display: none;">
                                 @csrf
                                 @method('DELETE')
                             </form>
+                            <a href="{{ url('insurances/' . $insurance->id) }}"><i class="fas fa-eye"></i></a>
                         </td>
                     </tr>
                 @empty
@@ -89,6 +86,9 @@
                 @endforelse
             </tbody>
         </table>
+        <div class="flex justify-center mr-10 mt-4">
+            {{ $insurances->links() }}
+        </div>
     </div>
     <a href="{{ route('insurances.create') }}" class="add-button"><i class="fas fa-plus"></i></a>
 </div>

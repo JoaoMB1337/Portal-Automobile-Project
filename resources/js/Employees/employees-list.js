@@ -19,75 +19,118 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    const deleteForm = document.getElementById('multi-delete-form');
-    const checkboxes = document.querySelectorAll('input[name="selected_ids[]"]');
     const deleteModal = document.getElementById('deleteModal');
     const closeModalDelete = deleteModal ? deleteModal.querySelector('.close') : null;
     const confirmDeleteButton = document.getElementById('confirmDelete');
     const cancelDeleteButton = document.getElementById('cancelDelete');
+    let formToDelete = null;
 
-    function collectSelectedIds() {
-        // Remove old hidden inputs if any
-        const oldInputs = document.querySelectorAll('#multi-delete-form input[type="hidden"][name="selected_ids[]"]');
-        oldInputs.forEach(input => input.remove());
-
-        checkboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'selected_ids[]';
-                input.value = checkbox.value;
-                deleteForm.appendChild(input);
-            }
-        });
-    }
-
-    if (deleteForm && deleteModal && closeModalDelete && confirmDeleteButton && cancelDeleteButton) {
+    if (deleteModal && closeModalDelete && confirmDeleteButton && cancelDeleteButton) {
+        // Multiple delete
+        const deleteForm = document.getElementById('multi-delete-form');
+        const checkboxes = document.querySelectorAll('input[name="selected_ids[]"]');
         const deleteButton = deleteForm.querySelector('button[type="submit"]');
 
         deleteButton.addEventListener('click', function(event) {
             event.preventDefault();
             collectSelectedIds();
             if (document.querySelectorAll('#multi-delete-form input[type="hidden"][name="selected_ids[]"]').length > 0) {
+                formToDelete = deleteForm;
                 deleteModal.style.display = 'block';
             }
         });
 
-        closeModalDelete.addEventListener('click', function() {
+        function collectSelectedIds() {
+            // Remove old hidden inputs if any
+            const oldInputs = document.querySelectorAll('#multi-delete-form input[type="hidden"][name="selected_ids[]"]');
+            oldInputs.forEach(input => input.remove());
+
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'selected_ids[]';
+                    input.value = checkbox.value;
+                    deleteForm.appendChild(input);
+                }
+            });
+        }
+
+        // Individual delete
+        const deleteButtons = document.querySelectorAll('.btn-delete');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const employeeId = this.getAttribute('data-id');
+                formToDelete = document.getElementById(`delete-form-${employeeId}`);
+                deleteModal.style.display = 'block';
+            });
+        });
+
+        closeModalDelete.onclick = function() {
             deleteModal.style.display = 'none';
-        });
+        }
 
-        cancelDeleteButton.addEventListener('click', function() {
+        confirmDeleteButton.onclick = function() {
+            if (formToDelete) {
+                formToDelete.submit();
+            }
+        }
+
+        cancelDeleteButton.onclick = function() {
             deleteModal.style.display = 'none';
-        });
+        }
 
-        confirmDeleteButton.addEventListener('click', function() {
-            deleteForm.submit();
-        });
-
-        window.addEventListener('click', function(event) {
+        window.onclick = function(event) {
             if (event.target === deleteModal) {
                 deleteModal.style.display = 'none';
             }
-        });
-
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('click', function(event) {
-                event.stopPropagation();
-            });
-        });
+        }
     }
 
-    const rows = document.querySelectorAll('.list-table tbody tr');
-    rows.forEach(row => {
-        row.addEventListener('click', function(event) {
-            if (event.target.type === 'checkbox') {
-                event.stopPropagation();
-            } else {
-                if (row.dataset.url){
-                    window.location = row.dataset.url;
-                } 
-            }
-        });
-    });
+    // Add Button Options
+    const addButton = document.getElementById('addButton');
+    const addOptions = document.getElementById('addOptions');
+    const importCsvBtn = document.getElementById('importCsvBtn');
+
+    if (addButton && addOptions && importCsvBtn) {
+        addButton.onclick = function() {
+            addOptions.style.display = addOptions.style.display === 'block' ? 'none' : 'block';
+        }
+
+        importCsvBtn.onclick = function(event) {
+            event.preventDefault();
+
+            const importCsvForm = document.createElement('form');
+            importCsvForm.method = 'POST';
+            importCsvForm.action = importCsvBtn.getAttribute('data-action');
+            importCsvForm.enctype = 'multipart/form-data';
+            importCsvForm.style.display = 'none';
+
+            const csrfTokenInput = document.createElement('input');
+            csrfTokenInput.type = 'hidden';
+            csrfTokenInput.name = '_token';
+            csrfTokenInput.value = importCsvBtn.getAttribute('data-token');
+
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.name = 'file';
+            fileInput.accept = '.csv';
+
+            const submitButton = document.createElement('button');
+            submitButton.type = 'submit';
+            submitButton.textContent = 'Importar';
+
+            importCsvForm.appendChild(csrfTokenInput);
+            importCsvForm.appendChild(fileInput);
+            importCsvForm.appendChild(submitButton);
+
+            document.body.appendChild(importCsvForm);
+
+            fileInput.addEventListener('change', function() {
+                importCsvForm.submit();
+            });
+
+            fileInput.click();
+        }
+    }
 });

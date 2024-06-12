@@ -72,6 +72,10 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="search_vehicle">Pesquisar Veículo por Matrícula:</label>
+                    <input type="text" name="search_vehicle" id="search_vehicle" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md " placeholder="Escreva Aqui">
+                </div>
 
                 <div class="col-span-2">
                     <label for="vehicle_id" class="block text-sm font-medium text-gray-700">Veículo</label>
@@ -89,3 +93,22 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.getElementById('search_vehicle').addEventListener('input', function() {
+        var searchValue = this.value.toLowerCase();
+        var selectElement = document.getElementById('vehicle_id');
+
+        selectElement.innerHTML = '';
+
+        @foreach ($vehicles as $vehicle)
+        var vehiclePlate = '{{ $vehicle->plate }}'.toLowerCase();
+        if (vehiclePlate.includes(searchValue)) {
+            var option = document.createElement('option');
+            option.value = '{{ $vehicle->id }}';
+            option.text = '{{ $vehicle->plate }}';
+            selectElement.appendChild(option);
+        }
+        @endforeach
+    });
+</script>

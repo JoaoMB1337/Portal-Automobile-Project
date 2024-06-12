@@ -35,15 +35,10 @@
             <thead>
             <tr>
                 <th>
-                    <!-- Checkbox removed from here -->
                 </th>
-                <th>Data de Início</th>
-                <th>Data de Fim</th>
-                <th>Destino</th>
-                <th>Propósito</th>
                 <th>Projeto</th>
                 <th>Funcionário</th>
-                <th>Veículo Matrícula</th>
+                <th>Veiculo</th>
                 @if(Auth::check() && Auth::user()->isAdmin())
                 <th>Ações</th>
                 @endif
@@ -55,11 +50,7 @@
                     <td>
                         <input type="checkbox" name="selected_ids[]" value="{{ $trip->id }}" class="form-checkbox">
                     </td>
-                    <td>{{ $trip->start_date }}</td>
-                    <td>{{ $trip->end_date }}</td>
-                    <td>{{ $trip->destination }}</td>
-                    <td>{{ $trip->purpose }}</td>
-                    <td>{{ $trip->project->name }}</td>
+                    <td><a href="{{ route('trips.show', $trip->id) }}">{{ $trip->project->name }}</td>
                     <td>
                         @foreach ($trip->employees as $employee)
                             {{ $employee->name }}<br>
@@ -73,6 +64,12 @@
                     @if(Auth::check() && Auth::user()->isAdmin())
                     <td>
                         <a href="{{ url('trips/' . $trip->id . '/edit') }}"><i class="fas fa-edit"></i></a>
+                        <button type="button" class="btn-delete" data-id="{{ $trip->id }}"><i class="fas fa-trash-alt"></i></button>
+                        <form id="delete-form-{{ $trip->id }}" method="post" action="{{ route('trips.destroy', $trip->id) }}" style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                        <a href="{{ url('trips/' . $trip->id) }}"><i class="fas fa-eye"></i></a>
                     </td>
                     @endif
                 </tr>
@@ -85,9 +82,13 @@
             @endforelse
             </tbody>
         </table>
+        <div class="flex justify-center mr-10 mt-4">
+            {{ $trips->links() }}
+        </div>
     </div>
         @if(Auth::check() && Auth::user()->isAdmin())
 
     <a href="{{ route('trips.create') }}" class="add-button"><i class="fas fa-plus"></i></a>
     @endif
 </div>
+

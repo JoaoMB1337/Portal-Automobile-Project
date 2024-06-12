@@ -80,27 +80,6 @@ class EmployeeController extends Controller
      */
     public function store(StoreEmployeeRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|regex:/^[a-zA-Z\s]+$/|max:255',
-            'employee_number' => 'required|nullable|string|max:255|unique:employees,employee_number',
-            'gender' => 'required|string',
-            'birth_date' => ['required', 'date', function ($attribute, $value, $fail) {
-                if (!\DateTime::createFromFormat('Y-m-d', $value)) {
-                    $fail('A data de nascimento não é uma data válida.');
-                }
-            }],            'CC' => 'required|string|digits:9|unique:employees,CC',
-            'NIF' => 'required|string|digits:9|unique:employees,NIF',
-            'address' => 'nullable|string|max:255',
-            'employee_role_id' => 'required|exists:employee_roles,id',
-            'email' => 'nullable|email|max:255|unique:employees,email',
-            'phone' => 'nullable|string|max:255|unique:employees,phone',
-            'password' => 'required|string|min:8|confirmed',
-            'driving_licenses' => 'nullable|array',
-            'driving_licenses.*' => 'exists:driving_licenses,id',
-            'contacts' => 'nullable|array',
-            'contacts.*.value' => 'nullable|string|max:255',
-            'contacts.*.type' => 'nullable|exists:contact_types,id',
-        ]);
 
         $employee = Employee::create([
             'name' => $request->name,
@@ -120,12 +99,14 @@ class EmployeeController extends Controller
             $employee->drivingLicenses()->sync($request->driving_licenses);
         }
 
-        foreach ($request->contacts as $contact) {
-            if (isset($contact['value']) && isset($contact['type'])) {
-                $employee->contacts()->create([
-                    'contact_value' => $contact['value'],
-                    'contact_type_id' => $contact['type']
-                ]);
+        if ($request->has('contacts')) {
+            foreach ($request->contacts as $contact) {
+                if (isset($contact['value']) && isset($contact['type'])) {
+                    $employee->contacts()->create([
+                        'contact_value' => $contact['value'],
+                        'contact_type_id' => $contact['type']
+                    ]);
+                }
             }
         }
 

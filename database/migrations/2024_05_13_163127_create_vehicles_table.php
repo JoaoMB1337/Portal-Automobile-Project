@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('rental_company')->nullable();
             $table->string('rental_contact_person')->nullable();
             $table->string('rental_contact_number')->nullable();
+            $table->boolean('is_active')->nullable()->default(false);
             $table->string('notes')->nullable();
             $table->string('pdf_file')->nullable();
             $table->foreignId('fuel_type_id')->constrained('fuel_types');
