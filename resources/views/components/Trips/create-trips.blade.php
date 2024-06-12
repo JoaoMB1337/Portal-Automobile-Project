@@ -96,6 +96,7 @@
                 <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
+
             <div>
                 <button type="submit" class="custom-btn w-full py-2 rounded-md">
                     Criar

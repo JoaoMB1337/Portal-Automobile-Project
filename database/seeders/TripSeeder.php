@@ -22,8 +22,7 @@ class TripSeeder extends Seeder
             $employees = Employee::inRandomOrder()->take(rand(1, 3))->get();
             $trip->employees()->attach($employees);
 
-            $vehicles = Vehicle::inRandomOrder()->take(rand(1, 3))->get();
-            $trip->vehicles()->attach($vehicles);
+
         });
     }
 }

@@ -33,7 +33,7 @@ class HomeController extends Controller
         $internalVehiclesCount = Vehicle::where('is_external', 0)->count();
         $externalVehiclesCount = Vehicle::where('is_external', 1)->count();
 
-        $totalTrips = Trip::all()->count();
+        $vehicleactive = Vehicle::where('is_active', 1)->count();
 
         $projectsNotStarted = Project::where('project_status_id', 1)->count();
         $projectsInProgress = Project::where('project_status_id', 2)->count();
@@ -44,7 +44,7 @@ class HomeController extends Controller
         return view('home', compact(
             'internalVehiclesCount',
             'externalVehiclesCount',
-            'totalTrips',
+            'vehicleactive',
             'projectsNotStarted',
             'projectsInProgress',
             'projectsCompleted',
