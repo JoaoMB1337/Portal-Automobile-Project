@@ -14,7 +14,7 @@ class VehiclePolicy
      */
     public function viewAny(Employee $employee): bool
     {
-        return isMaster();
+        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
     }
 
     /**
