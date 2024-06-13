@@ -56,15 +56,20 @@
                         <td>{{ $insurance->policy_number }}</td>
                         <td>{{ number_format($insurance->cost, 2, ',', '.') }}</td>
                         <td>{{ $insurance->vehicle->plate }}</td>
-                        <td>
-                            <a href="{{ route('insurances.edit', $insurance->id) }}"><i class="fas fa-edit"></i></a>
-                            <form action="{{ route('insurances.destroy', $insurance->id) }}" method="POST" style="display: inline-block;">
-                            <button type="button" class="btn-delete" data-id="{{ $insurance->id }}"><i class="fas fa-trash-alt"></i></button>
+                        <td class="flex space-x-2 justify-center">
+                            <a href="{{ route('insurances.edit', $insurance->id) }}" class="p-2">
+                                <i class="fas fa-edit text-xl"></i>
+                            </a>
+                            <button type="button" class="btn-delete p-2" data-id="{{ $insurance->id }}">
+                                <i class="fas fa-trash-alt text-xl text-red-600"></i>
+                            </button>
                             <form id="delete-form-{{ $insurance->id }}" method="post" action="{{ route('insurances.destroy', $insurance->id) }}" style="display: none;">
                                 @csrf
                                 @method('DELETE')
                             </form>
-                            <a href="{{ url('insurances/' . $insurance->id) }}"><i class="fas fa-eye"></i></a>
+                            <a href="{{ url('insurances/' . $insurance->id) }}" class="p-2">
+                                <i class="fas fa-eye text-xl"></i>
+                            </a>
                         </td>
                     </tr>
                 @empty
@@ -160,6 +165,48 @@
         .add-button-container {
             margin-top: 10px;
         }
+
+        .btn-delete i {
+            color: #dc3545;
+        }
+
+        .btn-delete:hover i {
+            color: #c82333;
+        }
+
+        a i:hover {
+            color: #0056b3;
+        }
+
+        .flex.space-x-2.justify-center {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .p-2 {
+            padding: 0.5rem;
+        }
+
+        .text-xl {
+            font-size: 1.25rem;
+        }
+
+        .text-red-600 {
+            color: #dc3545;
+        }
+
+        .list-table th:nth-child(6), .list-table td:nth-child(6) {
+            width: 120px;
+            text-align: center;
+        }
+
+        .list-table th, .list-table td {
+            padding: 8px;
+            vertical-align: middle;
+        }
+
     }
 
 </style>
