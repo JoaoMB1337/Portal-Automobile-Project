@@ -68,10 +68,13 @@ class EmployeeController extends Controller
         $roles = EmployeeRole::all();
         $drivingLicenses = DrivingLicense::all();
         $contactTypes = ContactType::all();
+        $isAdmin = Auth::user()->isAdmin();
+
         return view('pages.Employees.create', [
             'roles' => $roles,
             'drivingLicenses' => $drivingLicenses,
-            'contactTypes' => $contactTypes
+            'contactTypes' => $contactTypes,
+            'isAdmin' => $isAdmin
         ]);
     }
 

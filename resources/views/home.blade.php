@@ -1,7 +1,7 @@
 @extends('components.master.main')
 @section('content')
 
-@if(Auth::check() && Auth::user()->employee_role_id == 2)
+@if(Auth::check() && Auth::user()->isAdmin() || Auth::user()->isManager())
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -79,7 +79,7 @@
                             @endforelse
                         </tbody>
                     </table>
-                    
+
                 </div>
             </div>
         </div>

@@ -28,7 +28,7 @@ class EmployeeSeeder extends Seeder
                 'CC' => '987654321',
                 'NIF' => '987654321',
                 'address' => 'Rua da Atec, 123',
-                'employee_role_id' => 2,
+                'employee_role_id' => 1,
                 'email' => 'admin@innodrive.com',
                 'phone' => '913333459',
                 'email_verified_at' => '2021-01-01',

@@ -6,7 +6,8 @@
         @component('components.Employees.create-employees', [
             'roles' => $roles,
             'drivingLicenses' => $drivingLicenses,
-            'contactTypes' => $contactTypes
+            'contactTypes' => $contactTypes,
+            'isAdmin' => $isAdmin
             ])
         @endcomponent
     </div>
