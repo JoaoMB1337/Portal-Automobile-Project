@@ -29,7 +29,7 @@ class TripController extends Controller
     public function index(Request $request)
     {
         // Verifica se o usuário logado é administrador
-        $isAdmin = Auth::user()->isAdmin(); // Supondo que existe um método isAdmin() no modelo User ou no sistema de autenticação
+        $isAdmin = Auth::user()->isAdmin() || Auth::user()->isManager(); // Supondo que existe um método isAdmin() no modelo User ou no sistema de autenticação
 
         // Construir a consulta para listar as viagens
         $query = Trip::query();

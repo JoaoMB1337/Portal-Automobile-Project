@@ -4,30 +4,30 @@ namespace App\Policies;
 
 use Illuminate\Auth\Access\Response;
 use App\Models\TripDetail;
-use App\Models\User;
+use App\Models\Employee;
 
 class TripDetailPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(Employee $employee): bool
     {
-        //
+        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, TripDetail $tripDetail): bool
+    public function view(Employee $employee, TripDetail $tripDetail): bool
     {
-        //
+        
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(Employee $employee): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class TripDetailPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, TripDetail $tripDetail): bool
+    public function update(Employee $employee, TripDetail $tripDetail): bool
     {
         //
     }
@@ -43,24 +43,24 @@ class TripDetailPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, TripDetail $tripDetail): bool
+    public function delete(Employee $employee, TripDetail $tripDetail): bool
     {
-        //
+        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, TripDetail $tripDetail): bool
+    public function restore(Employee $employee, TripDetail $tripDetail): bool
     {
-        //
+        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, TripDetail $tripDetail): bool
+    public function forceDelete(Employee $employee, TripDetail $tripDetail): bool
     {
-        //
+        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
     }
 }

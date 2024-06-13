@@ -71,4 +71,9 @@ class Employee extends Authenticatable
         return $this->employee_role_id == 2;
 
     }
+
+    public function isMaster()
+    {
+        return $this->employee_role_id == 1 || $this->employee_role_id == 2;
+    }
 }
