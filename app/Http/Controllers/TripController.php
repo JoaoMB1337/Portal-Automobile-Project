@@ -28,14 +28,11 @@ class TripController extends Controller
      */
     public function index(Request $request)
     {
-        // Verifica se o usuário logado é administrador
-        $isAdmin = Auth::user()->isAdmin() || Auth::user()->isManager(); // Supondo que existe um método isAdmin() no modelo User ou no sistema de autenticação
+        $isAdmin = Auth::user()->isMaster();
 
-        // Construir a consulta para listar as viagens
         $query = Trip::query();
 
         if (!$isAdmin) {
-            // Se não for administrador, filtra apenas as viagens associadas ao funcionário logado
             $employeeId = Auth::id();
             $query->whereHas('employees', function ($query) use ($employeeId) {
                 $query->where('employees.id', $employeeId);
@@ -56,9 +53,9 @@ class TripController extends Controller
 
         return view('pages.Trips.list', [
             'trips' => $trips,
-            'employees' => Employee::all(), // Isso pode ser otimizado conforme necessário
-            'project' => Project::all(), // Isso pode ser otimizado conforme necessário
-            'vehicles' => Vehicle::all(), // Isso pode ser otimizado conforme necessário
+            'employees' => Employee::all(),
+            'project' => Project::all(),
+            'vehicles' => Vehicle::all(),
         ]);
     }
 
@@ -93,8 +90,6 @@ class TripController extends Controller
      */
     public function store(StoreTripRequest $request)
     {
-        \Log::info('Request Data:', $request->all());
-
         $validatedData = $request->validated();
 
         $trip = new Trip();
@@ -115,7 +110,6 @@ class TripController extends Controller
 
         }
 
-
         $vehicle = Vehicle::find($validatedData['vehicle_id']);
         $vehicle->is_active = true;
         $vehicle->save();
@@ -131,11 +125,6 @@ class TripController extends Controller
                 $vehicle->save();
             }
 
-
-        // /* ADICIONEI*/
-        // $trip->employees()->attach($validatedData['employee_id']);
-        // $trip->vehicles()->attach($validatedData['vehicle_id']);
-
         return redirect()->route('trips.index');
     }
 
@@ -144,6 +133,16 @@ class TripController extends Controller
      */
     public function show(Trip $trip)
     {
+        $isAdminOrManager = Auth::user()->isMaster();
+
+        if (!$isAdminOrManager) {
+            $employeeId = Auth::id();
+            $isAssociated = $trip->employees->contains($employeeId);
+
+            if (!$isAssociated) {
+                abort(403, 'Access denied');
+            }
+        }
 
         $totalCost = $trip->tripDetails->sum('cost');
         return view('pages.Trips.show', [

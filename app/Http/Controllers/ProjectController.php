@@ -22,14 +22,10 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
-        // Verifica se o usuário logado é administrador ou gestor
-        $isAdminOrManager = Auth::user()->isAdmin() || Auth::user()->isManager(); // Supondo que existe um método isManager() no modelo User
-    
-        // Construir a consulta para listar os projetos
+        $isAdminOrManager = Auth::user()->isMaster(); 
         $query = Project::query();
     
         if (!$isAdminOrManager) {
-            // Se não for administrador ou gestor, filtra apenas os projetos associados ao funcionário logado
             $employeeId = Auth::id();
             $query->whereHas('trips.employees', function ($q) use ($employeeId) {
                 $q->where('employees.id', $employeeId);
@@ -126,14 +122,28 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+        $isAdminOrManager = Auth::user()->isMaster();
+
+        if (!$isAdminOrManager) {
+            $employeeId = Auth::id();
+            $isAssociated = $project->trips()->whereHas('employees', function ($q) use ($employeeId) {
+                $q->where('employees.id', $employeeId);
+            })->exists();
+
+            if (!$isAssociated) {
+                abort(403, 'Access denied');
+            }
+        }
+
         $trips = $project->trips;
         $totalProjectCost = $trips->sum(function ($trip) {
             return $trip->tripDetails->sum('cost');
         });
+
         return view('pages.Projects.show', [
-            'project'           => $project,
-            'trips'             => $trips,
-            'totalProjectCost'  => $totalProjectCost,
+            'project' => $project,
+            'trips' => $trips,
+            'totalProjectCost' => $totalProjectCost,
         ]);
     }
 
