@@ -86,19 +86,12 @@ class InsuranceController extends Controller
         $insurance->policy_number = $request->policy_number;
         $insurance->start_date = $request->start_date;
         $insurance->end_date = $request->end_date;
-        //$insurance->cost = $request->cost;
-
         $insurance->cost = str_replace(',', '.', str_replace('.', '', $request->cost));
-
-        //$insurance->cost = str_replace(',', '.', $insurance->cost);
-
 
         $insuranceExists = Insurance::where('vehicle_id', $vehicle->id)->first();
         if ($insuranceExists) {
             return redirect()->back()->with('error', 'Veiculo ja tem seguro.');
         }
-
-
 
         // Associar o veículo encontrado ao seguro
         $insurance->vehicle_id = $vehicle->id;
@@ -136,16 +129,6 @@ class InsuranceController extends Controller
      */
     public function update(Request $request, Insurance $insurance)
     {
-        $request->validate([
-            'insurance_company' => 'required|string',
-            'policy_number' => 'required|string',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
-            //'cost' => 'required|numeric',
-            'cost' => ['required', 'regex:/^\d{1,3}(\.\d{3})*(\,\d{2})?$/'],
-            'vehicle_plate' => 'required|exists:vehicles,plate'
-        ]);
-
 
         $vehicle = Vehicle::where('plate', $request->vehicle_plate)->first();
 
@@ -158,7 +141,6 @@ class InsuranceController extends Controller
             'policy_number' => $request->policy_number,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
-            //'cost' => $request->cost,
             'cost' => str_replace(',', '.', str_replace('.', '', $request->cost)),
 
             'vehicle_id' => $vehicle->id
@@ -186,14 +168,11 @@ class InsuranceController extends Controller
 
         if ($request->has('selected_ids')) {
 
-
-
             if (!empty($request->selected_ids)) {
 
                 Insurance::whereIn('id', $request->selected_ids)->delete();
             }
         }
-
 
         return redirect()->route('insurances.index');
     }
