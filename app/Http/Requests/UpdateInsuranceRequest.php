@@ -27,7 +27,8 @@ class UpdateInsuranceRequest extends FormRequest
             'policy_number' => 'required|string|max:255|unique:insurances,policy_number',
             'start_date' => 'required|date|before:end_date',
             'end_date' => 'required|date|after:start_date',
-            'cost' => 'required|numeric|min:0',
+            'cost' => ['required', 'regex:/^\d{1,3}(\.\d{3})*(\,\d{2})?$/'],
+            
         ];
     }
 
@@ -51,8 +52,7 @@ class UpdateInsuranceRequest extends FormRequest
             'end_date.date' => 'A data de término deve ser uma data válida.',
             'end_date.after' => 'A data de término deve ser depois da data de início.',
             'cost.required' => 'O custo é obrigatório.',
-            'cost.numeric' => 'O custo deve ser um valor numérico.',
-            'cost.min' => 'O custo deve ser um valor positivo.',
+            'cost.regex' => 'O custo não esta no formato',
         ];
     }
 }

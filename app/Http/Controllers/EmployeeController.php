@@ -146,7 +146,6 @@ class EmployeeController extends Controller
                 'roles' => $roles,
                 'drivingLicenses' => $drivingLicenses,
                 'contactTypes' => $contactTypes
-
             ]
         );
     }

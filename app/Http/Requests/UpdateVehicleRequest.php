@@ -34,7 +34,7 @@ class UpdateVehicleRequest extends FormRequest
 
         if ($this->is_external) {
             $rules = array_merge($rules, [
-                'contract_number' => 'required|string|max:255',
+                'contract_number' => 'nullable|string|max:255|unique:vehicles,contract_number',
                 'rental_price_per_day' => 'required|numeric|min:0',
                 'rental_start_date' => 'required|date',
                 'rental_end_date' => 'required|date|after:rental_start_date',
@@ -67,6 +67,7 @@ class UpdateVehicleRequest extends FormRequest
             'brand.exists' => 'A marca selecionada é inválida.',
 
             'contract_number.required' => 'O número do contrato é obrigatório para veículos externos.',
+            'contract_number.unique' => 'O número do contrato já está em uso. Por favor, escolha outro.',
             'rental_price_per_day.required' => 'O preço de locação por dia é obrigatório para veículos externos.',
             'rental_price_per_day.numeric' => 'O preço de locação por dia deve ser um valor numérico.',
             'rental_price_per_day.min' => 'O preço de locação por dia não pode ser negativo.',
