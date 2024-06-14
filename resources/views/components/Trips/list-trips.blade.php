@@ -61,14 +61,20 @@
                             @endforeach
                         </td>
                         @if(Auth::check() && Auth::user()->isAdmin())
-                            <td>
-                                <a href="{{ url('trips/' . $trip->id . '/edit') }}"><i class="fas fa-edit"></i></a>
-                                <button type="button" class="btn-delete" data-id="{{ $trip->id }}"><i class="fas fa-trash-alt"></i></button>
+                            <td class="table-actions">
+                                <a href="{{ url('trips/' . $trip->id . '/edit') }}" class="btn-action btn-edit">
+                                    <i class="fas fa-edit text-xl"></i>
+                                </a>
+                                <button type="button" class="btn-action btn-delete" data-id="{{ $trip->id }}">
+                                    <i class="fas fa-trash-alt text-xl"></i>
+                                </button>
                                 <form id="delete-form-{{ $trip->id }}" method="post" action="{{ route('trips.destroy', $trip->id) }}" style="display: none;">
                                     @csrf
                                     @method('DELETE')
                                 </form>
-                                <a href="{{ url('trips/' . $trip->id) }}"><i class="fas fa-eye"></i></a>
+                                <a href="{{ url('trips/' . $trip->id) }}" class="btn-action btn-view">
+                                    <i class="fas fa-eye text-xl"></i>
+                                </a>
                             </td>
                         @endif
                     </tr>
@@ -93,3 +99,34 @@
         <a href="{{ route('trips.create') }}" class="add-button"><i class="fas fa-plus"></i></a>
     @endif
 </div>
+
+<style>
+
+    .btn-action {
+        padding: 6px 12px;
+        font-size: 16px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+
+    .btn-edit i, .btn-view i {
+        color: #2d2d2d;
+    }
+
+    .btn-delete i {
+        color: #dc3545;
+    }
+
+    .btn-delete:hover i {
+        color: #c82333;
+    }
+
+    .btn-edit:hover i, .btn-view:hover i {
+        color: #2d2c2a;
+    }
+
+</style>
+

@@ -1,6 +1,5 @@
 @vite(['resources/js/Employees/employees-list.js'])
 <div class="container">
-    <!-- Filtros -->
     <div class="form-container">
         <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
         <a href="{{ route('employees.index', ['clear_filters' => true]) }}"
@@ -8,7 +7,7 @@
         </a>
     </div>
 
-    <div id="filterModal" class="modal mx-auto pl-10 lg:pl-64">
+    <div id="filterModal" class="modal mx-auto lg:pl-64">
         <div class="modal-content">
             <span class="close">&times;</span>
             <form method="GET" action="{{ route('employees.index') }}">
@@ -58,17 +57,17 @@
                     <td>{{ $employee->email }}</td>
                     <td>{{ $employee->role->name }}</td>
                     <td class="table-actions">
-                        <a href="{{ url('employees/' . $employee->id . '/edit') }}">
+                        <a href="{{ url('employees/' . $employee->id . '/edit') }}" class="btn-action btn-edit">
                             <i class="fas fa-edit text-xl"></i>
                         </a>
-                        <button type="button" class="btn-delete" data-id="{{ $employee->id }}">
+                        <button type="button" class="btn-action btn-delete" data-id="{{ $employee->id }}">
                             <i class="fas fa-trash-alt text-xl"></i>
                         </button>
                         <form id="delete-form-{{ $employee->id }}" method="post" action="{{ route('employees.destroy', $employee->id) }}" style="display: none;">
                             @csrf
                             @method('DELETE')
                         </form>
-                        <a href="{{ url('employees/' . $employee->id) }}">
+                        <a href="{{ url('employees/' . $employee->id) }}" class="btn-action btn-view">
                             <i class="fas fa-eye text-xl"></i>
                         </a>
                     </td>
@@ -78,7 +77,6 @@
             </tbody>
         </table>
 
-        <!-- Botão "Adicionar" com opções -->
         <div class="add-button-container fixed bottom-4 right-4 z-10">
             <button id="addButton" class="add-button">
                 <i class="fas fa-plus"></i>
@@ -172,9 +170,6 @@
         color: #c82333;
     }
 
-    a i:hover {
-        color: #0056b3;
-    }
 
     .modal {
         display: none;
@@ -252,10 +247,29 @@
         color: #c82333;
     }
 
-    a i:hover {
-        color: #0056b3;
+
+    .btn-action {
+        padding: 6px 12px;
+        font-size: 16px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
     }
 
+
+
+    .btn-edit i, .btn-view i {
+        color: #282826;
+    }
+
+    .btn-delete i {
+        color: #dc3545;
+    }
+
+    .btn-delete:hover i {
+        color: #c82333;
+    }
 
 
 

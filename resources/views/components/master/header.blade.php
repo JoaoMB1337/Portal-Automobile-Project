@@ -24,10 +24,9 @@
         }
 
         #mobile-menu-btn {
+            visibility: visible;
             position: fixed;
-            top: 10px;
-            left: 10px;
-            transform: translateX(0);
+            z-index: 2000;
         }
     }
 
@@ -110,25 +109,30 @@
         transform: translateX(-50%);
     }
 
-    #mobile-menu-btn:hover,
-    #mobile-menu-btn:focus {
-        background-color: #555;
-        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-    }
 
     #mobile-menu-btn svg {
         fill: #fff;
     }
+
+    #mobile-menu-btn.right {
+        left: auto;
+        right: 14%;
+    }
+
+    .custom-container {
+        margin-top: 40px;
+    }
+
+
 </style>
 
 <nav id="sidebar"
      class="bg-gray-800 h-full fixed w-64 top-0 left-0 flex flex-col md:w-56 lg:w-64 transition-all duration-300 ease-in-out transform -translate-x-full md:translate-x-0">
-    <div class="px-4 py-8 border-b border-gray-700 flex items-center">
+    <div class="custom-container px-4 py-8 border-b border-gray-700 flex items-center">
         <div class="mt-5 h-15 bg-white rounded-full flex-shrink-0 mr-2 logo">
             <img src="{{ asset('images/App-logo.png') }}" alt="Logo" class="w-full h-full object-cover rounded-full logo">
         </div>
-
-        <a href="#" class=" mt-5 text-white text-xl font-bold">InnoDrive</a>
+        <a href="/home" class="mt-5 text-white text-xl font-bold">InnoDrive</a>
     </div>
 
     <div class="overflow-y-auto flex-1">
@@ -219,7 +223,9 @@
 <script>
     document.getElementById('mobile-menu-btn').addEventListener('click', function() {
         const sidebar = document.getElementById('sidebar');
+        const body = document.querySelector('body');
         sidebar.classList.toggle('show');
+        body.classList.toggle('body-shift');
     });
 
     document.getElementById('user-menu-btn').addEventListener('click', function() {

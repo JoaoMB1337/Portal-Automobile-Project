@@ -79,27 +79,27 @@
                     <td>{{ optional($project->district)->name ?? 'Sem Distrito' }}</td>
                     <td>{{ $project->country->name }}</td>
                     @if(Auth::check() && Auth::user()->isAdmin())
-                        <td>
-                            <a href="{{ route('trips.create', ['project_id' => $project->id]) }}"
-                               class="inline-flex items-center px-4 py-2 bg-gray-700 border rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-800">
-                                Adicionar
-                            </a>
-                        </td>
-                        <td class="flex space-x-2 justify-center">
-                            <a href="{{ route('projects.edit', $project->id) }}" class="p-2">
-                                <i class="fas fa-edit text-xl text-black"></i>
-                            </a>
-                            <button type="button" class="btn-delete p-2" data-id="{{ $project->id }}">
-                                <i class="fas fa-trash-alt text-xl text-red-600"></i>
-                            </button>
-                            <form id="delete-form-{{ $project->id }}" method="post" action="{{ route('projects.destroy', $project->id) }}" style="display: none;">
-                                @csrf
-                                @method('DELETE')
-                            </form>
-                            <a href="{{ url('projects/' . $project->id) }}" class="p-2">
-                                <i class="fas fa-eye text-xl text-black"></i>
-                            </a>
-                        </td>
+                            <td>
+                                <a href="{{ route('trips.create', ['project_id' => $project->id]) }}"
+                                   class="inline-flex items-center px-4 py-2 bg-gray-700 border rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-800">
+                                    Adicionar
+                                </a>
+                            </td>
+                            <td class="table-actions">
+                                <a href="{{ route('projects.edit', $project->id) }}" class="p-2">
+                                    <i class="fas fa-edit text-xl"></i>
+                                </a>
+                                <button type="button" class="btn-delete p-2" data-id="{{ $project->id }}">
+                                    <i class="fas fa-trash-alt text-xl"></i>
+                                </button>
+                                <form id="delete-form-{{ $project->id }}" method="post" action="{{ route('projects.destroy', $project->id) }}" style="display: none;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                                <a href="{{ url('projects/' . $project->id) }}" class="p-2">
+                                    <i class="fas fa-eye text-xl"></i>
+                                </a>
+                            </td>
                     @endif
                 </tr>
             @empty
@@ -119,3 +119,10 @@
 
 
 @include('components.Modals.modal-delete')
+
+<style>
+    .btn-delete i {
+        color: #dc3545;
+    }
+</style>
+

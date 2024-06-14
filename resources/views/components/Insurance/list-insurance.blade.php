@@ -1,7 +1,98 @@
 @vite(['resources/js/Employees/employees-list.js', 'resources/css/Insurance/insurance-list.css'])
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
 
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .btn-delete i {
+        color: #dc3545;
+    }
+
+    .btn-delete:hover i {
+        color: #c82333;
+    }
+
+
+    .add-options {
+        position: absolute;
+        right: 0;
+        bottom: 70px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: top 0.8s ease-in-out;
+    }
+
+    .add-options a,
+    .add-options button {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+        text-decoration: none;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+
+    .add-button-container {
+        z-index: 10;
+        position: relative;
+        margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .add-button-container {
+            margin-top: 10px;
+        }
+
+        .list-table th:nth-child(6),
+        .list-table td:nth-child(6) {
+            width: 120px;
+            text-align: center;
+        }
+
+        .list-table th,
+        .list-table td {
+            padding: 8px;
+            vertical-align: middle;
+        }
+    }
+</style>
+
+<body>
 <div class="container">
-    <!-- Filtros -->
     <div class="form-container">
         <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
         <a href="{{ route('insurances.index', ['clear_filters' => true]) }}" class="px-4 py-2 bg-gray-700 text-white rounded-md shadow-sm hover:bg-gray-800">Limpar</a>
@@ -56,7 +147,7 @@
                         <td>{{ $insurance->policy_number }}</td>
                         <td>{{ number_format($insurance->cost, 2, ',', '.') }}</td>
                         <td>{{ $insurance->vehicle->plate }}</td>
-                        <td class="flex space-x-2 justify-center">
+                        <td class="table-actions">
                             <a href="{{ route('insurances.edit', $insurance->id) }}" class="p-2">
                                 <i class="fas fa-edit text-xl"></i>
                             </a>
@@ -91,142 +182,22 @@
     <a href="{{ route('insurances.create') }}" class="add-button"><i class="fas fa-plus"></i></a>
 </div>
 
-<style>
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.4);
-    }
-
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-    }
-
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-
-
-
-    .add-button:hover {
-        background-color: #5b625b;
-    }
-
-    .add-options {
-        position: absolute;
-        right: 0;
-        bottom: 70px;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        padding: 10px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        transition: top 0.8s ease-in-out;
-    }
-
-    .add-options a,
-    .add-options button {
-        display: block;
-        margin-bottom: 5px;
-        color: #333;
-        text-decoration: none;
-        border: none;
-        background: none;
-        cursor: pointer;
-    }
-
-    .add-button-container {
-        z-index: 10;
-        position: relative;
-        margin-top: 20px;
-    }
-
-    @media (max-width: 768px) {
-        .add-button-container {
-            margin-top: 10px;
-        }
-
-        .btn-delete i {
-            color: #dc3545;
-        }
-
-        .btn-delete:hover i {
-            color: #c82333;
-        }
-
-        a i:hover {
-            color: #0056b3;
-        }
-
-        .flex.space-x-2.justify-center {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .p-2 {
-            padding: 0.5rem;
-        }
-
-        .text-xl {
-            font-size: 1.25rem;
-        }
-
-        .text-red-600 {
-            color: #dc3545;
-        }
-
-        .list-table th:nth-child(6), .list-table td:nth-child(6) {
-            width: 120px;
-            text-align: center;
-        }
-
-        .list-table th, .list-table td {
-            padding: 8px;
-            vertical-align: middle;
-        }
-
-    }
-
-</style>
-
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         // Modal Filter
         var filterBtn = document.getElementById("filterBtn");
         var filterModal = document.getElementById("filterModal");
         var closeSpan = document.getElementsByClassName("close")[0];
 
-        filterBtn.onclick = function() {
+        filterBtn.onclick = function () {
             filterModal.style.display = "block";
         }
 
-        closeSpan.onclick = function() {
+        closeSpan.onclick = function () {
             filterModal.style.display = "none";
         }
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == filterModal) {
                 filterModal.style.display = "none";
             }
@@ -237,7 +208,7 @@
         var addOptions = document.getElementById("addOptions");
         var importCsvBtn = document.getElementById("importCsvBtn");
 
-        addButton.onclick = function() {
+        addButton.onclick = function () {
             if (addOptions.style.display === "block") {
                 addOptions.style.display = "none";
             } else {
@@ -245,7 +216,7 @@
             }
         }
 
-        importCsvBtn.onclick = function(event) {
+        importCsvBtn.onclick = function (event) {
             event.preventDefault();
 
             var importCsvForm = document.createElement("form");
@@ -274,7 +245,7 @@
 
             document.body.appendChild(importCsvForm);
 
-            fileInput.addEventListener("change", function() {
+            fileInput.addEventListener("change", function () {
                 importCsvForm.submit();
             });
 
@@ -282,21 +253,21 @@
         }
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const filterBtn = document.getElementById('filterBtn');
         const filterModal = document.getElementById('filterModal');
         const closeModal = document.getElementsByClassName('close')[0];
 
         if (filterBtn && filterModal && closeModal) {
-            filterBtn.onclick = function() {
+            filterBtn.onclick = function () {
                 filterModal.style.display = 'block';
             }
 
-            closeModal.onclick = function() {
+            closeModal.onclick = function () {
                 filterModal.style.display = 'none';
             }
 
-            window.onclick = function(event) {
+            window.onclick = function (event) {
                 if (event.target === filterModal) {
                     filterModal.style.display = 'none';
                 }
@@ -329,7 +300,7 @@
         if (deleteForm && deleteModal && closeModalDelete && confirmDeleteButton && cancelDeleteButton) {
             const deleteButton = deleteForm.querySelector('button[type="submit"]');
 
-            deleteButton.addEventListener('click', function(event) {
+            deleteButton.addEventListener('click', function (event) {
                 event.preventDefault();
                 collectSelectedIds();
                 if (document.querySelectorAll('#multi-delete-form input[type="hidden"][name="selected_ids[]"]').length > 0) {
@@ -337,26 +308,26 @@
                 }
             });
 
-            closeModalDelete.addEventListener('click', function() {
+            closeModalDelete.addEventListener('click', function () {
                 deleteModal.style.display = 'none';
             });
 
-            cancelDeleteButton.addEventListener('click', function() {
+            cancelDeleteButton.addEventListener('click', function () {
                 deleteModal.style.display = 'none';
             });
 
-            confirmDeleteButton.addEventListener('click', function() {
+            confirmDeleteButton.addEventListener('click', function () {
                 deleteForm.submit();
             });
 
-            window.addEventListener('click', function(event) {
+            window.addEventListener('click', function (event) {
                 if (event.target === deleteModal) {
                     deleteModal.style.display = 'none';
                 }
             });
 
             checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('click', function(event) {
+                checkbox.addEventListener('click', function (event) {
                     event.stopPropagation();
                 });
             });
@@ -364,16 +335,15 @@
 
         const rows = document.querySelectorAll('.list-table tbody tr');
         rows.forEach(row => {
-            row.addEventListener('click', function(event) {
+            row.addEventListener('click', function (event) {
                 if (event.target.type === 'checkbox') {
                     event.stopPropagation();
                 } else {
-                    if (row.dataset.url){
+                    if (row.dataset.url) {
                         window.location = row.dataset.url;
                     }
                 }
             });
         });
     });
-
 </script>
