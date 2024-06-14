@@ -68,10 +68,13 @@ class EmployeeController extends Controller
         $roles = EmployeeRole::all();
         $drivingLicenses = DrivingLicense::all();
         $contactTypes = ContactType::all();
+        $isAdmin = Auth::user()->isAdmin();
+
         return view('pages.Employees.create', [
             'roles' => $roles,
             'drivingLicenses' => $drivingLicenses,
-            'contactTypes' => $contactTypes
+            'contactTypes' => $contactTypes,
+            'isAdmin' => $isAdmin
         ]);
     }
 
@@ -80,7 +83,15 @@ class EmployeeController extends Controller
      */
     public function store(StoreEmployeeRequest $request)
     {
+        // Check if the authenticated user is authorized to create employees
+        $this->authorize('create', Employee::class);
 
+        // Check if the authenticated user is a manager and is trying to create an administrator
+        if (Auth::user()->isManager() && $request->employee_role_id == 1) {
+            return redirect()->back()->with('error', 'You are not authorized to create administrators.');
+        }
+
+        // Create the employee record
         $employee = Employee::create([
             'name' => $request->name,
             'employee_number' => $request->employee_number,
@@ -95,10 +106,12 @@ class EmployeeController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Handle driving licenses if provided
         if ($request->has('driving_licenses')) {
             $employee->drivingLicenses()->sync($request->driving_licenses);
         }
 
+        // Handle contacts if provided
         if ($request->has('contacts')) {
             foreach ($request->contacts as $contact) {
                 if (isset($contact['value']) && isset($contact['type'])) {
@@ -109,8 +122,6 @@ class EmployeeController extends Controller
                 }
             }
         }
-
-
 
         return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTripRequest;
 use App\Http\Requests\UpdateTripRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 use App\Models\Project;
@@ -27,11 +28,15 @@ class TripController extends Controller
      */
     public function index(Request $request)
     {
+        $isAdmin = Auth::user()->isMaster();
 
         $query = Trip::query();
 
-        if ($request->has('clear_filters')) {
-            $request->session()->forget(['destination', 'project']);
+        if (!$isAdmin) {
+            $employeeId = Auth::id();
+            $query->whereHas('employees', function ($query) use ($employeeId) {
+                $query->where('employees.id', $employeeId);
+            });
         }
 
         if ($request->filled('destination')) {
@@ -85,8 +90,6 @@ class TripController extends Controller
      */
     public function store(StoreTripRequest $request)
     {
-        \Log::info('Request Data:', $request->all());
-
         $validatedData = $request->validated();
 
         $trip = new Trip();
@@ -107,7 +110,6 @@ class TripController extends Controller
 
         }
 
-
         $vehicle = Vehicle::find($validatedData['vehicle_id']);
         $vehicle->is_active = true;
         $vehicle->save();
@@ -123,11 +125,6 @@ class TripController extends Controller
                 $vehicle->save();
             }
 
-
-        // /* ADICIONEI*/
-        // $trip->employees()->attach($validatedData['employee_id']);
-        // $trip->vehicles()->attach($validatedData['vehicle_id']);
-
         return redirect()->route('trips.index');
     }
 
@@ -136,6 +133,16 @@ class TripController extends Controller
      */
     public function show(Trip $trip)
     {
+        $isAdminOrManager = Auth::user()->isMaster();
+
+        if (!$isAdminOrManager) {
+            $employeeId = Auth::id();
+            $isAssociated = $trip->employees->contains($employeeId);
+
+            if (!$isAssociated) {
+                abort(403, 'Access denied');
+            }
+        }
 
         $totalCost = $trip->tripDetails->sum('cost');
         return view('pages.Trips.show', [

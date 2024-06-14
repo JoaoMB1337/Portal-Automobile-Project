@@ -59,8 +59,8 @@
                         {{ number_format($totalCost, 2, ',', '.') }}
                     </dd>
                 </div>
-
-                <div class="mt-10 flex flex-col sm:flex-row gap-4">
+                @if(Auth::check() && Auth::user()->isAdmin())
+                <div class=" mt-10 flex flex-col sm:flex-row gap-4">
                     <a href="{{ route('trips.edit', ['trip' => $trip->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out text-center w-full sm:w-auto">
                         Editar
                     </a>
@@ -68,6 +68,7 @@
                         Eliminar
                     </button>
                 </div>
+                @endif
             </dl>
         </div>
     </div>

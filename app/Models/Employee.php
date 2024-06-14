@@ -53,8 +53,8 @@ class Employee extends Authenticatable
 
     public function trips()
     {
-        return $this->belongsToMany(Trip::class, 'trip_employee_associations');
-    }
+        return $this->belongsToMany(Trip::class, 'trip_employee_associations', 'employee_id', 'trip_id')
+            ->with('project');    }
 
     public function drivingLicenses()
     {
@@ -63,6 +63,17 @@ class Employee extends Authenticatable
 
     public function isAdmin()
     {
+        return $this->employee_role_id == 1;
+    }
+
+    public function isManager()
+    {
         return $this->employee_role_id == 2;
+
+    }
+
+    public function isMaster()
+    {
+        return $this->employee_role_id == 1 || $this->employee_role_id == 2;
     }
 }

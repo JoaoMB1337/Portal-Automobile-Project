@@ -43,14 +43,16 @@
                 </div>
             </dl>
         </div>
-        <div class="px-6 py-4 flex flex-col sm:flex-row gap-4">
-            <a href="{{ route('projects.edit', ['project' => $project->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out text-center w-full sm:w-auto">
-                Editar
-            </a>
-            <button id="openModalBtn" class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full sm:w-auto text-center">
-                Eliminar
-            </button>
-        </div>
+        @if(Auth::check() && Auth::user()->isAdmin())
+            <div class="px-6 py-4 flex flex-col sm:flex-row gap-4">
+                <a href="{{ route('projects.edit', ['project' => $project->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                    Editar
+                </a>
+                <button id="openModalBtn" class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full sm:w-auto text-center">
+                    Eliminar
+                </button>
+            </div>
+        @endif
     </div>
     @include('components.Modals.modal-delete-single')
 
