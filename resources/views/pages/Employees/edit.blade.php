@@ -7,6 +7,7 @@
             'roles' => $roles,
             'drivingLicenses' => $drivingLicenses,
             'contactTypes' => $contactTypes,
+            'isAdmin' => $isAdmin
         ])
         @endcomponent
     </div>

@@ -4,10 +4,6 @@
     <div class="flex justify-center mb-6">
         <h1>Employee Register</h1>
     </div>
-    @if($isAdmin)
-        <p>Admin detected</p>
-    @endif
-
     <form method="POST" action="{{ route('employees.store') }}" class="space-y-6">
         @csrf
         <div>
