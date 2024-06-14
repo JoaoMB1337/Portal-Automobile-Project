@@ -69,36 +69,38 @@
             </thead>
             <tbody>
             @forelse ($projects as $project)
-                <tr data-url='{{ url('projects/' . $project->id) }}'  style="cursor:pointer;">
+                <tr data-url='{{ url('projects/' . $project->id) }}' style="cursor:pointer;">
                     @if(Auth::check() && Auth::user()->isAdmin())
                         <td>
-                            <input type="checkbox" name="selected_ids[]" value="{{ $project->id }}"
-                                   class="form-checkbox">
+                            <input type="checkbox" name="selected_ids[]" value="{{ $project->id }}" class="form-checkbox">
                         </td>
                     @endif
                     <td><a href="{{ route('projects.show', $project->id) }}">{{ $project->name }}</a></td>
                     <td>{{ optional($project->district)->name ?? 'Sem Distrito' }}</td>
                     <td>{{ $project->country->name }}</td>
-                        @if(Auth::check() && Auth::user()->isAdmin())
-                        <td>
-                        <a href="{{ route('trips.create', ['project_id' => $project->id]) }}"
-                        class="inline-flex items-center px-4 py-2 bg-gray-700 border rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-800">
-                            Adicionar
-                        </a>
-                    </td>
-                    <td>
-                        @if(Auth::check() && Auth::user()->isAdmin())
-                            <a href="{{ route('projects.edit', $project->id) }}"><i class="fas fa-edit"></i></a>
-                            <button type="button" class="btn-delete" data-id="{{ $project->id }}"><i class="fas fa-trash-alt"></i></button>
-                            <form id="delete-form-{{ $project->id }}" method="post" action="{{ route('projects.destroy', $project->id) }}" style="display: none;">
-                                @csrf
-                                @method('DELETE')
-                            </form>
-                            <a href="{{ url('projects/' . $project->id) }}"><i class="fas fa-eye"></i></a>
-                        @endif
-                    </td>
+                    @if(Auth::check() && Auth::user()->isAdmin())
+                            <td>
+                                <a href="{{ route('trips.create', ['project_id' => $project->id]) }}"
+                                   class="inline-flex items-center px-4 py-2 bg-gray-700 border rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-800">
+                                    Adicionar
+                                </a>
+                            </td>
+                            <td class="table-actions">
+                                <a href="{{ route('projects.edit', $project->id) }}" class="p-2">
+                                    <i class="fas fa-edit text-xl"></i>
+                                </a>
+                                <button type="button" class="btn-delete p-2" data-id="{{ $project->id }}">
+                                    <i class="fas fa-trash-alt text-xl"></i>
+                                </button>
+                                <form id="delete-form-{{ $project->id }}" method="post" action="{{ route('projects.destroy', $project->id) }}" style="display: none;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                                <a href="{{ url('projects/' . $project->id) }}" class="p-2">
+                                    <i class="fas fa-eye text-xl"></i>
+                                </a>
+                            </td>
                     @endif
-
                 </tr>
             @empty
                 <tr>
@@ -117,3 +119,10 @@
 
 
 @include('components.Modals.modal-delete')
+
+<style>
+    .btn-delete i {
+        color: #dc3545;
+    }
+</style>
+

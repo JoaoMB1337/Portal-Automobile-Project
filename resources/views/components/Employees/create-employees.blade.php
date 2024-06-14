@@ -163,6 +163,7 @@
                     <input type="text" name="contacts[0][value]"
                            class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200">
                 </div>
+                <div class="w-10 h-10"></div> <!-- Adicionei esta div para ocupar espaço simétrico -->
             </div>
             <button type="button" id="add-contact-btn" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn">Adicionar contacto</button>
         </div>
@@ -216,7 +217,7 @@
                 {{ __('Register') }}
             </button>
         </div>
-    </form>
+    </div>
 </div>
 
 <script>

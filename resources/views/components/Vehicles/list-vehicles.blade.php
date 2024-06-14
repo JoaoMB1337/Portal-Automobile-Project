@@ -85,16 +85,22 @@
                         </span>
                         @endif
                     </td>
-                    <td>
-                        <a href="{{ url('vehicles/' . $vehicle->id . '/edit') }}"><i class="fas fa-edit"></i></a>
-                        <button type="button" class="btn-delete" data-id="{{ $vehicle->id }}"><i class="fas fa-trash-alt"></i></button>
+                    <td class="table-actions">
+                        <a href="{{ url('vehicles/' . $vehicle->id . '/edit') }}" class="btn-action btn-edit">
+                            <i class="fas fa-edit text-xl"></i>
+                        </a>
+                        <button type="button" class="btn-action btn-delete" data-id="{{ $vehicle->id }}">
+                            <i class="fas fa-trash-alt text-xl"></i>
+                        </button>
                         <form id="delete-form-{{ $vehicle->id }}" method="post" action="{{ route('vehicles.destroy', $vehicle->id) }}" style="display: none;">
                             @csrf
                             @method('DELETE')
                         </form>
-                        <a href="{{ url('vehicles/' . $vehicle->id) }}"><i class="fas fa-eye"></i></a>
-
+                        <a href="{{ url('vehicles/' . $vehicle->id) }}" class="btn-action btn-view">
+                            <i class="fas fa-eye text-xl"></i>
+                        </a>
                     </td>
+
                 </tr>
             @empty
                 <tr>
@@ -113,5 +119,35 @@
 
 
 @include('components.Modals.modal-delete')
+
+<style>
+    .btn-action {
+        padding: 6px 12px;
+        font-size: 16px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+
+    .btn-edit i, .btn-view i {
+        color: #1c1a1a;  /* Amarelo para editar e visualizar */
+    }
+
+    .btn-delete i {
+        color: #dc3545;  /* Vermelho para deletar */
+    }
+
+    .btn-delete:hover i {
+        color: #c82333;
+    }
+
+    .btn-edit:hover i, .btn-view:hover i {
+        color: #1a1a18;
+    }
+
+</style>
+
 
 

@@ -1,18 +1,22 @@
-<div class="flex">
-    <div class="w-3/4 mx-auto">
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-            <div class="px-4 py-5 sm:px-6">
-                <a href="{{ route('vehicles.index') }}">
-                    <button type="button" class="flex items-center justify-center w-1/2 mb-3 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-gray-600 border rounded-lg gap-x-2 sm:w-auto hover:bg-gray-500">
+<div class="container py-8 px-4 sm:px-6 lg:px-8">
+    <div class="w-full sm:w-3/4 mx-auto">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg p-6">
+            <div class="flex items-center justify-between mb-4">
+                <a href="{{ route('vehicles.index') }}" class="flex items-center justify-center w-10 h-10 mb-3">
+                    <button type="button" class="flex items-center justify-center w-full h-full text-sm text-gray-700 transition-colors duration-200 bg-gray-600 border rounded-lg gap-x-2 hover:bg-gray-500">
                         <svg class="w-5 h-5 rtl:rotate-180 text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
                         </svg>
                     </button>
                 </a>
+                <div class="flex-grow text-center">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Detalhes do Veículo</h3>
+                </div>
+                <div class="w-10 h-10"></div>
 
-                <h3 class="text-lg leading-6 font-medium text-gray-900">Detalhes do Veículo</h3>
-                <p class="mt-1 max-w-2xl text-sm text-gray-500">Detalhes Principais</p>
             </div>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">Detalhes Principais</p>
+
             <div class="border-t border-gray-200">
                 <dl>
                     <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -43,14 +47,14 @@
                     </div>
 
                     @if(!$vehicle->is_external)
-                        <div class="flex justify-center py-4 gap-2 pt-10">
-                            <a href="{{ route('vehicles.edit', ['vehicle' => $vehicle->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                        <div class="flex flex-col sm:flex-row justify-center py-4 gap-2 pt-10">
+                            <a href="{{ route('vehicles.edit', ['vehicle' => $vehicle->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out text-center w-full sm:w-auto">
                                 Editar
                             </a>
-                            <button id="openModalBtn" class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-32">
+                            <button id="openModalBtn" class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full sm:w-auto text-center">
                                 Eliminar
                             </button>
-                            <a href="{{ route('vehicles.downloadPdf', ['vehicle' => $vehicle->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                            <a href="{{ route('vehicles.downloadPdf', ['vehicle' => $vehicle->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out text-center w-full sm:w-auto">
                                 Exportar CSV
                             </a>
                         </div>
@@ -79,11 +83,11 @@
                             <dt class="text-sm font-medium text-gray-500">Empresa de RentCar</dt>
                             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">{{ $vehicle->rental_company }}</dd>
                         </div>
-                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt class="text-sm font-medium text-gray-500">Pessoa Responsável da RentCar</dt>
                             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">{{ $vehicle->rental_contact_person }}</dd>
                         </div>
-                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt class="text-sm font-medium text-gray-500">Contacto da RentCar</dt>
                             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">{{ $vehicle->rental_contact_number }}</dd>
                         </div>
@@ -93,11 +97,11 @@
                                 <a href="{{ route('vehicles.downloadPdf', $vehicle) }}">Download PDF</a>
                             </dd>
                         </div>
-                        <div class="flex justify-center py-4 gap-2 pt-10">
-                            <a href="{{ route('vehicles.edit', ['vehicle' => $vehicle->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                        <div class="flex flex-col sm:flex-row justify-center py-4 gap-2 pt-10">
+                            <a href="{{ route('vehicles.edit', ['vehicle' => $vehicle->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out text-center w-full sm:w-auto">
                                 Editar
                             </a>
-                            <button id="openModalBtn" class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-32">
+                            <button id="openModalBtn" class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full sm:w-auto text-center">
                                 Eliminar
                             </button>
                         </div>
@@ -123,51 +127,58 @@
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Companhia
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Número da Apólice
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Custo
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Ativo
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Ações
-                                </th>
-                            </tr>
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Companhia
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Número da Apólice
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Custo
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Ativo
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Ações
+                            </th>
+                        </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @forelse ($vehicle->insurances as $insurance)
-                                <tr data-url="{{ url('insurances/' . $insurance->id) }}" style="cursor:pointer;">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $insurance->insurance_company }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $insurance->policy_number }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                        {{ number_format($insurance->cost, 2, ',', '.') }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                        {{ $insurance->ativo ? 'Sim' : 'Não' }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                        <a href="{{ route('insurances.edit', $insurance->id) }}"><i class="fas fa-edit"></i></a>
-                                        <form method="post" action="{{ route('insurances.destroy', $insurance->id) }}" style="display: inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"><i class="fas fa-trash-alt"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="5" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
-                                        Nenhum seguro encontrado.
-                                    </td>
-                                </tr>
-                            @endforelse
+                        @forelse ($vehicle->insurances as $insurance)
+                            <tr data-url="{{ url('insurances/' . $insurance->id) }}" style="cursor:pointer;">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $insurance->insurance_company }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $insurance->policy_number }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                    {{ number_format($insurance->cost, 2, ',', '.') }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                    {{ $insurance->ativo ? 'Sim' : 'Não' }}
+                                </td>
+                                <td class="flex space-x-2 justify-center px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                    <a href="{{ route('insurances.edit', $insurance->id) }}" class="p-2">
+                                        <i class="fas fa-edit text-xl"></i>
+                                    </a>
+                                    <button type="button" class="btn-delete p-2" data-id="{{ $insurance->id }}">
+                                        <i class="fas fa-trash-alt text-xl text-red-600"></i>
+                                    </button>
+                                    <form id="delete-form-{{ $insurance->id }}" method="post" action="{{ route('insurances.destroy', $insurance->id) }}" style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                    <a href="{{ url('insurances/' . $insurance->id) }}" class="p-2">
+                                        <i class="fas fa-eye text-xl"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                                    Nenhum seguro encontrado.
+                                </td>
+                            </tr>
+                        @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -176,3 +187,26 @@
         @include('components.Modals.modal-delete-single')
     </div>
 </div>
+
+<style>
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    @media (max-width: 640px) {
+        .flex-col {
+            flex-direction: column;
+        }
+        .w-full {
+            width: 100%;
+        }
+        .mt-10 {
+            margin-top: 2.5rem;
+        }
+        .sm\:col-span-2 {
+            grid-column: span 2 / span 2;
+        }
+    }
+</style>
+
