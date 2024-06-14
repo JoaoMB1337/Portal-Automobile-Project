@@ -13,18 +13,22 @@ use App\Models\CarCategory;
 use App\Models\VehicleCondition;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
+
+use Illuminate\Support\Facades\Log;
 
 class VehicleController extends Controller
 {
     use AuthorizesRequests;
+    use SoftDeletes;
 
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $this -> authorize('viewAny', Vehicle::class);
+        $this->authorize('viewAny', Vehicle::class);
 
         $query = Vehicle::query();
 
@@ -37,7 +41,6 @@ class VehicleController extends Controller
 
             if ($isExternal === '0' || $isExternal === '1') {
                 $query->where('is_external', $isExternal);
-
             }
         }
 
@@ -63,7 +66,7 @@ class VehicleController extends Controller
      */
     public function create()
     {
-        $this -> authorize('create', Vehicle::class);
+        $this->authorize('create', Vehicle::class);
 
         $brands = Brand::all();
         $fuelTypes = FuelType::all();
@@ -77,7 +80,6 @@ class VehicleController extends Controller
             'carCategories' => $carCategories,
             'vehicleCondition' => $vehicleCondition
         ]);
-
     }
 
     /**
@@ -86,6 +88,8 @@ class VehicleController extends Controller
     public function store(StoreVehicleRequest $request)
     {
         try {
+            Log::info('Iniciando o processo de armazenamento de um novo veículo.');
+
             $vehicle = new Vehicle();
             $vehicle->plate = $request->plate;
             $vehicle->km = $request->km;
@@ -95,10 +99,12 @@ class VehicleController extends Controller
             $vehicle->car_category_id = $request->carCategory;
             $vehicle->brand_id = $request->brand;
 
+            // Verificando e ajustando o campo is_external
             if ($request->is_external == null) {
                 $vehicle->is_external = 0;
             }
 
+            // Preenchendo os dados adicionais se o veículo for externo
             if ($request->is_external) {
                 $vehicle->contract_number = $request->contract_number;
                 $rental_price_per_day = str_replace(',', '.', $request->rental_price_per_day);
@@ -109,12 +115,14 @@ class VehicleController extends Controller
                 $vehicle->rental_contact_person = $request->rental_contact_person;
                 $vehicle->rental_contact_number = $request->rental_contact_number;
 
+                // Salvar o arquivo PDF se existir
                 if ($request->hasFile('pdf_file')) {
                     $pdf = $request->file('pdf_file');
                     $pdfPath = $pdf->storeAs('pdfs', $request->plate . '.' . $pdf->getClientOriginalExtension(), 'public');
                     $vehicle->pdf_file = $pdfPath;
                 }
             } else {
+                // Se não for externo, limpar os campos relacionados
                 $vehicle->contract_number = null;
                 $vehicle->rental_price_per_day = null;
                 $vehicle->rental_start_date = null;
@@ -124,15 +132,20 @@ class VehicleController extends Controller
                 $vehicle->rental_contact_number = null;
             }
 
+            // Salvando o veículo no banco de dados
             $vehicle->save();
 
-            return redirect()->route('vehicles.index');
+            Log::info('Veículo armazenado com sucesso.');
+
+            return redirect()->route('vehicles.index')->with('success', 'Vehicle created successfully.');
         } catch (QueryException $e) {
-            // Aqui você pode tratar exceções adicionais se necessário
+            Log::error('Erro ao armazenar veículo: ' . $e->getMessage());
+            throw $e;
+        } catch (\Exception $e) {
+            Log::error('Erro inesperado ao armazenar veículo: ' . $e->getMessage());
             throw $e;
         }
     }
-
 
 
     /**
@@ -140,7 +153,7 @@ class VehicleController extends Controller
      */
     public function show(Vehicle $vehicle)
     {
-        $this -> authorize('view', $vehicle);
+        $this->authorize('view', $vehicle);
 
         return view('pages.Vehicles.show', compact('vehicle'));
     }
@@ -150,7 +163,7 @@ class VehicleController extends Controller
      */
     public function edit(Vehicle $vehicle)
     {
-        $this -> authorize('update', $vehicle);
+        $this->authorize('update', $vehicle);
 
         $brands = Brand::all();
         $fuelTypes = FuelType::all();
@@ -220,7 +233,7 @@ class VehicleController extends Controller
      */
     public function destroy(Vehicle $vehicle)
     {
-        $this -> authorize('delete', $vehicle);
+        $this->authorize('delete', $vehicle);
         $vehicle->delete();
         return redirect()->route('vehicles.index');
     }

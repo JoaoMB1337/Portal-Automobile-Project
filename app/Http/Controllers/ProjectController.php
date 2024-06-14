@@ -10,44 +10,42 @@ use App\Models\Country;
 use App\Models\District;
 use App\Models\ProjectStatus;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 
 class ProjectController extends Controller
 {
+    use SoftDeletes;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        //$project = Project::orderby('id', 'asc')->paginate(15);
-        //return view('pages.projects.list', ['projects' => $project]);
-
+        $isAdminOrManager = Auth::user()->isMaster(); 
         $query = Project::query();
-
-        //Limpar filtro
+    
+        if (!$isAdminOrManager) {
+            $employeeId = Auth::id();
+            $query->whereHas('trips.employees', function ($q) use ($employeeId) {
+                $q->where('employees.id', $employeeId);
+            });
+        }
+    
+        // Limpar filtro
         if ($request->has('clear_filters')) {
             $request->session()->forget(['search', 'project_status_id']);
         }
-
-        //Para filtar por nome
-        //if ($request->has('name') && $request->name) {
-        //    $query->where('name', 'like', '%' . $request->name . '%');
-        //}
-
+    
         if ($request->has('country_id') && $request->country_id) {
             $query->where('country_id', $request->country_id);
         }
-
+    
         if ($request->has('district_id') && $request->district_id) {
             $query->where('district_id', $request->district_id);
         }
-
-        //if ($request->has('project_status_id') && $request->project_status_id) {
-        //    $query->where('project_status_id', $request->project_status_id);
-        //}
-
-
-        //Filtrar atraves de pesquisa
+    
+        // Filtrar através de pesquisa
         if ($request->has('search') && $request->search) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -64,25 +62,23 @@ class ProjectController extends Controller
                     });
             });
         }
-
+    
         if ($request->session()->has('project_status_id')) {
             $project_status_id = $request->session()->get('project_status_id');
             $query->where('project_status_id', $project_status_id);
         }
-
-
+    
         $projects = $query->orderBy('id', 'asc')->paginate(10);
-
-
+    
         $countries = Country::all();
         $districts = District::all();
         $projectstatuses = ProjectStatus::all();
-
+    
         return view('pages.Projects.list', [
-            'projects'          => $projects,
-            'countries'         => $countries,
-            'districts'         => $districts,
-            //'projectstatuses'   => $projectstatuses
+            'projects' => $projects,
+            'countries' => $countries,
+            'districts' => $districts,
+            'projectstatuses' => $projectstatuses
         ]);
     }
 
@@ -111,7 +107,7 @@ class ProjectController extends Controller
         $project->name = $request->name;
         $project->address = $request->address;
         $project->project_status_id = $request->projectstatus;
-        if($request->district){
+        if ($request->district) {
             $project->district_id = $request->district;
         }
         $project->country_id = $request->country;
@@ -126,14 +122,28 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+        $isAdminOrManager = Auth::user()->isMaster();
+
+        if (!$isAdminOrManager) {
+            $employeeId = Auth::id();
+            $isAssociated = $project->trips()->whereHas('employees', function ($q) use ($employeeId) {
+                $q->where('employees.id', $employeeId);
+            })->exists();
+
+            if (!$isAssociated) {
+                abort(403, 'Access denied');
+            }
+        }
+
         $trips = $project->trips;
         $totalProjectCost = $trips->sum(function ($trip) {
             return $trip->tripDetails->sum('cost');
         });
+
         return view('pages.Projects.show', [
-            'project'           => $project,
-            'trips'             => $trips,
-            'totalProjectCost'  => $totalProjectCost,
+            'project' => $project,
+            'trips' => $trips,
+            'totalProjectCost' => $totalProjectCost,
         ]);
     }
 

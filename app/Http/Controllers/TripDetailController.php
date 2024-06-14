@@ -13,14 +13,20 @@ use App\Models\Project;
 use App\Models\CostType;
 use App\Models\Trip;
 use App\Models\Employee;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class TripDetailController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    use AuthorizesRequests;
+
     public function index()
     {
+        $this->authorize('viewAny', TripDetail::class);
+
         $tripDetails = TripDetail::all();
         $projects = Project::all();
         $costTypes = CostType::all();

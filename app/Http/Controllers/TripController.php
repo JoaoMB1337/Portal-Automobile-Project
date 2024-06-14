@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTripRequest;
 use App\Http\Requests\UpdateTripRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 use App\Models\Project;
@@ -15,21 +16,27 @@ use App\Models\Employee;
 use App\Models\TypeTrip;
 use App\Models\Vehicle;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 
 class TripController extends Controller
 {
+    use SoftDeletes;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $isAdmin = Auth::user()->isMaster();
 
         $query = Trip::query();
 
-        if ($request->has('clear_filters')) {
-            $request->session()->forget(['destination', 'project']);
+        if (!$isAdmin) {
+            $employeeId = Auth::id();
+            $query->whereHas('employees', function ($query) use ($employeeId) {
+                $query->where('employees.id', $employeeId);
+            });
         }
 
         if ($request->filled('destination')) {
@@ -83,8 +90,6 @@ class TripController extends Controller
      */
     public function store(StoreTripRequest $request)
     {
-        \Log::info('Request Data:', $request->all());
-
         $validatedData = $request->validated();
 
         $trip = new Trip();
@@ -102,11 +107,23 @@ class TripController extends Controller
 
         if (isset($validatedData['vehicle_id'])) {
             $trip->vehicles()->attach($validatedData['vehicle_id']);
+
         }
 
-        // /* ADICIONEI*/
-        // $trip->employees()->attach($validatedData['employee_id']);
-        // $trip->vehicles()->attach($validatedData['vehicle_id']);
+        $vehicle = Vehicle::find($validatedData['vehicle_id']);
+        $vehicle->is_active = true;
+        $vehicle->save();
+
+        // se o veiculo estiver ativo, não pode ser associado a outra viagem
+         if (!$vehicle->is_active) {
+             return redirect()->back()->withInput()->withErrors(['vehicle_id' => 'Veículo já está em uso.']);
+         }
+
+         // o veiculo para inativo quando passar a data do fim da viagem
+            if ($trip->end_date < now()) {
+                $vehicle->is_active = false;
+                $vehicle->save();
+            }
 
         return redirect()->route('trips.index');
     }
@@ -116,6 +133,16 @@ class TripController extends Controller
      */
     public function show(Trip $trip)
     {
+        $isAdminOrManager = Auth::user()->isMaster();
+
+        if (!$isAdminOrManager) {
+            $employeeId = Auth::id();
+            $isAssociated = $trip->employees->contains($employeeId);
+
+            if (!$isAssociated) {
+                abort(403, 'Access denied');
+            }
+        }
 
         $totalCost = $trip->tripDetails->sum('cost');
         return view('pages.Trips.show', [
@@ -155,6 +182,7 @@ class TripController extends Controller
 
     public function update(Request $request, $id)
     {
+        // Validação dos dados
         $validatedData = $request->validate([
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
@@ -166,12 +194,13 @@ class TripController extends Controller
             'vehicle_id' => 'nullable|integer|exists:vehicles,id',
         ]);
 
+        // Verificação da data de fim
         if ($validatedData['end_date'] < $validatedData['start_date']) {
             return redirect()->back()->withInput()->withErrors(['end_date' => 'A data de fim deve ser posterior à data de início.']);
         }
 
+        // Recuperar a viagem e atualizar os dados
         $trip = Trip::findOrFail($id);
-
         $trip->start_date = $validatedData['start_date'];
         $trip->end_date = $validatedData['end_date'];
         $trip->destination = $validatedData['destination'];
@@ -180,16 +209,47 @@ class TripController extends Controller
         $trip->type_trip_id = $validatedData['type_trip_id'];
         $trip->save();
 
+
+
+
+
         if (isset($validatedData['employee_id'])) {
             $trip->employees()->sync([$validatedData['employee_id']]);
         }
 
+
         if (isset($validatedData['vehicle_id'])) {
             $trip->vehicles()->sync([$validatedData['vehicle_id']]);
+
+
+            $vehicle = Vehicle::find($validatedData['vehicle_id']);
+            if ($vehicle) {
+
+
+                $vehicle->is_active = true;
+                $vehicle->save();
+
+
+
+            } else {
+                return redirect()->back()->withInput()->withErrors(['vehicle_id' => 'Veículo não encontrado.']);
+            }
+        }
+
+
+        if ($trip->end_date < now()) {
+            if (isset($vehicle)) {
+                $vehicle->is_active = false;
+                $vehicle->save();
+
+
+            }
         }
 
         return redirect()->route('trips.index');
     }
+
+
 
 
     /**

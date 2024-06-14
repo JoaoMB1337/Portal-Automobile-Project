@@ -1,4 +1,4 @@
-<div id="deleteModal" class="modal mx-auto pl-10 lg:pl-64">
+<div id="deleteModal" class="modal mx-auto lg:pl-64">
     <div class="modal-content">
         <span class="close">&times;</span>
         <p>Tem certeza que deseja eliminar?</p>
