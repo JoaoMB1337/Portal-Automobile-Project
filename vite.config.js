@@ -17,7 +17,7 @@ export default defineConfig({
                 'resources/js/Employees/employees-create.js',
                 'resources/js/Employees/employees-edit.js',
 
-                'resources/css/Insurance/insurance-list.css.',
+                'resources/css/Insurance/insurance-list.css',
 
                 'resources/js/Vehicles/vehicles-create.js',
                 'resources/js/Vehicles/vehicles-list.js',
