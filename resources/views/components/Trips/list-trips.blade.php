@@ -1,4 +1,4 @@
-@vite(['resources/js/Employees/employees-list.js'])
+@vite(['resources/js/Employees/list.js'])
 
 <div class="container">
     @if(Auth::check() && Auth::user()->isAdmin())

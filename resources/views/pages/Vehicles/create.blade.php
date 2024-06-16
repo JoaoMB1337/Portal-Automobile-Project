@@ -1,5 +1,7 @@
 @extends('components.master.main')
-@vite(['resources/css/Employees/employee-create.css'])
+@vite([
+    'resources/css/Geral/create.css'
+    ])
 
 @section('content')
     <div class=" mx-auto lg:pl-64">

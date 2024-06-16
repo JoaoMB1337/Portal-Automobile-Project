@@ -1,6 +1,10 @@
 @extends('components.master.main')
-@vite('resources/css/styles.css')
-@vite(['resources/css/Modals/Modal.css'])
+
+@vite([
+    'resources/css/Geral/styles.css' ,
+    'resources/css/Modals/Modal.css'
+])
+@vite([''])
 
 @section('content')
     <div class=" mx-auto lg:pl-64">

@@ -12,10 +12,10 @@ export default defineConfig({
 
 
                 'resources/css/Employees/employee-list.css',
-                'resources/js/Employees/employees-list.js',
+                'resources/js/Employees/list.js',
                 'resources/css/Employees/employee-create.css',
-                'resources/js/Employees/employees-create.js',
-                'resources/js/Employees/employees-edit.js',
+                'resources/js/Employees/create.js',
+                'resources/js/Employees/edit.js',
 
                 'resources/css/Insurance/insurance-list.css',
 
@@ -27,7 +27,9 @@ export default defineConfig({
                 'resources/css/Trips/trip-create.css',
 
                 'resources/css/Modals/Modal.css',
-                'resources/css/styles.css',
+                'resources/css/Geral/styles.css',
+
+                'resources/css/Vehicles/vehicle-list.css'
 
             ],
             refresh: true,

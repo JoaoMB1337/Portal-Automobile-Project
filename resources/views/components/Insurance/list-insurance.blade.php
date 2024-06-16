@@ -1,4 +1,4 @@
-@vite(['resources/js/Employees/employees-list.js', 'resources/css/Insurance/insurance-list.css'])
+@vite(['resources/js/Employees/list.js', 'resources/css/Insurance/insurance-list.css'])
 <style>
     .modal {
         display: none;

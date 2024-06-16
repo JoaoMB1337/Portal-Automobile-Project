@@ -1,4 +1,5 @@
-@vite('resources/js/Employees/employees-list.js')
+@vite('resources/js/Employees/list.js')
+
 <div class="container">
     <div class="form-container">
         @if(Auth::check() && Auth::user()->isMaster())
@@ -53,14 +54,14 @@
         <table>
             <thead>
             <tr>
-                @if(Auth::check() && Auth::user()->isAdmin())
+                @if(Auth::check() && Auth::user()->isMaster())
                     <th>
                     </th>
                 @endif
                 <th>Nome</th>
                 <th>Distrito</th>
                 <th>País</th>
-                    @if(Auth::check() && Auth::user()->isAdmin())
+                    @if(Auth::check() && Auth::user()->isMaster())
 
                     <th>Viagem</th>
                     @endif
@@ -72,7 +73,7 @@
             <tbody>
             @forelse ($projects as $project)
                 <tr data-url='{{ url('projects/' . $project->id) }}' style="cursor:pointer;">
-                    @if(Auth::check() && Auth::user()->isAdmin())
+                    @if(Auth::check() && Auth::user()->isMaster())
                         <td>
                             <input type="checkbox" name="selected_ids[]" value="{{ $project->id }}" class="form-checkbox">
                         </td>

@@ -1,4 +1,4 @@
-@vite(['resources/js/Employees/employees-list.js'])
+@vite(['resources/js/Employees/list.js'])
 
 
 <div class="container">
@@ -119,35 +119,5 @@
 
 
 @include('components.Modals.modal-delete')
-
-<style>
-    .btn-action {
-        padding: 6px 12px;
-        font-size: 16px;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-
-    .btn-edit i, .btn-view i {
-        color: #1c1a1a;  /* Amarelo para editar e visualizar */
-    }
-
-    .btn-delete i {
-        color: #dc3545;  /* Vermelho para deletar */
-    }
-
-    .btn-delete:hover i {
-        color: #c82333;
-    }
-
-    .btn-edit:hover i, .btn-view:hover i {
-        color: #1a1a18;
-    }
-
-</style>
-
 
 

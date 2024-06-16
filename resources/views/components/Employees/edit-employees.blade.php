@@ -1,4 +1,5 @@
-@vite('resources/js/Employees/employees-edit.js')
+@vite('resources/js/Employees/edit.js')
+
 <div class="container py-8 px-4 sm:px-6 lg:px-8">
     <div class="w-full sm:w-3/4 mx-auto">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg p-6">
@@ -13,7 +14,7 @@
                 <div class="flex-grow text-center">
                     <h3 class="text-lg leading-6 font-medium text-gray-900">Editar Funcionário</h3>
                 </div>
-                <div class="w-10 h-10"></div> 
+                <div class="w-10 h-10"></div>
             </div>
             <form action="{{ url('employees/' . $employee->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -21,7 +22,7 @@
                 <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
                     <div class="col-span-2 sm:col-span-1">
                         <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
-                        <input type="text" name="name" id="name" value="{{ $employee->name }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md @error('name') border-red-500 @enderror" required>
+                        <input type="text" name="name" id="name" value="{{ $employee->name }}" class="mt-1 block w-full shadow-sm  @error('name')  @enderror" required>
                         @error('name')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
@@ -99,7 +100,7 @@
                         <label for="employee_role_id" class="block text-sm font-medium text-gray-700">Cargo</label>
                         <select id="employee_role_id" name="employee_role_id" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md @error('employee_role_id') border-red-500 @enderror" required>
                             @foreach($roles as $role)
-                                @if($role->name !== 'Administrador' || $isAdmin)
+                                @if($role->name !== 'Administrador' || Auth::user()->role->name === 'Administrador')
                                     <option value="{{ $role->id }}" {{ $employee->employee_role_id == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
                                 @endif
                             @endforeach
@@ -126,11 +127,11 @@
                                 </div>
                             @endforeach
                         </div>
-                        <button type="button" id="add-contact" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md">Adicionar Contato</button>
+                        <button type="button" id="add-contact" class="mt-2 px-4 py-2  bg-gray-600 border -lg gap-x-2 hover:bg-gray-500 text-white rounded-md">Adicionar Contato</button>
                     </div>
                 </div>
                 <div class="mt-8 flex justify-end">
-                    <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                    <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm bg-gray-600  rounded-lg gap-x-2 hover:bg-gray-500 text-white">
                         Atualizar
                     </button>
                 </div>
