@@ -1,46 +1,3 @@
-<style>
-    .custom-bg {
-        background-color: #f5f5f5;
-    }
-
-    .custom-card {
-        background-color: #ffffff;
-        box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
-        border-radius: 20px;
-        padding: 20px;
-        max-width: 800px;
-        margin: auto;
-    }
-
-    .custom-btn {
-        background-color: #000;
-        color: #fff;
-        transition: background-color 0.3s ease;
-        border-radius: 30px;
-    }
-
-    .custom-btn:hover {
-        background-color: #222;
-    }
-
-    .form-input {
-        border: 2px solid #ccc;
-        transition: border-color 0.3s ease;
-        padding: 8px;
-    }
-
-    .form-input:focus {
-        border-color: #888;
-    }
-
-    @media (max-width: 640px) {
-        .custom-logo {
-            width: 80px;
-            height: 80px;
-        }
-    }
-</style>
-</head>
 
 <body class="custom-bg">
 
@@ -58,7 +15,7 @@
                 </button>
             </a>
             <div class="text-center flex-grow mb-6">
-                <h1>Cadastro de Seguros</h1>
+                <h1>Registo de Seguros</h1>
             </div>
         </div>
 

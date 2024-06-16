@@ -78,7 +78,7 @@
         <div class="px-6 py-4">
             <h3 class="text-2xl font-semibold text-gray-900">Detalhes da Viagem</h3>
             <p class="mt-1 text-gray-600">Informações detalhadas sobre os custos da viagem</p>
-            @if(Auth::check() && Auth::user()->isAdmin())
+            @if(Auth::check())
                 <div class="flex justify-between items-center mt-4">
                     <a href="{{ route('trip-details.create', ['trip_id' => $trip->id]) }}" class="flex items-center px-4 py-2 bg-green-700 hover:bg-green-600 border rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150">
                         <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

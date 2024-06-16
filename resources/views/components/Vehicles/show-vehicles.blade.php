@@ -1,6 +1,6 @@
-<div class="container py-8 px-4 sm:px-6 lg:px-8">
-    <div class="w-full sm:w-3/4 mx-auto">
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg p-6">
+<div class="container py-8 px-4">
+    <div class="w-full">
+        <div class="bg-white shadow sm:rounded-lg p-6">
             <div class="flex items-center justify-between mb-4">
                 <a href="{{ route('vehicles.index') }}" class="flex items-center justify-center w-10 h-10 mb-3">
                     <button type="button" class="flex items-center justify-center w-full h-full text-sm text-gray-700 transition-colors duration-200 bg-gray-600 border rounded-lg gap-x-2 hover:bg-gray-500">
