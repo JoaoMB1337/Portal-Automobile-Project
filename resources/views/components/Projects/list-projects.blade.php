@@ -1,7 +1,7 @@
 @vite('resources/js/Employees/employees-list.js')
 <div class="container">
     <div class="form-container">
-        @if(Auth::check() && Auth::user()->isAdmin())
+        @if(Auth::check() && Auth::user()->isMaster())
             <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
             <a href="{{ route('projects.index', ['clear_filters' => true]) }}"
                class="px-4 py-2 bg-gray-700 text-white rounded-md shadow-sm hover:bg-gray-800">Limpar
@@ -9,7 +9,7 @@
         @endif
     </div>
 
-    @if(Auth::check() && Auth::user()->isAdmin())
+    @if(Auth::check() && Auth::user()->isMaster())
         <div id="filterModal" class="modal mx-auto lg:pl-64">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -61,9 +61,11 @@
                 <th>Distrito</th>
                 <th>País</th>
                     @if(Auth::check() && Auth::user()->isAdmin())
-                        <th>Viagem</th>
-                        <th>Ações</th>
+
+                    <th>Viagem</th>
                     @endif
+
+                    <th>Ações</th>
 
             </tr>
             </thead>
@@ -78,14 +80,17 @@
                     <td><a href="{{ route('projects.show', $project->id) }}">{{ $project->name }}</a></td>
                     <td>{{ optional($project->district)->name ?? 'Sem Distrito' }}</td>
                     <td>{{ $project->country->name }}</td>
-                    @if(Auth::check() && Auth::user()->isAdmin())
+                    @if(Auth::check() && Auth::user()->isMaster())
                             <td>
                                 <a href="{{ route('trips.create', ['project_id' => $project->id]) }}"
                                    class="inline-flex items-center px-4 py-2 bg-gray-700 border rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-800">
                                     Adicionar
                                 </a>
                             </td>
+                        @endif
                             <td class="table-actions">
+                                @if(Auth::check() && Auth::user()->isMaster())
+
                                 <a href="{{ route('projects.edit', $project->id) }}" class="p-2">
                                     <i class="fas fa-edit text-xl"></i>
                                 </a>
@@ -96,11 +101,13 @@
                                     @csrf
                                     @method('DELETE')
                                 </form>
+                                @endif
+
                                 <a href="{{ url('projects/' . $project->id) }}" class="p-2">
                                     <i class="fas fa-eye text-xl"></i>
                                 </a>
                             </td>
-                    @endif
+
                 </tr>
             @empty
                 <tr>

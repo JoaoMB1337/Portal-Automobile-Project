@@ -12,7 +12,7 @@
                 <div class="flex-grow text-center">
                     <h3 class="text-2xl font-semibold text-gray-900">Detalhes do Projeto</h3>
                 </div>
-                <div class="w-10 h-10"></div> <!-- Espaço vazio para alinhar o título ao centro -->
+                <div class="w-10 h-10"></div>
             </div>
         </div>
         <div class="border-t border-gray-200">

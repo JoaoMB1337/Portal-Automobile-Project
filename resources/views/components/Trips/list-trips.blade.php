@@ -38,9 +38,7 @@
                     <th>Projeto</th>
                     <th>Funcionário</th>
                     <th>Veículo</th>
-                    @if(Auth::check() && Auth::user()->isAdmin())
                         <th>Ações</th>
-                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -60,8 +58,10 @@
                                 {{ $vehicle->plate }}<br>
                             @endforeach
                         </td>
-                        @if(Auth::check() && Auth::user()->isAdmin())
-                            <td class="table-actions">
+
+                        <td class="table-actions">
+                                @if(Auth::check() && Auth::user()->isMaster())
+
                                 <a href="{{ url('trips/' . $trip->id . '/edit') }}" class="btn-action btn-edit">
                                     <i class="fas fa-edit text-xl"></i>
                                 </a>
@@ -72,11 +72,11 @@
                                     @csrf
                                     @method('DELETE')
                                 </form>
+                                @endif
                                 <a href="{{ url('trips/' . $trip->id) }}" class="btn-action btn-view">
                                     <i class="fas fa-eye text-xl"></i>
                                 </a>
                             </td>
-                        @endif
                     </tr>
                 @empty
                     <tr>
