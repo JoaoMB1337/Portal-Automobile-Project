@@ -1,4 +1,4 @@
-@vite('resources/js/Employees/edit.js')
+@vite('resources/js/Geral/edit.js')
 
 <div class="container py-8 px-4 sm:px-6 lg:px-8">
     <div class="w-full sm:w-3/4 mx-auto">

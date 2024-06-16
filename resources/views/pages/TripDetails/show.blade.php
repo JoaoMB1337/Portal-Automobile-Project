@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="mx-auto lg:pl-64">
-        @component('components.trip-details.show-trip-detail', [
+        @component('components.Trip-details.show-trip-detail', [
             'tripDetail' => $tripDetail,
             'trip' => $trip,
             'project' => $project,

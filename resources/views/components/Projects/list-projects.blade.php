@@ -1,4 +1,4 @@
-@vite('resources/js/Employees/list.js')
+@vite('resources/js/Geral/list.js')
 
 <div class="container">
     <div class="form-container">

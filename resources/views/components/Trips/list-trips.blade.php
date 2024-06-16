@@ -1,7 +1,7 @@
-@vite(['resources/js/Employees/list.js'])
+@vite(['resources/js/Geral/list.js'])
 
 <div class="container">
-    @if(Auth::check() && Auth::user()->isAdmin())
+    @if(Auth::check() && Auth::user()->isMaster())
         <div class="form-container">
             <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
             <a href="{{ route('trips.index', ['clear_filters' => true]) }}" class="px-4 py-2 bg-gray-700 text-white rounded-md shadow-sm hover:bg-gray-800">Limpar</a>

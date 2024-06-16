@@ -27,7 +27,6 @@
         border-color: #888;
     }
 </style>
-</head>
 
 <body>
 

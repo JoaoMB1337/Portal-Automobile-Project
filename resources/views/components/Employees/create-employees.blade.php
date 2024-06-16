@@ -1,4 +1,4 @@
-@vite('resources/js/Employees/employees-create.js')
+@vite('resources/js/Geral/create.js')
 
 <div class="w-full rounded-xl p-7 custom-card mt-12">
     <div class="flex justify-center mb-6">
