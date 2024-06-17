@@ -4,7 +4,6 @@
     'resources/css/Geral/styles.css' ,
     'resources/css/Modals/Modal.css'
 ])
-@vite([''])
 
 @section('content')
     <div class=" mx-auto lg:pl-64">
