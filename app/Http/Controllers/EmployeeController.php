@@ -113,7 +113,15 @@ class EmployeeController extends Controller
 
     public function show(Employee $employee)
     {
-        $this->authorize('view', $employee);
+        $isAdminOrManager = Auth::user()->isMaster();
+
+        if (!$isAdminOrManager) {
+            $employeeId = Auth::id();
+            if ($employee->id != $employeeId) {
+                return redirect()->route('employees.index');
+            }
+        }
+
 
         $employee = Employee::with('drivingLicenses', 'role')->findOrFail($employee->id);
         return view('pages.Employees.show', compact('employee'));

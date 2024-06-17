@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TripDetail;
+use App\Models\Employee;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTripDetailRequest;
 use App\Http\Requests\UpdateTripDetailRequest;
@@ -12,7 +13,6 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Project;
 use App\Models\CostType;
 use App\Models\Trip;
-use App\Models\Employee;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
@@ -101,6 +101,9 @@ class TripDetailController extends Controller
      */
     public function show(TripDetail $tripDetail)
     {
+        
+        $this->authorize('view', $tripDetail);
+
         $tripDetail = TripDetail::findOrFail($tripDetail->id);
         $trip = $tripDetail->trip;
         $project = $trip->project;

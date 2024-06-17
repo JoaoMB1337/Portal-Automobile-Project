@@ -101,7 +101,7 @@
                 <tbody class="bg-white divide-y divide-gray-200">
                 @foreach ($tripDetails as $tripDetail)
                     <tr>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $tripDetail->costType->type_name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><a href="{{ url('trip-details/' . $tripDetail->id) }}">{{ $tripDetail->costType->type_name }}</a></td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ number_format($tripDetail->cost, 2, ',', '.') }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                             @if ($tripDetail->file)
