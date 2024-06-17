@@ -54,6 +54,7 @@
 
 
 {{-- SCRIPTS SECTION--}}
+<script src="{{ asset('js/app.js') }}"></script>
 <script src="{{ asset('/sw.js') }}"></script>
 <script>
    if ("serviceWorker" in navigator) {
