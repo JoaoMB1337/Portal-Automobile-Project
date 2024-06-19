@@ -13,7 +13,7 @@
                     <div class="mt-8 text-center mr-2">
                         <a href="{{ route('home') }}"
                            class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ">
-                            Go to Home Page
+                            Voltar a página inicial
                         </a>
                     </div>
                 </div>

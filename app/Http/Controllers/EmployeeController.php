@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\EmployeeRole;
 use DateTime;
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -28,7 +29,8 @@ class EmployeeController extends Controller
 
     public function index(Request $request)
     {
-        $this->authorize('viewAny', Employee::class);
+        try{
+    $this->authorize('viewAny', Employee::class);
 
         $query = Employee::query();
 
@@ -52,6 +54,10 @@ class EmployeeController extends Controller
             'employees' => $employees,
             'roles' => EmployeeRole::all(),
         ]);
+        } catch (AuthorizationException $e) {
+            return redirect()->route('error.403');
+        }
+
     }
 
     public function create()
