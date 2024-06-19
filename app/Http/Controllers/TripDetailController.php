@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTripDetailRequest;
 use App\Http\Requests\UpdateTripDetailRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -101,17 +102,21 @@ class TripDetailController extends Controller
      */
     public function show(TripDetail $tripDetail)
     {
-        
-        $this->authorize('view', $tripDetail);
+        try {
+            $this->authorize('view', $tripDetail);
 
-        $tripDetail = TripDetail::findOrFail($tripDetail->id);
-        $trip = $tripDetail->trip;
-        $project = $trip->project;
-        return view('pages.TripDetails.show', [
-            'tripDetail' => $tripDetail,
-            'trip' => $trip,
-            'project' => $project
-        ]);
+            $trip = $tripDetail->trip;
+            $project = $trip->project;
+
+            return view('pages.TripDetails.show', [
+                'tripDetail' => $tripDetail,
+                'trip' => $trip,
+                'project' => $project
+            ]);
+        } catch (AuthorizationException $e) {
+            // Redirecionar para a página de erro 403 personalizada
+            return redirect()->route('error.403');
+        }
     }
 
     /**

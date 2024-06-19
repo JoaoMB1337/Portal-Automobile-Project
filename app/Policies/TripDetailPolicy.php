@@ -8,12 +8,13 @@ use App\Models\Employee;
 
 class TripDetailPolicy
 {
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(Employee $employee): bool
     {
-        return $employee->employee_role_id === 3;
+        return $employee->isMaster();
     }
 
     /**
@@ -21,7 +22,9 @@ class TripDetailPolicy
      */
     public function view(Employee $employee ,TripDetail $tripDetail): bool
     {
-
+        if($employee->isMaster()){
+            return true;
+        }
         return $tripDetail->trip->employees()->where('employee_id', $employee->id)->exists();
     }
 
