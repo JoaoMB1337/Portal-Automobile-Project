@@ -62,19 +62,24 @@ class EmployeeController extends Controller
 
     public function create()
     {
-        $this->authorize('create', Employee::class);
+        try{
+            $this->authorize('create', Employee::class);
 
-        $roles = EmployeeRole::all();
-        $drivingLicenses = DrivingLicense::all();
-        $contactTypes = ContactType::all();
-        $isAdmin = Auth::user()->isAdmin();
+            $roles = EmployeeRole::all();
+            $drivingLicenses = DrivingLicense::all();
+            $contactTypes = ContactType::all();
+            $isAdmin = Auth::user()->isAdmin();
 
-        return view('pages.Employees.create', [
-            'roles' => $roles,
-            'drivingLicenses' => $drivingLicenses,
-            'contactTypes' => $contactTypes,
-            'isAdmin' => $isAdmin
-        ]);
+            return view('pages.Employees.create', [
+                'roles' => $roles,
+                'drivingLicenses' => $drivingLicenses,
+                'contactTypes' => $contactTypes,
+                'isAdmin' => $isAdmin
+            ]);
+        }catch (AuthorizationException $e) {
+            return redirect()->route('error.403');
+        }
+
     }
 
     public function store(StoreEmployeeRequest $request)
@@ -119,37 +124,47 @@ class EmployeeController extends Controller
 
     public function show(Employee $employee)
     {
-        $isAdminOrManager = Auth::user()->isMaster();
+        try{
+            $isAdminOrManager = Auth::user()->isMaster();
 
-        if (!$isAdminOrManager) {
-            $employeeId = Auth::id();
-            if ($employee->id != $employeeId) {
-                return redirect()->route('employees.index');
+            if (!$isAdminOrManager) {
+                $employeeId = Auth::id();
+                if ($employee->id != $employeeId) {
+                    return redirect()->route('employees.index');
+                }
             }
+
+
+            $employee = Employee::with('drivingLicenses', 'role')->findOrFail($employee->id);
+            return view('pages.Employees.show', compact('employee'));
+        }catch (AuthorizationException $e) {
+            return redirect()->route('error.403');
         }
 
-
-        $employee = Employee::with('drivingLicenses', 'role')->findOrFail($employee->id);
-        return view('pages.Employees.show', compact('employee'));
     }
 
     public function edit(Employee $employee)
     {
-        $this->authorize('update', $employee);
+        try {
+            $this->authorize('update', $employee);
 
-        $employee = Employee::with('drivingLicenses', 'role')->findOrFail($employee->id);
-        $roles = EmployeeRole::all();
-        $drivingLicenses = DrivingLicense::all();
-        $contactTypes = ContactType::all();
-        $isAdmin = Auth::user()->isAdmin();
+            $employee = Employee::with('drivingLicenses', 'role')->findOrFail($employee->id);
+            $roles = EmployeeRole::all();
+            $drivingLicenses = DrivingLicense::all();
+            $contactTypes = ContactType::all();
+            $isAdmin = Auth::user()->isAdmin();
 
-        return view('pages.Employees.edit', [
-            'employee' => $employee,
-            'roles' => $roles,
-            'drivingLicenses' => $drivingLicenses,
-            'contactTypes' => $contactTypes,
-            'isAdmin' => $isAdmin
-        ]);
+            return view('pages.Employees.edit', [
+                'employee' => $employee,
+                'roles' => $roles,
+                'drivingLicenses' => $drivingLicenses,
+                'contactTypes' => $contactTypes,
+                'isAdmin' => $isAdmin
+            ]);
+        }catch (AuthorizationException $e) {
+            return redirect()->route('error.403');
+        }
+
     }
 
     public function update(UpdateEmployeeRequest $request, Employee $employee)
@@ -194,9 +209,14 @@ class EmployeeController extends Controller
 
     public function destroy(Employee $employee)
     {
-        $this->authorize('delete', $employee);
-        $employee->delete();
-        return redirect()->route('employees.index');
+        try{
+            $this->authorize('delete', $employee);
+            $employee->delete();
+            return redirect()->route('employees.index');
+        }catch (\Exception $e){
+            return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir esse funcionário.');
+        }
+
     }
 
     public function deleteSelected(Request $request)
