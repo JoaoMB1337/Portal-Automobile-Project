@@ -133,4 +133,12 @@ document.addEventListener('DOMContentLoaded', function() {
             fileInput.click();
         }
     }
+
+    const pageBack = document.getElementById('pageBack');
+    if (pageBack) {
+        pageBack.onclick = function() {
+            window.history.back();
+        }
+    }
+
 });

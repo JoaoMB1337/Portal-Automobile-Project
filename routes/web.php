@@ -5,6 +5,8 @@ use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CostTypeController;
+use Illuminate\Support\Facades\Gate;
+
 
 
 Route::get('/', function () {
@@ -42,3 +44,5 @@ Route::post('employees-import', [EmployeeController::class, 'import'])->name('em
 Route::get('/districts/{country}', [DistrictController::class, 'getDistrictsByCountry']);
 
 Route::post('/employees/importCsv', [EmployeeController::class, 'importCsv'])->name('employees.importCsv');
+
+Route::get('/403', function () {return view('components.Errors.403');})->name('error.403');

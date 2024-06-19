@@ -14,7 +14,7 @@ class InsurancePolicy
      */
     public function viewAny(Employee $employee): bool
     {
-        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
+        return $employee->isMaster();
     }
 
     /**
@@ -23,7 +23,12 @@ class InsurancePolicy
     public function view( Employee $employee): bool
     {
         //
-        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
+        if($employee->isMaster()){
+            return true;
+        }
+        else{
+            return false;
+        }
 
     }
 
@@ -33,8 +38,12 @@ class InsurancePolicy
     public function create(Employee $employee): bool
     {
         //
-        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
-
+        if($employee->isMaster()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**
@@ -43,8 +52,12 @@ class InsurancePolicy
     public function update( Employee $employee): bool
     {
         //
-        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
-
+        if($employee->isMaster()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**
@@ -53,8 +66,12 @@ class InsurancePolicy
     public function delete( Employee $employee): bool
     {
         //
-        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
-
+        if($employee->isMaster()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**
@@ -63,8 +80,12 @@ class InsurancePolicy
     public function restore( Employee $employee): bool
     {
         //
-        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
-
+        if($employee->isMaster()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**
@@ -73,7 +94,11 @@ class InsurancePolicy
     public function forceDelete( Employee $employee): bool
     {
         //
-        return $employee->employee_role_id === 1 || $employee->employee_role_id === 2;
-
+        if($employee->isMaster()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

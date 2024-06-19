@@ -6,6 +6,7 @@ use App\Models\Vehicle;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVehicleRequest;
 use App\Http\Requests\UpdateVehicleRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Models\Brand;
 use App\Models\FuelType;
@@ -28,36 +29,41 @@ class VehicleController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('viewAny', Vehicle::class);
+        try{
+            $this->authorize('viewAny', Vehicle::class);
 
-        $query = Vehicle::query();
+            $query = Vehicle::query();
 
-        // Search by plate
-        if ($search = $request->input('search')) {
-            $query->where('plate', 'ilike', '%' . $search . '%');
-        }
-
-        if (($isExternal = $request->input('is_external')) !== null) {
-
-            if ($isExternal === '0' || $isExternal === '1') {
-                $query->where('is_external', $isExternal);
+            // Search by plate
+            if ($search = $request->input('search')) {
+                $query->where('plate', 'ilike', '%' . $search . '%');
             }
+
+            if (($isExternal = $request->input('is_external')) !== null) {
+
+                if ($isExternal === '0' || $isExternal === '1') {
+                    $query->where('is_external', $isExternal);
+                }
+            }
+
+            // Filter by fuel type
+            if ($fuelTypeId = $request->input('fuel_type')) {
+                $query->where('fuel_type_id', $fuelTypeId);
+            }
+
+            // Pagination
+            $vehicles = $query->orderBy('id', 'asc')->paginate(15);
+
+            // Get all fuel types for the filter dropdown
+            $fuelTypes = FuelType::all();
+
+            $vehicles = $query->orderBy('id', 'asc')->paginate(10);
+
+            return view('pages.Vehicles.list', compact('vehicles', 'fuelTypes'));
+        }catch (\Exception $e){
+            return redirect()->route('error.403')->with('error', 'Você não tem permissão para criar uma viagem.');
         }
 
-        // Filter by fuel type
-        if ($fuelTypeId = $request->input('fuel_type')) {
-            $query->where('fuel_type_id', $fuelTypeId);
-        }
-
-        // Pagination
-        $vehicles = $query->orderBy('id', 'asc')->paginate(15);
-
-        // Get all fuel types for the filter dropdown
-        $fuelTypes = FuelType::all();
-
-        $vehicles = $query->orderBy('id', 'asc')->paginate(10);
-
-        return view('pages.Vehicles.list', compact('vehicles', 'fuelTypes'));
     }
 
 
@@ -66,20 +72,25 @@ class VehicleController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Vehicle::class);
+        try {
+            $this->authorize('create', Vehicle::class);
 
-        $brands = Brand::all();
-        $fuelTypes = FuelType::all();
-        $carCategories = CarCategory::all();
-        $vehicleCondition = VehicleCondition::all();
+            $brands = Brand::all();
+            $fuelTypes = FuelType::all();
+            $carCategories = CarCategory::all();
+            $vehicleCondition = VehicleCondition::all();
 
 
-        return view('pages.Vehicles.create', [
-            'brands' => $brands,
-            'fuelTypes' => $fuelTypes,
-            'carCategories' => $carCategories,
-            'vehicleCondition' => $vehicleCondition
-        ]);
+            return view('pages.Vehicles.create', [
+                'brands' => $brands,
+                'fuelTypes' => $fuelTypes,
+                'carCategories' => $carCategories,
+                'vehicleCondition' => $vehicleCondition
+            ]);
+        }catch (\Exception $e){
+            return redirect()->route('error.403')->with('error', 'Você não tem permissão para criar uma viagem.');
+        }
+
     }
 
     /**
@@ -151,31 +162,62 @@ class VehicleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Vehicle $vehicle)
+    public function show(Request $request, $id)
     {
-        $this->authorize('view', $vehicle);
+        try {
+            if (!is_numeric($id) || intval($id) <= 0) {
+                return redirect()->route('error.403')->with('error', 'Invalid vehicle ID.');
+            }
 
-        return view('pages.Vehicles.show', compact('vehicle'));
+            $vehicle = Vehicle::findOrFail($id);
+
+            $this->authorize('view', $vehicle);
+
+            return view('pages.Vehicles.show', compact('vehicle'));
+        } catch (AuthorizationException $e) {
+            return redirect()->route('error.403')->with('error', 'Unauthorized access.');
+        } catch (QueryException $e) {
+            return redirect()->route('error.403')->with('error', 'Database query error.');
+        } catch (\Exception $e) {
+            // Handle all other exceptions
+            return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Vehicle $vehicle)
-    {
-        $this->authorize('update', $vehicle);
 
-        $brands = Brand::all();
-        $fuelTypes = FuelType::all();
-        $carCategories = CarCategory::all();
-        $vehicleCondition = VehicleCondition::all();
-        return view('pages.Vehicles.edit', [
-            'vehicle' => $vehicle,
-            'brands' => $brands,
-            'fuelTypes' => $fuelTypes,
-            'carCategories' => $carCategories,
-            'vehicleCondition' => $vehicleCondition
-        ]);
+    public function edit(Request $request, $id)
+    {
+        try {
+            if (!is_numeric($id) || intval($id) <= 0) {
+                return redirect()->route('error.403')->with('error', 'Invalid vehicle ID.');
+            }
+
+            $vehicle = Vehicle::findOrFail($id);
+
+            $this->authorize('update', $vehicle);
+
+            $brands = Brand::all();
+            $fuelTypes = FuelType::all();
+            $carCategories = CarCategory::all();
+            $vehicleCondition = VehicleCondition::all();
+
+            return view('pages.Vehicles.edit', [
+                'vehicle' => $vehicle,
+                'brands' => $brands,
+                'fuelTypes' => $fuelTypes,
+                'carCategories' => $carCategories,
+                'vehicleCondition' => $vehicleCondition,
+            ]);
+        } catch (AuthorizationException $e) {
+            return redirect()->route('error.403')->with('error', 'Unauthorized access.');
+        } catch (QueryException $e) {
+            return redirect()->route('error.403')->with('error', 'Database query error.');
+        } catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
+        }
     }
 
     /**
@@ -233,9 +275,14 @@ class VehicleController extends Controller
      */
     public function destroy(Vehicle $vehicle)
     {
-        $this->authorize('delete', $vehicle);
-        $vehicle->delete();
-        return redirect()->route('vehicles.index');
+        try{
+            $this->authorize('delete', $vehicle);
+            $vehicle->delete();
+            return redirect()->route('vehicles.index');
+        }catch (\Exception $e){
+            return redirect()->route('error.403')->with('error', 'Você não tem permissão para criar uma viagem.');
+        }
+
     }
 
     public function downloadPdf(Vehicle $vehicle)
@@ -261,11 +308,4 @@ class VehicleController extends Controller
         return redirect()->route('vehicles.index');
     }
 
-
-
-    public function showVehicles()
-    {
-        $vehicles = Vehicle::all();
-        return view('pages.Vehicles.list', compact('vehicles'));
-    }
 }

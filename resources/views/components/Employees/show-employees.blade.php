@@ -1,6 +1,7 @@
 <div class="container py-8 px-4 sm:px-6 lg:px-8">
     <div class="w-full sm:w-3/4 mx-auto">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg p-6">
+            @if(Auth::check() && Auth::user()->isMaster())
             <div class="flex items-center justify-between mb-4">
                 <a href="{{ route('employees.index') }}" class="flex items-center justify-center w-10 h-10 mb-3">
                     <button type="button" class="flex items-center justify-center w-full h-full text-sm text-gray-700 transition-colors duration-200 bg-gray-600 border rounded-lg gap-x-2 hover:bg-gray-500">
@@ -14,6 +15,7 @@
                 </div>
                 <div class="w-10 h-10"></div> <!-- Espaço vazio para alinhar o título ao centro -->
             </div>
+            @endif
             <p class="max-w-2xl text-sm text-gray-500">Detalhes pessoais e informações de contato</p>
             <div class="border-t border-gray-200">
                 <dl class="sm:divide-y sm:divide-gray-200">
@@ -68,6 +70,7 @@
                         </dd>
                     </div>
                 </dl>
+                @if(Auth::check() && Auth::user()->isMaster())
                 <div class="flex flex-col sm:flex-row justify-center py-4 gap-2 pt-10">
                     <a href="{{ route('employees.edit', ['employee' => $employee->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out text-center">
                         Editar
@@ -79,6 +82,7 @@
                         Eliminar
                     </button>
                 </div>
+                @endif
             </div>
         </div>
     </div>
