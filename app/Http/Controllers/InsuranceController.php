@@ -6,10 +6,13 @@ use App\Models\Insurance;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreInsuranceRequest;
 use App\Http\Requests\UpdateInsuranceRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Models\Vehicle;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Database\QueryException;
+
 
 
 
@@ -108,16 +111,25 @@ class InsuranceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Insurance $insurance)
+    public function show($id)
     {
-        try{
+        try {
+            if (!is_numeric($id) || intval($id) <= 0) {
+                return redirect()->route('error.403')->with('error', 'Invalid insurance ID.');
+            }
+
+            $insurance = Insurance::findOrFail($id);
+
             $this->authorize('view', $insurance);
 
             return view('pages.Insurance.show', compact('insurance'));
-        }catch (\Exception $e) {
-            return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir esse funcionário.');
+        } catch (AuthorizationException $e) {
+            return redirect()->route('error.403')->with('error', 'Unauthorized access.');
+        } catch (QueryException $e) {
+            return redirect()->route('error.403')->with('error', 'Database query error.');
+        } catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
         }
-
     }
 
     /**
@@ -125,14 +137,17 @@ class InsuranceController extends Controller
      */
     public function edit(Insurance $insurance)
     {
-        try{
+        try {
             $this->authorize('update', $insurance);
 
             return view('pages.Insurance.edit', compact('insurance'));
-        }catch (\Exception $e) {
-            return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir esse funcionário.');
+        } catch (AuthorizationException $e) {
+            return redirect()->route('error.403')->with('error', 'Unauthorized access.');
+        } catch (QueryException $e) {
+            return redirect()->route('error.403')->with('error', 'Database query error.');
+        } catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
         }
-
     }
 
     /**

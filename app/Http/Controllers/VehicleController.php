@@ -6,6 +6,7 @@ use App\Models\Vehicle;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVehicleRequest;
 use App\Http\Requests\UpdateVehicleRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Models\Brand;
 use App\Models\FuelType;
@@ -161,40 +162,62 @@ class VehicleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Vehicle $vehicle)
+    public function show(Request $request, $id)
     {
-        try{
+        try {
+            if (!is_numeric($id) || intval($id) <= 0) {
+                return redirect()->route('error.403')->with('error', 'Invalid vehicle ID.');
+            }
+
+            $vehicle = Vehicle::findOrFail($id);
+
             $this->authorize('view', $vehicle);
 
             return view('pages.Vehicles.show', compact('vehicle'));
-        }catch (\Exception $e){
-            return redirect()->route('error.403')->with('error', 'Você não tem permissão para criar uma viagem.');
+        } catch (AuthorizationException $e) {
+            return redirect()->route('error.403')->with('error', 'Unauthorized access.');
+        } catch (QueryException $e) {
+            return redirect()->route('error.403')->with('error', 'Database query error.');
+        } catch (\Exception $e) {
+            // Handle all other exceptions
+            return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
         }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Vehicle $vehicle)
+
+    public function edit(Request $request, $id)
     {
-        try{
+        try {
+            if (!is_numeric($id) || intval($id) <= 0) {
+                return redirect()->route('error.403')->with('error', 'Invalid vehicle ID.');
+            }
+
+            $vehicle = Vehicle::findOrFail($id);
+
             $this->authorize('update', $vehicle);
 
             $brands = Brand::all();
             $fuelTypes = FuelType::all();
             $carCategories = CarCategory::all();
             $vehicleCondition = VehicleCondition::all();
+
             return view('pages.Vehicles.edit', [
                 'vehicle' => $vehicle,
                 'brands' => $brands,
                 'fuelTypes' => $fuelTypes,
                 'carCategories' => $carCategories,
-                'vehicleCondition' => $vehicleCondition
+                'vehicleCondition' => $vehicleCondition,
             ]);
-        }catch (\Exception $e){
-            return redirect()->route('error.403')->with('error', 'Você não tem permissão para criar uma viagem.');
+        } catch (AuthorizationException $e) {
+            return redirect()->route('error.403')->with('error', 'Unauthorized access.');
+        } catch (QueryException $e) {
+            return redirect()->route('error.403')->with('error', 'Database query error.');
+        } catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
         }
-
     }
 
     /**
