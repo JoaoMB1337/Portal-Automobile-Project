@@ -1,4 +1,4 @@
-@extends('components.master.main')
+@extends('components.Master.main')
 
 @section('content')
 

@@ -1,4 +1,4 @@
-@extends('components.master.main')
+@extends('components.Master.main')
 @vite(['resources/css/Trips/trip-create.css'])
 
 @section('content')
