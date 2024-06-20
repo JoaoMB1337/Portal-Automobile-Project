@@ -52,3 +52,9 @@ Route::post('/employees/importCsv', [EmployeeController::class, 'importCsv'])->n
 Route::get('/403', function () {
     return view('components.Errors.403');
 })->name('error.403');
+
+// file not found route
+
+Route::get('/file-not-found', function () {
+    return view('components.Errors.file_not_found');
+})->name('file.not.found');

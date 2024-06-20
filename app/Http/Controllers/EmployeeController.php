@@ -203,7 +203,69 @@ class EmployeeController extends Controller
             unset($data['password']);
         }
 
+        // Atualiza os campos básicos do funcionário
         $employee->update($data);
+
+
+
+        // Atualiza ou cria os novos contatos enviados
+        if ($request->has('contacts')) {
+            $currentContactIds = $employee->contacts()->pluck('id')->toArray();
+            $newContactIds = [];
+
+
+        // Atualiza ou cria os novos contatos enviados
+        if ($request->has('contacts')) {
+
+            foreach ($request->contacts as $contact) {
+                if (isset($contact['value']) && isset($contact['type'])) {
+                    $existingContact = $employee->contacts()->where('contact_type_id', $contact['type'])->first();
+                    if ($existingContact) {
+                        // Atualiza o valor do contato existente
+                        $existingContact->update(['contact_value' => $contact['value']]);
+                        $newContactIds[] = $existingContact->id;
+                    } else {
+                        // Cria um novo contato
+                        $newContact = $employee->contacts()->create([
+                            'contact_value' => $contact['value'],
+                            'contact_type_id' => $contact['type']
+                        ]);
+                        $newContactIds[] = $newContact->id;
+                    }
+                }
+            }
+
+            // Remove os contatos que não foram enviados no formulário
+            $contactsToDelete = array_diff($currentContactIds, $newContactIds);
+            if (!empty($contactsToDelete)) {
+                $employee->contacts()->whereIn('id', $contactsToDelete)->delete();
+            }
+        }
+
+        // Atualiza as licenças de condução, se houver
+
+
+                    } else {
+                        // Cria um novo contato
+                        $employee->contacts()->create([
+                            'contact_value' => $contact['value'],
+                            'contact_type_id' => $contact['type']
+                        ]);
+                    }
+                }
+            }
+        }
+
+        // Remove os contatos que não foram enviados no formulário
+        $currentContactTypes = $employee->contacts()->pluck('contact_type_id')->toArray();
+        $requestContactTypes = collect($request->contacts)->pluck('type')->toArray();
+        $contactsToDelete = array_diff($currentContactTypes, $requestContactTypes);
+
+        if (!empty($contactsToDelete)) {
+            $employee->contacts()->whereIn('contact_type_id', $contactsToDelete)->delete();
+        }
+
+        // Atualiza as licenças de condução, se houver
 
         if ($request->has('driving_licenses')) {
             $employee->drivingLicenses()->sync($request->driving_licenses);
@@ -211,24 +273,18 @@ class EmployeeController extends Controller
             $employee->drivingLicenses()->detach();
         }
 
-        $employee->contacts()->delete();
-
-        if ($request->has('contacts')) {
-            foreach ($request->contacts as $contact) {
-                if (isset($contact['value']) && isset($contact['type'])) {
-                    $employee->contacts()->create([
-                        'contact_value' => $contact['value'],
-                        'contact_type_id' => $contact['type']
-                    ]);
-                }
-            }
-        }
-
         return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
 
     public function destroy(Employee $employee)
     {
+
+        if ($employee->id == Auth::id()) {
+            return redirect()->route('error.403');
+        }
+        if (Auth::user()->isManager() && $employee->employee_role_id == 1) {
+            return redirect()->route('error.403');
+        }
         try{
             $this->authorize('delete', $employee);
             $employee->delete();

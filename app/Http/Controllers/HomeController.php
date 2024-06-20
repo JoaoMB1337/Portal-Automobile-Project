@@ -47,6 +47,15 @@ class HomeController extends Controller
         $nextMonth = Carbon::today()->addDays(30);
         $endingInsurances = Insurance::whereBetween('end_date', [$today, $nextMonth])->get();
 
+        //Carrega as viagens do funcionário para o dia atual
+
+        $today = Carbon::today();
+
+        // Recuperar viagens ativas
+        $activeTrips = Trip::where('start_date', '<=', $today)
+                            ->where('end_date', '>=', $today)
+                            ->get();
+        
         return view('home', compact(
             'internalVehiclesCount',
             'externalVehiclesCount',
@@ -56,7 +65,8 @@ class HomeController extends Controller
             'projectsCompleted',
             'projectsCancelled',
             'projectsOnHold',
-            'endingInsurances'
+            'endingInsurances',
+            'activeTrips'
         ));
     }
 }
