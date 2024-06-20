@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
 
 use Illuminate\Support\Facades\Log;
+use function Laravel\Prompts\error;
 
 class VehicleController extends Controller
 {
@@ -291,7 +292,9 @@ class VehicleController extends Controller
             $pdfPath = $vehicle->pdf_file;
             return Storage::disk('public')->download($pdfPath);
         } else {
-            return back()->withError('Este veículo não possui um PDF associado.');
+            // Usando session()->flash() para passar a mensagem de erro para a view
+            session()->flash('error', 'No PDF file found for this vehicle.');
+            return redirect()->back(); // Redireciona para a página anterior
         }
     }
 

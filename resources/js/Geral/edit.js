@@ -1,4 +1,4 @@
-document.getElementById('add-contact-btn').addEventListener('click', function () {
+document.getElementById('add-contact').addEventListener('click', function () {
     var container = document.getElementById('contacts-container');
     var index = container.children.length;
     var newContact = document.createElement('div');
