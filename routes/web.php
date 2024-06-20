@@ -6,24 +6,30 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CostTypeController;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\CheckFirstLogin;
 
 
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login.form');
 Auth::routes(['register' => false]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login.form');
 
-Route::resource('employees', App\Http\Controllers\EmployeeController::class);
-Route::resource('trips', App\Http\Controllers\TripController::class);
-Route::resource('vehicles', App\Http\Controllers\VehicleController::class);
-Route::resource('insurances', App\Http\Controllers\InsuranceController::class);
-Route::resource('projects', App\Http\Controllers\ProjectController::class);
-Route::resource('trip-details', App\Http\Controllers\TripDetailController::class);
+// Rotas para alteração de senha no primeiro login
+Route::middleware(['auth'])->group(function () {
+    Route::middleware([CheckFirstLogin::class])->group(function () {
+        Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+        Route::get('/vehicles/{vehicle}/download-pdf', [App\Http\Controllers\VehicleController::class, 'downloadPdf'])->name('vehicles.downloadPdf');
+        Route::resource('employees', App\Http\Controllers\EmployeeController::class);
+        Route::resource('trips', App\Http\Controllers\TripController::class);
+        Route::resource('vehicles', App\Http\Controllers\VehicleController::class);
+        Route::resource('insurances', App\Http\Controllers\InsuranceController::class);
+        Route::resource('projects', App\Http\Controllers\ProjectController::class);
+        Route::resource('trip-details', App\Http\Controllers\TripDetailController::class);
+    });
+
+    Route::get('/password/change', [App\Http\Controllers\Auth\ChangePasswordController::class, 'showChangePasswordForm'])->name('password.change');
+    Route::post('/password/change', [App\Http\Controllers\Auth\ChangePasswordController::class, 'changePassword'])->name('password.update');
+});
 
 Route::delete('employees.deleteSelected', [App\Http\Controllers\EmployeeController::class, 'deleteSelected'])->name('employees.deleteSelected');
 Route::delete('vehicles.deleteSelected', [VehicleController::class, 'deleteSelected'])->name('vehicles.deleteSelected');
@@ -31,11 +37,7 @@ Route::delete('projects.deleteSelected', [App\Http\Controllers\ProjectController
 Route::delete('trips.deleteSelected', [App\Http\Controllers\TripController::class, 'deleteSelected'])->name('trips.deleteSelected');
 Route::delete('insurances.deleteSelected', [App\Http\Controllers\InsuranceController::class, 'deleteSelected'])->name('insurances.deleteSelected');
 
-
-Route::get('/vehicles/{vehicle}/download-pdf', [App\Http\Controllers\VehicleController::class, 'downloadPdf'])->name('vehicles.downloadPdf');
-
 Route::get('/employees/{id}/export-csv', [EmployeeController::class, 'exportCsv'])->name('employees.exportCsv');
-
 
 Route::get('/districts/{country}', [DistrictController::class, 'getDistrictsByCountry']);
 
@@ -45,4 +47,6 @@ Route::get('/districts/{country}', [DistrictController::class, 'getDistrictsByCo
 
 Route::post('/employees/importCsv', [EmployeeController::class, 'importCsv'])->name('employees.importCsv');
 
-Route::get('/403', function () {return view('components.Errors.403');})->name('error.403');
+Route::get('/403', function () {
+    return view('components.Errors.403');
+})->name('error.403');
