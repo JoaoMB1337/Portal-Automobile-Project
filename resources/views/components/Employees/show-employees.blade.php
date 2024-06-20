@@ -1,5 +1,5 @@
-<div class="container py-8 px-4 sm:px-6 lg:px-8">
-    <div class="w-full sm:w-3/4 mx-auto">
+<div class="container py-8 px-4 ">
+    <div class="w-full  ">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg p-6">
             @if(Auth::check() && Auth::user()->isMaster())
             <div class="flex items-center justify-between mb-4">
@@ -69,6 +69,23 @@
                             @endif
                         </dd>
                     </div>
+                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">Outros Contactos</dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                            <ul>
+                                @if($employee->contacts->isNotEmpty())
+                                    @foreach($employee->contacts as $contact)
+                                        <li>{{ $contact-> contactType -> type }}: {{ $contact->contact_value }}</li>
+                                    @endforeach
+                                @else
+                                    <li>Nenhum contato disponível.</li>
+                                @endif
+                            </ul>
+                        </dd>
+                    </div>
+
+
+
                 </dl>
                 @if(Auth::check() && Auth::user()->isMaster())
                 <div class="flex flex-col sm:flex-row justify-center py-4 gap-2 pt-10">
