@@ -161,6 +161,11 @@ class EmployeeController extends Controller
             }
 
             $employee = Employee::findOrFail($id);
+            if (Auth::user()->isManager() && $employee->employee_role_id == 1) {
+                return redirect()->route('error.403');
+            }
+
+            $employee = Employee::findOrFail($id);
 
             $this->authorize('update', $employee);
 
@@ -189,10 +194,6 @@ class EmployeeController extends Controller
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         $this->authorize('update', $employee);
-
-        if (Auth::user()->isManager() && $request->employee_role_id == 1) {
-            return redirect()->back()->with('error', 'You are not authorized to update to administrator.');
-        }
 
         $data = $request->all();
 
