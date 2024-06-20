@@ -30,7 +30,7 @@
 {{-- HEADER SECTION --}}
 <header class=" text-white ">
 
-        @component('components.master.header')
+        @component('components.Master.header')
         @endcomponent
 </header>
 {{-- .HEADER SECTION --}}
