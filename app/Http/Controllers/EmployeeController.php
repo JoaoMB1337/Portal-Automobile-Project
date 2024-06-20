@@ -203,13 +203,19 @@ class EmployeeController extends Controller
             unset($data['password']);
         }
 
+        // Atualiza os campos básicos do funcionário
         $employee->update($data);
+
 
 
         // Atualiza ou cria os novos contatos enviados
         if ($request->has('contacts')) {
             $currentContactIds = $employee->contacts()->pluck('id')->toArray();
             $newContactIds = [];
+
+
+        // Atualiza ou cria os novos contatos enviados
+        if ($request->has('contacts')) {
 
             foreach ($request->contacts as $contact) {
                 if (isset($contact['value']) && isset($contact['type'])) {
@@ -238,23 +244,33 @@ class EmployeeController extends Controller
 
         // Atualiza as licenças de condução, se houver
 
+
+                    } else {
+                        // Cria um novo contato
+                        $employee->contacts()->create([
+                            'contact_value' => $contact['value'],
+                            'contact_type_id' => $contact['type']
+                        ]);
+                    }
+                }
+            }
+        }
+
+        // Remove os contatos que não foram enviados no formulário
+        $currentContactTypes = $employee->contacts()->pluck('contact_type_id')->toArray();
+        $requestContactTypes = collect($request->contacts)->pluck('type')->toArray();
+        $contactsToDelete = array_diff($currentContactTypes, $requestContactTypes);
+
+        if (!empty($contactsToDelete)) {
+            $employee->contacts()->whereIn('contact_type_id', $contactsToDelete)->delete();
+        }
+
+        // Atualiza as licenças de condução, se houver
+
         if ($request->has('driving_licenses')) {
             $employee->drivingLicenses()->sync($request->driving_licenses);
         } else {
             $employee->drivingLicenses()->detach();
-        }
-
-        $employee->contacts()->delete();
-
-        if ($request->has('contacts')) {
-            foreach ($request->contacts as $contact) {
-                if (isset($contact['value']) && isset($contact['type'])) {
-                    $employee->contacts()->create([
-                        'contact_value' => $contact['value'],
-                        'contact_type_id' => $contact['type']
-                    ]);
-                }
-            }
         }
 
         return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
