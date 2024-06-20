@@ -193,7 +193,6 @@ class EmployeeController extends Controller
 
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-        dd($request->all());
         $this->authorize('update', $employee);
 
         $data = $request->all();
