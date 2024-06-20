@@ -37,7 +37,6 @@ class VehicleFactory extends Factory
             'rental_contact_number' => $this->faker->optional()->phoneNumber,
             'notes' => $this->faker->optional()->text(50),
             'is_active' => $this->faker->boolean(false),
-            'pdf_file' => $this->faker->optional()->filePath(),
             'fuel_type_id' => \App\Models\FuelType::inRandomOrder()->value('id'),
             'car_category_id' => \App\Models\CarCategory::inRandomOrder()->value('id'),
             'brand_id' => \App\Models\Brand::inRandomOrder()->value('id'),
