@@ -205,6 +205,39 @@ class EmployeeController extends Controller
 
         $employee->update($data);
 
+
+        // Atualiza ou cria os novos contatos enviados
+        if ($request->has('contacts')) {
+            $currentContactIds = $employee->contacts()->pluck('id')->toArray();
+            $newContactIds = [];
+
+            foreach ($request->contacts as $contact) {
+                if (isset($contact['value']) && isset($contact['type'])) {
+                    $existingContact = $employee->contacts()->where('contact_type_id', $contact['type'])->first();
+                    if ($existingContact) {
+                        // Atualiza o valor do contato existente
+                        $existingContact->update(['contact_value' => $contact['value']]);
+                        $newContactIds[] = $existingContact->id;
+                    } else {
+                        // Cria um novo contato
+                        $newContact = $employee->contacts()->create([
+                            'contact_value' => $contact['value'],
+                            'contact_type_id' => $contact['type']
+                        ]);
+                        $newContactIds[] = $newContact->id;
+                    }
+                }
+            }
+
+            // Remove os contatos que não foram enviados no formulário
+            $contactsToDelete = array_diff($currentContactIds, $newContactIds);
+            if (!empty($contactsToDelete)) {
+                $employee->contacts()->whereIn('id', $contactsToDelete)->delete();
+            }
+        }
+
+        // Atualiza as licenças de condução, se houver
+
         if ($request->has('driving_licenses')) {
             $employee->drivingLicenses()->sync($request->driving_licenses);
         } else {
@@ -229,6 +262,13 @@ class EmployeeController extends Controller
 
     public function destroy(Employee $employee)
     {
+
+        if ($employee->id == Auth::id()) {
+            return redirect()->route('error.403');
+        }
+        if (Auth::user()->isManager() && $employee->employee_role_id == 1) {
+            return redirect()->route('error.403');
+        }
         try{
             $this->authorize('delete', $employee);
             $employee->delete();
