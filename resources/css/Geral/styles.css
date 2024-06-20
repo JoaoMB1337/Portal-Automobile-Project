@@ -1,3 +1,13 @@
+@media (max-width: 640px) {
+    .btn-projects {
+        width: auto !important;
+        padding: 0.25rem 0.5rem !important;
+        font-size: 0.75rem !important;
+    }
+}
+
+
+
 /* Estilos para todos os tamanhos de tela */
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -178,192 +188,6 @@ body {
         border-bottom: 1px solid #eee;
 
     }
-}
-
-
-
-@media (max-width: 640px) {
-    .btn-projects {
-        width: auto !important;
-        padding: 0.25rem 0.5rem !important;
-        font-size: 0.75rem !important;
-    }
-}
- .modal {
-     display: none;
-     position: fixed;
-     z-index: 1;
-     left: 0;
-     top: 0;
-     width: 100%;
-     height: 100%;
-     overflow: auto;
-     background-color: rgba(0, 0, 0, 0.4);
- }
-
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.add-options {
-    bottom: 60px;
-    right: 0;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.add-options a,
-.add-options button {
-    display: block;
-    margin-bottom: 5px;
-    color: #333;
-    text-decoration: none;
-    border: none;
-    background: none;
-    cursor: pointer;
-}
-
-.add-button {
-    background-color: #1a1c1a;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-delete i {
-    color: #dc3545;
-}
-
-.btn-delete:hover i {
-    color: #c82333;
-}
-
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.add-options {
-    bottom: 60px;
-    right: 0;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.add-options a,
-.add-options button {
-    display: block;
-    margin-bottom: 5px;
-    color: #333;
-    text-decoration: none;
-    border: none;
-    background: none;
-    cursor: pointer;
-}
-
-.add-button {
-    background-color: #1a1c1a;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-delete i {
-    color: #dc3545;
-}
-
-.btn-delete:hover i {
-    color: #c82333;
-}
-
-
-.btn-action {
-    padding: 6px 12px;
-    font-size: 16px;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-
-
-.btn-edit i, .btn-view i {
-    color: #282826;
-}
-
-.btn-delete i {
-    color: #dc3545;
-}
-
-.btn-delete:hover i {
-    color: #c82333;
 }
 
 

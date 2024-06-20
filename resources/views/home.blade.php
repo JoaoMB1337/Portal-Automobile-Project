@@ -1,10 +1,11 @@
 @extends('components.master.main')
 @section('content')
 
-@if(Auth::check() && (Auth::user()->isAdmin() || Auth::user()->isManager()))
+@if(Auth::check() && (Auth::user()->isMaster() ))
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <body class="bg-gray-100 h-screen">
+    <div class=" mx-auto lg:pl-64">
     <div class="overflow-x-auto">
         <div class="container mx-auto p-4">
             <div class="mt-6">
@@ -148,6 +149,7 @@
                 });
             </script>
         </div>
+    </div>
     </div>
 </body>
 

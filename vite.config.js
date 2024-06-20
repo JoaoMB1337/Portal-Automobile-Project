@@ -10,24 +10,31 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/css/app.css',
 
+                'resources/js/Geral/create.js',
+                'resources/js/Geral/edit.js',
+                'resources/js/Geral/list.js',
+
+                'resources/js/Insurance/insurance-list.js',
+
+                'resources/js/Vehicles/vehicles-list.js',
+                'resources/js/Vehicles/vehicles-create.js',
+
+                'resources/css/Geral/create.css',
+                'resources/css/Geral/styles.css',
 
                 'resources/css/Employees/employee-list.css',
-                'resources/js/Employees/employees-list.js',
                 'resources/css/Employees/employee-create.css',
-                'resources/js/Employees/employees-create.js',
-                'resources/js/Employees/employees-edit.js',
 
                 'resources/css/Insurance/insurance-list.css',
 
-                'resources/js/Vehicles/vehicles-create.js',
-                'resources/js/Vehicles/vehicles-list.js',
+                'resources/css/Modals/Modal.css',
 
                 'resources/css/Projects/project-edit.css',
 
                 'resources/css/Trips/trip-create.css',
 
-                'resources/css/Modals/Modal.css',
-                'resources/css/styles.css',
+                'resources/css/Vehicles/vehicle-list.css',
+
 
             ],
             refresh: true,

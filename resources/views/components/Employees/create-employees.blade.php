@@ -1,4 +1,4 @@
-@vite('resources/js/Employees/employees-create.js')
+@vite('resources/js/Geral/create.js')
 
 <div class="w-full rounded-xl p-7 custom-card mt-12">
     <div class="flex justify-center mb-6">
@@ -11,7 +11,7 @@
             <div class="flex">
                 <i class="fas fa-user icon"></i>
                 <input id="name" type="text"
-                       class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('name') border-red-500 @enderror"
+                       class="form-input w-full rounded-md  focus:border-gray-400 focus:ring focus:ring-gray-200 @error('name') border-red-500 @enderror"
                        name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
             </div>
             @error('name')
@@ -23,7 +23,7 @@
             <div class="flex">
                 <i class="fas fa-id-badge icon"></i>
                 <input id="employee_number" type="text"
-                       class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('employee_number') border-red-500 @enderror"
+                       class="form-input w-full rounded-md  focus:border-gray-400 focus:ring focus:ring-gray-200 @error('employee_number') border-red-500 @enderror"
                        name="employee_number" value="{{ old('employee_number') }}" required>
             </div>
             @error('employee_number')
@@ -35,7 +35,7 @@
             <label for="gender" class="block text-sm font-semibold text-gray-700 mb-2">Género</label>
             <div class="flex">
                 <i class="fas fa-venus-mars icon"></i>
-                <select id="gender" class="form-control w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('gender') border-red-500 @enderror" name="gender" required>
+                <select id="gender" class="form-control w-full rounded-md  focus:border-gray-400 focus:ring focus:ring-gray-200 @error('gender') border-red-500 @enderror" name="gender" required>
                     <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Masculino</option>
                     <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Feminino</option>
                     <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Outro</option>
@@ -51,7 +51,7 @@
             <div class="flex">
                 <i class="fas fa-calendar-alt icon"></i>
                 <input id="birth_date" type="date"
-                       class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('birth_date') border-red-500 @enderror"
+                       class="form-input w-full rounded-md  focus:border-gray-400 focus:ring focus:ring-gray-200 @error('birth_date') border-red-500 @enderror"
                        name="birth_date" value="{{ old('birth_date') }}" required>
             </div>
             @error('birth_date')
@@ -64,7 +64,7 @@
             <div class="flex">
                 <i class="fas fa-id-card icon"></i>
                 <input id="CC" type="text"
-                       class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('CC') border-red-500 @enderror"
+                       class="form-input w-full rounded-md  focus:border-gray-400 focus:ring focus:ring-gray-200 @error('CC') border-red-500 @enderror"
                        name="CC" value="{{ old('CC') }}" required>
             </div>
             @error('CC')
@@ -77,7 +77,7 @@
             <div class="flex">
                 <i class="fas fa-id-card icon"></i>
                 <input id="NIF" type="text"
-                       class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('NIF') border-red-500 @enderror"
+                       class="form-input w-full rounded-md  focus:border-gray-400 focus:ring focus:ring-gray-200 @error('NIF') border-red-500 @enderror"
                        name="NIF" value="{{ old('NIF') }}" required>
             </div>
             @error('NIF')
@@ -90,7 +90,7 @@
             <div class="flex">
                 <i class="fas fa-home icon"></i>
                 <input id="address" type="text"
-                       class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('address') border-red-500 @enderror"
+                       class="form-input w-full rounded-md  focus:border-gray-400 focus:ring focus:ring-gray-200 @error('address') border-red-500 @enderror"
                        name="address" value="{{ old('address') }}">
             </div>
             @error('address')
@@ -103,10 +103,10 @@
             <div class="flex">
                 <i class="fas fa-briefcase icon"></i>
                 <select id="employee_role_id"
-                        class="form-control w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('employee_role_id') border-red-500 @enderror"
+                        class="form-control w-full rounded-md focus:border-gray-400 focus:ring focus:ring-gray-200 @error('employee_role_id') border-red-500 @enderror"
                         name="employee_role_id" required>
                     @foreach ($roles as $role)
-                        @if($role->name !== 'Administrador' || $isAdmin)
+                        @if($role->name !== 'Administrador' || Auth::user()->role->name === 'Administrador')
                             <option value="{{ $role->id }}" {{ old('employee_role_id') == $role->id ? 'selected' : '' }}>
                                 {{ $role->name }}
                             </option>
@@ -125,7 +125,7 @@
             <div class="flex">
                 <i class="fas fa-envelope icon"></i>
                 <input id="email" type="email"
-                       class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('email') border-red-500 @enderror"
+                       class="form-input w-full rounded-md focus:border-gray-400 focus:ring focus:ring-gray-200 @error('email') border-red-500 @enderror"
                        name="email" value="{{ old('email') }}">
             </div>
             @error('email')
@@ -139,7 +139,7 @@
             <div class="flex">
                 <i class="fas fa-phone icon"></i>
                 <input id="phone" type="text"
-                       class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('phone') border-red-500 @enderror"
+                       class="form-input w-full rounded-md focus:border-gray-400 focus:ring focus:ring-gray-200 @error('phone') border-red-500 @enderror"
                        name="phone" value="{{ old('phone') }}">
             </div>
             @error('phone')
@@ -189,7 +189,7 @@
             <div class="flex">
                 <i class="fas fa-lock icon"></i>
                 <input id="password" type="password"
-                       class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('password') border-red-500 @enderror"
+                       class="form-input w-full rounded-md focus:border-gray-400 focus:ring focus:ring-gray-200 @error('password') border-red-500 @enderror"
                        name="password" required autocomplete="new-password">
             </div>
             @error('password')
@@ -213,7 +213,7 @@
                 {{ __('Register') }}
             </button>
         </div>
-    </div>
+    </form>
 </div>
 
 <script>

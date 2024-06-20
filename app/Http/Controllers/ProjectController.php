@@ -12,6 +12,7 @@ use App\Models\ProjectStatus;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\QueryException;
 
 
 class ProjectController extends Controller
@@ -22,29 +23,29 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
-        $isAdminOrManager = Auth::user()->isMaster(); 
+        $isAdminOrManager = Auth::user()->isMaster();
         $query = Project::query();
-    
+
         if (!$isAdminOrManager) {
             $employeeId = Auth::id();
             $query->whereHas('trips.employees', function ($q) use ($employeeId) {
                 $q->where('employees.id', $employeeId);
             });
         }
-    
+
         // Limpar filtro
         if ($request->has('clear_filters')) {
             $request->session()->forget(['search', 'project_status_id']);
         }
-    
+
         if ($request->has('country_id') && $request->country_id) {
             $query->where('country_id', $request->country_id);
         }
-    
+
         if ($request->has('district_id') && $request->district_id) {
             $query->where('district_id', $request->district_id);
         }
-    
+
         // Filtrar através de pesquisa
         if ($request->has('search') && $request->search) {
             $search = $request->search;
@@ -62,18 +63,18 @@ class ProjectController extends Controller
                     });
             });
         }
-    
+
         if ($request->session()->has('project_status_id')) {
             $project_status_id = $request->session()->get('project_status_id');
             $query->where('project_status_id', $project_status_id);
         }
-    
+
         $projects = $query->orderBy('id', 'asc')->paginate(10);
-    
+
         $countries = Country::all();
         $districts = District::all();
         $projectstatuses = ProjectStatus::all();
-    
+
         return view('pages.Projects.list', [
             'projects' => $projects,
             'countries' => $countries,
@@ -87,15 +88,23 @@ class ProjectController extends Controller
      */
     public function create()
     {
+        try{
+            $this ->authorize('viewAny', Project::class);
 
-        $countries = Country::all();
-        $districts = District::all()->groupBy('country_id');
-        $projectstatuses = ProjectStatus::all();
-        return view('pages.Projects.create', [
-            'countries'         => $countries,
-            'districts'         => $districts,
-            'projectstatuses'   => $projectstatuses
-        ]);
+            $countries = Country::all();
+            $districts = District::all()->groupBy('country_id');
+            $projectstatuses = ProjectStatus::all();
+            return view('pages.Projects.create', [
+                'countries'         => $countries,
+                'districts'         => $districts,
+                'projectstatuses'   => $projectstatuses
+            ]);
+        }catch (
+            QueryException $e) {
+            return redirect()->route('error.403')->with('error', 'Database query error.');
+        } catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
+        }
     }
 
     /**
@@ -120,31 +129,43 @@ class ProjectController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Project $project)
+    public function show(Request $request, $id)
     {
-        $isAdminOrManager = Auth::user()->isMaster();
-
-        if (!$isAdminOrManager) {
-            $employeeId = Auth::id();
-            $isAssociated = $project->trips()->whereHas('employees', function ($q) use ($employeeId) {
-                $q->where('employees.id', $employeeId);
-            })->exists();
-
-            if (!$isAssociated) {
-                abort(403, 'Access denied');
+        try {
+            if (!is_numeric($id)) {
+                abort(400, 'Invalid project ID');
             }
+
+            $project = Project::findOrFail($id);
+
+            $isAdminOrManager = Auth::user()->isMaster();
+
+            if (!$isAdminOrManager) {
+                $employeeId = Auth::id();
+                $isAssociated = $project->trips()->whereHas('employees', function ($q) use ($employeeId) {
+                    $q->where('employees.id', $employeeId);
+                })->exists();
+
+                if (!$isAssociated) {
+                    abort(403, 'Access denied');
+                }
+            }
+
+            $trips = $project->trips;
+            $totalProjectCost = $trips->sum(function ($trip) {
+                return $trip->tripDetails->sum('cost');
+            });
+
+            return view('pages.Projects.show', [
+                'project' => $project,
+                'trips' => $trips,
+                'totalProjectCost' => $totalProjectCost,
+            ]);
+        } catch (QueryException $e) {
+            return redirect()->route('error.403')->with('error', 'Database query error.');
+        } catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
         }
-
-        $trips = $project->trips;
-        $totalProjectCost = $trips->sum(function ($trip) {
-            return $trip->tripDetails->sum('cost');
-        });
-
-        return view('pages.Projects.show', [
-            'project' => $project,
-            'trips' => $trips,
-            'totalProjectCost' => $totalProjectCost,
-        ]);
     }
 
     /**
@@ -152,15 +173,22 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        $countries = Country::all();
-        $districts = District::all()->groupBy('country_id');
-        $projectstatuses = ProjectStatus::all();
-        return view('pages.Projects.edit', [
-            'project' => $project,
-            'countries' => $countries,
-            'districts' => $districts,
-            'projectstatuses' => $projectstatuses
-        ]);
+        try {
+            $this->authorize('update', $project);
+            $countries = Country::all();
+            $districts = District::all()->groupBy('country_id');
+            $projectstatuses = ProjectStatus::all();
+            return view('pages.Projects.edit', [
+                'project' => $project,
+                'countries' => $countries,
+                'districts' => $districts,
+                'projectstatuses' => $projectstatuses
+            ]);
+        }catch (QueryException $e) {
+            return redirect()->route('error.403')->with('error', 'Database query error.');
+        } catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
+        }
     }
 
     /**
@@ -168,24 +196,40 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        $project->name = $request->name;
-        $project->address = $request->address;
-        $project->project_status_id = $request->projectstatus;
-        $project->district_id = $request->district;
-        $project->country_id = $request->country;
+        try{
+            $this->authorize('update', $project);
+            $project->name = $request->name;
+            $project->address = $request->address;
+            $project->project_status_id = $request->projectstatus;
+            $project->district_id = $request->district;
+            $project->country_id = $request->country;
 
-        $project->save();
+            $project->save();
 
-        return redirect()->route('projects.index')->with('success', 'Project updated successfully!');
+            return redirect()->route('projects.index')->with('success', 'Project updated successfully!');
+        }catch (QueryException $e) {
+            return redirect()->route('error.403')->with('error', 'Database query error.');
+        } catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'An unexpected error occurred.' . $e->getMessage());
+           }
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Project $project)
     {
-        $project->delete();
-        return redirect()->route('projects.index');
+        try{
+            $this-> authorize('delete', $project);
+            $project->delete();
+            return redirect()->route('projects.index');
+        }catch (QueryException $e) {
+            return redirect()->route('error.403')->with('error', 'Database query error.');
+        } catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
+        }
+
     }
 
     public function deleteSelected(Request $request)

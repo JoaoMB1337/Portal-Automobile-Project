@@ -1,0 +1,27 @@
+.btn-action {
+    padding: 6px 12px;
+    font-size: 16px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.btn-edit i, .btn-view i {
+    color: #1c1a1a;
+}
+
+.btn-delete i {
+    color: #dc3545;
+}
+
+.btn-delete:hover i {
+    color: #c82333;
+}
+
+.btn-edit:hover i, .btn-view:hover i {
+    color: #1a1a18;
+}
+
+

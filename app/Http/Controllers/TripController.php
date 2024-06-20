@@ -17,7 +17,8 @@ use App\Models\TypeTrip;
 use App\Models\Vehicle;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Database\QueryException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class TripController extends Controller
@@ -28,35 +29,43 @@ class TripController extends Controller
      */
     public function index(Request $request)
     {
-        $isAdmin = Auth::user()->isMaster();
+        try{
+            $isAdmin = Auth::user()->isMaster();
 
-        $query = Trip::query();
+            $query = Trip::query();
 
-        if (!$isAdmin) {
-            $employeeId = Auth::id();
-            $query->whereHas('employees', function ($query) use ($employeeId) {
-                $query->where('employees.id', $employeeId);
-            });
+            if (!$isAdmin) {
+                $employeeId = Auth::id();
+                $query->whereHas('employees', function ($query) use ($employeeId) {
+                    $query->where('employees.id', $employeeId);
+                });
+            }
+
+            if ($request->filled('destination')) {
+                $query->where('destination', 'ilike', '%' . $request->input('destination') . '%');
+            }
+
+            if ($request->filled('project')) {
+                $query->whereHas('project', function ($q) use ($request) {
+                    $q->where('name', 'ilike', '%' . $request->input('project') . '%');
+                });
+            }
+
+            $trips = $query->orderBy('id', 'asc')->paginate(10);
+
+            return view('pages.Trips.list', [
+                'trips' => $trips,
+                'employees' => Employee::all(),
+                'project' => Project::all(),
+                'vehicles' => Vehicle::all(),
+            ]);
+        }catch (
+        QueryException $e) {
+            return redirect()->route('error.403')->with('error', 'Database query error.');
+        } catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
         }
 
-        if ($request->filled('destination')) {
-            $query->where('destination', 'ilike', '%' . $request->input('destination') . '%');
-        }
-
-        if ($request->filled('project')) {
-            $query->whereHas('project', function ($q) use ($request) {
-                $q->where('name', 'ilike', '%' . $request->input('project') . '%');
-            });
-        }
-
-        $trips = $query->orderBy('id', 'asc')->paginate(10);
-
-        return view('pages.Trips.list', [
-            'trips' => $trips,
-            'employees' => Employee::all(),
-            'project' => Project::all(),
-            'vehicles' => Vehicle::all(),
-        ]);
     }
 
     /**
@@ -64,25 +73,31 @@ class TripController extends Controller
      */
     public function create(Request $request)
     {
+        try {
+            $this -> authorize('create', Trip::class);
 
-        $project_id = $request->input('project_id');
+            $project_id = $request->input('project_id');
 
-        $employees = Employee::all();
-        $projects = Project::all();
-        $typeTrips = TypeTrip::all();
-        $vehicles = Vehicle::all();
+            $employees = Employee::all();
+            $projects = Project::all();
+            $typeTrips = TypeTrip::all();
+            $vehicles = Vehicle::all();
 
-        if ($search = $request->input('search')) {
+            if ($search = $request->input('search')) {
 
-            $vehicles = Vehicle::where('plate', 'like', '%' . $search . '%')->get();
+                $vehicles = Vehicle::where('plate', 'like', '%' . $search . '%')->get();
+            }
+            return view('pages.Trips.create', [
+                'employees' => $employees,
+                'projects' => $projects,
+                'typeTrips' => $typeTrips,
+                'vehicles' => $vehicles,
+                'project_id' => $project_id,
+            ]);
+        }catch (\Exception $e){
+            return redirect()->route('error.403')->with('error', 'Você não tem permissão para criar uma viagem.');
         }
-        return view('pages.Trips.create', [
-            'employees' => $employees,
-            'projects' => $projects,
-            'typeTrips' => $typeTrips,
-            'vehicles' => $vehicles,
-            'project_id' => $project_id,
-        ]);
+
     }
 
     /**
@@ -131,29 +146,52 @@ class TripController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Trip $trip)
+    public function show(Request $request, $id)
     {
-        $isAdminOrManager = Auth::user()->isMaster();
-
-        if (!$isAdminOrManager) {
-            $employeeId = Auth::id();
-            $isAssociated = $trip->employees->contains($employeeId);
-
-            if (!$isAssociated) {
-                abort(403, 'Access denied');
+        try {
+            // Validate that $id is an integer
+            if (!is_numeric($id) || intval($id) <= 0) {
+                abort(400, 'Invalid trip ID');
             }
-        }
 
-        $totalCost = $trip->tripDetails->sum('cost');
-        return view('pages.Trips.show', [
-            'trip' => $trip,
-            'employees' => $trip->employees,
-            'vehicles' => $trip->vehicles,
-            'tripDetails' => $trip->tripDetails,
-            'projects' => Project::all(),
-            'costTypes' => CostType::all(),
-            'totalCost' => $totalCost,
-        ]);
+            // Fetch the trip by ID
+            $trip = Trip::findOrFail($id);
+
+            // Authorization check
+            $this->authorize('view', $trip);
+
+            $isAdminOrManager = Auth::user()->isMaster();
+
+            if (!$isAdminOrManager) {
+                $employeeId = Auth::id();
+                $isAssociated = $trip->employees->contains($employeeId);
+
+                if (!$isAssociated) {
+                    abort(403, 'Access denied');
+                }
+            }
+
+            $totalCost = $trip->tripDetails->sum('cost');
+
+            return view('pages.Trips.show', [
+                'trip' => $trip,
+                'employees' => $trip->employees,
+                'vehicles' => $trip->vehicles,
+                'tripDetails' => $trip->tripDetails,
+                'projects' => Project::all(),
+                'costTypes' => CostType::all(),
+                'totalCost' => $totalCost,
+            ]);
+        } catch (QueryException $e) {
+            // Handle database query exceptions
+            return redirect()->route('error.403')->with('error', 'Database query error.');
+        } catch (NotFoundHttpException $e) {
+            // Handle not found exceptions
+            return redirect()->route('error.403')->with('error', 'Trip not found.');
+        } catch (\Exception $e) {
+            // Handle all other exceptions
+            return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
+        }
     }
 
     /**
@@ -161,19 +199,23 @@ class TripController extends Controller
      */
     public function edit(Trip $trip)
     {
-
-        $trip = Trip::find($trip->id);
-        $employees = Employee::all();
-        $projects = Project::all();
-        $typeTrips = TypeTrip::all();
-        $vehicles = Vehicle::all();
-        return view('pages.Trips.edit', [
-            'trip' => $trip,
-            'employees' => $employees,
-            'projects' => $projects,
-            'typeTrips' => $typeTrips,
-            'vehicles' => $vehicles
-        ]);
+        try{
+            $this->authorize('update', $trip);
+            $trip = Trip::find($trip->id);
+            $employees = Employee::all();
+            $projects = Project::all();
+            $typeTrips = TypeTrip::all();
+            $vehicles = Vehicle::all();
+            return view('pages.Trips.edit', [
+                'trip' => $trip,
+                'employees' => $employees,
+                'projects' => $projects,
+                'typeTrips' => $typeTrips,
+                'vehicles' => $vehicles
+            ]);
+        }catch (\Exception $e){
+            return redirect()->route('error.403')->with('error', 'Você não tem permissão para editar essa viagem.');
+        }
     }
 
     /**
@@ -208,9 +250,6 @@ class TripController extends Controller
         $trip->project_id = $validatedData['project_id'];
         $trip->type_trip_id = $validatedData['type_trip_id'];
         $trip->save();
-
-
-
 
 
         if (isset($validatedData['employee_id'])) {
@@ -257,9 +296,14 @@ class TripController extends Controller
      */
     public function destroy(Trip $trip)
     {
+        try{
+            $this -> authorize('delete', $trip);
+            $trip->delete();
+            return redirect()->route('trips.index');
+        }catch (\Exception $e){
+            return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir essa viagem.');
+        }
 
-        $trip->delete();
-        return redirect()->route('trips.index');
     }
 
     public function deleteSelected(Request $request)

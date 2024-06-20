@@ -46,7 +46,7 @@
 {{-- FOOTER SECTION
 <footer class="bg-light text-center text-sm text-gray-600 py-4">
     <div class="container mx-auto px-4">
-        @component('components.master.footer')
+        @component('components.Master.footer')
         @endcomponent
     </div>
 </footer>--}}
