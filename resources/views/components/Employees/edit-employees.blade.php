@@ -117,10 +117,10 @@
                                 <div class="flex mb-2">
                                     <select name="contacts[{{ $index }}][type]" class="form-select mr-2 @error("contacts.{$index}.type") border-red-500 @enderror">
                                         @foreach($contactTypes as $contactType)
-                                            <option value="{{ $contactType }}" {{ $contact->type == $contactType ? 'selected' : '' }}>{{ $contactType }}</option>
+                                            <option value="{{ $contactType }}" {{ $contact->type == $contactType ? 'selected' : '' }}>{{ $contactType->type }}</option>
                                         @endforeach
                                     </select>
-                                    <input type="text" name="contacts[{{ $index }}][value]" value="{{ $contact->value }}" class="form-input flex-1 @error("contacts.{$index}.value") border-red-500 @enderror" required>
+                                    <input type="text" name="contacts[{{ $index }}][value]" value="{{ $contact->contact_value }}" class="form-input flex-1 @error("contacts.{$index}.value") border-red-500 @enderror" >
                                     @error("contacts.{$index}.value")
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                     @enderror
@@ -139,3 +139,6 @@
         </div>
     </div>
 </div>
+<script>
+    window.contactTypes = @json($contactTypes);
+</script>

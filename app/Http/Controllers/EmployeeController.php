@@ -124,7 +124,7 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
-    public function show(Request $request, $id)
+    public function show(Request $request, $id, ContactType $contactTypes)
     {
         try {
             if (!is_numeric($id) || intval($id) <= 0) {
@@ -143,7 +143,7 @@ class EmployeeController extends Controller
             }
 
             $employee->load('drivingLicenses', 'role');
-            return view('pages.Employees.show', compact('employee'));
+            return view('pages.Employees.show', ['employee' => $employee , 'contactTypes' => $contactTypes]);
         } catch (QueryException $e) {
             // Handle database query exceptions
             return redirect()->route('error.403')->with('error', 'Database query error.');
@@ -193,6 +193,7 @@ class EmployeeController extends Controller
 
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
+        dd($request->all());
         $this->authorize('update', $employee);
 
         $data = $request->all();
