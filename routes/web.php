@@ -9,13 +9,10 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\CheckFirstLogin;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
+Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login.form');
 Auth::routes(['register' => false]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Rotas para alteração de senha no primeiro login
 Route::middleware(['auth'])->group(function () {
