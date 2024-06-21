@@ -241,7 +241,7 @@ class EmployeeController extends Controller
             $employee->drivingLicenses()->sync($request->driving_licenses);
         } else {
             $employee->drivingLicenses()->detach();
-}
+        }
         // Remove os contatos que não foram enviados no formulário
         $currentContactTypes = $employee->contacts()->pluck('contact_type_id')->toArray();
         $requestContactTypes = collect($request->contacts)->pluck('type')->toArray();
