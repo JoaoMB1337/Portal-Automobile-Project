@@ -22,7 +22,8 @@ class UpdateContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'email' => 'nullable|email|max:255|unique:employees,email',
+            'phone' => 'nullable|string|max:255|unique:employees,phone',
         ];
     }
 }
