@@ -14,6 +14,8 @@ export default defineConfig({
                 'resources/js/Geral/edit.js',
                 'resources/js/Geral/list.js',
 
+                'resources/js/Home/home.js',
+
                 'resources/js/Insurance/insurance-list.js',
 
                 'resources/js/Vehicles/vehicles-list.js',
