@@ -133,17 +133,19 @@
                                 <div class="flex mb-2">
                                     <select name="contacts[{{ $index }}][type]" class="form-select mr-2 @error("contacts.{$index}.type") border-red-500 @enderror">
                                         @foreach($contactTypes as $contactType)
-                                            <option value="{{ $contactType }}" {{ $contact->type == $contactType ? 'selected' : '' }}>{{ $contactType->type }}</option>
+                                            <option value="{{ $contactType->id }}" {{ $contact->contact_type_id == $contactType->id ? 'selected' : '' }}>
+                                                {{ $contactType->type }}
+                                            </option>
                                         @endforeach
                                     </select>
-                                    <input type="text" name="contacts[{{ $index }}][value]" value="{{ $contact->contact_value }}" class="form-input flex-1 @error("contacts.{$index}.value") border-red-500 @enderror" >
+                                    <input type="text" name="contacts[{{ $index }}][value]" value="{{ $contact->contact_value }}" class="form-input flex-1 @error("contacts.{$index}.value") border-red-500 @enderror">
                                     @error("contacts.{$index}.value")
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
                             @endforeach
                         </div>
-                        <button type="button" id="add-contact" class="mt-2 px-4 py-2  bg-gray-600 border -lg gap-x-2 hover:bg-gray-500 text-white rounded-md">Adicionar Contato</button>
+                        <button type="button" id="add-contact" class="mt-2 px-4 py-2 bg-gray-600 border -lg gap-x-2 hover:bg-gray-500 text-white rounded-md">Adicionar Contato</button>
                     </div>
                 </div>
                 <div class="mt-8 flex justify-end">
