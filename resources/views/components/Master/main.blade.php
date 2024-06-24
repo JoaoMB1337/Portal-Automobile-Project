@@ -56,6 +56,7 @@
 {{-- SCRIPTS SECTION--}}
 <script src="{{ asset('js/app.js') }}"></script>
 <script src="{{ asset('/sw.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
    if ("serviceWorker" in navigator) {
       // Register a service worker hosted at the root of the
