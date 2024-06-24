@@ -122,8 +122,72 @@
     .custom-container {
         margin-top: 40px;
     }
+    /* Media Query específica para iPad Air (820px de largura) */
+    @media (max-width: 820px) {
+        #sidebar {
+            transform: translateX(-100%);
+            width: 100vw;
+        }
 
+        #sidebar.show {
+            transform: translateX(0);
+        }
 
+        #sidebar a {
+            font-size: 28px;
+            padding: 9px 18px;
+        }
+
+        .content {
+            margin-top: 60px;
+        }
+
+        .logo {
+            width: 2.75rem;
+            height: 2.75rem;
+        }
+
+        #mobile-menu-btn {
+            visibility: visible;
+            position: fixed;
+            z-index: 2000;
+            left: 8px;
+            top: 8px;
+        }
+    }
+    /* Media Query específica para resolução 912px de largura */
+    @media (max-width: 912px) {
+        #sidebar {
+            transform: translateX(-100%);
+            width: 100vw;
+        }
+
+        #sidebar.show {
+            transform: translateX(0);
+        }
+
+        #sidebar a {
+            font-size: 28px;
+            padding: 9px 18px;
+        }
+
+        .content {
+            margin-top: 60px;
+        }
+
+        .logo {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        #mobile-menu-btn {
+            visibility: visible; /* Visível em telas menores que 912px */
+            position: fixed;
+            z-index: 2000;
+            left: 8px;
+            top: 8px;
+        }
+    }
 </style>
 
 <nav id="sidebar"
@@ -210,7 +274,7 @@
     </div>
 </nav>
 
-<button id="mobile-menu-btn" class="md:hidden fixed top-4 left-4 z-50 text-white p-2 rounded focus:outline-none">
+<button id="mobile-menu-btn" class=" fixed top-4 left-4 z-50 text-white p-2 ml-4 rounded focus:outline-none ">
     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
         <path fill-rule="evenodd"
               d="M3 5h14a1 1 0 100-2H3a1 1 0 000 2zm0 6h14a1 1 0 100-2H3a1 1 0 000 2zm0 6h14a1 1 0 100-2H3a1 1 0 000 2z"

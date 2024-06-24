@@ -34,6 +34,7 @@ class EmployeeSeeder extends Seeder
                 'email_verified_at' => '2021-01-01',
                 'password' => bcrypt('12345678'),
                 'remember_token' => '123456789',
+                'first_login' => false, // Added to avoid 'first_login' column being 'null
                 'created_at' => '2021-01-01',
                 'updated_at' => '2021-01-01',
             ],
@@ -51,6 +52,7 @@ class EmployeeSeeder extends Seeder
                 'email_verified_at' => '2021-01-01',
                 'password' => bcrypt('12345678'),
                 'remember_token' => '123456789',
+                'first_login' => false, // Added to avoid 'first_login' column being 'null
                 'created_at' => '2021-01-01',
                 'updated_at' => '2021-01-01',
             ],
@@ -68,6 +70,7 @@ class EmployeeSeeder extends Seeder
                 'email_verified_at' => '2021-01-01',
                 'password' => bcrypt('12345678'),
                 'remember_token' => '123456789',
+                'first_login' => false, // Added to avoid 'first_login' column being 'null
                 'created_at' => '2021-01-01',
                 'updated_at' => '2021-01-01',
             ],
@@ -85,6 +88,7 @@ class EmployeeSeeder extends Seeder
                 'email_verified_at' => '2021-01-01',
                 'password' => bcrypt('12345678'),
                 'remember_token' => '123456789',
+                'first_login' => false, // Added to avoid 'first_login' column being 'null
                 'created_at' => '2021-01-01',
                 'updated_at' => '2021-01-01',
             ],
@@ -102,6 +106,7 @@ class EmployeeSeeder extends Seeder
                 'email_verified_at' => '2021-01-01',
                 'password' => bcrypt('12345678'),
                 'remember_token' => '123456789',
+                'first_login' => false, // Added to avoid 'first_login' column being 'null
                 'created_at' => '2021-01-01',
                 'updated_at' => '2021-01-01',
             ],
@@ -119,6 +124,7 @@ class EmployeeSeeder extends Seeder
                 'email_verified_at' => '2021-01-01',
                 'password' => bcrypt('12345678'),
                 'remember_token' => '123456789',
+                'first_login' => false, // Added to avoid 'first_login' column being 'null
                 'created_at' => '2021-01-01',
                 'updated_at' => '2021-01-01',
             ]
@@ -147,6 +153,7 @@ class EmployeeSeeder extends Seeder
                 'email_verified_at' => $faker->dateTimeThisDecade(),
                 'password' => bcrypt('12345678'),
                 'remember_token' => $faker->uuid,
+                'first_login' => false,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

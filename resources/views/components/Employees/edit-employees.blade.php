@@ -109,6 +109,22 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>
+                    <div class="col-span-2">
+                        <label for="employee_role_id" class="block text-sm font-medium text-gray-700">Alterar password</label>
+                        <input type="password" name="password" id="password" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md @error('password') border-red-500 @enderror">
+                        @error('password')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="col-span-2">
+                        <label for="employee_role_id" class="block text-sm font-medium text-gray-700">Confirmar password</label>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md @error('password_confirmation') border-red-500 @enderror">
+                        @error('password_confirmation')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+
 
                     <div class="col-span-2">
                         <label for="contacts" class="block text-sm font-medium text-gray-700">Contatos</label>
@@ -117,10 +133,10 @@
                                 <div class="flex mb-2">
                                     <select name="contacts[{{ $index }}][type]" class="form-select mr-2 @error("contacts.{$index}.type") border-red-500 @enderror">
                                         @foreach($contactTypes as $contactType)
-                                            <option value="{{ $contactType }}" {{ $contact->type == $contactType ? 'selected' : '' }}>{{ $contactType }}</option>
+                                            <option value="{{ $contactType }}" {{ $contact->type == $contactType ? 'selected' : '' }}>{{ $contactType->type }}</option>
                                         @endforeach
                                     </select>
-                                    <input type="text" name="contacts[{{ $index }}][value]" value="{{ $contact->value }}" class="form-input flex-1 @error("contacts.{$index}.value") border-red-500 @enderror" required>
+                                    <input type="text" name="contacts[{{ $index }}][value]" value="{{ $contact->contact_value }}" class="form-input flex-1 @error("contacts.{$index}.value") border-red-500 @enderror" >
                                     @error("contacts.{$index}.value")
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                     @enderror
@@ -139,3 +155,6 @@
         </div>
     </div>
 </div>
+<script>
+    window.contactTypes = @json($contactTypes);
+</script>

@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\TripDetail;
+use App\Models\Employee;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTripDetailRequest;
 use App\Http\Requests\UpdateTripDetailRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 use App\Models\Project;
 use App\Models\CostType;
 use App\Models\Trip;
-use App\Models\Employee;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
@@ -101,14 +102,21 @@ class TripDetailController extends Controller
      */
     public function show(TripDetail $tripDetail)
     {
-        $tripDetail = TripDetail::findOrFail($tripDetail->id);
-        $trip = $tripDetail->trip;
-        $project = $trip->project;
-        return view('pages.TripDetails.show', [
-            'tripDetail' => $tripDetail,
-            'trip' => $trip,
-            'project' => $project
-        ]);
+        try {
+            $this->authorize('view', $tripDetail);
+
+            $trip = $tripDetail->trip;
+            $project = $trip->project;
+
+            return view('pages.TripDetails.show', [
+                'tripDetail' => $tripDetail,
+                'trip' => $trip,
+                'project' => $project
+            ]);
+        } catch (AuthorizationException $e) {
+            // Redirecionar para a página de erro 403 personalizada
+            return redirect()->route('error.403');
+        }
     }
 
     /**

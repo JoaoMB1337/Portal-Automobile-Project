@@ -31,6 +31,7 @@ class EmployeeFactory extends Factory
             'email_verified_at' => $this->faker->date,
             'password' => $this->bcrypt('12345678'),
             'remember_token' => $this->faker->randomNumber,
+            'first_login' => false,
             'created_at' => $this->faker->date,
             'updated_at' => $this->faker->date,
 

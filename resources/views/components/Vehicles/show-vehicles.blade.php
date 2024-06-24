@@ -57,6 +57,7 @@
                             <a href="{{ route('vehicles.downloadPdf', ['vehicle' => $vehicle->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out text-center w-full sm:w-auto">
                                 Exportar CSV
                             </a>
+
                         </div>
                     @endif
 
@@ -94,9 +95,20 @@
                         <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt class="text-sm font-medium text-gray-500">PDF</dt>
                             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">
-                                <a href="{{ route('vehicles.downloadPdf', $vehicle) }}">Download PDF</a>
+                                <a href="{{ route('vehicles.downloadPdf', ['vehicle' => $vehicle->id]) }}" class="inline-block ">
+                                    Download PDF
+                                </a>
+
+                                <!-- Exibir a mensagem de erro, se houver -->
+                                @if (session('error'))
+                                    <div class="alert alert-danger mt-4">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
                             </dd>
+
                         </div>
+
                         <div class="flex flex-col sm:flex-row justify-center py-4 gap-2 pt-10">
                             <a href="{{ route('vehicles.edit', ['vehicle' => $vehicle->id]) }}" class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out text-center w-full sm:w-auto">
                                 Editar

@@ -1,4 +1,4 @@
-@extends('components.master.main')
+@extends('components.Master.main')
 @vite([
         'resources/css/Geral/styles.css',
         'resources/css/Modals/Modal.css'

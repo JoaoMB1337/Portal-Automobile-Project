@@ -6,10 +6,13 @@ use App\Models\Insurance;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreInsuranceRequest;
 use App\Http\Requests\UpdateInsuranceRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Models\Vehicle;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Database\QueryException;
+
 
 
 
@@ -22,39 +25,38 @@ class InsuranceController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('viewAny', Insurance::class);
+        try {
+            $this->authorize('viewAny', Insurance::class);
 
-        // Obtém todos os seguros
-        $query = Insurance::query();
+            $query = Insurance::query();
 
-        // Filtra por companhia de seguro, se fornecido
-        if ($request->filled('insurance_company')) {
-            $query->where('insurance_company', 'like', '%' . $request->input('insurance_company') . '%');
-        }
+            if ($request->filled('insurance_company')) {
+                $query->where('insurance_company', 'like', '%' . $request->input('insurance_company') . '%');
+            }
 
-        // Filtra por número da apólice, se fornecido
-        if ($request->filled('policy_number')) {
-            $query->where('policy_number', 'like', '%' . $request->input('policy_number') . '%');
-        }
+            if ($request->filled('policy_number')) {
+                $query->where('policy_number', 'like', '%' . $request->input('policy_number') . '%');
+            }
 
-        // Filtra por seguros expirados
-        if ($request->has('expired')) {
-            $query->where('end_date', '<', Carbon::now());
-        }
-
-        // Filtra por seguros ativos ou inativos com base na data de término
-        if ($request->has('ativo')) {
-            if ($request->input('ativo') == '1') {
-                $query->where('end_date', '>=', Carbon::now());
-            } elseif ($request->input('ativo') == '0') {
+            if ($request->has('expired')) {
                 $query->where('end_date', '<', Carbon::now());
             }
+
+            if ($request->has('ativo')) {
+                if ($request->input('ativo') == '1') {
+                    $query->where('end_date', '>=', Carbon::now());
+                } elseif ($request->input('ativo') == '0') {
+                    $query->where('end_date', '<', Carbon::now());
+                }
+            }
+
+            $insurances = $query->orderBy('id', 'asc')->paginate(10);
+
+            return view('pages.Insurance.list', ['insurance' => $insurances]);
+        }catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir esse funcionário.');
         }
 
-        // Ordena por ID em ordem ascendente e paginates os resultados
-        $insurances = $query->orderBy('id', 'asc')->paginate(10);
-
-        return view('pages.Insurance.list', ['insurance' => $insurances]);
     }
 
     /**
@@ -63,9 +65,14 @@ class InsuranceController extends Controller
     public function create()
     {
         //
-        $this->authorize('create', Insurance::class);
+        try {
+            $this->authorize('create', Insurance::class);
 
-        return view('pages.Insurance.create');
+            return view('pages.Insurance.create');
+        }catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir esse funcionário.');
+        }
+
     }
 
     /**
@@ -73,7 +80,6 @@ class InsuranceController extends Controller
      */
     public function store(StoreInsuranceRequest $request)
     {
-        // Encontrar o veículo com base na matrícula fornecida
         $vehicle = Vehicle::where('plate', $request->vehicle_plate)->first();
 
         if (!$vehicle) {
@@ -93,7 +99,6 @@ class InsuranceController extends Controller
             return redirect()->back()->with('error', 'Veiculo ja tem seguro.');
         }
 
-        // Associar o veículo encontrado ao seguro
         $insurance->vehicle_id = $vehicle->id;
 
         $insurance->save();
@@ -106,11 +111,25 @@ class InsuranceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Insurance $insurance)
+    public function show($id)
     {
-        $this->authorize('view', $insurance);
+        try {
+            if (!is_numeric($id) || intval($id) <= 0) {
+                return redirect()->route('error.403')->with('error', 'Invalid insurance ID.');
+            }
 
-        return view('pages.Insurance.show', compact('insurance'));
+            $insurance = Insurance::findOrFail($id);
+
+            $this->authorize('view', $insurance);
+
+            return view('pages.Insurance.show', compact('insurance'));
+        } catch (AuthorizationException $e) {
+            return redirect()->route('error.403')->with('error', 'Unauthorized access.');
+        } catch (QueryException $e) {
+            return redirect()->route('error.403')->with('error', 'Database query error.');
+        } catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
+        }
     }
 
     /**
@@ -118,10 +137,17 @@ class InsuranceController extends Controller
      */
     public function edit(Insurance $insurance)
     {
+        try {
+            $this->authorize('update', $insurance);
 
-        $this->authorize('update', $insurance);
-
-        return view('pages.Insurance.edit', compact('insurance'));
+            return view('pages.Insurance.edit', compact('insurance'));
+        } catch (AuthorizationException $e) {
+            return redirect()->route('error.403')->with('error', 'Unauthorized access.');
+        } catch (QueryException $e) {
+            return redirect()->route('error.403')->with('error', 'Database query error.');
+        } catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
+        }
     }
 
     /**
@@ -156,11 +182,15 @@ class InsuranceController extends Controller
      */
     public function destroy(Insurance $insurance)
     {
+        try{
+            $this->authorize('delete', $insurance);
 
-        $this->authorize('delete', $insurance);
+            $insurance->delete();
+            return redirect()->route('insurances.index');
+        }catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir esse funcionário.');
+        }
 
-        $insurance->delete();
-        return redirect()->route('insurances.index');
     }
 
     public function deleteSelected(Request $request)

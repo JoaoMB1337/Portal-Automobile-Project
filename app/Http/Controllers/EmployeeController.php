@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\EmployeeRole;
 use DateTime;
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ use App\Models\DrivingLicense;
 use App\Models\Contact;
 use App\Models\ContactType;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\QueryException;
 
 class EmployeeController extends Controller
 {
@@ -28,47 +30,55 @@ class EmployeeController extends Controller
 
     public function index(Request $request)
     {
-        $this->authorize('viewAny', Employee::class);
+        try {
+            $this->authorize('viewAny', Employee::class);
 
-        $query = Employee::query();
+            $query = Employee::query();
 
-        if ($request->has('clear_filters')) {
-            $request->session()->forget(['search', 'employee_role_id']);
+            if ($request->has('clear_filters')) {
+                $request->session()->forget(['search', 'employee_role_id']);
+            }
+
+            if ($request->filled('name')) {
+                $query->where('name', 'ilike', '%' . $request->input('name') . '%');
+            }
+
+            if ($request->filled('role')) {
+                $query->whereHas('role', function ($query) use ($request) {
+                    $query->where('name', $request->input('role'));
+                });
+            }
+
+            $employees = $query->orderBy('id', 'asc')->paginate(10);
+
+            return view('pages.Employees.list', [
+                'employees' => $employees,
+                'roles' => EmployeeRole::all(),
+            ]);
+        } catch (AuthorizationException $e) {
+            return redirect()->route('error.403');
         }
-
-        if ($request->filled('name')) {
-            $query->where('name', 'ilike', '%' . $request->input('name') . '%');
-        }
-
-        if ($request->filled('role')) {
-            $query->whereHas('role', function ($query) use ($request) {
-                $query->where('name', $request->input('role'));
-            });
-        }
-
-        $employees = $query->orderBy('id', 'asc')->paginate(10);
-
-        return view('pages.Employees.list', [
-            'employees' => $employees,
-            'roles' => EmployeeRole::all(),
-        ]);
     }
 
     public function create()
     {
-        $this->authorize('create', Employee::class);
+        try {
+            $this->authorize('create', Employee::class);
 
-        $roles = EmployeeRole::all();
-        $drivingLicenses = DrivingLicense::all();
-        $contactTypes = ContactType::all();
-        $isAdmin = Auth::user()->isAdmin();
+            $roles = EmployeeRole::all();
+            $drivingLicenses = DrivingLicense::all();
+            $contactTypes = ContactType::all();
+            $isAdmin = Auth::user()->isAdmin();
 
-        return view('pages.Employees.create', [
-            'roles' => $roles,
-            'drivingLicenses' => $drivingLicenses,
-            'contactTypes' => $contactTypes,
-            'isAdmin' => $isAdmin
-        ]);
+            return view('pages.Employees.create', [
+                'roles' => $roles,
+                'drivingLicenses' => $drivingLicenses,
+                'contactTypes' => $contactTypes,
+                'isAdmin' => $isAdmin
+            ]);
+        } catch (AuthorizationException $e) {
+            return redirect()->route('error.403');
+        }
     }
 
     public function store(StoreEmployeeRequest $request)
@@ -111,40 +121,75 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
-    public function show(Employee $employee)
+    public function show(Request $request, $id)
     {
-        $this->authorize('view', $employee);
+        try {
+            if (!is_numeric($id) || intval($id) <= 0) {
+                return redirect()->route('error.403')->with('error', 'Invalid employee ID.');
+            }
 
-        $employee = Employee::with('drivingLicenses', 'role')->findOrFail($employee->id);
-        return view('pages.Employees.show', compact('employee'));
+            $employee = Employee::findOrFail($id);
+
+            $isAdminOrManager = Auth::user()->isMaster();
+
+            if (!$isAdminOrManager) {
+                $employeeId = Auth::id();
+                if ($employee->id != $employeeId) {
+                    return redirect()->route('employees.index')->with('error', 'Access denied.');
+                }
+            }
+
+            $employee->load('drivingLicenses', 'role', 'contacts.contactType');
+            return view('pages.Employees.show', [
+                'employee' => $employee,
+                'contactTypes' => ContactType::all(),
+            ]);
+        } catch (QueryException $e) {
+            return redirect()->route('error.403')->with('error', 'Database query error.');
+        } catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
+        }
     }
 
-    public function edit(Employee $employee)
+    public function edit(Request $request, $id)
     {
-        $this->authorize('update', $employee);
+        try {
+            if (!is_numeric($id) || intval($id) <= 0) {
+                return redirect()->route('error.403')->with('error', 'Invalid employee ID.');
+            }
 
-        $employee = Employee::with('drivingLicenses', 'role')->findOrFail($employee->id);
-        $roles = EmployeeRole::all();
-        $drivingLicenses = DrivingLicense::all();
-        $contactTypes = ContactType::all();
-        $isAdmin = Auth::user()->isAdmin();
+            $employee = Employee::findOrFail($id);
+            if (Auth::user()->isManager() && $employee->employee_role_id == 1) {
+                return redirect()->route('error.403');
+            }
 
-        return view('pages.Employees.edit', [
-            'employee' => $employee,
-            'roles' => $roles,
-            'drivingLicenses' => $drivingLicenses,
-            'contactTypes' => $contactTypes,
-            'isAdmin' => $isAdmin
-        ]);
+            $this->authorize('update', $employee);
+
+            $employee->load('drivingLicenses', 'role', 'contacts.contactType');
+            $roles = EmployeeRole::all();
+            $drivingLicenses = DrivingLicense::all();
+            $contactTypes = ContactType::all();
+            $isAdmin = Auth::user()->isAdmin();
+
+            return view('pages.Employees.edit', [
+                'employee' => $employee,
+                'roles' => $roles,
+                'drivingLicenses' => $drivingLicenses,
+                'contactTypes' => $contactTypes,
+                'isAdmin' => $isAdmin,
+            ]);
+        } catch (AuthorizationException $e) {
+            return redirect()->route('error.403')->with('error', 'Unauthorized access.');
+        } catch (QueryException $e) {
+            return redirect()->route('error.403')->with('error', 'Database query error.');
+        } catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
+        }
     }
 
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         $this->authorize('update', $employee);
-
-        if (Auth::user()->isManager() && $request->employee_role_id == 1) {
-            return redirect()->back()->with('error', 'You are not authorized to update to administrator.');
-        }
 
         $data = $request->all();
 
@@ -154,7 +199,59 @@ class EmployeeController extends Controller
             unset($data['password']);
         }
 
+        // Atualiza os campos básicos do funcionário
         $employee->update($data);
+
+
+
+        // Atualiza ou cria os novos contatos enviados
+        // Atualiza ou cria os novos contatos enviados
+        if ($request->has('contacts')) {
+
+            foreach ($request->contacts as $contact) {
+                if (isset($contact['value']) && isset($contact['type'])) {
+                    $existingContact = $employee->contacts()->where('contact_type_id', $contact['type'])->first();
+                    if ($existingContact) {
+                        // Atualiza o valor do contato existente
+                        $existingContact->update(['contact_value' => $contact['value']]);
+                        $newContactIds[] = $existingContact->id;
+                    } else {
+                        // Cria um novo contato
+                        $newContact = $employee->contacts()->create([
+                            'contact_value' => $contact['value'],
+                            'contact_type_id' => $contact['type']
+                        ]);
+                        $newContactIds[] = $newContact->id;
+                    }
+                }
+            }
+
+            // Remove os contatos que não foram enviados no formulário
+            $currentContactTypes = $employee->contacts()->pluck('contact_type_id')->toArray();
+            $requestContactTypes = collect($request->contacts)->pluck('type')->toArray();
+            $contactsToDelete = array_diff($currentContactTypes, $requestContactTypes);
+
+            if (!empty($contactsToDelete)) {
+                $employee->contacts()->whereIn('contact_type_id', $contactsToDelete)->delete();
+            }
+        }
+
+        // Atualiza as licenças de condução, se houver
+        if ($request->has('driving_licenses')) {
+            $employee->drivingLicenses()->sync($request->driving_licenses);
+        } else {
+            $employee->drivingLicenses()->detach();
+        }
+        // Remove os contatos que não foram enviados no formulário
+        $currentContactTypes = $employee->contacts()->pluck('contact_type_id')->toArray();
+        $requestContactTypes = collect($request->contacts)->pluck('type')->toArray();
+        $contactsToDelete = array_diff($currentContactTypes, $requestContactTypes);
+
+        if (!empty($contactsToDelete)) {
+            $employee->contacts()->whereIn('contact_type_id', $contactsToDelete)->delete();
+        }
+
+        // Atualiza as licenças de condução, se houver
 
         if ($request->has('driving_licenses')) {
             $employee->drivingLicenses()->sync($request->driving_licenses);
@@ -162,27 +259,26 @@ class EmployeeController extends Controller
             $employee->drivingLicenses()->detach();
         }
 
-        $employee->contacts()->delete();
-
-        if ($request->has('contacts')) {
-            foreach ($request->contacts as $contact) {
-                if (isset($contact['value']) && isset($contact['type'])) {
-                    $employee->contacts()->create([
-                        'contact_value' => $contact['value'],
-                        'contact_type_id' => $contact['type']
-                    ]);
-                }
-            }
-        }
-
         return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
 
     public function destroy(Employee $employee)
     {
-        $this->authorize('delete', $employee);
-        $employee->delete();
-        return redirect()->route('employees.index');
+
+        if ($employee->id == Auth::id()) {
+            return redirect()->route('error.403');
+        }
+        if (Auth::user()->isManager() && $employee->employee_role_id == 1) {
+            return redirect()->route('error.403');
+        }
+        try{
+            $this->authorize('delete', $employee);
+            $employee->delete();
+            return redirect()->route('employees.index');
+        }catch (\Exception $e){
+            return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir esse funcionário.');
+        }
+
     }
 
     public function deleteSelected(Request $request)
