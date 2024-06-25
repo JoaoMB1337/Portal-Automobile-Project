@@ -1,6 +1,6 @@
 <div class="mx-auto lg:pl-64">
     <h1>Gerar Relatório de Custos</h1>
-    <form action="{{ route('index') }}" method="GET">
+    <form action="{{ route('index') }}" method="POST">
         @csrf
         <label for="start_date">Data Inicial:</label>
         <input type="date" id="start_date" name="start_date" required value="{{ request('start_date') }}">
@@ -15,23 +15,23 @@
         <h2>Detalhes dos Custos</h2>
         <table>
             <thead>
-            <tr>
-                <th>Tipo de Custo</th>
-                <th>Valor</th>
-                <th>Data</th>
-            </tr>
+                <tr>
+                    <th>Tipo de Custo</th>
+                    <th>Valor</th>
+                    <th>Data</th>
+                </tr>
             </thead>
             <tbody>
-            @foreach ($costs as $cost)
-                <tr>
-                    <td>{{ $cost->costType->type_name }}</td>
-                    <td>{{ $cost->cost }}</td>
-                    <td>{{ $cost->created_at->format('d/m/Y') }}</td>
-                </tr>
-            @endforeach
+                @foreach ($costs as $cost)
+                    <tr>
+                        <td>{{ $cost->costType->type_name }}</td>
+                        <td>{{ $cost->cost }}</td>
+                        <td>{{ $cost->created_at->format('d/m/Y') }}</td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
-        <form action="{{ route('cost.report.generate') }}" method="GET" style="display:inline;">
+        <form action="{{ route('cost.report.generate') }}" method="POST" style="display:inline;">
             @csrf
             <input type="hidden" name="start_date" value="{{ request('start_date') }}">
             <input type="hidden" name="end_date" value="{{ request('end_date') }}">
