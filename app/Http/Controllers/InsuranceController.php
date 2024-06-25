@@ -50,7 +50,12 @@ class InsuranceController extends Controller
                 }
             }
 
-            $insurances = $query->orderBy('id', 'asc')->paginate(10);
+            if ($request->has('terminando')) {
+                $nextMonth = Carbon::now()->addDays(7);
+                $query->where('end_date', '<=', $nextMonth);
+            }
+
+            $insurances = $query->orderBy('id', 'asc')->paginate(10) ->appends($request->query());
 
             return view('pages.Insurance.list', ['insurance' => $insurances]);
         }catch (\Exception $e) {

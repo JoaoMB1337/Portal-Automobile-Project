@@ -16,7 +16,7 @@
                 <span class="close">&times;</span>
                 <form method="GET" action="{{ route('projects.index') }}">
                     <input type="text" name="search" id="filter-name" placeholder="Pesquisar">
-                    <select name="district_id" id="filter-role">
+                    <select name="district_id" id="filter-district">
                         <option value="">Selecionar Distrito</option>
                         @foreach ($districts as $district)
                             @if ($district->country_id == request()->country_id)
@@ -24,12 +24,14 @@
                             @endif
                         @endforeach
                     </select>
-                    <select name="country_id" id="filter-role">
+                    <select name="country_id" id="filter-country">
                         <option value="">Selecionar País</option>
                         @foreach ($countries as $country)
                             <option value="{{ $country->id }}">{{ $country->name }}</option>
                         @endforeach
                     </select>
+                    <input type="date" name="start_date" id="filter-start-date" placeholder="Data de Início">
+                    <input type="date" name="end_date" id="filter-end-date" placeholder="Data de Fim">
                     <button type="submit">Filtrar</button>
                 </form>
             </div>

@@ -29,7 +29,7 @@ class TripController extends Controller
      */
     public function index(Request $request)
     {
-        try{
+        try {
             $isAdmin = Auth::user()->isMaster();
 
             $query = Trip::query();
@@ -51,7 +51,20 @@ class TripController extends Controller
                 });
             }
 
-            $trips = $query->orderBy('id', 'asc')->paginate(10);
+            if ($request->filled('start_date') && $request->filled('end_date')) {
+                $startDate = $request->input('start_date');
+                $endDate = $request->input('end_date');
+                $query->where('start_date', '>=', $startDate)
+                    ->where('end_date', '<=', $endDate);
+            } elseif ($request->filled('start_date')) {
+                $startDate = $request->input('start_date');
+                $query->where('start_date', '>=', $startDate);
+            } elseif ($request->filled('end_date')) {
+                $endDate = $request->input('end_date');
+                $query->where('end_date', '<=', $endDate);
+            }
+
+            $trips = $query->orderBy('id', 'asc')->paginate(10)->appends($request->query());
 
             return view('pages.Trips.list', [
                 'trips' => $trips,
@@ -59,14 +72,13 @@ class TripController extends Controller
                 'project' => Project::all(),
                 'vehicles' => Vehicle::all(),
             ]);
-        }catch (
-        QueryException $e) {
+        } catch (QueryException $e) {
             return redirect()->route('error.403')->with('error', 'Database query error.');
         } catch (\Exception $e) {
             return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
         }
-
     }
+
 
     /**
      * Show the form for creating a new resource.
