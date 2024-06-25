@@ -69,13 +69,10 @@ class ProjectController extends Controller
             $query->where('project_status_id', $project_status_id);
         }
 
-        // Filter by creation date
-        if ($request->has('start_date') && $request->start_date) {
-            $query->whereDate('created_at', '>=', $request->start_date);
-        }
-
-        if ($request->has('end_date') && $request->end_date) {
-            $query->whereDate('created_at', '<=', $request->end_date);
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = $request->start_date;
+            $end_date = $request->end_date;
+            $query->whereBetween('created_at', [$start_date, $end_date]);
         }
 
         $projects = $query->orderBy('id', 'asc')->paginate(10) ->appends($request->query());
