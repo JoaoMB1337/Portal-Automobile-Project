@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\CheckFirstLogin;
+use App\Http\Controllers\CostReportController;
+use App\Http\Controllers\ExternalCarReportController;
+
 
 // Route to show the login form
 Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login.form');
@@ -58,3 +61,11 @@ Route::get('/403', function () {
 Route::get('/file-not-found', function () {
     return view('components.Errors.file_not_found');
 })->name('file.not.found');
+
+//Route to show trip cost-report
+Route::get('/cost-report', [CostReportController::class, 'index'])->name('index');
+Route::get('/cost-report/generate', [CostReportController::class, 'generateCostReport'])->name('cost.report.generate');
+
+//Route to show external car report
+Route::get('/external-car-report', [ExternalCarReportController::class, 'index'])->name('external.car.report.index');
+Route::get('/external-car-report/generate', [ExternalCarReportController::class, 'generateExternalCarReport'])->name('external.car.report.generate');
