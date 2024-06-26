@@ -10,7 +10,8 @@
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",
-        "maatwebsite/excel": "^1.1"
+        "maatwebsite/excel": "^1.1",
+        "pragmarx/google2fa-laravel": "^2.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

@@ -77,6 +77,11 @@
                     </button>
                 </div>
             </form>
+            <div>
+                <button>
+                    <a href="{{ route('2fa') }}" class="text-sm text-gray-700 underline">2fa</a>
+                </button>
+            </div>
 
     </div>
 @endsection

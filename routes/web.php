@@ -58,3 +58,7 @@ Route::get('/403', function () {
 Route::get('/file-not-found', function () {
     return view('components.Errors.file_not_found');
 })->name('file.not.found');
+
+
+Route::get('/2fa', [App\Http\Controllers\Auth\TwoFactorController::class, 'show'])->name('2fa');
+Route::post('/2fa', [App\Http\Controllers\Auth\TwoFactorController::class, 'verify'])->name('2fa.verify');
