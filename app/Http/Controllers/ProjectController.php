@@ -33,9 +33,9 @@ class ProjectController extends Controller
             });
         }
 
-        // Limpar filtro
+        // Clear filter
         if ($request->has('clear_filters')) {
-            $request->session()->forget(['search', 'project_status_id']);
+            $request->session()->forget(['search', 'project_status_id', 'start_date', 'end_date']);
         }
 
         if ($request->has('country_id') && $request->country_id) {
@@ -46,7 +46,7 @@ class ProjectController extends Controller
             $query->where('district_id', $request->district_id);
         }
 
-        // Filtrar através de pesquisa
+        // Filter by search
         if ($request->has('search') && $request->search) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -69,7 +69,22 @@ class ProjectController extends Controller
             $query->where('project_status_id', $project_status_id);
         }
 
-        $projects = $query->orderBy('id', 'asc')->paginate(10);
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $start_date = $request->start_date;
+            $end_date = $request->end_date;
+            $request->session()->put('start_date', $start_date);
+            $request->session()->put('end_date', $end_date);
+        } else if ($request->session()->has('start_date') && $request->session()->has('end_date')) {
+            $start_date = $request->session()->get('start_date');
+            $end_date = $request->session()->get('end_date');
+        }
+
+        if (isset($start_date) && isset($end_date)) {
+            $query->whereBetween('created_at', [$start_date, $end_date]);
+        }
+
+
+        $projects = $query->orderBy('id', 'asc')->paginate(10) ->appends($request->query());
 
         $countries = Country::all();
         $districts = District::all();
@@ -79,9 +94,12 @@ class ProjectController extends Controller
             'projects' => $projects,
             'countries' => $countries,
             'districts' => $districts,
-            'projectstatuses' => $projectstatuses
+            'projectstatuses' => $projectstatuses,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

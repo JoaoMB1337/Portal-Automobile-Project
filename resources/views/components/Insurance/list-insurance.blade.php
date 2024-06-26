@@ -1,94 +1,4 @@
-<style>
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.4);
-    }
-
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-    }
-
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-
-    .btn-delete i {
-        color: #dc3545;
-    }
-
-    .btn-delete:hover i {
-        color: #c82333;
-    }
-
-
-    .add-options {
-        position: absolute;
-        right: 0;
-        bottom: 70px;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        padding: 10px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        transition: top 0.8s ease-in-out;
-    }
-
-    .add-options a,
-    .add-options button {
-        display: block;
-        margin-bottom: 5px;
-        color: #333;
-        text-decoration: none;
-        border: none;
-        background: none;
-        cursor: pointer;
-    }
-
-    .add-button-container {
-        z-index: 10;
-        position: relative;
-        margin-top: 20px;
-    }
-
-    @media (max-width: 768px) {
-        .add-button-container {
-            margin-top: 10px;
-        }
-
-        .list-table th:nth-child(6),
-        .list-table td:nth-child(6) {
-            width: 120px;
-            text-align: center;
-        }
-
-        .list-table th,
-        .list-table td {
-            padding: 8px;
-            vertical-align: middle;
-        }
-    }
-</style>
+@vite(['resources/js/Geral/list.js'])
 
 <body>
 <div class="container">
@@ -108,6 +18,9 @@
                     <option value="1">Ativo</option>
                     <option value="0">Inativo</option>
                 </select>
+                <label for="filter-terminando">Seguros Terminando em 30 dias:</label>
+                 <input type="checkbox" name="terminando" id="filter-terminando">
+
                 <button type="submit">Filtrar</button>
             </form>
         </div>

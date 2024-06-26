@@ -50,14 +50,19 @@ class InsuranceController extends Controller
                 }
             }
 
-            $insurances = $query->orderBy('id', 'asc')->paginate(10);
+            if ($request->has('terminando')) {
+                $endDateLimit = Carbon::now()->addDays(7);
+                $query->whereBetween('end_date', [Carbon::now(), $endDateLimit]);
+            }
+
+            $insurances = $query->orderBy('id', 'asc')->paginate(10)->appends($request->query());
 
             return view('pages.Insurance.list', ['insurance' => $insurances]);
-        }catch (\Exception $e) {
-            return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir esse funcionário.');
+        } catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'Erro ao buscar os seguros.');
         }
-
     }
+
 
     /**
      * Show the form for creating a new resource.
