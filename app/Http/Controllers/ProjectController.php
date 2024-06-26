@@ -72,8 +72,17 @@ class ProjectController extends Controller
         if ($request->has('start_date') && $request->has('end_date')) {
             $start_date = $request->start_date;
             $end_date = $request->end_date;
+            $request->session()->put('start_date', $start_date);
+            $request->session()->put('end_date', $end_date);
+        } else if ($request->session()->has('start_date') && $request->session()->has('end_date')) {
+            $start_date = $request->session()->get('start_date');
+            $end_date = $request->session()->get('end_date');
+        }
+
+        if (isset($start_date) && isset($end_date)) {
             $query->whereBetween('created_at', [$start_date, $end_date]);
         }
+
 
         $projects = $query->orderBy('id', 'asc')->paginate(10) ->appends($request->query());
 

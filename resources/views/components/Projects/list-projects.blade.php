@@ -30,8 +30,8 @@
                             <option value="{{ $country->id }}">{{ $country->name }}</option>
                         @endforeach
                     </select>
-                    <input type="date" name="start_date" id="filter-start-date" placeholder="Data de Início">
-                    <input type="date" name="end_date" id="filter-end-date" placeholder="Data de Fim">
+                    <input type="date" name="start_date" id="filter-start-date" placeholder="Data de Início" value="{{ old('start_date') ?? request('start_date') }}">
+                    <input type="date" name="end_date" id="filter-end-date" placeholder="Data de Fim" value="{{ old('end_date') ?? request('end_date') }}">
                     <button type="submit">Filtrar</button>
                 </form>
             </div>
