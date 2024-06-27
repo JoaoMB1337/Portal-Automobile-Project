@@ -193,46 +193,33 @@
             }
         }
 
-        .relative .absolute {
-            display: none;
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        .relative .absolute.show {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .relative .absolute li {
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        .relative .absolute.show li:nth-child(1) {
-            transition-delay: 0.1s;
-        }
-
-        .relative .absolute.show li:nth-child(2) {
-            transition-delay: 0.2s;
-        }
-
-        .relative .absolute.show li:nth-child(3) {
-            transition-delay: 0.3s;
-        }
-
-        .arrow-down {
-            margin-left: auto;
+        .relative {
+            position: relative;
         }
 
         .absolute {
+            position: absolute;
+            top: 100%;
             left: 0;
-            top: calc(100% - 1px); /* Posiciona o submenu abaixo do item de menu */
+            width: 100%;
+            background-color: #333;
+            z-index: 1000;
+            display: none; /* Esconde os submenus por padrão */
         }
 
         .absolute.show {
-            display: block;
+            display: block; /* Mostra o submenu quando a classe 'show' é adicionada */
+        }
+
+        #sidebar a:hover {
+            background-color: #4a5568;
+        }
+
+        /* Ajustes adicionais para garantir que os submenus não sobreponham */
+        #trips-submenu,
+        #vehicles-submenu,
+        #reports-submenu {
+            z-index: 1000;
         }
 
     </style>
@@ -257,62 +244,62 @@
                 </li>
             @endif
 
-                <li class="relative">
-                    <a href="#" id="trips-menu" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200 relative flex items-center">
-                        Viagens
-                        <svg class="w-4 h-4 ml-1 arrow-down inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </a>
-                    <ul id="trips-submenu" class="absolute bg-gray-800 text-white w-full mt-1 hidden">
-                        <li>
-                            <a href="/view-trip" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Viagem</a>
-                        </li>
-                        <li>
-                            <a href="/view-projects" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Projetos</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="relative">
-                    <a href="#" id="vehicles-menu" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200 relative flex items-center">
-                        Veículos
-                        <svg class="w-4 h-4 ml-1 arrow-down inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </a>
-                    <ul id="vehicles-submenu" class="absolute bg-gray-800 text-white w-full mt-1 hidden">
-                        <li>
-                            <a href="/view-vehicles" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Veículos</a>
-                        </li>
-                        <li>
-                            <a href="/view-insurances" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Seguros</a>
-                        </li>
-                    </ul>
-                </li>
+            <li class="relative">
+                <a href="#" id="trips-menu" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200 relative flex items-center">
+                    Viagens
+                    <svg class="w-4 h-4 ml-1 arrow-down inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </a>
+                <ul id="trips-submenu" class="absolute bg-gray-800 text-white w-full mt-1 hidden">
+                    <li>
+                        <a href="/view-trip" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Viagem</a>
+                    </li>
+                    <li>
+                        <a href="/view-projects" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Projetos</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="relative">
+                <a href="#" id="vehicles-menu" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200 relative flex items-center">
+                    Veículos
+                    <svg class="w-4 h-4 ml-1 arrow-down inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </a>
+                <ul id="vehicles-submenu" class="absolute bg-gray-800 text-white w-full mt-1 hidden">
+                    <li>
+                        <a href="/view-vehicles" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Veículos</a>
+                    </li>
+                    <li>
+                        <a href="/view-insurances" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Seguros</a>
+                    </li>
+                </ul>
+            </li>
 
 
 
 
             @if(Auth::check() && Auth::user()->isMaster())
-                    <li class="relative">
-                        <a href="#" id="reports-menu" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200 relative flex items-center">
-                            Relatórios
-                            <svg class="w-4 h-4 ml-1 arrow-down inline-block " fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </a>
+                <li class="relative">
+                    <a href="#" id="reports-menu" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200 relative flex items-center">
+                        Relatórios
+                        <svg class="w-4 h-4 ml-1 arrow-down inline-block " fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </a>
 
-                        <ul id="reports-submenu" class="absolute bg-gray-800 text-white w-full mt-1 hidden">
-                            <li>
-                                <a href="/cost-report" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Relatórios Viagens</a>
-                            </li>
-                            <li>
-                                <a href="/external-car-report" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Relatórios Veículos</a>
-                            </li>
-                        </ul>
-                    </li>
+                    <ul id="reports-submenu" class="absolute bg-gray-800 text-white w-full mt-1 hidden">
+                        <li>
+                            <a href="/cost-report" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Relatórios Viagens</a>
+                        </li>
+                        <li>
+                            <a href="/external-car-report" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Relatórios Veículos</a>
+                        </li>
+                    </ul>
+                </li>
 
-                @endif
+            @endif
 
         </ul>
     </div>
@@ -376,35 +363,34 @@
     });
 
     document.addEventListener('DOMContentLoaded', function() {
-        const reportsMenu = document.getElementById('reports-menu');
-
-        reportsMenu.addEventListener('click', function(e) {
-            e.preventDefault();
-            const reportsSubMenu = document.getElementById('reports-submenu');
-            reportsSubMenu.classList.toggle('show');
-        });
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
         const tripsMenu = document.getElementById('trips-menu');
         const tripsSubMenu = document.getElementById('trips-submenu');
         const vehiclesMenu = document.getElementById('vehicles-menu');
         const vehiclesSubMenu = document.getElementById('vehicles-submenu');
+        const reportsMenu = document.getElementById('reports-menu');
+        const reportsSubMenu = document.getElementById('reports-submenu');
 
         tripsMenu.addEventListener('click', function(e) {
             e.preventDefault();
             tripsSubMenu.classList.toggle('show');
             vehiclesSubMenu.classList.remove('show'); // Fecha outros submenus se abertos
+            reportsSubMenu.classList.remove('show'); // Fecha outros submenus se abertos
         });
 
         vehiclesMenu.addEventListener('click', function(e) {
             e.preventDefault();
             vehiclesSubMenu.classList.toggle('show');
             tripsSubMenu.classList.remove('show'); // Fecha outros submenus se abertos
+            reportsSubMenu.classList.remove('show'); // Fecha outros submenus se abertos
+        });
+
+        reportsMenu.addEventListener('click', function(e) {
+            e.preventDefault();
+            reportsSubMenu.classList.toggle('show');
+            tripsSubMenu.classList.remove('show'); // Fecha outros submenus se abertos
+            vehiclesSubMenu.classList.remove('show'); // Fecha outros submenus se abertos
         });
     });
-
-
 </script>
 
 </body>
