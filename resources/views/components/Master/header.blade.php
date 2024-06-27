@@ -253,10 +253,10 @@
                 </a>
                 <ul id="trips-submenu" class="absolute bg-gray-800 text-white w-full mt-1 hidden">
                     <li>
-                        <a href="/view-trip" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Viagem</a>
+                        <a href="/trips" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Viagem</a>
                     </li>
                     <li>
-                        <a href="/view-projects" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Projetos</a>
+                        <a href="/projects" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Projetos</a>
                     </li>
                 </ul>
             </li>
@@ -269,10 +269,10 @@
                 </a>
                 <ul id="vehicles-submenu" class="absolute bg-gray-800 text-white w-full mt-1 hidden">
                     <li>
-                        <a href="/view-vehicles" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Veículos</a>
+                        <a href="/vehicles" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Veículos</a>
                     </li>
                     <li>
-                        <a href="/view-insurances" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Seguros</a>
+                        <a href="/insurances" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Seguros</a>
                     </li>
                 </ul>
             </li>

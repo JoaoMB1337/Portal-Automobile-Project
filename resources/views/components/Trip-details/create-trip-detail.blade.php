@@ -48,7 +48,16 @@
 
     <div>
         <label for="receipt" class="block text-sm font-semibold text-gray-700 mb-2">Comprovante de Gastos</label>
-        <input id="receipt" type="file" accept="image/*;capture=camera" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('receipt') border-red-500 @enderror" name="receipt">
+        <div class="flex space-x-4">
+            <label for="gallery" class="flex items-center justify-center w-full py-2 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold cursor-pointer">
+                Abrir da Galeria
+                <input id="gallery" type="file" accept="image/*" class="hidden" name="receipt_gallery" onchange="handleFileSelect('gallery')">
+            </label>
+            <label for="camera" class="flex items-center justify-center w-full py-2 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold cursor-pointer">
+                Tirar uma Foto
+                <input id="camera" type="file" accept="image/*;capture=camera" class="hidden" name="receipt_camera" onchange="handleFileSelect('camera')">
+            </label>
+        </div>
         @error('receipt')
             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
         @enderror
@@ -60,3 +69,21 @@
         </button>
     </div>
 </form>
+
+
+<script>
+    function handleFileSelect(source) {
+        const galleryInput = document.getElementById('gallery');
+        const cameraInput = document.getElementById('camera');
+
+        if (source === 'gallery') {
+            cameraInput.value = ''; // Clear the camera input value
+            cameraInput.disabled = true; // Disable the camera input
+            galleryInput.disabled = false; // Ensure the gallery input is enabled
+        } else if (source === 'camera') {
+            galleryInput.value = ''; // Clear the gallery input value
+            galleryInput.disabled = true; // Disable the gallery input
+            cameraInput.disabled = false; // Ensure the camera input is enabled
+        }
+    }
+</script>

@@ -76,24 +76,34 @@ class TripDetailController extends Controller
 
         $trip = Trip::findOrFail($validated['trip_id']);
         $project = $trip->project;
-
         $directory = 'projects/' . $project->id . '/trips/' . $tripDetail->trip_id . '/receipts';
 
-        if ($request->hasFile('receipt')) {
-            $validated = $request->validate([
-                'receipt' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+        if ($request->hasFile('receipt_gallery')) {
+            $request->validate([
+                'receipt_gallery' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-            $file = $request->file('receipt');
 
+            $file = $request->file('receipt_gallery');
             $fileName = hash('sha256', time() . '_' . $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
+            $file->storeAs($directory, $fileName, 'public');
+            $tripDetail->file = $fileName;
+        } elseif ($request->hasFile('receipt_camera')) {
+            $request->validate([
+                'receipt_camera' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
 
+            $file = $request->file('receipt_camera');
+            $fileName = hash('sha256', time() . '_' . $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
             $file->storeAs($directory, $fileName, 'public');
             $tripDetail->file = $fileName;
         }
 
         $tripDetail->save();
+
         return redirect()->route('trips.show', ['trip' => $trip->id])->with('success', 'Detalhe de viagem criado com sucesso!');
     }
+
+    
 
 
 
