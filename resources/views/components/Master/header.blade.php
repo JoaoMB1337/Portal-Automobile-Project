@@ -238,6 +238,18 @@
                         <a href="/insurances" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Seguros</a>
                     </li>
                 @endif
+
+                    @if(Auth::check() && Auth::user()->isMaster())
+                        <li>
+                            <a href="/cost-report" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Relatorios Viagens</a>
+                        </li>
+                    @endif
+
+                    @if(Auth::check() && Auth::user()->isMaster())
+                        <li>
+                            <a href="/external-car-report" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Relatorios Veiculos</a>
+                        </li>
+                    @endif
             </ul>
         </div>
 
