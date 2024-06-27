@@ -1,7 +1,6 @@
 @extends('components.Master.main')
 
 @vite([
-      'resources/css/Reports/reports.css',
 
  ])
 
