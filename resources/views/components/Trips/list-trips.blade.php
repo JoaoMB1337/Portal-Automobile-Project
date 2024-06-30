@@ -13,6 +13,8 @@
                 <form method="GET" action="{{ route('trips.index') }}">
                     <input type="text" name="destination" id="filter-destination" placeholder="Filtrar por destino">
                     <input type="text" name="project" id="filter-project" placeholder="Filtrar por projeto">
+                    <input type="date" name="start_date" id="filter-start-date" placeholder="Data de início">
+                    <input type="date" name="end_date" id="filter-end-date" placeholder="Data de fim">
                     <button type="submit">Filtrar</button>
                 </form>
             </div>
@@ -38,6 +40,7 @@
                     <th>Projeto</th>
                     <th>Funcionário</th>
                     <th>Veículo</th>
+                    <th>Data Inicial</th>
                         <th>Ações</th>
                 </tr>
             </thead>
@@ -58,6 +61,7 @@
                                 {{ $vehicle->plate }}<br>
                             @endforeach
                         </td>
+                        <td>{{ date('d/m/Y', strtotime($trip->start_date)) }}</td>
 
                         <td class="table-actions">
                                 @if(Auth::check() && Auth::user()->isMaster())
