@@ -63,9 +63,13 @@ Route::get('/file-not-found', function () {
 })->name('file.not.found');
 
 //Route to show trip cost-report
-Route::post('/cost-report', [CostReportController::class, 'index'])->name('index');
-Route::post('/cost-report/generate', [CostReportController::class, 'generateCostReport'])->name('cost.report.generate');
+
+Route::get('/cost-report', [CostReportController::class, 'index'])->name('cost.report.index');
+Route::post('/cost-report', [CostReportController::class, 'filter'])->name('cost.report.filter');
+Route::get('/cost-report/generate', [CostReportController::class, 'generateCostReport'])->name('cost.report.generate');
+
 
 //Route to show external car report
 Route::get('/external-car-report', [ExternalCarReportController::class, 'index'])->name('external.car.report.index');
+Route::post('/external-car-report', [ExternalCarReportController::class, 'filter'])->name('external.car.report.filter');
 Route::get('/external-car-report/generate', [ExternalCarReportController::class, 'generateExternalCarReport'])->name('external.car.report.generate');

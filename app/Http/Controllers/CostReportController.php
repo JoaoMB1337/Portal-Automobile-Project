@@ -11,13 +11,10 @@ class CostReportController extends Controller
     public function index(Request $request)
     {
         $costs = collect(); // Coleção vazia para inicializar
+        $startDate = null;
+        $endDate = null;
 
         if ($request->has(['start_date', 'end_date'])) {
-            $request->validate([
-                'start_date' => 'required|date',
-                'end_date' => 'required|date|after_or_equal:start_date',
-            ]);
-
             $startDate = $request->start_date;
             $endDate = $request->end_date;
 
@@ -26,7 +23,24 @@ class CostReportController extends Controller
                 ->get();
         }
 
-        return view('pages.Cost-report.index', compact('costs'));
+        return view('pages.Cost-report.index', compact('costs', 'startDate', 'endDate'));
+    }
+
+    public function filter(Request $request)
+    {
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+        ]);
+
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        $costs = TripDetail::whereBetween('created_at', [$startDate, $endDate])
+            ->with(['costType', 'trip'])
+            ->get();
+
+        return view('pages.Cost-report.index', compact('costs', 'startDate', 'endDate'));
     }
 
     public function generateCostReport(Request $request)
