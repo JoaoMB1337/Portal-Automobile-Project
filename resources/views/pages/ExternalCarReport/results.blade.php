@@ -1,53 +1,55 @@
 @if(isset($vehicles) && count($vehicles) > 0)
-    <div class="mt-8 bg-white p-6 rounded-2xl shadow-md">
-        <h2 class="text-2xl mb-4">Detalhes dos Carros Externos</h2>
-        <table class="min-w-full bg-white">
+    <div class="mt-8 bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto">
+        <h2 class="text-2xl font-semibold mb-6">Detalhes dos Carros Externos</h2>
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
             <thead>
-            <tr>
-                <th class="py-2 px-4 border-b">Matricula</th>
-                <th class="py-2 px-4 border-b">Preço de Aluguer por Dia</th>
-                <th class="py-2 px-4 border-b">Empresa de Aluguer</th>
-                <th class="py-2 px-4 border-b">Data de Início do Aluguer</th>
-                <th class="py-2 px-4 border-b">Data de Fim do Aluguer</th>
-                <th class="py-2 px-4 border-b">Custo Total de Aluguer</th>
+            <tr class="bg-gray-100">
+                <th class="py-3 px-4 border-b text-left text-gray-600">Matricula</th>
+                <th class="py-3 px-4 border-b text-left text-gray-600">Preço de Aluguer por Dia</th>
+                <th class="py-3 px-4 border-b text-left text-gray-600">Empresa de Aluguer</th>
+                <th class="py-3 px-4 border-b text-left text-gray-600">Data de Início do Aluguer</th>
+                <th class="py-3 px-4 border-b text-left text-gray-600">Data de Fim do Aluguer</th>
+                <th class="py-3 px-4 border-b text-left text-gray-600">Custo Total de Aluguer</th>
             </tr>
             </thead>
             <tbody>
             @foreach ($vehicles as $vehicle)
-                <tr class="hover:bg-gray-100">
-                    <td class="py-2 px-4 border-b">{{ $vehicle->plate }}</td>
-                    <td class="py-2 px-4 border-b">{{ $vehicle->rental_price_per_day }}</td>
-                    <td class="py-2 px-4 border-b">{{ $vehicle->rental_company }}</td>
-                    <td class="py-2 px-4 border-b">{{ $vehicle->rental_start_date }}</td>
-                    <td class="py-2 px-4 border-b">{{ $vehicle->rental_end_date }}</td>
-                    <td class="py-2 px-4 border-b">{{ number_format($vehicle->total_rental_cost, 2) }}</td>
+                <tr class="hover:bg-gray-50">
+                    <td class="py-3 px-4 border-b">{{ $vehicle->plate }}</td>
+                    <td class="py-3 px-4 border-b">{{ $vehicle->rental_price_per_day }}</td>
+                    <td class="py-3 px-4 border-b">{{ $vehicle->rental_company }}</td>
+                    <td class="py-3 px-4 border-b">{{ $vehicle->rental_start_date }}</td>
+                    <td class="py-3 px-4 border-b">{{ $vehicle->rental_end_date }}</td>
+                    <td class="py-3 px-4 border-b">{{ number_format($vehicle->total_rental_cost, 2) }}</td>
                 </tr>
             @endforeach
             </tbody>
         </table>
-        <form action="{{ route('external.car.report.generate') }}" method="GET" style="display:inline;">
+        <form action="{{ route('external.car.report.generate') }}" method="GET" class="mt-6">
             @csrf
             <input type="hidden" name="start_date" value="{{ $startDate }}">
             <input type="hidden" name="end_date" value="{{ $endDate }}">
-            <button type="submit" class="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Baixar Relatório em PDF</button>
+            <button type="submit" class="w-full bg-green-600 text-white px-4 py-3 rounded-md shadow-sm hover:bg-green-500 text-sm">Baixar Relatório em PDF</button>
         </form>
     </div>
 @else
-    <table class="min-w-full bg-white rounded-2xl">
-        <thead>
-            <tr>
-                <th class="py-2 px-4 border-b">Matricula</th>
-                <th class="py-2 px-4 border-b">Preço de Aluguer por Dia</th>
-                <th class="py-2 px-4 border-b">Empresa de Aluguer</th>
-                <th class="py-2 px-4 border-b">Data de Início do Aluguer</th>
-                <th class="py-2 px-4 border-b">Data de Fim do Aluguer</th>
-                <th class="py-2 px-4 border-b">Custo Total de Aluguer</th>
+    <div class="mt-8 bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto">
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+            <thead>
+            <tr class="bg-gray-100">
+                <th class="py-3 px-4 border-b text-left text-gray-600">Matricula</th>
+                <th class="py-3 px-4 border-b text-left text-gray-600">Preço de Aluguer por Dia</th>
+                <th class="py-3 px-4 border-b text-left text-gray-600">Empresa de Aluguer</th>
+                <th class="py-3 px-4 border-b text-left text-gray-600">Data de Início do Aluguer</th>
+                <th class="py-3 px-4 border-b text-left text-gray-600">Data de Fim do Aluguer</th>
+                <th class="py-3 px-4 border-b text-left text-gray-600">Custo Total de Aluguer</th>
             </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td class="py-2 px-4 border-b" colspan="6">Nenhum carro externo encontrado</td>
-        </tr>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="py-3 px-4 border-b text-center text-gray-500" colspan="6">Nenhum carro externo encontrado</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 @endif
