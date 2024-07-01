@@ -224,13 +224,15 @@ body {
 }
 
 .add-options {
-    bottom: 60px;
+    position: absolute;
     right: 0;
+    bottom: 70px;
     background-color: #fff;
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: top 0.8s ease-in-out; /* Transição suave de movimento */
 }
 
 .add-options a,
@@ -244,18 +246,11 @@ body {
     cursor: pointer;
 }
 
-.add-button {
-    background-color: #1a1c1a;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.add-options a:hover,
+.add-options button:hover {
+    background-color: #f0f0f0;
 }
+
 
 .btn-delete i {
     color: #dc3545;
