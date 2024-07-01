@@ -33,9 +33,20 @@ class TwoFactorController extends Controller
     // Função para completar a configuração do 2FA
     public function completeSetup(Request $request)
     {
-        $request->validate(['secret' => 'required|string']);
+        $request->validate([
+            'secret' => 'required|string',
+            'one_time_password' => 'required|string'
+        ]);
+
+        $google2fa = new Google2FA();
         $user = auth()->user();
-        $user->google2fa_secret = $request->input('secret');
+        $otp_secret = $request->input('secret');
+
+        if (!$google2fa->verifyKey($otp_secret, $request->one_time_password)) {
+            return back()->withErrors(['one_time_password' => 'The one time password is invalid.']);
+        }
+
+        $user->google2fa_secret = $otp_secret;
         $user->uses_two_factor_auth = true;
         $user->save();
 
