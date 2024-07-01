@@ -3,7 +3,6 @@
 @section('content')
 
     <style>
-
         .custom-card {
             background-color: #ffffff;
             box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
@@ -27,6 +26,7 @@
         .custom-btn:hover {
             background-color: #222;
         }
+
         .form-input, .form-control {
             border: 2px solid #ccc;
             transition: border-color 0.3s ease;
@@ -69,20 +69,26 @@
                     @enderror
                 </div>
 
-
+                <div class="flex justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" name="remember" id="remember" class="form-checkbox" {{ old('remember') ? 'checked' : '' }}>
+                        <label for="remember" class="ml-2 block text-sm text-gray-900">
+                            {{ __('Remember Me') }}
+                        </label>
+                    </div>
+                    @if (Route::has('password.request'))
+                        <a class="text-sm text-gray-700 underline" href="{{ route('password.request') }}">
+                            {{ __('Forgot Your Password?') }}
+                        </a>
+                    @endif
+                </div>
 
                 <div class="flex justify-center">
                     <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-300">
-                         {{ __('Login') }}
+                        {{ __('Login') }}
                     </button>
                 </div>
             </form>
-            <div>
-                <button>
-                    <a href="{{ route('2fa') }}" class="text-sm text-gray-700 underline">2fa</a>
-                </button>
-            </div>
-
+        </div>
     </div>
 @endsection
-

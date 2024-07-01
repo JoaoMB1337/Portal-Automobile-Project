@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\CheckFirstLogin;
+use App\Http\Controllers\Auth\TwoFactorController;
 
 // Route to show the login form
 Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login.form');
@@ -60,5 +61,11 @@ Route::get('/file-not-found', function () {
 })->name('file.not.found');
 
 
-Route::get('/2fa', [App\Http\Controllers\Auth\TwoFactorController::class, 'show'])->name('2fa');
-Route::post('/2fa', [App\Http\Controllers\Auth\TwoFactorController::class, 'verify'])->name('2fa.verify');
+
+// Rotas para configuração do 2FA
+Route::get('/2fa/setup', [TwoFactorController::class, 'setup'])->name('2fa.setup')->middleware('auth');
+Route::post('/2fa/setup', [TwoFactorController::class, 'completeSetup'])->name('2fa.completeSetup')->middleware('auth');
+
+// Rotas para verificação do 2FA
+Route::get('/2fa', [TwoFactorController::class, 'showVerifyForm'])->name('2fa.verify')->middleware('auth');
+Route::post('/2fa', [TwoFactorController::class, 'verify'])->name('2fa.verify')->middleware('auth');
