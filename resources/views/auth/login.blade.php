@@ -76,11 +76,6 @@
                             {{ __('Remember Me') }}
                         </label>
                     </div>
-                    @if (Route::has('password.request'))
-                        <a class="text-sm text-gray-700 underline" href="{{ route('password.request') }}">
-                            {{ __('Forgot Your Password?') }}
-                        </a>
-                    @endif
                 </div>
 
                 <div class="flex justify-center">
