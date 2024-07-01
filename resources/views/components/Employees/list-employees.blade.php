@@ -40,7 +40,7 @@
             <thead>
             <tr>
                 <th></th>
-                <th>Nome</th>
+                <th >Nome</th>
                 <th>Número</th>
                 <th>Email</th>
                 <th>Cargo</th>

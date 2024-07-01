@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
     <link rel="manifest" href="{{ asset('/manifest.json') }}">
 
-    <title>Project</title>
+    <title>InnoDrive</title>
 
     {{-- STYLE SECTION --}}
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
