@@ -174,15 +174,7 @@
             position: relative;
         }
 
-        .absolute {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background-color: #3c4350;
-            z-index: 1000;
-            display: none;
-        }
+
 
         .absolute.show {
             display: block;
