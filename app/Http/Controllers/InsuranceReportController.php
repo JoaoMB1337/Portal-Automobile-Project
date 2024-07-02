@@ -11,7 +11,7 @@ class InsuranceReportController extends Controller
 {
     public function index(Request $request)
     {
-        $insurances = collect(); // Coleção vazia para inicializar
+        $insurances = collect(); 
         $startDate = null;
         $endDate = null;
 
