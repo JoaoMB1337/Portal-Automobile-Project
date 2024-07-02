@@ -47,13 +47,13 @@
     <div class="flex justify-center items-start h-screen bg-gray-200">
         <div class="max-w-md w-full bg-white rounded-xl p-7 custom-card mt-12">
             <div class="mb-6 text-center">
-                <h2 class="text-2xl font-semibold text-gray-800">Two-Factor Authentication</h2>
+                <h2 class="text-2xl font-semibold text-gray-800">Autenticação</h2>
             </div>
             <form method="POST" action="{{ route('2fa.verify') }}" class="space-y-6">
                 @csrf
 
                 <div>
-                    <label for="one_time_password" class="block text-sm font-semibold text-gray-700 mb-2">Coloque o codigo da aplicacao google auteticater</label>
+                    <label for="one_time_password" class="block text-sm font-semibold text-gray-700 mb-2">Coloque o código da aplicação google authenticator</label>
                     <input type="text" name="one_time_password" id="one_time_password" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('one_time_password') border-red-500 @enderror" required>
                     @error('one_time_password')
                     <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
@@ -62,7 +62,7 @@
 
                 <div class="flex justify-center">
                     <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-300">
-                        Verify
+                        Verificar
                     </button>
                 </div>
             </form>
