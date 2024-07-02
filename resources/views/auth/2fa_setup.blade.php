@@ -50,7 +50,7 @@
                 <p class="text-gray-600">Scan the QR code with your Google Authenticator app or enter the secret key manually.</p>
             </div>
             <div class="flex justify-center mb-6">
-                {!! $qrCodeUrl !!}
+                {!! $qrCodeSvg !!}
             </div>
             <p class="text-center mb-6">Secret Key: <strong>{{ $secret }}</strong></p>
             <form method="POST" action="{{ route('2fa.completeSetup') }}" class="space-y-6">
