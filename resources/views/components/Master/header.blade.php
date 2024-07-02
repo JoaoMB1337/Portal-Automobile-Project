@@ -296,6 +296,12 @@
                         <li>
                             <a href="/external-car-report" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Relatórios Veículos</a>
                         </li>
+                        <li>
+                            <a href="/project-reports" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Relatórios Projetos</a>
+                        </li>
+                        <li>
+                            <a href="/insurance-reports" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Relatórios Seguros</a>
+                        </li>
                     </ul>
                 </li>
 
