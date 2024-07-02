@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "bacon/bacon-qr-code": "^3.0",
         "barryvdh/laravel-dompdf": "^2.2",
         "ladumor/laravel-pwa": "^0.0.4",
         "laravel/framework": "^11.0",
@@ -13,6 +14,7 @@
         "laravel/ui": "^4.5",
         "maatwebsite/excel": "^1.1",
         "mpdf/mpdf": "^6.1",
+        "pragmarx/google2fa-laravel": "^2.2",
         "tecnickcom/tcpdf": "^6.7"
     },
     "require-dev": {

@@ -8,13 +8,20 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\CheckFirstLogin;
 use App\Http\Controllers\CostReportController;
 use App\Http\Controllers\ExternalCarReportController;
+use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\ProjectReportController;
 use App\Http\Controllers\InsuranceReportController;
+
 
 
 // Route to show the login form
 Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login.form');
 Auth::routes(['register' => false]);
+
+Route::get('/2fa/setup', [TwoFactorController::class, 'setup'])->name('2fa.setup')->middleware('auth');
+Route::post('/2fa/setup', [TwoFactorController::class, 'completeSetup'])->name('2fa.completeSetup')->middleware('auth');
+Route::get('/2fa', [TwoFactorController::class, 'showVerifyForm'])->name('2fa.verify')->middleware('auth');
+Route::post('/2fa_form', [TwoFactorController::class, 'verify'])->name('2fa.verify')->middleware('auth');
 
 // Group routes that require authentication
 Route::middleware(['auth'])->group(function () {

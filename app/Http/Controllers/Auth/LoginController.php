@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -47,10 +48,16 @@ class LoginController extends Controller
      */
     protected function attemptLogin(Request $request)
     {
-        return $this->guard()->attempt(
+        Log::info('Attempting login for employee_number: ' . $request->input('employee_number'));
+
+        $attempt = $this->guard()->attempt(
             ['employee_number' => $request->input('employee_number'), 'password' => $request->input('password')],
             $request->filled('remember')
         );
+
+        Log::info('Login attempt ' . ($attempt ? 'successful' : 'failed') . ' for employee_number: ' . $request->input('employee_number'));
+
+        return $attempt;
     }
 
     /**
@@ -68,10 +75,31 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
+        Log::info('Validating login for employee_number: ' . $request->input('employee_number'));
+
         if (! $this->guard()->attempt(['employee_number' => $request->input('employee_number'), 'password' => $request->input('password')], $request->filled('remember'))) {
             throw ValidationException::withMessages([
                 'employee_number' => [trans('auth.failed')],
             ]);
         }
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        Log::info('User authenticated: ' . $user->employee_number);
+
+        if (!$user->google2fa_secret) {
+            Log::info('Redirecting to 2FA setup for user: ' . $user->employee_number);
+            return redirect()->route('2fa.setup');
+        }
+
+        if ($user->uses_two_factor_auth) {
+            Log::info('Redirecting to 2FA verification for user: ' . $user->employee_number);
+            $request->session()->put('2fa:user:id', $user->id);
+            $request->session()->put('2fa:auth:remember', $request->has('remember'));
+            return redirect()->route('2fa.verify');
+        }
+
+        return redirect()->intended($this->redirectPath());
     }
 }
