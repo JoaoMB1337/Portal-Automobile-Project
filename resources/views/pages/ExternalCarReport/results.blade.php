@@ -24,6 +24,16 @@
                 </tr>
             @endforeach
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" class="py-3 px-4 border-b text-right font-semibold">Total de Veículos:</td>
+                    <td class="py-3 px-4 border-b font-semibold">{{ $totalVehicles }}</td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="py-3 px-4 border-b text-right font-semibold">Total de Custos:</td>
+                    <td class="py-3 px-4 border-b font-semibold">{{ number_format($totalCost, 2) }}</td>
+                </tr>
+            </tfoot>
         </table>
         <form action="{{ route('external.car.report.generate') }}" method="GET" class="mt-6">
             @csrf
@@ -50,6 +60,16 @@
                 <td class="py-3 px-4 border-b text-center text-gray-500" colspan="6">Nenhum carro externo encontrado</td>
             </tr>
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" class="py-3 px-4 border-b text-right font-semibold">Total de Veículos:</td>
+                    <td class="py-3 px-4 border-b font-semibold">{{ $totalVehicles }}</td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="py-3 px-4 border-b text-right font-semibold">Total de Custos:</td>
+                    <td class="py-3 px-4 border-b font-semibold">{{ number_format($totalCost, 2) }}</td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 @endif

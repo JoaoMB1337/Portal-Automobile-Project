@@ -1,6 +1,8 @@
-@if(isset($costs) && count($costs) > 0)
+@if(isset($costs) && $costs->count() > 0)
     <div class="mt-8 bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto">
         <h2 class="text-2xl mb-4 font-semibold">Detalhes dos Custos</h2>
+        <p class="mb-4 text-gray-600">Total de Custos: {{ $costs->sum('cost') }}</p>
+        <p class="mb-4 text-gray-600">Total de Resultados: {{ $costs->total() }}</p>
         <table class="min-w-full bg-white border border-gray-200 rounded-lg">
             <thead>
             <tr>
@@ -19,6 +21,7 @@
             @endforeach
             </tbody>
         </table>
+        {{ $costs->links() }} <!-- Paginação -->
         <form action="{{ route('cost.report.generate') }}" method="GET" class="mt-6">
             @csrf
             <input type="hidden" name="start_date" value="{{ $startDate }}">

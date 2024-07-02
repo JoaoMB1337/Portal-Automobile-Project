@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -11,17 +12,20 @@ class ProjectReportController extends Controller
     public function index(Request $request)
     {
         $projects = Project::all();
-        $trips = collect(); // Coleção vazia para inicializar
-        $projectId = null;
+        $trips = collect(); // Inicializa como uma coleção vazia
+        $projectId = $request->input('project_id');
 
-        if ($request->has('project_id')) {
-            $projectId = $request->project_id;
+        if ($projectId) {
             $trips = Trip::where('project_id', $projectId)
                 ->with(['tripDetails', 'tripDetails.costType'])
                 ->get();
         }
 
-        return view('pages.Project-report.index', compact('projects', 'trips', 'projectId'));
+        // Inicializa o contador e o preço total
+        $totalCost = $trips->flatMap->tripDetails->sum('cost');
+        $tripCount = $trips->flatMap->tripDetails->count();
+
+        return view('pages.Project-report.index', compact('projects', 'trips', 'projectId', 'totalCost', 'tripCount'));
     }
 
     public function filter(Request $request)
@@ -35,9 +39,13 @@ class ProjectReportController extends Controller
             ->with(['tripDetails', 'tripDetails.costType'])
             ->get();
 
-        $projects = Project::all(); // Adicione esta linha para garantir que a variável $projects esteja disponível
+        $projects = Project::all(); // Garante que a variável $projects está disponível
 
-        return view('pages.Project-report.index', compact('trips', 'projectId', 'projects'));
+        // Inicializa o contador e o preço total
+        $totalCost = $trips->flatMap->tripDetails->sum('cost');
+        $tripCount = $trips->flatMap->tripDetails->count();
+
+        return view('pages.Project-report.index', compact('trips', 'projectId', 'projects', 'totalCost', 'tripCount'));
     }
 
     public function generateProjectReport(Request $request)
@@ -51,12 +59,16 @@ class ProjectReportController extends Controller
             ->with(['tripDetails', 'tripDetails.costType'])
             ->get();
 
+        $totalCost = $trips->flatMap->tripDetails->sum('cost');
+        $tripCount = $trips->flatMap->tripDetails->count();
+
         $data = [
             'trips' => $trips,
-            'project' => Project::find($projectId)
+            'project' => Project::find($projectId),
+            'totalCost' => $totalCost,
+            'tripCount' => $tripCount,
         ];
 
-        // Configurar o PDF
         $pdf = new TCPDF();
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor('Your Name');
@@ -64,20 +76,14 @@ class ProjectReportController extends Controller
         $pdf->SetSubject('Relatório de Projetos');
         $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
-        // Remover cabeçalho e rodapé padrão
         $pdf->setPrintHeader(false);
         $pdf->setPrintFooter(false);
 
-        // Adicionar uma página
         $pdf->AddPage();
 
-        // Definir o conteúdo do PDF
         $html = view('components.Project-reports.project-pdf-report', $data)->render();
-
         $pdf->writeHTML($html, true, false, true, false, '');
 
-        // Fechar e gerar o PDF
-        $pdf->lastPage();
-        return $pdf->Output('project_report.pdf', 'D'); // 'D' força o download
+        return $pdf->Output('project_report.pdf', 'D');
     }
 }

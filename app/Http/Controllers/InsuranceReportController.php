@@ -14,6 +14,8 @@ class InsuranceReportController extends Controller
         $insurances = collect(); 
         $startDate = null;
         $endDate = null;
+        $totalCost = 0;
+        $totalResults = 0;
 
         if ($request->has(['start_date', 'end_date'])) {
             $startDate = Carbon::parse($request->start_date);
@@ -21,10 +23,13 @@ class InsuranceReportController extends Controller
 
             $insurances = Insurance::whereBetween('created_at', [$startDate, $endDate])
                 ->with(['vehicle'])
-                ->get();
+                ->paginate(10);
+
+            $totalCost = $insurances->sum('cost');
+            $totalResults = $insurances->total();
         }
 
-        return view('pages.Insurance-report.index', compact('insurances', 'startDate', 'endDate'));
+        return view('pages.Insurance-report.index', compact('insurances', 'startDate', 'endDate', 'totalCost', 'totalResults'));
     }
 
     public function filter(Request $request)
@@ -46,9 +51,12 @@ class InsuranceReportController extends Controller
 
         $insurances = Insurance::whereBetween('created_at', [$startDate, $endDate])
             ->with(['vehicle'])
-            ->get();
+            ->paginate(10);
 
-        return view('pages.Insurance-report.index', compact('insurances', 'startDate', 'endDate'));
+        $totalCost = $insurances->sum('cost');
+        $totalResults = $insurances->total();
+
+        return view('pages.Insurance-report.index', compact('insurances', 'startDate', 'endDate', 'totalCost', 'totalResults'));
     }
 
     public function generateInsuranceReport(Request $request)

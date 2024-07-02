@@ -25,6 +25,13 @@
             @endforeach
             </tbody>
         </table>
+        <div class="mt-4">
+            <p>Total de Seguros: {{ $totalResults }}</p>
+            <p>Custo Total: {{ number_format($totalCost, 2, ',', '.') }}</p>
+        </div>
+        <div class="mt-4">
+            {{ $insurances->links() }}
+        </div>
         <form action="{{ route('insurance.report.generate') }}" method="GET" class="mt-6">
             @csrf
             <input type="hidden" name="start_date" value="{{ $startDate }}">

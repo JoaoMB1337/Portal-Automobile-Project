@@ -7,7 +7,9 @@
         <select id="project_id" name="project_id" required class="mt-1 p-3 border border-gray-300 rounded w-full text-sm">
             <option value="">Selecione um projeto</option>
             @foreach($projects as $project)
-                <option value="{{ $project->id }}" {{ old('project_id', $projectId) == $project->id ? 'selected' : '' }}>{{ $project->name }}</option>
+                <option value="{{ $project->id }}" {{ old('project_id', $projectId) == $project->id ? 'selected' : '' }}>
+                    {{ $project->name }}
+                </option>
             @endforeach
         </select>
         @error('project_id')

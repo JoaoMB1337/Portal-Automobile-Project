@@ -10,21 +10,25 @@ class ExternalCarReportController extends Controller
 {
     public function index(Request $request)
     {
-        // Se você quiser manter a lógica de filtro no método index
         $vehicles = collect();
         $startDate = null;
         $endDate = null;
-
+        $totalVehicles = 0;
+        $totalCost = 0.00;
+    
         if ($request->has(['start_date', 'end_date'])) {
             $startDate = $request->start_date;
             $endDate = $request->end_date;
-
+    
             $vehicles = Vehicle::whereBetween('rental_start_date', [$startDate, $endDate])
                 ->whereNotNull('rental_company')
                 ->get();
+    
+            $totalVehicles = $vehicles->count();
+            $totalCost = $vehicles->sum('total_rental_cost');
         }
-
-        return view('pages.ExternalCarReport.index', compact('vehicles', 'startDate', 'endDate'));
+    
+        return view('pages.ExternalCarReport.index', compact('vehicles', 'startDate', 'endDate', 'totalVehicles', 'totalCost'));
     }
 
     public function filter(Request $request)
@@ -38,7 +42,10 @@ class ExternalCarReportController extends Controller
             ->whereNotNull('rental_company')
             ->get();
 
-        return view('pages.ExternalCarReport.index', compact('vehicles', 'startDate', 'endDate'));
+        $totalVehicles = $vehicles->count();
+        $totalCost = $vehicles->sum('total_rental_cost');
+
+        return view('pages.ExternalCarReport.index', compact('vehicles', 'startDate', 'endDate', 'totalVehicles', 'totalCost'));
     }
 
     public function generateExternalCarReport(Request $request)
@@ -48,14 +55,19 @@ class ExternalCarReportController extends Controller
         $startDate = $request->start_date;
         $endDate = $request->end_date;
 
+        // Obtenha os veículos no intervalo de datas fornecido
         $vehicles = Vehicle::whereBetween('rental_start_date', [$startDate, $endDate])
             ->whereNotNull('rental_company')
             ->get();
 
+        $totalVehicles = $vehicles->count();
+        $totalCost = $vehicles->sum('total_rental_cost');
+
         $data = [
             'vehicles' => $vehicles,
             'start_date' => $startDate,
-            'end_date' => $endDate
+            'end_date' => $endDate,
+            'totalCost' => $totalCost,
         ];
 
         // Configurar o PDF
@@ -74,7 +86,7 @@ class ExternalCarReportController extends Controller
         $pdf->AddPage();
 
         // Definir o conteúdo do PDF
-        $html = view('components.ExternalCarReport.external-car-pdf-report', $data)->render();
+        $html = view('components.ExternalCarReport.external-cost-report', $data)->render();
 
         $pdf->writeHTML($html, true, false, true, false, '');
 
