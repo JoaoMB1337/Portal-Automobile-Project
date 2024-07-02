@@ -23,7 +23,7 @@ class TwoFactorController extends Controller
         $secret = $google2fa->generateSecretKey();
         $qrCodeUrl = $google2fa->getQRCodeUrl(
             config('app.name'),
-            $user->email,
+            $user->employee_number,
             $secret
         );
 
