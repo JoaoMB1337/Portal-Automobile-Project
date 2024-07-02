@@ -7,9 +7,13 @@
         <select id="project_id" name="project_id" required class="mt-1 p-3 border border-gray-300 rounded w-full text-sm">
             <option value="">Selecione um projeto</option>
             @foreach($projects as $project)
-                <option value="{{ $project->id }}">{{ $project->name }}</option>
+                <option value="{{ $project->id }}" {{ old('project_id', $projectId) == $project->id ? 'selected' : '' }}>{{ $project->name }}</option>
             @endforeach
         </select>
+        @error('project_id')
+            <span class="text-red-600 text-sm">{{ $message }}</span>
+        @enderror
     </div>
+
     <button type="submit" class="w-full bg-gray-600 text-white px-4 py-3 rounded-md shadow-sm hover:bg-gray-700 text-sm">Filtrar</button>
 </form>

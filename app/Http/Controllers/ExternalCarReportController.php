@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Vehicle;
 use TCPDF;
+use Carbon\Carbon;
 
 class ExternalCarReportController extends Controller
 {
     public function index(Request $request)
     {
         // Se você quiser manter a lógica de filtro no método index
-        $vehicles = collect(); 
+        $vehicles = collect();
         $startDate = null;
         $endDate = null;
 
@@ -28,7 +29,8 @@ class ExternalCarReportController extends Controller
 
     public function filter(Request $request)
     {
-        // Copiando a lógica de filtro do método index para o método filter
+        $this->validateDate($request);
+
         $startDate = $request->start_date;
         $endDate = $request->end_date;
 
@@ -41,10 +43,7 @@ class ExternalCarReportController extends Controller
 
     public function generateExternalCarReport(Request $request)
     {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
+        $this->validateDate($request);
 
         $startDate = $request->start_date;
         $endDate = $request->end_date;
@@ -82,5 +81,34 @@ class ExternalCarReportController extends Controller
         // Fechar e gerar o PDF
         $pdf->lastPage();
         return $pdf->Output('external_car_report.pdf', 'D'); // 'D' força o download
+    }
+
+    private function validateDate(Request $request)
+    {
+        $request->validate([
+            'start_date' => [
+                'required',
+                'date',
+                'before_or_equal:end_date',
+                function ($attribute, $value, $fail) {
+                    // Permitir data futura
+                },
+            ],
+            'end_date' => [
+                'required',
+                'date',
+                'after_or_equal:start_date',
+                function ($attribute, $value, $fail) {
+                    // Permitir data futura
+                },
+            ],
+        ], [
+            'start_date.required' => 'A data inicial é obrigatória.',
+            'start_date.date' => 'A data inicial deve ser uma data válida.',
+            'start_date.before_or_equal' => 'A data inicial deve ser anterior ou igual à data final.',
+            'end_date.required' => 'A data final é obrigatória.',
+            'end_date.date' => 'A data final deve ser uma data válida.',
+            'end_date.after_or_equal' => 'A data final deve ser posterior ou igual à data inicial.',
+        ]);
     }
 }

@@ -1,11 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Insurance;
 use App\Models\Vehicle;
 use TCPDF;
+use Carbon\Carbon;
 
 class InsuranceReportController extends Controller
 {
@@ -16,8 +16,8 @@ class InsuranceReportController extends Controller
         $endDate = null;
 
         if ($request->has(['start_date', 'end_date'])) {
-            $startDate = \Carbon\Carbon::parse($request->start_date);
-            $endDate = \Carbon\Carbon::parse($request->end_date);
+            $startDate = Carbon::parse($request->start_date);
+            $endDate = Carbon::parse($request->end_date);
 
             $insurances = Insurance::whereBetween('created_at', [$startDate, $endDate])
                 ->with(['vehicle'])
@@ -30,12 +30,19 @@ class InsuranceReportController extends Controller
     public function filter(Request $request)
     {
         $request->validate([
-            'start_date' => 'required|date',
+            'start_date' => 'required|date|before_or_equal:end_date',
             'end_date' => 'required|date|after_or_equal:start_date',
+        ], [
+            'start_date.required' => 'A data inicial é obrigatória.',
+            'start_date.date' => 'A data inicial deve ser uma data válida.',
+            'start_date.before_or_equal' => 'A data inicial deve ser anterior ou igual à data final.',
+            'end_date.required' => 'A data final é obrigatória.',
+            'end_date.date' => 'A data final deve ser uma data válida.',
+            'end_date.after_or_equal' => 'A data final deve ser posterior ou igual à data inicial.',
         ]);
 
-        $startDate = \Carbon\Carbon::parse($request->start_date);
-        $endDate = \Carbon\Carbon::parse($request->end_date);
+        $startDate = Carbon::parse($request->start_date);
+        $endDate = Carbon::parse($request->end_date);
 
         $insurances = Insurance::whereBetween('created_at', [$startDate, $endDate])
             ->with(['vehicle'])
@@ -47,12 +54,19 @@ class InsuranceReportController extends Controller
     public function generateInsuranceReport(Request $request)
     {
         $request->validate([
-            'start_date' => 'required|date',
+            'start_date' => 'required|date|before_or_equal:end_date',
             'end_date' => 'required|date|after_or_equal:start_date',
+        ], [
+            'start_date.required' => 'A data inicial é obrigatória.',
+            'start_date.date' => 'A data inicial deve ser uma data válida.',
+            'start_date.before_or_equal' => 'A data inicial deve ser anterior ou igual à data final.',
+            'end_date.required' => 'A data final é obrigatória.',
+            'end_date.date' => 'A data final deve ser uma data válida.',
+            'end_date.after_or_equal' => 'A data final deve ser posterior ou igual à data inicial.',
         ]);
 
-        $startDate = \Carbon\Carbon::parse($request->start_date);
-        $endDate = \Carbon\Carbon::parse($request->end_date);
+        $startDate = Carbon::parse($request->start_date);
+        $endDate = Carbon::parse($request->end_date);
 
         $insurances = Insurance::whereBetween('created_at', [$startDate, $endDate])
             ->with(['vehicle'])
@@ -67,10 +81,10 @@ class InsuranceReportController extends Controller
         // Configurar o PDF
         $pdf = new TCPDF();
         $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor('Your Name');
+        $pdf->SetAuthor('Seu Nome');
         $pdf->SetTitle('Relatório de Seguros');
         $pdf->SetSubject('Relatório de Seguros');
-        $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+        $pdf->SetKeywords('TCPDF, PDF, exemplo, teste, guia');
 
         // Remover cabeçalho e rodapé padrão
         $pdf->setPrintHeader(false);

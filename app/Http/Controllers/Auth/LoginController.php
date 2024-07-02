@@ -97,7 +97,7 @@ class LoginController extends Controller
             Log::info('Redirecting to 2FA verification for user: ' . $user->employee_number);
             $request->session()->put('2fa:user:id', $user->id);
             $request->session()->put('2fa:auth:remember', $request->has('remember'));
-            return redirect()->route('2fa.verify');
+            return redirect()->route('2fa.verifyForm');
         }
 
         return redirect()->intended($this->redirectPath());

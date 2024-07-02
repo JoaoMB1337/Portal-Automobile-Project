@@ -21,7 +21,7 @@ Auth::routes(['register' => false]);
 Route::get('/2fa/setup', [TwoFactorController::class, 'setup'])->name('2fa.setup')->middleware('auth');
 Route::post('/2fa/setup', [TwoFactorController::class, 'completeSetup'])->name('2fa.completeSetup')->middleware('auth');
 Route::get('/2fa', [TwoFactorController::class, 'showVerifyForm'])->name('2fa.verify')->middleware('auth');
-Route::post('/2fa_form', [TwoFactorController::class, 'verify'])->name('2fa.verify')->middleware('auth');
+Route::post('/2fa', [TwoFactorController::class, 'verify'])->name('2fa.verifyForm')->middleware('auth');
 
 // Group routes that require authentication
 Route::middleware(['auth'])->group(function () {
