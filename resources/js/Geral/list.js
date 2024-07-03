@@ -102,14 +102,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const importCsvForm = document.createElement('form');
             importCsvForm.method = 'POST';
-            importCsvForm.action = importCsvBtn.getAttribute('data-action');
+            importCsvForm.action = importCsvBtn.getAttribute('data-action'); // Ensure this attribute is correctly set
             importCsvForm.enctype = 'multipart/form-data';
             importCsvForm.style.display = 'none';
 
             const csrfTokenInput = document.createElement('input');
             csrfTokenInput.type = 'hidden';
             csrfTokenInput.name = '_token';
-            csrfTokenInput.value = importCsvBtn.getAttribute('data-token');
+            csrfTokenInput.value = importCsvBtn.getAttribute('data-token'); // Ensure this attribute is correctly set
 
             const fileInput = document.createElement('input');
             fileInput.type = 'file';
@@ -126,11 +126,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
             document.body.appendChild(importCsvForm);
 
+            fileInput.click();
+
             fileInput.addEventListener('change', function() {
                 importCsvForm.submit();
             });
-
-            fileInput.click();
         }
     }
 

@@ -81,8 +81,8 @@
         <div class="add-button-container">
             <button id="addButton" class="add-button"><i class="fas fa-plus"></i></button>
             <div id="addOptions" class="add-options" style="display: none;">
-                <a href="{{ route('employees.create') }}">Criar Manualmente</a>
-                <button id="importCsvBtn">Importar CSV</button>
+                <a href="{{ route('employees.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Criar Manualmente</a>
+                <button id="importCsvBtn" data-action="{{ route('employees.importCsv') }}" data-token="{{ csrf_token() }}">Importar CSV</button>
             </div>
         </div>
     </div>
