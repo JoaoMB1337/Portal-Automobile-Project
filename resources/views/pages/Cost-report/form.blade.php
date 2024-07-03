@@ -1,6 +1,6 @@
 <form action="{{ route('cost.report.filter') }}" method="POST" class="bg-white p-10 rounded-lg shadow-md max-w-lg mx-auto space-y-6">
     @csrf
-    <h1 class="text-3xl text-center text-gray-800 mb-6 font-bold">Gerar Relatório de Custos</h1>
+    <h1 class="text-3xl text-center text-gray-800 mb-6 ">Relatórios de Custos das viagens</h1>
 
     <div class="mb-5">
         <label for="start_date" class="block text-gray-600 text-sm font-medium mb-2">Data Inicial:</label>
@@ -32,5 +32,5 @@
         @enderror
     </div>
 
-    <button type="submit" class="w-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white px-4 py-3 rounded-md shadow-sm hover:bg-gradient-to-l text-sm font-medium transition duration-300 ease-in-out transform hover:scale-105">Filtrar</button>
+    <button type="submit" class="w-full  bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white px-4 py-3 rounded-md shadow-sm hover:bg-gradient-to-l text-sm font-medium transition duration-300 ease-in-out transform hover:scale-105">Pesquisar</button>
 </form>
