@@ -189,6 +189,67 @@
         #reports-submenu {
             z-index: 1000;
         }
+        @media (max-width: 1200px) {
+            #sidebar {
+                transform: translateX(-100%);
+                width: 100vw;
+            }
+
+            #sidebar.show {
+                transform: translateX(0);
+            }
+
+            #sidebar a {
+                font-size: 32px;
+                padding: 10px 20px;
+            }
+
+            .content {
+                margin-top: 64px;
+            }
+
+            .logo {
+                width: 3.5rem;
+                height: 3.5rem;
+            }
+
+            #mobile-menu-btn {
+                visibility: visible;
+                position: fixed;
+                z-index: 2000;
+            }
+        }
+
+        @media (max-width: 992px) {
+            #sidebar {
+                transform: translateX(-100%);
+                width: 100vw;
+            }
+
+            #sidebar.show {
+                transform: translateX(0);
+            }
+
+            #sidebar a {
+                font-size: 30px;
+                padding: 10px 20px;
+            }
+
+            .content {
+                margin-top: 64px;
+            }
+
+            .logo {
+                width: 3rem;
+                height: 3rem;
+            }
+
+            #mobile-menu-btn {
+                visibility: visible;
+                position: fixed;
+                z-index: 2000;
+            }
+        }
 
     </style>
 </head>
