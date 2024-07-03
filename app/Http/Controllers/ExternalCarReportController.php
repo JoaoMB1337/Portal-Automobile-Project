@@ -1,4 +1,7 @@
 <?php
+
+
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -10,24 +13,30 @@ class ExternalCarReportController extends Controller
 {
     public function index(Request $request)
     {
-        $vehicles = collect();
         $startDate = null;
         $endDate = null;
         $totalVehicles = 0;
         $totalCost = 0.00;
-    
+
         if ($request->has(['start_date', 'end_date'])) {
             $startDate = $request->start_date;
             $endDate = $request->end_date;
-    
-            $vehicles = Vehicle::whereBetween('rental_start_date', [$startDate, $endDate])
-                ->whereNotNull('rental_company')
-                ->get();
-    
-            $totalVehicles = $vehicles->count();
-            $totalCost = $vehicles->sum('total_rental_cost');
+
+            $query = Vehicle::whereBetween('rental_start_date', [$startDate, $endDate])
+                ->whereNotNull('rental_company');
+
+            // Paginação com 10 itens por página
+            $vehicles = $query->paginate(10);
+
+            // Calcula o total de veículos e o custo total fora da paginação
+            $totalVehicles = $query->count();
+            // Substitua 'total_rental_cost' pela coluna correta
+            $totalCost = $query->sum('rental_price_per_day');
+        } else {
+            // Retorna uma instância paginada vazia se não houver datas de início e fim
+            $vehicles = Vehicle::whereNotNull('rental_company')->paginate(10);
         }
-    
+
         return view('pages.ExternalCarReport.index', compact('vehicles', 'startDate', 'endDate', 'totalVehicles', 'totalCost'));
     }
 
@@ -38,12 +47,15 @@ class ExternalCarReportController extends Controller
         $startDate = $request->start_date;
         $endDate = $request->end_date;
 
-        $vehicles = Vehicle::whereBetween('rental_start_date', [$startDate, $endDate])
-            ->whereNotNull('rental_company')
-            ->get();
+        $query = Vehicle::whereBetween('rental_start_date', [$startDate, $endDate])
+            ->whereNotNull('rental_company');
 
-        $totalVehicles = $vehicles->count();
-        $totalCost = $vehicles->sum('total_rental_cost');
+        // Paginação com 10 itens por página
+        $vehicles = $query->paginate(10);
+
+        $totalVehicles = $query->count();
+        // Substitua 'total_rental_cost' pela coluna correta
+        $totalCost = $query->sum('rental_price_per_day');
 
         return view('pages.ExternalCarReport.index', compact('vehicles', 'startDate', 'endDate', 'totalVehicles', 'totalCost'));
     }
@@ -61,7 +73,8 @@ class ExternalCarReportController extends Controller
             ->get();
 
         $totalVehicles = $vehicles->count();
-        $totalCost = $vehicles->sum('total_rental_cost');
+        // Substitua 'total_rental_cost' pela coluna correta
+        $totalCost = $vehicles->sum('rental_price_per_day');
 
         $data = [
             'vehicles' => $vehicles,

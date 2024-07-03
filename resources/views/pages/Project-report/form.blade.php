@@ -1,10 +1,10 @@
-<form action="{{ route('project.report.filter') }}" method="POST" class="bg-white p-6 rounded-lg shadow-sm max-w-md mx-auto">
+<form action="{{ route('project.report.filter') }}" method="POST" class="bg-white p-10 rounded-lg shadow-md max-w-xl mx-auto">
     @csrf
-    <h1 class="text-2xl text-center mb-6">Gerar Relatório de Viagens por Projeto</h1>
+    <h1 class="text-3xl  text-center text-gray-800 mb-6">Gerar Relatório de Viagens por Projeto</h1>
 
-    <div class="mb-4">
-        <label for="project_id" class="block text-gray-600 text-sm">Projeto:</label>
-        <select id="project_id" name="project_id" required class="mt-1 p-3 border border-gray-300 rounded w-full text-sm">
+    <div class="mb-5">
+        <label for="project_id" class="block text-gray-700 text-sm font-medium mb-2">Projeto:</label>
+        <select id="project_id" name="project_id" required class="block w-full p-3 border border-gray-300 rounded-md focus:ring-gray-400 focus:border-gray-400 text-sm">
             <option value="">Selecione um projeto</option>
             @foreach($projects as $project)
                 <option value="{{ $project->id }}" {{ old('project_id', $projectId) == $project->id ? 'selected' : '' }}>
@@ -13,9 +13,9 @@
             @endforeach
         </select>
         @error('project_id')
-            <span class="text-red-600 text-sm">{{ $message }}</span>
+        <span class="text-red-600 text-sm mt-1">{{ $message }}</span>
         @enderror
     </div>
 
-    <button type="submit" class="w-full bg-gray-600 text-white px-4 py-3 rounded-md shadow-sm hover:bg-gray-700 text-sm">Filtrar</button>
+    <button type="submit" class="w-full bg-gray-600 text-white px-4 py-3 rounded-md shadow-sm hover:bg-gray-700 text-sm font-medium">Filtrar</button>
 </form>

@@ -1,5 +1,5 @@
 
-<body class="bg-gray-100">
+<body class="bg-gray-100 ">
 <div class="container mx-auto p-8">
     <form action="{{ route('index') }}" method="GET" class="bg-white p-6  rounded-2xl shadow-md">
         @csrf
