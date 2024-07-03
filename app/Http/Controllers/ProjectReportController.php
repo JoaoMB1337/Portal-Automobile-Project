@@ -12,18 +12,28 @@ class ProjectReportController extends Controller
     public function index(Request $request)
     {
         $projects = Project::all();
-        $trips = collect(); // Inicializa como uma coleção vazia
         $projectId = $request->input('project_id');
+        $totalCost = 0;
+        $tripCount = 0;
+        $trips = collect();
 
         if ($projectId) {
-            $trips = Trip::where('project_id', $projectId)
+            $allTrips = Trip::where('project_id', $projectId)
                 ->with(['tripDetails', 'tripDetails.costType'])
                 ->get();
-        }
 
-        // Inicializa o contador e o preço total
-        $totalCost = $trips->flatMap->tripDetails->sum('cost');
-        $tripCount = $trips->flatMap->tripDetails->count();
+            $totalCost = $allTrips->sum(function ($trip) {
+                return $trip->tripDetails->sum('cost');
+            });
+            $tripCount = $allTrips->sum(function ($trip) {
+                return $trip->tripDetails->count();
+            });
+
+            // Aplica a paginação
+            $trips = Trip::where('project_id', $projectId)
+                ->with(['tripDetails', 'tripDetails.costType'])
+                ->paginate(10);
+        }
 
         return view('pages.Project-report.index', compact('projects', 'trips', 'projectId', 'totalCost', 'tripCount'));
     }
@@ -35,17 +45,29 @@ class ProjectReportController extends Controller
         ]);
 
         $projectId = $request->project_id;
-        $trips = Trip::where('project_id', $projectId)
-            ->with(['tripDetails', 'tripDetails.costType'])
-            ->get();
+        $projects = Project::all();
+        $totalCost = 0;
+        $tripCount = 0;
+        $trips = collect();
 
-        $projects = Project::all(); // Garante que a variável $projects está disponível
+        if ($projectId) {
+            $allTrips = Trip::where('project_id', $projectId)
+                ->with(['tripDetails', 'tripDetails.costType'])
+                ->get();
 
-        // Inicializa o contador e o preço total
-        $totalCost = $trips->flatMap->tripDetails->sum('cost');
-        $tripCount = $trips->flatMap->tripDetails->count();
+            $totalCost = $allTrips->sum(function ($trip) {
+                return $trip->tripDetails->sum('cost');
+            });
+            $tripCount = $allTrips->sum(function ($trip) {
+                return $trip->tripDetails->count();
+            });
 
-        return view('pages.Project-report.index', compact('trips', 'projectId', 'projects', 'totalCost', 'tripCount'));
+            $trips = Trip::where('project_id', $projectId)
+                ->with(['tripDetails', 'tripDetails.costType'])
+                ->paginate(10);
+        }
+
+        return view('pages.Project-report.index', compact('projects', 'trips', 'projectId', 'totalCost', 'tripCount'));
     }
 
     public function generateProjectReport(Request $request)
@@ -59,8 +81,12 @@ class ProjectReportController extends Controller
             ->with(['tripDetails', 'tripDetails.costType'])
             ->get();
 
-        $totalCost = $trips->flatMap->tripDetails->sum('cost');
-        $tripCount = $trips->flatMap->tripDetails->count();
+        $totalCost = $trips->sum(function ($trip) {
+            return $trip->tripDetails->sum('cost');
+        });
+        $tripCount = $trips->sum(function ($trip) {
+            return $trip->tripDetails->count();
+        });
 
         $data = [
             'trips' => $trips,
@@ -87,3 +113,4 @@ class ProjectReportController extends Controller
         return $pdf->Output('project_report.pdf', 'D');
     }
 }
+
