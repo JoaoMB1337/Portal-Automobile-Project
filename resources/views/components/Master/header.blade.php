@@ -189,7 +189,7 @@
         #reports-submenu {
             z-index: 1000;
         }
-        @media (max-width: 1200px) {
+        @media (max-width: 1025px) {
             #sidebar {
                 transform: translateX(-100%);
                 width: 100vw;
