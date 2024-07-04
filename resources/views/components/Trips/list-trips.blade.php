@@ -19,7 +19,6 @@
                 </form>
             </div>
         </div>
-
         <form id="multi-delete-form" action="{{ route('trips.deleteSelected') }}" method="POST" style="display: inline-block;">
             @csrf
             @method('DELETE')

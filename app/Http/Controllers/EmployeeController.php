@@ -266,9 +266,35 @@ class EmployeeController extends Controller
     public function deleteSelected(Request $request)
     {
         $this->authorize('delete', Employee::class);
+
         $ids = $request->input('selected_ids', []);
-        Employee::whereIn('id', $ids)->delete();
-        return redirect()->route('employees.index')->with('success', 'Funcionários excluídos com sucesso.');
+        $authUserId = Auth::id();
+        $authUserIsManager = Auth::user()->isManager();
+    
+        // Filter out the authenticated user's ID to prevent self-deletion
+        $filteredIds = array_filter($ids, function($id) use ($authUserId, $authUserIsManager) {
+            $employee = Employee::find($id);
+            if (!$employee) {
+                return false;
+            }
+    
+            if ($employee->id == $authUserId) {
+                return false;
+            }
+    
+            if ($authUserIsManager && $employee->employee_role_id == 1) {
+                return false;
+            }
+    
+            return true;
+        });
+    
+        try {
+            Employee::whereIn('id', $filteredIds)->delete();
+            return redirect()->route('employees.index')->with('success', 'Funcionários excluídos com sucesso.');
+        } catch (\Exception $e) {
+            return redirect()->route('employees.index')->with('error', 'Erro ao excluir funcionários.');
+        }
     }
 
     public function exportCsv($id)
