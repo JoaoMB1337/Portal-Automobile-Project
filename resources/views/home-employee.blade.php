@@ -38,7 +38,7 @@
                                             {{ $trip->destination }}
                                         </td>
                                         <td class="py-4 whitespace-nowrap text-center text-gray-800">
-                                            <a href="{{ route('trip-details.create', ['trip_id' => $trip->id]) }}" class="bg-gray-500 text-white font-medium text-sm px-3 py-2 rounded hover:bg-gray-600">Adicionar Custo</a>
+                                            <a href="{{ route('trip-details.create', ['trip_id' => $trip->id]) }}" class="bg-green-700 hover:bg-green-600 text-white font-medium text-sm px-3 py-2 rounded">Adicionar Custo</a>
                                         </td>
                                     </tr>
                                 @empty
@@ -50,9 +50,8 @@
                             
                         </table>
                         <div class="py-5 flex justify-center">
-    {{ $activeTrips->links() }}
-</div>
-
+                        {{ $activeTrips->links() }}
+                        </div>
                     </div>
                 </div>
             </div>

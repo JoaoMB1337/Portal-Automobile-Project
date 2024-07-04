@@ -30,43 +30,44 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $employee = Employee::find(1);
+        $employeeId = auth()->id();
 
-        $internalVehiclesCount = Vehicle::where('is_external', 0)->count();
-        $externalVehiclesCount = Vehicle::where('is_external', 1)->count();
+    // Contagem dos veículos internos e externos
+    $internalVehiclesCount = Vehicle::where('is_external', 0)->count();
+    $externalVehiclesCount = Vehicle::where('is_external', 1)->count();
+    $vehicleactive = Vehicle::where('is_active', 1)->count();
 
-        $vehicleactive = Vehicle::where('is_active', 1)->count();
+    // Status dos projetos
+    $projectsNotStarted = Project::where('project_status_id', 1)->count();
+    $projectsInProgress = Project::where('project_status_id', 2)->count();
+    $projectsCompleted = Project::where('project_status_id', 3)->count();
+    $projectsCancelled = Project::where('project_status_id', 4)->count();
+    $projectsOnHold = Project::where('project_status_id', 5)->count();
 
-        $projectsNotStarted = Project::where('project_status_id', 1)->count();
-        $projectsInProgress = Project::where('project_status_id', 2)->count();
-        $projectsCompleted = Project::where('project_status_id', 3)->count();
-        $projectsCancelled = Project::where('project_status_id', 4)->count();
-        $projectsOnHold = Project::where('project_status_id', 5)->count();
+    // Seguros prestes a vencer
+    $today = Carbon::today();
+    $nextMonth = $today->copy()->addDays(30);
+    $endingInsurances = Insurance::whereBetween('end_date', [$today, $nextMonth])->get();
 
-        $today = Carbon::today();
-        $nextMonth = Carbon::today()->addDays(30);
-        $endingInsurances = Insurance::whereBetween('end_date', [$today, $nextMonth])->get();
+    // Recuperar viagens ativas para o empregado
+    $employee = Employee::with(['trips' => function ($query) use ($today) {
+        $query->where('start_date', '<=', $today)
+              ->where('end_date', '>=', $today);
+    }])->find($employeeId);
 
-        //Carrega as viagens do funcionário para o dia atual
+    $activeTrips = $employee->trips()->paginate(10);
 
-        $today = Carbon::today();
-
-        // Recuperar viagens ativas
-        $activeTrips = Trip::where('start_date', '<=', $today)
-                            ->where('end_date', '>=', $today)
-                            ->paginate(10);
-        
-        return view('home', compact(
-            'internalVehiclesCount',
-            'externalVehiclesCount',
-            'vehicleactive',
-            'projectsNotStarted',
-            'projectsInProgress',
-            'projectsCompleted',
-            'projectsCancelled',
-            'projectsOnHold',
-            'endingInsurances',
-            'activeTrips'
-        ));
+    return view('home', compact(
+        'internalVehiclesCount',
+        'externalVehiclesCount',
+        'vehicleactive',
+        'projectsNotStarted',
+        'projectsInProgress',
+        'projectsCompleted',
+        'projectsCancelled',
+        'projectsOnHold',
+        'endingInsurances',
+        'activeTrips'
+    ));
     }
 }
