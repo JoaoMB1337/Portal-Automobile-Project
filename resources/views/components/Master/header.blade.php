@@ -289,6 +289,7 @@
                     </li>
                 </ul>
             </li>
+            @if(Auth::check() && Auth::user()->isMaster())
             <li class="relative">
                 <a href="#" id="vehicles-menu" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200 relative flex items-center">
                     Veículos
@@ -305,9 +306,7 @@
                     </li>
                 </ul>
             </li>
-
-
-
+            @endif
 
             @if(Auth::check() && Auth::user()->isMaster())
                 <li class="relative">
