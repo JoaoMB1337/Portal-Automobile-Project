@@ -1,6 +1,13 @@
 @if($trips->isNotEmpty())
     <div class="bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto">
         <h2 class="text-3xl font-semibold text-gray-800 mb-6">Resumo dos Custos</h2>
+
+        <!-- Novo bloco para exibir o custo total do projeto -->
+        <div class="mb-6">
+            <span class="text-xl font-bold text-gray-700">Custo Total do Projeto:</span>
+            <span class="text-xl font-semibold text-green-600">{{ number_format($totalCost, 2, ',', '.') }}</span>
+        </div>
+
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white border border-gray-300 rounded-lg">
                 <thead>
