@@ -5,8 +5,15 @@
 @section('content')
     <div class="container mx-auto p-8 lg:pl-64">
         @include('pages.Insurance-report.form')
+        
         @isset($insurances)
-            @include('pages.Insurance-report.results', ['insurances' => $insurances, 'startDate' => $startDate, 'endDate' => $endDate, 'totalCost' => $totalCost, 'totalResults' => $totalResults])
+            @include('pages.Insurance-report.results', [
+                'insurances' => $insurances, 
+                'startDate' => $startDate, 
+                'endDate' => $endDate, 
+                'totalCost' => $totalCost, 
+                'totalResults' => $totalResults
+            ])
         @endisset
     </div>
 @endsection

@@ -57,11 +57,22 @@ class InsuranceController extends Controller
 
             $insurances = $query->orderBy('id', 'asc')->paginate(10)->appends($request->query());
 
-            return view('pages.Insurance.list', ['insurance' => $insurances]);
+            // Calcular o custo total dos seguros
+            $totalInsuranceCost = $query->sum('cost');
+            $totalResults = $insurances->total();
+
+            return view('pages.Insurance.list', [
+                'insurances' => $insurances,
+                'totalInsuranceCost' => number_format($totalInsuranceCost, 2, ',', '.'),
+                'totalResults' => $totalResults,
+                'startDate' => $request->input('start_date', ''),
+                'endDate' => $request->input('end_date', '')
+            ]);
         } catch (\Exception $e) {
             return redirect()->route('error.403')->with('error', 'Erro ao buscar os seguros.');
         }
     }
+
 
 
     /**
