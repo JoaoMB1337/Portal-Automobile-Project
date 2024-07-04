@@ -30,32 +30,35 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $employee = Employee::find(1);
+        $employeeId = auth()->id();
 
+        // Contagem dos veículos internos e externos
         $internalVehiclesCount = Vehicle::where('is_external', 0)->count();
         $externalVehiclesCount = Vehicle::where('is_external', 1)->count();
-
         $vehicleactive = Vehicle::where('is_active', 1)->count();
 
+        // Status dos projetos
         $projectsNotStarted = Project::where('project_status_id', 1)->count();
         $projectsInProgress = Project::where('project_status_id', 2)->count();
         $projectsCompleted = Project::where('project_status_id', 3)->count();
         $projectsCancelled = Project::where('project_status_id', 4)->count();
         $projectsOnHold = Project::where('project_status_id', 5)->count();
 
+        // Seguros prestes a vencer
         $today = Carbon::today();
-        $nextMonth = Carbon::today()->addDays(30);
-        $endingInsurances = Insurance::whereBetween('end_date', [$today, $nextMonth])->get();
+        $nextMonth = $today->copy()->addDays(30);
+        $endingInsurances = Insurance::whereBetween('end_date', [$today, $nextMonth])
+                                    ->orderBy('end_date', 'asc')
+                                    ->paginate(10);
 
-        //Carrega as viagens do funcionário para o dia atual
+        // Recuperar viagens ativas para o empregado
+        $employee = Employee::with(['trips' => function ($query) use ($today) {
+            $query->where('start_date', '<=', $today)
+                ->where('end_date', '>=', $today);
+        }])->find($employeeId);
 
-        $today = Carbon::today();
+        $activeTrips = $employee->trips()->paginate(10);
 
-        // Recuperar viagens ativas
-        $activeTrips = Trip::where('start_date', '<=', $today)
-                            ->where('end_date', '>=', $today)
-                            ->get();
-        
         return view('home', compact(
             'internalVehiclesCount',
             'externalVehiclesCount',

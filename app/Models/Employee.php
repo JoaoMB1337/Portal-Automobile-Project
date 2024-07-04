@@ -30,6 +30,8 @@ class Employee extends Authenticatable
         'email',
         'phone',
         'password',
+        'google2fa_secret',
+        'uses_two_factor_auth',
     ];
 
     protected $hidden = [
@@ -81,4 +83,11 @@ class Employee extends Authenticatable
     {
         return $this->employee_role_id == 3;
     }
+
+
+    public function isFuncionario()
+    {
+        return $this->role->name === 'Funcionario';
+    }
+
 }

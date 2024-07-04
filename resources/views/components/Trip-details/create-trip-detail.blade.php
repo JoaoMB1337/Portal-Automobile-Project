@@ -1,8 +1,8 @@
-
+<div class="mt-8">
 <form method="POST" action="{{ route('trip-details.store') }}" enctype="multipart/form-data" class="space-y-10 bg-white p-6 rounded-lg shadow-md">
     @csrf
-    <a href="{{ route('trip-details.index') }}">
-        <button  type="button" class="flex items-center justify-center  w-1/2 mb-3 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-gray-600 border rounded-lg gap-x-2 sm:w-auto hover:bg-gray-500">
+    <a href="{{ route('home') }}">
+        <button  type="button" class="flex items-center justify-center mb-3 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-gray-600 border rounded-lg gap-x-2 sm:w-auto hover:bg-gray-500">
             <svg class="w-5 h-5 rtl:rotate-180 text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
             </svg>
@@ -55,7 +55,7 @@
             </label>
             <label for="camera" class="flex items-center justify-center w-full py-2 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold cursor-pointer">
                 Tirar uma Foto
-                <input id="camera" type="file" accept="image/*;capture=camera" class="hidden" name="receipt_camera" onchange="handleFileSelect('camera')">
+                <input id="camera" type="file" accept="capture=camera" class="hidden" name="receipt_camera" onchange="handleFileSelect('camera')">
             </label>
         </div>
         @error('receipt')
@@ -69,6 +69,7 @@
         </button>
     </div>
 </form>
+</div>
 
 
 <script>

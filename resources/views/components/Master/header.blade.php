@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Sidebar</title>
     <style>
         @media (max-width: 768px) {
             #sidebar {
@@ -66,25 +65,11 @@
             flex-shrink: 0;
         }
 
-        .transparent-button {
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-            transition: opacity 0.3s ease;
-        }
-
-        .transparent-button:hover,
-        .transparent-button:focus {
-            opacity: 1;
-        }
 
         #sidebar a:hover {
             background-color: #4a5568;
         }
 
-        #add-button {
-            z-index: 0;
-        }
 
         nav#sidebar {
             z-index: 999;
@@ -95,11 +80,7 @@
             position: relative;
         }
 
-        .button-container {
-            z-index: 10;
-            position: relative;
-            margin-top: 20px;
-        }
+
 
         #mobile-menu-btn {
             background-color: #333;
@@ -140,10 +121,6 @@
             #sidebar a {
                 font-size: 28px;
                 padding: 9px 18px;
-            }
-
-            .content {
-                margin-top: 60px;
             }
 
             .logo {
@@ -197,29 +174,81 @@
             position: relative;
         }
 
-        .absolute {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background-color: #333;
-            z-index: 1000;
-            display: none; /* Esconde os submenus por padrão */
-        }
+
 
         .absolute.show {
-            display: block; /* Mostra o submenu quando a classe 'show' é adicionada */
+            display: block;
         }
 
         #sidebar a:hover {
-            background-color: #4a5568;
+            background-color: #3c4350;
         }
 
-        /* Ajustes adicionais para garantir que os submenus não sobreponham */
         #trips-submenu,
         #vehicles-submenu,
         #reports-submenu {
             z-index: 1000;
+        }
+        @media (max-width: 1025px) {
+            #sidebar {
+                transform: translateX(-100%);
+                width: 100vw;
+            }
+
+            #sidebar.show {
+                transform: translateX(0);
+            }
+
+            #sidebar a {
+                font-size: 32px;
+                padding: 10px 20px;
+            }
+
+            .content {
+                margin-top: 64px;
+            }
+
+            .logo {
+                width: 3.5rem;
+                height: 3.5rem;
+            }
+
+            #mobile-menu-btn {
+                visibility: visible;
+                position: fixed;
+                z-index: 2000;
+            }
+        }
+
+        @media (max-width: 992px) {
+            #sidebar {
+                transform: translateX(-100%);
+                width: 100vw;
+            }
+
+            #sidebar.show {
+                transform: translateX(0);
+            }
+
+            #sidebar a {
+                font-size: 30px;
+                padding: 10px 20px;
+            }
+
+            .content {
+                margin-top: 64px;
+            }
+
+            .logo {
+                width: 3rem;
+                height: 3rem;
+            }
+
+            #mobile-menu-btn {
+                visibility: visible;
+                position: fixed;
+                z-index: 2000;
+            }
         }
 
     </style>
@@ -228,7 +257,7 @@
 <nav id="sidebar" class="bg-gray-800 h-full fixed w-64 top-0 left-0 flex flex-col md:w-56 lg:w-64 transition-all duration-300 ease-in-out transform -translate-x-full md:translate-x-0">
     <div class="custom-container px-4 py-8 border-b border-gray-700 flex items-center">
         <div class="mt-5 h-15 bg-white rounded-full flex-shrink-0 mr-2 logo">
-            <img src="{{ asset('images/App-logo.png') }}" alt="Logo" class="w-full h-full object-cover rounded-full logo">
+            <img src="{{ asset('images/App-logo.png') }}" alt="Logo" class="w-full h-full object-cover rounded-full logo ">
         </div>
         <a href="/home" class="mt-5 text-white text-xl font-bold">InnoDrive</a>
     </div>
@@ -251,15 +280,16 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </a>
-                <ul id="trips-submenu" class="absolute bg-gray-800 text-white w-full mt-1 hidden">
+                <ul id="trips-submenu" class="absolute bg-gray-600 text-white w-full mt-1 hidden">
                     <li>
-                        <a href="/trips" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Viagem</a>
+                        <a href="/trips" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200 ">Ver Viagem</a>
                     </li>
                     <li>
                         <a href="/projects" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Projetos</a>
                     </li>
                 </ul>
             </li>
+            @if(Auth::check() && Auth::user()->isMaster())
             <li class="relative">
                 <a href="#" id="vehicles-menu" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200 relative flex items-center">
                     Veículos
@@ -267,7 +297,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </a>
-                <ul id="vehicles-submenu" class="absolute bg-gray-800 text-white w-full mt-1 hidden">
+                <ul id="vehicles-submenu" class="absolute bg-gray-600 text-white w-full mt-1 hidden">
                     <li>
                         <a href="/vehicles" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Veículos</a>
                     </li>
@@ -276,9 +306,7 @@
                     </li>
                 </ul>
             </li>
-
-
-
+            @endif
 
             @if(Auth::check() && Auth::user()->isMaster())
                 <li class="relative">
@@ -289,12 +317,18 @@
                         </svg>
                     </a>
 
-                    <ul id="reports-submenu" class="absolute bg-gray-800 text-white w-full mt-1 hidden">
+                    <ul id="reports-submenu" class="absolute bg-gray-600 text-white w-full mt-1 hidden">
                         <li>
                             <a href="/cost-report" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Relatórios Viagens</a>
                         </li>
                         <li>
                             <a href="/external-car-report" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Relatórios Veículos</a>
+                        </li>
+                        <li>
+                            <a href="/project-reports" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Relatórios Projetos</a>
+                        </li>
+                        <li>
+                            <a href="/insurance-reports" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Relatórios Seguros</a>
                         </li>
                     </ul>
                 </li>
@@ -373,25 +407,24 @@
         tripsMenu.addEventListener('click', function(e) {
             e.preventDefault();
             tripsSubMenu.classList.toggle('show');
-            vehiclesSubMenu.classList.remove('show'); // Fecha outros submenus se abertos
-            reportsSubMenu.classList.remove('show'); // Fecha outros submenus se abertos
+            vehiclesSubMenu.classList.remove('show');
+            reportsSubMenu.classList.remove('show');
         });
 
         vehiclesMenu.addEventListener('click', function(e) {
             e.preventDefault();
             vehiclesSubMenu.classList.toggle('show');
-            tripsSubMenu.classList.remove('show'); // Fecha outros submenus se abertos
-            reportsSubMenu.classList.remove('show'); // Fecha outros submenus se abertos
+            tripsSubMenu.classList.remove('show');
+            reportsSubMenu.classList.remove('show');
         });
 
         reportsMenu.addEventListener('click', function(e) {
             e.preventDefault();
             reportsSubMenu.classList.toggle('show');
-            tripsSubMenu.classList.remove('show'); // Fecha outros submenus se abertos
-            vehiclesSubMenu.classList.remove('show'); // Fecha outros submenus se abertos
+            tripsSubMenu.classList.remove('show');
+            vehiclesSubMenu.classList.remove('show');
         });
     });
 </script>
-
 </body>
 </html>

@@ -20,6 +20,7 @@ use Illuminate\Http\Response;
 use App\Models\DrivingLicense;
 use App\Models\Contact;
 use App\Models\ContactType;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
 
@@ -253,14 +254,13 @@ class EmployeeController extends Controller
         if (Auth::user()->isManager() && $employee->employee_role_id == 1) {
             return redirect()->route('error.403');
         }
-        try{
+        try {
             $this->authorize('delete', $employee);
             $employee->delete();
             return redirect()->route('employees.index');
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir esse funcionário.');
         }
-
     }
 
     public function deleteSelected(Request $request)
@@ -311,133 +311,109 @@ class EmployeeController extends Controller
 
     public function import(Request $request)
     {
-        $request->validate([
-            'file' => 'required|mimes:csv,txt|max:2048',
-        ], [
-            'file.required' => 'O campo arquivo é obrigatório.',
-            'file.mimes' => 'Arquivo inválido, necessário enviar arquivo CSV.',
-            'file.max' => 'Tamanho do arquivo excede :max Mb'
-        ]);
-
-        $employeeImports = [
-            'name',
-            'CC',
-            'NIF',
-            'birth_date',
-            'employee_role_id',
-            'gender',
-            'password'
-        ];
-
-        $roleMapping = [
-            'Administrador' => 1,
-            'Gerente' => 2,
-            'Funcionario' => 3,
-        ];
-
-        $nifAlterar = 0;
-        $cartaoCidadaoAlterar = 0;
-
-        $dataFile = array_map('str_getcsv', file($request->file('file')));
-
-        $arryValues = [];
-
-        $numRegisto = 0;
-
-        foreach ($dataFile as $keyData => $row) {
-            $values = array_map('trim', explode(';', $row[0]));
-
-            if (count($values) != count($employeeImports)) {
-                throw new Exception("Número de valores na linha " . ($keyData + 1) . " não corresponde ao número de colunas esperadas.");
-            }
-
-            $isDuplicate = false;
-
-            foreach ($employeeImports as $key => $employeeImport) {
-                $arryValues[$keyData][$employeeImport] = $values[$key];
-                if ($employeeImport == 'NIF') {
-                    if (Employee::where('NIF', $values[$key])->exists()) {
-                        $nifAlterar++;
-                        $isDuplicate = true;
-                    }
-                }
-
-                if ($employeeImport == "CC") {
-                    if (Employee::where('CC', $values[$key])->exists()) {
-                        $cartaoCidadaoAlterar++;
-                        $isDuplicate = true;
-                    }
-                }
-
-                if ($isDuplicate) {
-                    continue;
-                }
-
-                if ($employeeImport === 'birth_date') {
-                    $date = DateTime::createFromFormat('m/d/Y', $values[$key]);
-                    if ($date) {
-                        $arryValues[$keyData][$employeeImport] = $date->format('Y-m-d');
-                    } else {
-                        throw new Exception("Data inválida na linha " . ($keyData + 1) . ": " . $values[$key]);
-                    }
-                } elseif ($employeeImport === 'employee_role_id') {
-                    if (array_key_exists($values[$key], $roleMapping)) {
-                        $arryValues[$keyData][$employeeImport] = $roleMapping[$values[$key]];
-                    } else {
-                        throw new Exception("Cargo inválido na linha " . ($keyData + 1) . ": " . $values[$key]);
-                    }
-                } else {
-                    $arryValues[$keyData][$employeeImport] = $values[$key];
-                }
-
-                if ($employeeImport == "password") {
-                    $arryValues[$keyData][$employeeImport] = Hash::make(Str::random(7));
-                }
-            }
-            $numRegisto++;
-        }
-
-        if ($nifAlterar > 0 || $cartaoCidadaoAlterar > 0) {
-            return back()->with('error', 'Dados não importados. Alguns registros já estão cadastrados.<br>Quantidade de NIF duplicados: ' . $nifAlterar . '<br>Quantidade de Cartões de Cidadão duplicados: ' . $cartaoCidadaoAlterar);
-        }
-
-        try {
-            Employee::insert($arryValues);
-        } catch (\Exception $e) {
-            return back()->with('error', 'Erro ao inserir dados: ' . $e->getMessage());
-        }
-
-        return back()->with('sucesso', 'Dados importados com sucesso. <br>Quantidade: ' . $numRegisto);
-    }
-
-    public function importCsv(Request $request)
-    {
+       
         $request->validate([
             'file' => 'required|file|mimes:csv,txt',
         ]);
 
         $file = $request->file('file');
-
         $path = $file->getRealPath();
-
         $data = array_map('str_getcsv', file($path));
+        $header = array_shift($data);
 
-        foreach ($data as $row) {
+        $defaultEmployeeRoleId = 3;
+        $defaultGender = 'Não especificado';
+        $defaultBirthDate = '2000-01-01';
+        $defaultCC = '000000000';
+        $defaultNIF = '000000000';
+        $defaultAddress = 'Não tem endereço';
+        $defaultEmailPrefix = 'employee';
+        $defaultEmailDomain = '@example.com';
+        $defaultPhone = '000000000';
+        $defaultPassword = 'defaultpassword';
+        $defaultRole = 'Funcionário';
+
+        $addedCount = 0;
+        $duplicateCount = 0;
+
+        foreach ($data as $index => $row) {
+            $row = array_combine($header, $row);
+
+            if (!isset($row['numFuncionario']) || empty($row['nome'])) {
+                continue;
+            }
+
+            $employeeNumber = $row['numFuncionario'];
+            $name = $row['nome'];
+
+
+            if (!preg_match('/^[a-zA-Z\s]+$/', $name)) {
+                continue;
+            }
+
+
+            $existingEmployee = Employee::where('employee_number', $employeeNumber)->first();
+            if ($existingEmployee) {
+                $duplicateCount++;
+                continue;
+            }
+
+            $gender = $defaultGender;
+            $birthDate = $defaultBirthDate;
+
+            $CC = $row['CC'] ?? $defaultCC;
+            $ccSuffix = 1;
+            while (Employee::where('CC', $CC)->exists()) {
+                $CC = $defaultCC . str_pad($ccSuffix++, 1, '0', STR_PAD_LEFT);
+            }
+
+            $NIF = $row['NIF'] ?? $defaultNIF;
+            $nifSuffix = 1;
+            while (Employee::where('NIF', $NIF)->exists()) {
+                $NIF = $defaultNIF . str_pad($nifSuffix++, 1, '0', STR_PAD_LEFT);
+            }
+
+            $address = $row['address'] ?? $defaultAddress;
+
+            $email = $row['email'] ?? ($defaultEmailPrefix . $index . $defaultEmailDomain);
+            $emailSuffix = 1;
+            while (Employee::where('email', $email)->exists()) {
+                $email = $defaultEmailPrefix . $index . str_pad($emailSuffix++, 1, '0', STR_PAD_LEFT) . $defaultEmailDomain;
+            }
+
+            $phone = $row['phone'] ?? $defaultPhone;
+            $phoneSuffix = 1;
+            while (Employee::where('phone', $phone)->exists()) {
+                $phone = $defaultPhone . str_pad($phoneSuffix++, 1, '0', STR_PAD_LEFT);
+            }
+
+            $role = $defaultRole;
+
+
             Employee::create([
-                'name' => $row[0],
-                'employee_number' => $row[1],
-                'gender' => $row[2],
-                'birth_date' => $row[3],
-                'CC' => $row[4],
-                'NIF' => $row[5],
-                'address' => $row[6],
-                'employee_role_id' => $row[7],
-                'email' => $row[8],
-                'phone' => $row[9],
-                'password' => Hash::make($row[10]),
+                'name' => $name,
+                'employee_number' => $employeeNumber,
+                'gender' => $gender,
+                'birth_date' => $birthDate,
+                'CC' => $CC,
+                'NIF' => $NIF,
+                'address' => $address,
+                'employee_role_id' => $defaultEmployeeRoleId,
+                'email' => $email,
+                'phone' => $phone,
+                'password' => Hash::make($defaultPassword),
+                'role' => $role,
             ]);
+
+            $addedCount++;
         }
 
+        $message = "Importação concluída. $addedCount funcionários adicionados.";
+        if ($duplicateCount > 0) {
+            $message .= " $duplicateCount funcionários duplicados não foram adicionados.";
+        }
+
+        session()->flash('message', $message);
         return redirect()->route('employees.index');
-    }
+    } 
 }

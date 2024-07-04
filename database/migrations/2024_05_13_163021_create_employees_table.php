@@ -26,6 +26,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('first_login')->default(true);
+            $table->string('google2fa_secret')->nullable(); // Adicionar este campo
+            $table->boolean('uses_two_factor_auth')->default(false); // Adicionar este campo
             $table->rememberToken();
             $table->timestamps();
         });

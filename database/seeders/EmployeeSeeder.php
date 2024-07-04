@@ -138,7 +138,7 @@ class EmployeeSeeder extends Seeder
         }
 
         // Criação de 200 funcionários fictícios
-        for ($i = 0; $i < 200; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             Employee::create([
                 'name' => $faker->name,
                 'employee_number' => str_pad($i + 6, 4, '0', STR_PAD_LEFT), // Employee numbers starting from 0002

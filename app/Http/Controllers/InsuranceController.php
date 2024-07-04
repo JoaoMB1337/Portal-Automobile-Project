@@ -13,16 +13,10 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Database\QueryException;
 
-
-
-
 class InsuranceController extends Controller
 {
     use AuthorizesRequests;
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         try {
@@ -62,7 +56,6 @@ class InsuranceController extends Controller
             return redirect()->route('error.403')->with('error', 'Erro ao buscar os seguros.');
         }
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -110,8 +103,6 @@ class InsuranceController extends Controller
 
         return redirect()->route('insurances.index')->with('success', 'Insurance created successfully.');
     }
-
-
 
     /**
      * Display the specified resource.

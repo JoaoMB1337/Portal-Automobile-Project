@@ -13,7 +13,6 @@ class CheckFirstLogin
         if (Auth::check() && Auth::user()->first_login) {
             return redirect()->route('password.change.form');
         }
-
         return $next($request);
     }
 }
