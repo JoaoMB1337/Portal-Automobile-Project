@@ -20,6 +20,7 @@ use Illuminate\Http\Response;
 use App\Models\DrivingLicense;
 use App\Models\Contact;
 use App\Models\ContactType;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
 
@@ -253,14 +254,13 @@ class EmployeeController extends Controller
         if (Auth::user()->isManager() && $employee->employee_role_id == 1) {
             return redirect()->route('error.403');
         }
-        try{
+        try {
             $this->authorize('delete', $employee);
             $employee->delete();
             return redirect()->route('employees.index');
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir esse funcionário.');
         }
-
     }
 
     public function deleteSelected(Request $request)
@@ -311,7 +311,7 @@ class EmployeeController extends Controller
 
     public function import(Request $request)
     {
-        $request->validate([
+        /* $request->validate([
             'file' => 'required|mimes:csv,txt|max:2048',
         ], [
             'file.required' => 'O campo arquivo é obrigatório.',
@@ -407,10 +407,119 @@ class EmployeeController extends Controller
             return back()->with('error', 'Erro ao inserir dados: ' . $e->getMessage());
         }
 
-        return back()->with('sucesso', 'Dados importados com sucesso. <br>Quantidade: ' . $numRegisto);
+        return back()->with('sucesso', 'Dados importados com sucesso. <br>Quantidade: ' . $numRegisto); */
+
+
+
+
+
+        $request->validate([
+            'file' => 'required|file|mimes:csv,txt',
+        ]);
+
+        $file = $request->file('file');
+        $path = $file->getRealPath();
+        $data = array_map('str_getcsv', file($path));
+        $header = array_shift($data);
+
+        $defaultEmployeeRoleId = 3;
+        $defaultGender = 'Não especificado';
+        $defaultBirthDate = '2000-01-01';
+        $defaultCC = '000000000';
+        $defaultNIF = '000000000';
+        $defaultAddress = 'Não tem endereço';
+        $defaultEmailPrefix = 'employee';
+        $defaultEmailDomain = '@example.com';
+        $defaultPhone = '000000000';
+        $defaultPassword = 'defaultpassword';
+        $defaultRole = 'Funcionário';
+
+        $addedCount = 0;
+        $duplicateCount = 0;
+
+        foreach ($data as $index => $row) {
+            $row = array_combine($header, $row);
+
+            if (!isset($row['numFuncionario']) || empty($row['nome'])) {
+                continue;
+            }
+
+            $employeeNumber = $row['numFuncionario'];
+            $name = $row['nome'];
+
+
+            if (!preg_match('/^[a-zA-Z\s]+$/', $name)) {
+                continue;
+            }
+
+
+            $existingEmployee = Employee::where('employee_number', $employeeNumber)->first();
+            if ($existingEmployee) {
+                $duplicateCount++;
+                continue;
+            }
+
+            $gender = $defaultGender;
+            $birthDate = $defaultBirthDate;
+
+            $CC = $row['CC'] ?? $defaultCC;
+            $ccSuffix = 1;
+            while (Employee::where('CC', $CC)->exists()) {
+                $CC = $defaultCC . str_pad($ccSuffix++, 1, '0', STR_PAD_LEFT);
+            }
+
+            $NIF = $row['NIF'] ?? $defaultNIF;
+            $nifSuffix = 1;
+            while (Employee::where('NIF', $NIF)->exists()) {
+                $NIF = $defaultNIF . str_pad($nifSuffix++, 1, '0', STR_PAD_LEFT);
+            }
+
+            $address = $row['address'] ?? $defaultAddress;
+
+            $email = $row['email'] ?? ($defaultEmailPrefix . $index . $defaultEmailDomain);
+            $emailSuffix = 1;
+            while (Employee::where('email', $email)->exists()) {
+                $email = $defaultEmailPrefix . $index . str_pad($emailSuffix++, 1, '0', STR_PAD_LEFT) . $defaultEmailDomain;
+            }
+
+            $phone = $row['phone'] ?? $defaultPhone;
+            $phoneSuffix = 1;
+            while (Employee::where('phone', $phone)->exists()) {
+                $phone = $defaultPhone . str_pad($phoneSuffix++, 1, '0', STR_PAD_LEFT);
+            }
+
+            $role = $defaultRole;
+
+
+            Employee::create([
+                'name' => $name,
+                'employee_number' => $employeeNumber,
+                'gender' => $gender,
+                'birth_date' => $birthDate,
+                'CC' => $CC,
+                'NIF' => $NIF,
+                'address' => $address,
+                'employee_role_id' => $defaultEmployeeRoleId,
+                'email' => $email,
+                'phone' => $phone,
+                'password' => Hash::make($defaultPassword),
+                'role' => $role,
+            ]);
+
+            $addedCount++;
+        }
+
+        $message = "Importação concluída. $addedCount funcionários adicionados.";
+        if ($duplicateCount > 0) {
+            $message .= " $duplicateCount funcionários duplicados não foram adicionados.";
+        }
+
+        session()->flash('message', $message);
+        return redirect()->route('employees.index');
     }
 
-    public function importCsv(Request $request)
+
+    /* public function importCsv(Request $request)
     {
         $request->validate([
             'file' => 'required|file|mimes:csv,txt',
@@ -439,5 +548,127 @@ class EmployeeController extends Controller
         }
 
         return redirect()->route('employees.index');
-    }
+    } */
+
+
+
+
+
+
+
+
+    /* public function importCsv(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:csv,txt',
+        ]);
+
+        $file = $request->file('file');
+        $path = $file->getRealPath();
+        $data = array_map('str_getcsv', file($path));
+        $header = array_shift($data);
+
+        $defaultEmployeeRoleId = 3;
+        $defaultGender = 'Não especificado';
+        $defaultBirthDate = '2000-01-01';
+        $defaultCC = '000000000';
+        $defaultNIF = '000000000';
+        $defaultAddress = 'Não tem endereço';
+        $defaultEmailPrefix = 'employee';
+        $defaultEmailDomain = '@example.com';
+        $defaultPhone = '000000000';
+        $defaultPassword = 'defaultpassword';
+        $defaultRole = 'Funcionário';
+
+        $lastEmployeeNumber = Employee::max('employee_number');
+
+        if ($lastEmployeeNumber === null) {
+            $lastEmployeeNumber = 0;
+        }
+
+        foreach ($data as $index => $row) {
+            $row = array_combine($header, $row);
+
+            if (!isset($row['numFuncionario']) || empty($row['nome'])) {
+                continue;
+            }
+
+            $name = $row['nome'];
+            if (!preg_match('/^[a-zA-Z\s]+$/', $name)) {
+                continue;
+            }
+
+            $employeeNumber = str_pad(++$lastEmployeeNumber, 4, '0', STR_PAD_LEFT);
+            $gender = $defaultGender;
+            $birthDate = $defaultBirthDate;
+
+
+            $CC = $row['CC'] ?? $defaultCC;
+            $ccSuffix = 1;
+            while (Employee::where('CC', $CC)->exists()) {
+                $CC = $defaultCC . str_pad($ccSuffix++, 1, '0', STR_PAD_LEFT);
+            }
+
+
+            $NIF = $row['NIF'] ?? $defaultNIF;
+            $nifSuffix = 1;
+            while (Employee::where('NIF', $NIF)->exists()) {
+                $NIF = $defaultNIF . str_pad($nifSuffix++, 1, '0', STR_PAD_LEFT);
+            }
+
+            $address = $row['address'] ?? $defaultAddress;
+
+
+            $email = $row['email'] ?? ($defaultEmailPrefix . $index . $defaultEmailDomain);
+            $emailSuffix = 1;
+            while (Employee::where('email', $email)->exists()) {
+                $email = $defaultEmailPrefix . $index . str_pad($emailSuffix++, 1, '0', STR_PAD_LEFT) . $defaultEmailDomain;
+            }
+
+
+            $phone = $row['phone'] ?? $defaultPhone;
+            $phoneSuffix = 1;
+            while (Employee::where('phone', $phone)->exists()) {
+                $phone = $defaultPhone . str_pad($phoneSuffix++, 1, '0', STR_PAD_LEFT);
+            }
+
+            $role = $defaultRole;
+
+            $existingEmployee = Employee::where('employee_number', $employeeNumber)->first();
+
+            if ($existingEmployee) {
+                $existingEmployee->update([
+                    'name' => $name,
+                    'employee_number' => $employeeNumber,
+                    'gender' => $gender,
+                    'birth_date' => $birthDate,
+                    'CC' => $CC,
+                    'NIF' => $NIF,
+                    'address' => $address,
+                    'employee_role_id' => $defaultEmployeeRoleId,
+                    'email' => $email,
+                    'phone' => $phone,
+                    'password' => Hash::make($defaultPassword),
+                    'role' => $role,
+                ]);
+            } else {
+                Employee::create([
+                    'name' => $name,
+                    'employee_number' => $employeeNumber,
+                    'gender' => $gender,
+                    'birth_date' => $birthDate,
+                    'CC' => $CC,
+                    'NIF' => $NIF,
+                    'address' => $address,
+                    'employee_role_id' => $defaultEmployeeRoleId,
+                    'email' => $email,
+                    'phone' => $phone,
+                    'password' => Hash::make($defaultPassword),
+                    'role' => $role,
+                ]);
+            }
+        }
+
+        return redirect()->route('employees.index');
+    } */
 }
