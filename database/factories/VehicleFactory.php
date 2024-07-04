@@ -35,12 +35,13 @@ class VehicleFactory extends Factory
             'rental_contact_person' => $this->faker->optional()->name,
             'rental_contact_number' => $this->faker->optional()->phoneNumber,
             'notes' => $this->faker->optional()->text(50),
+            'passenger_quantity' => $this->faker->numberBetween(1, 9),
             'is_active' => $this->faker->boolean(false),
             'fuel_type_id' => \App\Models\FuelType::inRandomOrder()->value('id'),
             'car_category_id' => \App\Models\CarCategory::inRandomOrder()->value('id'),
             'brand_id' => \App\Models\Brand::inRandomOrder()->value('id'),
             'vehicle_condition_id' => \App\Models\VehicleCondition::inRandomOrder()->value('id'),
         ];
-        
+
     }
 }
