@@ -8,11 +8,20 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\CheckFirstLogin;
 use App\Http\Controllers\CostReportController;
 use App\Http\Controllers\ExternalCarReportController;
+use App\Http\Controllers\Auth\TwoFactorController;
+use App\Http\Controllers\ProjectReportController;
+use App\Http\Controllers\InsuranceReportController;
+
 
 
 // Route to show the login form
 Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login.form');
 Auth::routes(['register' => false]);
+
+Route::get('/2fa/setup', [TwoFactorController::class, 'setup'])->name('2fa.setup')->middleware('auth');
+Route::post('/2fa/setup', [TwoFactorController::class, 'completeSetup'])->name('2fa.completeSetup')->middleware('auth');
+Route::get('/2fa', [TwoFactorController::class, 'showVerifyForm'])->name('2fa.verify')->middleware('auth');
+Route::post('/2fa', [TwoFactorController::class, 'verify'])->name('2fa.verifyForm')->middleware('auth');
 
 // Group routes that require authentication
 Route::middleware(['auth'])->group(function () {
@@ -73,3 +82,16 @@ Route::get('/cost-report/generate', [CostReportController::class, 'generateCostR
 Route::get('/external-car-report', [ExternalCarReportController::class, 'index'])->name('external.car.report.index');
 Route::post('/external-car-report', [ExternalCarReportController::class, 'filter'])->name('external.car.report.filter');
 Route::get('/external-car-report/generate', [ExternalCarReportController::class, 'generateExternalCarReport'])->name('external.car.report.generate');
+
+
+//Route to show project report
+
+Route::get('/project-reports', [ProjectReportController::class, 'index'])->name('project.report.index');
+Route::post('/project-reports', [ProjectReportController::class, 'filter'])->name('project.report.filter');
+Route::get('/project-reports/generate', [ProjectReportController::class, 'generateProjectReport'])->name('project.report.generate');
+
+//Route to show insurance report
+
+Route::get('/insurance-reports', [InsuranceReportController::class, 'index'])->name('insurance.report.index');
+Route::post('/insurance-reports', [InsuranceReportController::class, 'filter'])->name('insurance.report.filter');
+Route::get('/insurance-reports/generate', [InsuranceReportController::class, 'generateInsuranceReport'])->name('insurance.report.generate');

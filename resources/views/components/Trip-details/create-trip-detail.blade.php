@@ -55,7 +55,7 @@
             </label>
             <label for="camera" class="flex items-center justify-center w-full py-2 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold cursor-pointer">
                 Tirar uma Foto
-                <input id="camera" type="file" accept="image/*;capture=camera" class="hidden" name="receipt_camera" onchange="handleFileSelect('camera')">
+                <input id="camera" type="file" accept="capture=camera" class="hidden" name="receipt_camera" onchange="handleFileSelect('camera')">
             </label>
         </div>
         @error('receipt')

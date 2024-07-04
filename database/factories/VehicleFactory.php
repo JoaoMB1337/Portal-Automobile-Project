@@ -17,12 +17,11 @@ class VehicleFactory extends Factory
     protected $model = Vehicle::class;
     public function definition(): array
     {
-        $rentalStartDate = $this->faker->optional()->dateTime();
-        $rentalEndDate = null;
+        // Gera a data de início do aluguel
+        $rentalStartDate = $this->faker->dateTimeBetween('2022-01-01', '2024-07-31')->format('Y-m-d');
 
-        if ($rentalStartDate) {
-            $rentalEndDate = $this->faker->dateTimeBetween($rentalStartDate, '+1 year');
-        }
+        // Gera a data de término do aluguel, garantindo que seja após a data de início
+        $rentalEndDate = $this->faker->dateTimeBetween($rentalStartDate, '2024-07-31')->format('Y-m-d');
 
         return [
             'plate' => strtoupper($this->faker->bothify('???-####')),
@@ -42,5 +41,6 @@ class VehicleFactory extends Factory
             'brand_id' => \App\Models\Brand::inRandomOrder()->value('id'),
             'vehicle_condition_id' => \App\Models\VehicleCondition::inRandomOrder()->value('id'),
         ];
+        
     }
 }

@@ -8,6 +8,7 @@
         table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background-color: #f2f2f2; }
+        tfoot tr td { font-weight: bold; }
     </style>
 </head>
 <body>
@@ -30,14 +31,24 @@
     @foreach ($vehicles as $vehicle)
         <tr>
             <td>{{ $vehicle->plate }}</td>
-            <td>{{ $vehicle->rental_price_per_day }}</td>
+            <td>{{ number_format($vehicle->rental_price_per_day, 2, ',', '.') }}</td>
             <td>{{ $vehicle->rental_company }}</td>
             <td>{{ $vehicle->rental_start_date }}</td>
             <td>{{ $vehicle->rental_end_date }}</td>
-            <td>{{ number_format($vehicle->total_rental_cost, 2) }}</td>
+            <td>{{ number_format($vehicle->total_rental_cost, 2, ',', '.') }}</td>
         </tr>
     @endforeach
     </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="5" style="text-align: right;">Total de Veículos:</td>
+            <td>{{ $vehicles->count() }}</td>
+        </tr>
+        <tr>
+            <td colspan="5" style="text-align: right;">Total de Custos:</td>
+            <td>{{ number_format($totalCost, 2, ',', '.') }}</td>
+        </tr>
+    </tfoot>
 </table>
 </body>
 </html>

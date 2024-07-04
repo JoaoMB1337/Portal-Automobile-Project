@@ -1,14 +1,36 @@
-<form action="{{ route('cost.report.filter') }}" method="POST" class="bg-white p-6 rounded-lg shadow-sm max-w-md mx-auto">
+<form action="{{ route('cost.report.filter') }}" method="POST" class="bg-white p-10 rounded-lg shadow-md max-w-lg mx-auto space-y-6">
     @csrf
-    <h1 class="text-2xl text-center mb-6">Gerar Relatório de Custos</h1>
+    <h1 class="text-3xl text-center text-gray-800 mb-6 ">Relatórios de Custos das viagens</h1>
 
-    <div class="mb-4">
-        <label for="start_date" class="block text-gray-600 text-sm">Data Inicial:</label>
-        <input type="date" id="start_date" name="start_date" required value="{{ old('start_date', $startDate) }}" class="mt-1 p-3 border border-gray-300 rounded w-full text-sm">
+    <div class="mb-5">
+        <label for="start_date" class="block text-gray-600 text-sm font-medium mb-2">Data Inicial:</label>
+        <div class="relative">
+            <input type="date" id="start_date" name="start_date" required value="{{ old('start_date', $startDate) }}" class="block w-full p-3 border border-gray-300 rounded-md focus:ring-gray-400 focus:border-gray-400 text-sm">
+            <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H5a2 2 0 00-2 2v11a2 2 0 002 2h10a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 00-1-1H6zM4 7h12v9a1 1 0 01-1 1H5a1 1 0 01-1-1V7zm8 4a1 1 0 10-2 0v3a1 1 0 102 0v-3z" clip-rule="evenodd" />
+                </svg>
+            </span>
+        </div>
+        @error('start_date')
+        <span class="text-red-600 text-sm mt-1">{{ $message }}</span>
+        @enderror
     </div>
-    <div class="mb-4">
-        <label for="end_date" class="block text-gray-600 text-sm">Data Final:</label>
-        <input type="date" id="end_date" name="end_date" required value="{{ old('end_date', $endDate) }}" class="mt-1 p-3 border border-gray-300 rounded w-full text-sm">
+
+    <div class="mb-5">
+        <label for="end_date" class="block text-gray-600 text-sm font-medium mb-2">Data Final:</label>
+        <div class="relative">
+            <input type="date" id="end_date" name="end_date" required value="{{ old('end_date', $endDate) }}" class="block w-full p-3 border border-gray-300 rounded-md focus:ring-gray-400 focus:border-gray-400 text-sm">
+            <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H5a2 2 0 00-2 2v11a2 2 0 002 2h10a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 00-1-1H6zM4 7h12v9a1 1 0 01-1 1H5a1 1 0 01-1-1V7zm8 4a1 1 0 10-2 0v3a1 1 0 102 0v-3z" clip-rule="evenodd" />
+                </svg>
+            </span>
+        </div>
+        @error('end_date')
+        <span class="text-red-600 text-sm mt-1">{{ $message }}</span>
+        @enderror
     </div>
-    <button type="submit" class="w-full bg-gray-600 text-white px-4 py-3 rounded-md shadow-sm hover:bg-gray-700 text-sm">Filtrar</button>
+
+    <button type="submit" class="w-full  bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white px-4 py-3 rounded-md shadow-sm hover:bg-gradient-to-l text-sm font-medium transition duration-300 ease-in-out transform hover:scale-105">Pesquisar</button>
 </form>

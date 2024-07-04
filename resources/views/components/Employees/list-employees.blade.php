@@ -97,6 +97,7 @@
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Criar Manualmente</a>
                 <button id="importCsvBtn" data-action="{{ route('employee.import') }}"
                     data-token="{{ csrf_token() }}">Importar CSV</button>
+
             </div>
         </div>
     </div>

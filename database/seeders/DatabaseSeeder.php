@@ -39,5 +39,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call(TripSeeder::class);
         $this->call(InsuranceSeeder::class);
+        $this->call(TripDetailSeeder::class);
     }
 }

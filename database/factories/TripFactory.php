@@ -19,8 +19,8 @@ class TripFactory extends Factory
     public function definition(): array
     {
         return [
-            'start_date' => $this->faker->date(),
-            'end_date' => $this->faker->date(),
+            'start_date' => $this->faker->dateTimeBetween('2022-01-01', '2024-07-31')->format('Y-m-d'),
+            'end_date' => $this->faker->dateTimeBetween('2022-01-01', '2024-07-31')->format('Y-m-d'),
             'destination' => $this->faker->city,
             'purpose' => $this->faker->sentence,
             'project_id' => \App\Models\Project::inRandomOrder()->value('id'),
