@@ -1,11 +1,10 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Trip;
-use TCPDF;
+use Carbon\Carbon;
 
 class ProjectReportController extends Controller
 {
@@ -15,102 +14,48 @@ class ProjectReportController extends Controller
         $projectId = $request->input('project_id');
         $totalCost = 0;
         $tripCount = 0;
+        $costTypesSummary = collect();
         $trips = collect();
 
         if ($projectId) {
-            $allTrips = Trip::where('project_id', $projectId)
-                ->with(['tripDetails', 'tripDetails.costType'])
-                ->get();
+            $query = Trip::where('project_id', $projectId)
+                ->with(['tripDetails', 'tripDetails.costType']);
+
+            $allTrips = $query->get();
 
             $totalCost = $allTrips->sum(function ($trip) {
                 return $trip->tripDetails->sum('cost');
             });
-            $tripCount = $allTrips->sum(function ($trip) {
-                return $trip->tripDetails->count();
+            $tripCount = $allTrips->count();
+
+            $costTypesSummary = $allTrips->flatMap(function ($trip) {
+                return $trip->tripDetails;
+            })->groupBy('cost_type_id')->map(function ($details) {
+                return [
+                    'type_name' => $details->first()->costType->type_name,
+                    'total_cost' => $details->sum('cost'),
+                    'details' => $details
+                ];
             });
 
-            // Aplica a paginação
-            $trips = Trip::where('project_id', $projectId)
-                ->with(['tripDetails', 'tripDetails.costType'])
-                ->paginate(10);
+            $trips = $query->paginate(10);
         }
 
-        return view('pages.Project-report.index', compact('projects', 'trips', 'projectId', 'totalCost', 'tripCount'));
+        return view('pages.Project-report.index', compact('projects', 'trips', 'projectId', 'totalCost', 'tripCount',  'costTypesSummary'));
     }
 
     public function filter(Request $request)
     {
         $request->validate([
-            'project_id' => 'required|integer|exists:projects,id',
+            'project_id' => 'nullable|integer|exists:projects,id',
+        ], [
+            'project_id.required' => 'O projeto é obrigatório.',
+            'project_id.integer' => 'O projeto deve ser um número inteiro.',
+            'project_id.exists' => 'O projeto selecionado não existe.',
         ]);
 
-        $projectId = $request->project_id;
-        $projects = Project::all();
-        $totalCost = 0;
-        $tripCount = 0;
-        $trips = collect();
-
-        if ($projectId) {
-            $allTrips = Trip::where('project_id', $projectId)
-                ->with(['tripDetails', 'tripDetails.costType'])
-                ->get();
-
-            $totalCost = $allTrips->sum(function ($trip) {
-                return $trip->tripDetails->sum('cost');
-            });
-            $tripCount = $allTrips->sum(function ($trip) {
-                return $trip->tripDetails->count();
-            });
-
-            $trips = Trip::where('project_id', $projectId)
-                ->with(['tripDetails', 'tripDetails.costType'])
-                ->paginate(10);
-        }
-
-        return view('pages.Project-report.index', compact('projects', 'trips', 'projectId', 'totalCost', 'tripCount'));
-    }
-
-    public function generateProjectReport(Request $request)
-    {
-        $request->validate([
-            'project_id' => 'required|integer|exists:projects,id',
+        return redirect()->route('project.report.index', [
+            'project_id' => $request->input('project_id'),
         ]);
-
-        $projectId = $request->project_id;
-        $trips = Trip::where('project_id', $projectId)
-            ->with(['tripDetails', 'tripDetails.costType'])
-            ->get();
-
-        $totalCost = $trips->sum(function ($trip) {
-            return $trip->tripDetails->sum('cost');
-        });
-        $tripCount = $trips->sum(function ($trip) {
-            return $trip->tripDetails->count();
-        });
-
-        $data = [
-            'trips' => $trips,
-            'project' => Project::find($projectId),
-            'totalCost' => $totalCost,
-            'tripCount' => $tripCount,
-        ];
-
-        $pdf = new TCPDF();
-        $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor('Your Name');
-        $pdf->SetTitle('Relatório de Projetos');
-        $pdf->SetSubject('Relatório de Projetos');
-        $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
-
-        $pdf->setPrintHeader(false);
-        $pdf->setPrintFooter(false);
-
-        $pdf->AddPage();
-
-        $html = view('components.Project-reports.project-pdf-report', $data)->render();
-        $pdf->writeHTML($html, true, false, true, false, '');
-
-        return $pdf->Output('project_report.pdf', 'D');
     }
 }
-
