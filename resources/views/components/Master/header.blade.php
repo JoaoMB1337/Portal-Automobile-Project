@@ -280,7 +280,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </a>
-                <ul id="trips-submenu" class="absolute bg-gray-800 text-white w-full mt-1 hidden">
+                <ul id="trips-submenu" class="absolute bg-gray-600 text-white w-full mt-1 hidden">
                     <li>
                         <a href="/trips" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200 ">Ver Viagem</a>
                     </li>
@@ -297,7 +297,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </a>
-                <ul id="vehicles-submenu" class="absolute bg-gray-800 text-white w-full mt-1 hidden">
+                <ul id="vehicles-submenu" class="absolute bg-gray-600 text-white w-full mt-1 hidden">
                     <li>
                         <a href="/vehicles" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Veículos</a>
                     </li>
@@ -317,7 +317,7 @@
                         </svg>
                     </a>
 
-                    <ul id="reports-submenu" class="absolute bg-gray-800 text-white w-full mt-1 hidden">
+                    <ul id="reports-submenu" class="absolute bg-gray-600 text-white w-full mt-1 hidden">
                         <li>
                             <a href="/cost-report" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Relatórios Viagens</a>
                         </li>
