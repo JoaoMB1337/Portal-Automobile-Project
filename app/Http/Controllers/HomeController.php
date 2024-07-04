@@ -54,7 +54,7 @@ class HomeController extends Controller
         // Recuperar viagens ativas
         $activeTrips = Trip::where('start_date', '<=', $today)
                             ->where('end_date', '>=', $today)
-                            ->get();
+                            ->paginate(10);
         
         return view('home', compact(
             'internalVehiclesCount',

@@ -1,6 +1,6 @@
 <!-- resources/views/modal-viagens-employee.blade.php -->
 
-<div id="trip-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+<div id="trip-modal" class="fixed inset-0 z-50 hidden overflow-y-auto lg:pl-64">
     <div class="flex items-center justify-center min-h-screen p-4 text-center">
         <div class="fixed inset-0 transition-opacity" aria-hidden="true">
             <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
@@ -37,13 +37,12 @@
 </div>
 
 <script>
-    function showTripDetails(tripId, startDate, endDate, destination, details) {
+    function showTripDetails(tripId, startDate, endDate, destination) {
         // Define os detalhes da viagem no modal
         const tripDetails = `
             <p><strong>Data de Início:</strong> ${startDate}</p>
             <p><strong>Data de Término:</strong> ${endDate}</p>
             <p><strong>Destino:</strong> ${destination}</p>
-            <p><strong>Detalhes:</strong> ${details}</p>
         `;
         document.getElementById('trip-details').innerHTML = tripDetails;
 
