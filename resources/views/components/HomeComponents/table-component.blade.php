@@ -1,4 +1,3 @@
-
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
     <div class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-center md:col-span-1">
@@ -8,13 +7,11 @@
         </div>
     </div>
 
-
     <div class="bg-white p-4 rounded-lg shadow-sm md:col-span-2">
         <h2 class="text-xl font-semibold mb-4 text-gray-900 text-center">Projetos</h2>
         <canvas id="projectsChart" class="w-full h-full"></canvas>
     </div>
 </div>
-
 
 <div class="bg-white rounded-lg border border-gray-200 p-4 shadow-sm mt-6">
     <h2 class="text-xl font-semibold mb-4 text-gray-900 text-center">Seguros a Terminar</h2>
@@ -43,6 +40,9 @@
             @endforelse
             </tbody>
         </table>
+
+        <div class="mt-4">
+            {{ $endingInsurances->links() }}
+        </div>
     </div>
 </div>
-
