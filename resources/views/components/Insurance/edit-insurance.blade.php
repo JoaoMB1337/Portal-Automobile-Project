@@ -28,7 +28,6 @@
     }
 </style>
 
-<body>
 
 <div class="flex justify-center items-start h-screen custom-bg">
     <div class="w-full max-w-md bg-white rounded-xl p-7 custom-card mt-12">
@@ -104,6 +103,5 @@
                 </button>
             </div>
         </form>
-
     </div>
 </div>

@@ -38,7 +38,7 @@
                                             {{ $trip->destination }}
                                         </td>
                                         <td class="py-4 whitespace-nowrap text-center text-gray-800">
-                                            <a href="{{ route('trip-details.create', ['trip_id' => $trip->id]) }}" class="bg-green-700 hover:bg-green-600 text-white font-medium text-sm px-3 py-2 rounded">Adicionar Custo</a>
+                                            <a href="{{ route('trip-details.create', ['trip_id' => $trip->id]) }}" class="w-full  bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white px-4 py-2 rounded-md shadow-sm hover:bg-gradient-to-l text-sm font-medium transition duration-300 ease-in-out transform hover:scale-105">Adicionar</a>
                                         </td>
                                     </tr>
                                 @empty

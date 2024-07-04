@@ -46,14 +46,11 @@
         `;
         document.getElementById('trip-details').innerHTML = tripDetails;
 
-        // Atualiza o link do botão "Adicionar Custo"
         document.getElementById('add-cost-button').href = `/trip-details/create?trip_id=${tripId}`;
 
-        // Atualiza o link do botão "Abrir no Google Maps"
         const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(destination)}`;
         document.getElementById('maps-button').href = mapsLink;
 
-        // Mostra o modal
         document.getElementById('trip-modal').classList.remove('hidden');
     }
 </script>
