@@ -62,6 +62,12 @@
                 </tbody>
             </table>
         </div>
+        
+        <!-- Botão para download do PDF -->
+        <div class="mt-6 text-right">
+            <a href="{{ route('project.report.generate', ['project_id' => $projectId]) }}" class="bg-green-500 text-white px-4 py-2 rounded">Baixar Relatório PDF</a>
+        </div>
+
         <div class="mt-6">
             {{ $trips->appends(request()->input())->links() }}
         </div>

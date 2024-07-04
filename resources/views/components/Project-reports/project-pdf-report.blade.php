@@ -12,7 +12,9 @@
 </head>
 <body>
 <h1>Relatório de Projetos</h1>
-<h2>Projeto: {{ $project->name }}</h2>
+@if($project)
+    <h2>Projeto: {{ $project->name }}</h2>
+@endif
 
 <h2>Detalhes das Viagens</h2>
 <table>
@@ -29,15 +31,17 @@
         $totalCost = 0;
     @endphp
     @foreach ($trips as $trip)
-        @php
-            $totalCost += $trip->cost;
-        @endphp
-        <tr>
-            <td>{{ $trip->trip->destination }}</td>
-            <td>{{ $trip->costType->type_name }}</td>
-            <td>{{ $trip->cost }}</td>
-            <td>{{ $trip->created_at->format('d/m/Y') }}</td>
-        </tr>
+        @foreach ($trip->tripDetails as $detail)
+            @php
+                $totalCost += $detail->cost;
+            @endphp
+            <tr>
+                <td>{{ $trip->destination }}</td>
+                <td>{{ $detail->costType->type_name }}</td>
+                <td>{{ $detail->cost }}</td>
+                <td>{{ $trip->created_at->format('d/m/Y') }}</td>
+            </tr>
+        @endforeach
     @endforeach
     <tr class="font-bold">
         <td colspan="2">Custo Total</td>
