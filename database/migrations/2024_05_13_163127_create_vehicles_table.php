@@ -26,6 +26,7 @@ return new class extends Migration
             $table->boolean('is_active')->nullable()->default(false);
             $table->string('notes')->nullable();
             $table->string('pdf_file')->nullable();
+            $table->integer('passenger_quantity')->nullable();
             $table->foreignId('fuel_type_id')->constrained('fuel_types');
             $table->foreignId('car_category_id')->constrained('car_categories');
             $table->foreignId('brand_id')->constrained('brands');
