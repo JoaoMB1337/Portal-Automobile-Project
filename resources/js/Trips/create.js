@@ -58,3 +58,41 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const employees = JSON.parse(document.getElementById('employees-data').textContent);
+
+    document.getElementById('employee_name').addEventListener('input', function() {
+        const searchValue = this.value.toLowerCase();
+        const selectElement = document.getElementById('employee_id');
+
+        selectElement.innerHTML = '<option value="" disabled selected>Selecione um funcionário</option>';
+
+        let foundMatch = false;
+
+        employees.forEach(employee => {
+            if (employee.name.toLowerCase().includes(searchValue)) {
+                const option = document.createElement('option');
+                option.value = employee.id;
+                option.text = employee.name;
+                selectElement.appendChild(option);
+
+                if (!foundMatch) {
+                    selectElement.value = employee.id;
+                    foundMatch = true;
+                }
+            }
+        });
+
+        if (!foundMatch) {
+            selectElement.value = "";
+        }
+    });
+
+    document.getElementById('trip-form').addEventListener('submit', function(event) {
+        if (document.getElementById('employee-error').innerText) {
+            event.preventDefault();
+        }
+    });
+});
