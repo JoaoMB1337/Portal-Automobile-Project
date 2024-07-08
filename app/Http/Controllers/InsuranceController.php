@@ -49,9 +49,11 @@ class InsuranceController extends Controller
                 $query->whereBetween('end_date', [Carbon::now(), $endDateLimit]);
             }
 
+            $query = Insurance::query()->whereHas('vehicle');
+
             $insurances = $query->orderBy('id', 'asc')->paginate(10)->appends($request->query());
 
-            return view('pages.Insurance.list', ['insurance' => $insurances]);
+            return view('pages.Insurance.list', ['insurance' => $insurances, 'vehicles' => Vehicle::all()]);
         } catch (\Exception $e) {
             return redirect()->route('error.403')->with('error', 'Erro ao buscar os seguros.');
         }
@@ -65,8 +67,13 @@ class InsuranceController extends Controller
         //
         try {
             $this->authorize('create', Insurance::class);
+            $vehicles = Vehicle::all();
 
-            return view('pages.Insurance.create');
+            return view('pages.Insurance.create',
+                [
+                    'vehicles' => $vehicles
+                ]
+            );
         }catch (\Exception $e) {
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir esse funcionário.');
         }
