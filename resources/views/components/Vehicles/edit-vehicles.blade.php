@@ -62,6 +62,10 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label for="passenger_quantity" class="block text-sm font-medium text-gray-700">Numero de passageiros</label>
+                        <input type="number" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" id="passenger_quantity" name="passenger_quantity" value="{{ $vehicle->passenger_quantity }}" required>
+                    </div>
 
                     @if($vehicle->is_external)
                         <div id="externalVehicleFields" class="col-span-2">

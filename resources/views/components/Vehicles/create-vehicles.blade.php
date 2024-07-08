@@ -52,6 +52,14 @@
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
+            <div>
+                <label for="passenger_quantity" class="block text-sm font-semibold text-gray-700 mb-2">Numero de passageiros</label>
+                <input id="passengers" type="number" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('passengers') border-red-500 @enderror" name="passengers" value="{{ old('passengers') }}" required autocomplete="passengers">
+                @error('passengers')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
 
             <div>
                 <label for=" carCategory" class="block text-sm font-semibold text-gray-700 mb-2">Categoria</label>

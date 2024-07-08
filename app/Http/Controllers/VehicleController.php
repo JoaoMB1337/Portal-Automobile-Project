@@ -30,7 +30,7 @@ class VehicleController extends Controller
      */
     public function index(Request $request)
     {
-        try{
+        try {
             $this->authorize('viewAny', Vehicle::class);
 
             $query = Vehicle::query();
@@ -41,7 +41,6 @@ class VehicleController extends Controller
             }
 
             if (($isExternal = $request->input('is_external')) !== null) {
-
                 if ($isExternal === '0' || $isExternal === '1') {
                     $query->where('is_external', $isExternal);
                 }
@@ -52,19 +51,16 @@ class VehicleController extends Controller
                 $query->where('fuel_type_id', $fuelTypeId);
             }
 
-            // Pagination
-            $vehicles = $query->orderBy('id', 'asc')->paginate(15);
+            // Pagination with descending order
+            $vehicles = $query->orderBy('id', 'desc')->paginate(15);
 
             // Get all fuel types for the filter dropdown
             $fuelTypes = FuelType::all();
 
-            $vehicles = $query->orderBy('id', 'asc')->paginate(10);
-
             return view('pages.Vehicles.list', compact('vehicles', 'fuelTypes'));
-        }catch (\Exception $e){
-            return redirect()->route('error.403')->with('error', 'Você não tem permissão para criar uma viagem.');
+        } catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'Você não tem permissão para visualizar veículos.');
         }
-
     }
 
 
@@ -110,6 +106,8 @@ class VehicleController extends Controller
             $vehicle->fuel_type_id = $request->fuelTypes;
             $vehicle->car_category_id = $request->carCategory;
             $vehicle->brand_id = $request->brand;
+            $vehicle->passenger_quantity = $request->passengers;
+
 
             // Verificando e ajustando o campo is_external
             if ($request->is_external == null) {
@@ -232,6 +230,7 @@ class VehicleController extends Controller
         $vehicle->fuel_type_id = $request->fuel_type_id;
         $vehicle->car_category_id = $request->car_category_id;
         $vehicle->brand_id = $request->brand;
+        $vehicle->passenger_quantity = $request->passenger_quantity;
 
         if ($vehicle->is_external) {
             $vehicle->contract_number = $request->contract_number;

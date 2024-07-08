@@ -17,6 +17,7 @@ class Vehicle extends Model
         'fuel_type_id',
         'car_category_id',
         'brand_id',
+        'passenger_quantity',
     ];
 
     protected $attributes = [
