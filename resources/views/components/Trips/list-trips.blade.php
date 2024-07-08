@@ -31,6 +31,10 @@
 
     @include('components.Modals.modal-delete')
 
+    <a href="{{ route('trips.create') }}" class="add-button">
+        <i class="fas fa-plus"></i>
+    </a>
+
     <div class="list-table">
         <table>
             <thead>
