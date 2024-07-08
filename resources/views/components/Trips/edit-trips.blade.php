@@ -1,5 +1,8 @@
+@vite(['resources/js/Trips/edit.js'])
+<script type="application/json" id="vehicles-data">@json($vehicles)</script>
+
 <div class="flex justify-center items-start h-screen custom-bg">
-    <div class="max-w-md w-full bg-white rounded-xl p-7 custom-card mt-12">
+    <div class="max-w-lg w-full bg-white rounded-xl shadow-md p-8 custom-card mt-12">
         <div class="flex items-center justify-between mb-4">
             <a href="{{ route('trips.index') }}" class="flex items-center">
                 <button type="button" class="flex items-center px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-gray-600 border rounded-lg gap-x-2 hover:bg-gray-500">
@@ -100,52 +103,3 @@
         </form>
     </div>
 </div>
-
-<script>
-    document.getElementById('search_vehicle').addEventListener('input', function() {
-        var searchValue = this.value.toLowerCase();
-        var selectElement = document.getElementById('vehicle_id');
-
-        selectElement.innerHTML = '';
-
-        @foreach ($vehicles as $vehicle)
-        var vehiclePlate = '{{ $vehicle->plate }}'.toLowerCase();
-        if (vehiclePlate.includes(searchValue)) {
-            var option = document.createElement('option');
-            option.value = '{{ $vehicle->id }}';
-            option.text = '{{ $vehicle->plate }}';
-            selectElement.appendChild(option);
-        }
-        @endforeach
-    });
-
-    document.getElementById('start_date').addEventListener('change', validateVehicleAvailability);
-    document.getElementById('end_date').addEventListener('change', validateVehicleAvailability);
-    document.getElementById('vehicle_id').addEventListener('change', validateVehicleAvailability);
-
-    function validateVehicleAvailability() {
-        var startDate = document.getElementById('start_date').value;
-        var endDate = document.getElementById('end_date').value;
-        var vehicleId = document.getElementById('vehicle_id').value;
-
-        if (startDate && endDate && vehicleId) {
-            fetch(`{{ url('api/check-vehicle-availability') }}?start_date=${startDate}&end_date=${endDate}&vehicle_id=${vehicleId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (!data.available) {
-                        document.getElementById('vehicle-error').innerText = 'O veículo já está em uso durante o período selecionado.';
-                        document.getElementById('submit-button').disabled = true;
-                    } else {
-                        document.getElementById('vehicle-error').innerText = '';
-                        document.getElementById('submit-button').disabled = false;
-                    }
-                });
-        }
-    }
-
-    document.getElementById('trip-form').addEventListener('submit', function(event) {
-        if (document.getElementById('vehicle-error').innerText) {
-            event.preventDefault();
-        }
-    });
-</script>

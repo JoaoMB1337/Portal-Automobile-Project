@@ -38,7 +38,8 @@ export default defineConfig({
                 'resources/css/Vehicles/vehicle-list.css',
                 'resources/js/Home/home.js',
 
-                'resources/js/Trips/create.js'
+                'resources/js/Trips/create.js',
+                'resources/js/Trips/edit.js'
 
 
             ],
