@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\TripController;
 use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
@@ -95,3 +96,6 @@ Route::get('/project-reports/generate', [ProjectReportController::class, 'genera
 Route::get('/insurance-reports', [InsuranceReportController::class, 'index'])->name('insurance.report.index');
 Route::post('/insurance-reports', [InsuranceReportController::class, 'filter'])->name('insurance.report.filter');
 Route::get('/insurance-reports/generate', [InsuranceReportController::class, 'generateInsuranceReport'])->name('insurance.report.generate');
+
+
+Route::get('api/check-vehicle-availability', [TripController::class, 'checkVehicleAvailability']);
