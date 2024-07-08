@@ -220,34 +220,59 @@
             }
         }
 
-        @media (max-width: 992px) {
-            #sidebar {
-                transform: translateX(-100%);
-                width: 100vw;
+        .add-buttons-container {
+            display: flex;
+            justify-content: center
+            padding: 10px;
+            background-color: #2d3748;
+            position: absolute;
+            bottom: 30px; 
+            width: 100%;
+            margin-bottom: 20px; 
+        }
+
+        .add-btn {
+            background-color: #4a90e2;
+            color: white;
+            padding: 5px;
+            border-radius: 8px;
+            text-align: center;
+            flex: 1;
+            margin: 0 3px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .add-btn:hover {
+            background-color: #357abd;
+        }
+
+        .add-btn svg {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .add-btn p {
+            margin: 0;
+            padding-left: 3px;
+        }
+
+        @media (max-width: 768px) {
+            .add-btn {
+                font-size: 10px;
+                padding: 4px;
             }
 
-            #sidebar.show {
-                transform: translateX(0);
+            .add-btn svg {
+                width: 0.75rem;
+                height: 0.75rem;
             }
 
-            #sidebar a {
-                font-size: 30px;
-                padding: 10px 20px;
-            }
-
-            .content {
-                margin-top: 64px;
-            }
-
-            .logo {
-                width: 3rem;
-                height: 3rem;
-            }
-
-            #mobile-menu-btn {
-                visibility: visible;
-                position: fixed;
-                z-index: 2000;
+            .add-btn p {
+                padding-left: 2px;
             }
         }
 
@@ -336,6 +361,30 @@
             @endif
 
         </ul>
+
+     
+    <div class="add-buttons-container">
+        <a href="{{ route('trips.create') }}" class="add-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            <p>Adicionar Viagem</p>
+        </a>
+        <a href="{{ route('projects.create') }}" class="add-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            <p>Adicionar Projeto</p>
+        </a>
+        <a href="{{ route('vehicles.create') }}" class="add-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            <p>Adicionar Veículo</p>
+        </a>
+    </div>
+
+
     </div>
 
     <div class="mt-auto">
