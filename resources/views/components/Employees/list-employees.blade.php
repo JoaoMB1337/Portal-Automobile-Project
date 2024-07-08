@@ -50,7 +50,7 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>Nome</th>
+                    <th>Funcionario</th>
                     <th>Número</th>
                     <th>Email</th>
                     <th>Cargo</th>
