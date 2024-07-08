@@ -8,41 +8,44 @@
             </button>
         </a>
         <div class="flex justify-center mb-6">
-            <h1>Trip</h1>
+            <h1>Criar Viagem</h1>
         </div>
-        <form method="POST" action="{{ route('trips.store') }}" class="space-y-6">
+        <form method="POST" action="{{ route('trips.store') }}" class="space-y-6" id="trip-form">
             @csrf
             <div class="form-group mt-3">
-                <label for="start_date">Data de Inicio:</label>
-                <input type="date" name="start_date" class="form-input" required>
+                <label for="start_date">Data de Início:</label>
+                <input type="date" name="start_date" id="start_date" class="form-input" required value="{{ old('start_date') }}">
+                @error('start_date')
+                <div class="text-red-500">{{ $message }}</div>
+                @enderror
             </div>
             <div class="form-group mt-3">
                 <label for="end_date">Data de Fim:</label>
-                <input type="date" name="end_date" class="form-input @error('end_date') border-red-500 @enderror" required>
+                <input type="date" name="end_date" id="end_date" class="form-input @error('end_date') border-red-500 @enderror" required value="{{ old('end_date') }}">
                 @error('end_date')
                 <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
             <div class="form-group">
                 <label for="destination">Destino:</label>
-                <input type="text" name="destination" class="form-input @error('destination') border-red-500 @enderror" required>
+                <input type="text" name="destination" class="form-input @error('destination') border-red-500 @enderror" required value="{{ old('destination') }}">
                 @error('destination')
                 <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
             <div class="form-group">
-                <label for="purpose">Proposito da viagem:</label>
-                <textarea name="purpose" class="form-control @error('purpose') border-red-500 @enderror" required></textarea>
+                <label for="purpose">Propósito da Viagem:</label>
+                <textarea name="purpose" class="form-control @error('purpose') border-red-500 @enderror" required>{{ old('purpose') }}</textarea>
                 @error('purpose')
                 <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
             <div class="form-group">
-                <label for="employee_id">Funcionario:</label>
+                <label for="employee_id">Funcionário:</label>
                 <select name="employee_id" class="form-control @error('employee_id') border-red-500 @enderror" required>
                     <option value="" disabled selected>Selecione um funcionário</option>
                     @foreach ($employees as $employee)
-                        <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                        <option value="{{ $employee->id }}" {{ old('employee_id') == $employee->id ? 'selected' : '' }}>{{ $employee->name }}</option>
                     @endforeach
                 </select>
                 @error('employee_id')
@@ -57,7 +60,7 @@
                     @else
                         <option value="" disabled selected>Selecione um projeto</option>
                         @foreach ($projects as $project)
-                            <option value="{{ $project->id }}">{{ $project->name }}</option>
+                            <option value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>{{ $project->name }}</option>
                         @endforeach
                     @endif
                 </select>
@@ -69,11 +72,11 @@
                 @enderror
             </div>
             <div class="form-group">
-                <label for="type_trip_id">Tipo de viagem:</label>
+                <label for="type_trip_id">Tipo de Viagem:</label>
                 <select name="type_trip_id" class="form-control @error('type_trip_id') border-red-500 @enderror" required>
                     <option value="" disabled selected>Selecione um tipo de viagem:</option>
                     @foreach ($typeTrips as $typeTrip)
-                        <option value="{{ $typeTrip->id }}">{{ $typeTrip->type }}</option>
+                        <option value="{{ $typeTrip->id }}" {{ old('type_trip_id') == $typeTrip->id ? 'selected' : '' }}>{{ $typeTrip->type }}</option>
                     @endforeach
                 </select>
                 @error('type_trip_id')
@@ -82,23 +85,24 @@
             </div>
             <div class="form-group">
                 <label for="search_vehicle">Pesquisar Veículo por Matrícula:</label>
-                <input type="text" name="search_vehicle" id="search_vehicle" class="form-control">
+                <input type="text" name="search_vehicle" id="search_vehicle" class="form-control" value="{{ old('search_vehicle') }}">
             </div>
             <div class="form-group">
                 <label for="vehicle_id">Veículo:</label>
                 <select name="vehicle_id" id="vehicle_id" class="form-control @error('vehicle_id') border-red-500 @enderror">
                     <option value="" disabled selected>Selecione um veículo</option>
                     @foreach ($vehicles as $vehicle)
-                        <option value="{{ $vehicle->id }}">{{ $vehicle->plate }}</option>
+                        <option value="{{ $vehicle->id }}" {{ old('vehicle_id') == $vehicle->id ? 'selected' : '' }}>{{ $vehicle->plate }}</option>
                     @endforeach
                 </select>
+                <div id="vehicle-error" class="text-red-500">{{ session('vehicle_error') }}</div>
                 @error('vehicle_id')
                 <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
 
             <div>
-                <button type="submit" class="custom-btn w-full py-2 rounded-md">
+                <button type="submit" id="submit-button" class="custom-btn w-full py-2 rounded-md">
                     Criar
                 </button>
             </div>
@@ -107,20 +111,62 @@
 </div>
 
 <script>
+    const vehicles = @json($vehicles);
+
     document.getElementById('search_vehicle').addEventListener('input', function() {
-        var searchValue = this.value.toLowerCase();
-        var selectElement = document.getElementById('vehicle_id');
+        const searchValue = this.value.toLowerCase();
+        const selectElement = document.getElementById('vehicle_id');
 
-        selectElement.innerHTML = '';
+        selectElement.innerHTML = '<option value="" disabled selected>Selecione um veículo</option>';
 
-        @foreach ($vehicles as $vehicle)
-        var vehiclePlate = '{{ $vehicle->plate }}'.toLowerCase();
-        if (vehiclePlate.includes(searchValue)) {
-            var option = document.createElement('option');
-            option.value = '{{ $vehicle->id }}';
-            option.text = '{{ $vehicle->plate }}';
-            selectElement.appendChild(option);
+        let foundMatch = false;
+
+        vehicles.forEach(vehicle => {
+            if (vehicle.plate.toLowerCase().includes(searchValue)) {
+                const option = document.createElement('option');
+                option.value = vehicle.id;
+                option.text = vehicle.plate;
+                selectElement.appendChild(option);
+
+                if (!foundMatch) {
+                    selectElement.value = vehicle.id;
+                    foundMatch = true;
+                }
+            }
+        });
+
+        if (!foundMatch) {
+            selectElement.value = "";
         }
-        @endforeach
+    });
+
+    document.getElementById('start_date').addEventListener('change', validateVehicleAvailability);
+    document.getElementById('end_date').addEventListener('change', validateVehicleAvailability);
+    document.getElementById('vehicle_id').addEventListener('change', validateVehicleAvailability);
+
+    function validateVehicleAvailability() {
+        const startDate = document.getElementById('start_date').value;
+        const endDate = document.getElementById('end_date').value;
+        const vehicleId = document.getElementById('vehicle_id').value;
+
+        if (startDate && endDate && vehicleId) {
+            fetch(`{{ url('api/check-vehicle-availability') }}?start_date=${startDate}&end_date=${endDate}&vehicle_id=${vehicleId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.available) {
+                        document.getElementById('vehicle-error').innerText = 'O veículo já está em uso durante o período selecionado.';
+                        document.getElementById('submit-button').disabled = true;
+                    } else {
+                        document.getElementById('vehicle-error').innerText = '';
+                        document.getElementById('submit-button').disabled = false;
+                    }
+                });
+        }
+    }
+
+    document.getElementById('trip-form').addEventListener('submit', function(event) {
+        if (document.getElementById('vehicle-error').innerText) {
+            event.preventDefault();
+        }
     });
 </script>
