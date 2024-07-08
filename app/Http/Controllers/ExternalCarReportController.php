@@ -30,7 +30,6 @@ class ExternalCarReportController extends Controller
 
             // Calcula o total de veículos e o custo total fora da paginação
             $totalVehicles = $query->count();
-            // Substitua 'total_rental_cost' pela coluna correta
             $totalCost = $query->sum('rental_price_per_day');
         } else {
             // Retorna uma instância paginada vazia se não houver datas de início e fim
@@ -50,11 +49,9 @@ class ExternalCarReportController extends Controller
         $query = Vehicle::whereBetween('rental_start_date', [$startDate, $endDate])
             ->whereNotNull('rental_company');
 
-        // Paginação com 10 itens por página
         $vehicles = $query->paginate(10);
 
         $totalVehicles = $query->count();
-        // Substitua 'total_rental_cost' pela coluna correta
         $totalCost = $query->sum('rental_price_per_day');
 
         return view('pages.ExternalCarReport.index', compact('vehicles', 'startDate', 'endDate', 'totalVehicles', 'totalCost'));
@@ -86,7 +83,7 @@ class ExternalCarReportController extends Controller
         // Configurar o PDF
         $pdf = new TCPDF();
         $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor('Your Name');
+        $pdf->SetAuthor('InnoDrive');
         $pdf->SetTitle('Relatório de Carros Externos');
         $pdf->SetSubject('Relatório de Carros Externos');
         $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
@@ -99,7 +96,7 @@ class ExternalCarReportController extends Controller
         $pdf->AddPage();
 
         // Definir o conteúdo do PDF
-        $html = view('components.ExternalCarReport.external-cost-report', $data)->render();
+        $html = view('components.ExternalCarReport.pdf-report', $data)->render();
 
         $pdf->writeHTML($html, true, false, true, false, '');
 
@@ -116,7 +113,6 @@ class ExternalCarReportController extends Controller
                 'date',
                 'before_or_equal:end_date',
                 function ($attribute, $value, $fail) {
-                    // Permitir data futura
                 },
             ],
             'end_date' => [
@@ -124,7 +120,6 @@ class ExternalCarReportController extends Controller
                 'date',
                 'after_or_equal:start_date',
                 function ($attribute, $value, $fail) {
-                    // Permitir data futura
                 },
             ],
         ], [
