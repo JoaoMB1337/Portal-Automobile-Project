@@ -90,14 +90,15 @@
             </tbody>
         </table>
 
-        <div class="add-button-container">
-            <button id="addButton" class="add-button"><i class="fas fa-plus"></i></button>
-            <div id="addOptions" class="add-options" style="display: none;">
-                <a href="{{ route('employees.create') }}"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Criar Manualmente</a>
-                <button id="importCsvBtn" data-action="{{ route('employee.import') }}"
-                    data-token="{{ csrf_token() }}">Importar CSV</button>
-
+        <div class="add-button-container fixed bottom-4 right-4 z-10">
+            <button id="addButton" class="add-button">
+                <i class="fas fa-plus"></i>
+            </button>
+            <div id="addOptions" class="add-options hidden absolute bg-white shadow-lg rounded p-2">
+                <a href="{{ route('employees.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Criar Manualmente</a>
+                <button id="importCsvBtn" data-action="{{ route('employee.import') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        data-token="{{ csrf_token() }}">Importar CSV
+                </button>
             </div>
         </div>
     </div>
