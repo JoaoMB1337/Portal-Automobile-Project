@@ -1,37 +1,35 @@
 <?php
-
-use App\Http\Controllers\DistrictController;
-use App\Http\Controllers\TripController;
-use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\Auth\TwoFactorController;
+use App\Http\Middleware\CheckGoogle2FA;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\CheckFirstLogin;
+use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\TripController;
 use App\Http\Controllers\CostReportController;
 use App\Http\Controllers\ExternalCarReportController;
-use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\ProjectReportController;
 use App\Http\Controllers\InsuranceReportController;
 
-
-
-// Route to show the login form
 Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login.form');
 Auth::routes(['register' => false]);
 
-Route::get('/2fa/setup', [TwoFactorController::class, 'setup'])->name('2fa.setup')->middleware('auth');
-Route::post('/2fa/setup', [TwoFactorController::class, 'completeSetup'])->name('2fa.completeSetup')->middleware('auth');
-Route::get('/2fa', [TwoFactorController::class, 'showVerifyForm'])->name('2fa.verify')->middleware('auth');
-Route::post('/2fa', [TwoFactorController::class, 'verify'])->name('2fa.verifyForm')->middleware('auth');
-
-// Group routes that require authentication
 Route::middleware(['auth'])->group(function () {
+    Route::get('/2fa/setup', [TwoFactorController::class, 'setup'])->name('2fa.setup');
+    Route::post('/2fa/setup', [TwoFactorController::class, 'completeSetup'])->name('2fa.completeSetup');
+    Route::get('/2fa', [TwoFactorController::class, 'showVerifyForm'])->name('2fa.verify');
+    Route::post('/2fa', [TwoFactorController::class, 'verify'])->name('2fa.verifyForm');
+});
+
+// Group routes that require authentication and 2FA
+Route::middleware(['auth', CheckGoogle2FA::class])->group(function () {
     // Group routes that require the first login check middleware
     Route::middleware([CheckFirstLogin::class])->group(function () {
         Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
         Route::get('/vehicles/{vehicle}/download-pdf', [VehicleController::class, 'downloadPdf'])->name('vehicles.downloadPdf');
         Route::resource('employees', EmployeeController::class);
-        Route::resource('trips', App\Http\Controllers\TripController::class);
+        Route::resource('trips', TripController::class);
         Route::resource('vehicles', VehicleController::class);
         Route::resource('insurances', App\Http\Controllers\InsuranceController::class);
         Route::resource('projects', App\Http\Controllers\ProjectController::class);
@@ -41,7 +39,6 @@ Route::middleware(['auth'])->group(function () {
     // Routes for password change
     Route::get('/password/change', [App\Http\Controllers\Auth\ChangePasswordController::class, 'showChangePasswordForm'])->name('password.change.form');
     Route::post('/password/change', [App\Http\Controllers\Auth\ChangePasswordController::class, 'changePassword'])->name('password.change.update');
-
 });
 
 // Delete selected routes
@@ -55,7 +52,7 @@ Route::delete('insurances.deleteSelected', [App\Http\Controllers\InsuranceContro
 Route::get('/employees/{id}/export-csv', [EmployeeController::class, 'exportCsv'])->name('employees.exportCsv');
 
 // Get districts by country
-Route::get('/districts/{country}', [DistrictController::class, 'getDistrictsByCountry']);
+Route::get('/districts/{country}', [App\Http\Controllers\DistrictController::class, 'getDistrictsByCountry']);
 
 // Import employees routes
 Route::post('employees-import', [EmployeeController::class, 'import'])->name('employee.import');
@@ -66,36 +63,29 @@ Route::get('/403', function () {
     return view('components.Errors.403');
 })->name('error.403');
 
-// file not found route
-
+// File not found route
 Route::get('/file-not-found', function () {
     return view('components.Errors.file_not_found');
 })->name('file.not.found');
 
-//Route to show trip cost-report
-
+// Route to show trip cost-report
 Route::get('/cost-report', [CostReportController::class, 'index'])->name('cost.report.index');
 Route::post('/cost-report', [CostReportController::class, 'filter'])->name('cost.report.filter');
 Route::get('/cost-report/generate', [CostReportController::class, 'generateCostReport'])->name('cost.report.generate');
 
-
-//Route to show external car report
+// Route to show external car report
 Route::get('/external-car-report', [ExternalCarReportController::class, 'index'])->name('external.car.report.index');
 Route::post('/external-car-report', [ExternalCarReportController::class, 'filter'])->name('external.car.report.filter');
 Route::get('/external-car-report/generate', [ExternalCarReportController::class, 'generateExternalCarReport'])->name('external.car.report.generate');
 
-
-//Route to show project report
-
+// Route to show project report
 Route::get('/project-reports', [ProjectReportController::class, 'index'])->name('project.report.index');
 Route::post('/project-reports', [ProjectReportController::class, 'filter'])->name('project.report.filter');
 Route::get('/project-reports/generate', [ProjectReportController::class, 'generateProjectReport'])->name('project.report.generate');
 
-//Route to show insurance report
-
+// Route to show insurance report
 Route::get('/insurance-reports', [InsuranceReportController::class, 'index'])->name('insurance.report.index');
 Route::post('/insurance-reports', [InsuranceReportController::class, 'filter'])->name('insurance.report.filter');
 Route::get('/insurance-reports/generate', [InsuranceReportController::class, 'generateInsuranceReport'])->name('insurance.report.generate');
-
 
 Route::get('api/check-vehicle-availability', [TripController::class, 'checkVehicleAvailability']);
