@@ -42,7 +42,7 @@ class ProjectReportController extends Controller
             $trips = $query->paginate(10);
         }
 
-        return view('pages.Project-report.index', compact('projects', 'trips', 'projectId', 'totalCost', 'tripCount',  'costTypesSummary'));
+        return view('pages.ProjectReport.index', compact('projects', 'trips', 'projectId', 'totalCost', 'tripCount',  'costTypesSummary'));
     }
 
     public function filter(Request $request)
@@ -116,7 +116,7 @@ class ProjectReportController extends Controller
         $pdf->AddPage();
 
         // Definir o conteúdo do PDF
-        $html = view('components.Project-reports.project-pdf-report', $data)->render();
+        $html = view('components.ProjectReports.project-pdf-report', $data)->render();
 
         $pdf->writeHTML($html, true, false, true, false, '');
 

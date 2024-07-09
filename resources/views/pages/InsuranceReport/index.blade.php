@@ -4,10 +4,11 @@
 
 @section('content')
     <div class="container mx-auto p-8 lg:pl-64">
-        @include('pages.Insurance-report.form')
+        @include('components.InsuranceReports.form')
         
         @isset($insurances)
-            @include('pages.Insurance-report.results', [
+            @include('components.InsuranceReports.results', 
+            [
                 'insurances' => $insurances, 
                 'startDate' => $startDate, 
                 'endDate' => $endDate, 
