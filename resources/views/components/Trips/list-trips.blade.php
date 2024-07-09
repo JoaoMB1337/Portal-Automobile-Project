@@ -34,60 +34,64 @@
     <div class="list-table">
         <table>
             <thead>
-                <tr>
-                    <th></th>
-                    <th>Projeto</th>
-                    <th>Funcionário</th>
-                    <th>Veículo</th>
-                    <th>Data Inicial</th>
-                        <th>Ações</th>
-                </tr>
+            <tr>
+                <th></th>
+                <th>Projeto</th>
+                <th>Funcionário</th>
+                <th>Veículo</th>
+                <th>Data Inicial</th>
+                @if(Auth::check() && Auth::user()->isMaster())
+                    <th>Ações</th>
+                @endif
+            </tr>
             </thead>
             <tbody>
-                @forelse ($trips as $trip)
-                    <tr data-url="{{ url('trips/' . $trip->id) }}" style="cursor:pointer;">
-                        <td>
-                            <input type="checkbox" name="selected_ids[]" value="{{ $trip->id }}" class="form-checkbox">
-                        </td>
-                        <td><a href="{{ route('trips.show', $trip->id) }}">{{ $trip->project->name }}</a></td>
-                        <td>
-                            @foreach ($trip->employees as $employee)
-                                {{ $employee->name }}<br>
-                            @endforeach
-                        </td>
-                        <td>
-                            @foreach ($trip->vehicles as $vehicle)
-                                {{ $vehicle->plate }}<br>
-                            @endforeach
-                        </td>
-                        <td>{{ date('d/m/Y', strtotime($trip->start_date)) }}</td>
+            @forelse ($trips as $trip)
+                <tr data-url="{{ url('trips/' . $trip->id) }}" style="cursor:pointer;">
+                    <td>
+                        <input type="checkbox" name="selected_ids[]" value="{{ $trip->id }}" class="form-checkbox">
+                    </td>
+                    <td><a href="{{ route('trips.show', $trip->id) }}">{{ $trip->project->name }}</a></td>
+                    <td>
+                        @foreach ($trip->employees as $employee)
+                            {{ $employee->name }}<br>
+                        @endforeach
+                    </td>
+                    <td>
+                        @foreach ($trip->vehicles as $vehicle)
+                            {{ $vehicle->plate }}<br>
+                        @endforeach
+                    </td>
+                    <td>{{ date('d/m/Y', strtotime($trip->start_date)) }}</td>
 
-                        <td class="table-actions">
-                                @if(Auth::check() && Auth::user()->isMaster())
+                    <td class="table-actions">
+                        @if(Auth::check() && Auth::user()->isMaster())
+                            <a href="{{ url('trips/' . $trip->id . '/edit') }}" class="btn-action btn-edit">
+                                <i class="fas fa-edit text-xl"></i>
+                            </a>
+                            <button type="button" class="btn-action btn-delete" data-id="{{ $trip->id }}">
+                                <i class="fas fa-trash-alt text-xl"></i>
+                            </button>
+                            <form id="delete-form-{{ $trip->id }}" method="post" action="{{ route('trips.destroy', $trip->id) }}" style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                        @endif
+                        <a href="{{ url('trips/' . $trip->id) }}" class="btn-action btn-view">
+                            <i class="fas fa-eye text-xl"></i>
+                        </a>
+                    </td>
 
-                                <a href="{{ url('trips/' . $trip->id . '/edit') }}" class="btn-action btn-edit">
-                                    <i class="fas fa-edit text-xl"></i>
-                                </a>
-                                <button type="button" class="btn-action btn-delete" data-id="{{ $trip->id }}">
-                                    <i class="fas fa-trash-alt text-xl"></i>
-                                </button>
-                                <form id="delete-form-{{ $trip->id }}" method="post" action="{{ route('trips.destroy', $trip->id) }}" style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                                @endif
-                                <a href="{{ url('trips/' . $trip->id) }}" class="btn-action btn-view">
-                                    <i class="fas fa-eye text-xl"></i>
-                                </a>
-                            </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
-                            Nenhuma viagem encontrada.
-                        </td>
-                    </tr>
-                @endforelse
+
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                        <img src="{{ asset('images/notfounditem.png') }}" alt="Nenhum registro encontrado" class="w-64 h-64 mx-auto">
+                        <p class="mt-4 text-center">Nenhum registro encontrado</p>
+                    </td>
+                </tr>
+            @endforelse
             </tbody>
         </table>
     </div>
@@ -132,4 +136,3 @@
     }
 
 </style>
-

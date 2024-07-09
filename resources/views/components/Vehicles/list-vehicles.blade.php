@@ -5,7 +5,6 @@
         <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
         <a href="{{ route('vehicles.index', ['clear_filters' => true]) }}"
            class="px-4 py-2 bg-gray-700 text-white rounded-md shadow-sm hover:bg-gray-800">Limpar
-
         </a>
     </div>
 
@@ -32,8 +31,6 @@
         </div>
     </div>
 
-
-
     <form id="multi-delete-form" action="{{ route('vehicles.deleteSelected') }}" method="POST" style="display: inline-block;">
         @csrf
         @method('DELETE')
@@ -53,8 +50,7 @@
         <table>
             <thead>
             <tr>
-                <th>
-                </th>
+                <th></th>
                 <th>Matrícula</th>
                 <th>Marca</th>
                 <th>Categoria</th>
@@ -99,12 +95,12 @@
                             <i class="fas fa-eye text-xl"></i>
                         </a>
                     </td>
-
                 </tr>
             @empty
                 <tr>
                     <td colspan="7" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
-                        Nenhum veículo encontrado.
+                        <img src="{{ asset('images/notfounditem.png') }}" alt="Nenhum registro encontrado" class="w-64 h-64 mx-auto">
+                        <p class="mt-4 text-center">Nenhum veículo encontrado</p>
                     </td>
                 </tr>
             @endforelse
@@ -112,11 +108,36 @@
         </table>
     </div>
 </div>
+
 <div class="flex justify-center mr-10 ">
     {{ $vehicles->links() }}
 </div>
 
-
 @include('components.Modals.modal-delete')
 
+<style>
+    .btn-action {
+        padding: 6px 12px;
+        font-size: 16px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 
+    .btn-edit i, .btn-view i {
+        color: #2d2d2d;
+    }
+
+    .btn-delete i {
+        color: #dc3545;
+    }
+
+    .btn-delete:hover i {
+        color: #c82333;
+    }
+
+    .btn-edit:hover i, .btn-view:hover i {
+        color: #2d2c2a;
+    }
+</style>
