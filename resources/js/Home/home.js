@@ -1,37 +1,35 @@
-// home.js
-
 document.addEventListener('DOMContentLoaded', function () {
-    fetchChartData().then(({vehiclesData, projectsData}) => {
+    fetchChartData().then(({ vehiclesData, projectsData }) => {
         renderCharts(vehiclesData, projectsData);
     });
 });
 
 async function fetchChartData() {
-    // Considerando que os dados podem ser obtidos via API ou outra fonte
-    return {
-        vehiclesData: {
-            internal: 10, // Valor exemplo
-            external: 5  // Valor exemplo
-        },
-        projectsData: {
-            notStarted: 4,
-            inProgress: 10,
-            completed: 7,
-            cancelled: 2,
-            onHold: 1
-        }
-    };
+    const response = await fetch('/fetch-data');
+    const data = await response.json();
+    return data;
 }
 
 function renderCharts(vehiclesData, projectsData) {
+    // Verificar se não há veículos internos ou externos e ajustar os dados e cores
+    let vehicleLabels = ['Internos', 'Externos'];
+    let vehicleData = [vehiclesData.internal, vehiclesData.external];
+    let vehicleColors = ['#37afa5', '#1b3342'];
+
+    if (vehiclesData.internal === 0 && vehiclesData.external === 0) {
+        vehicleLabels = ['Sem Veículos'];
+        vehicleData = [1]; 
+        vehicleColors = ['#cccccc'];  
+    }
+
     const ctxVehicles = document.getElementById('vehiclesChart').getContext('2d');
     new Chart(ctxVehicles, {
         type: 'pie',
         data: {
-            labels: ['Internos', 'Externos'],
+            labels: vehicleLabels,
             datasets: [{
-                data: [vehiclesData.internal, vehiclesData.external],
-                backgroundColor: ['#37afa5', '#1b3342']
+                data: vehicleData,
+                backgroundColor: vehicleColors
             }]
         }
     });

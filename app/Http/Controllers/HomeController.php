@@ -48,8 +48,8 @@ class HomeController extends Controller
         $today = Carbon::today();
         $nextMonth = $today->copy()->addDays(30);
         $endingInsurances = Insurance::whereBetween('end_date', [$today, $nextMonth])
-                                    ->orderBy('end_date', 'asc')
-                                    ->paginate(10);
+            ->orderBy('end_date', 'asc')
+            ->paginate(10);
 
         // Recuperar viagens ativas para o empregado
         $employee = Employee::with(['trips' => function ($query) use ($today) {
@@ -71,5 +71,34 @@ class HomeController extends Controller
             'endingInsurances',
             'activeTrips'
         ));
+    }
+
+
+    public function fetchData()
+    {
+        $employeeId = auth()->id();
+
+        $internalVehiclesCount = Vehicle::where('is_external', 0)->count();
+        $externalVehiclesCount = Vehicle::where('is_external', 1)->count();
+
+        $projectsNotStarted = Project::where('project_status_id', 1)->count();
+        $projectsInProgress = Project::where('project_status_id', 2)->count();
+        $projectsCompleted = Project::where('project_status_id', 3)->count();
+        $projectsCancelled = Project::where('project_status_id', 4)->count();
+        $projectsOnHold = Project::where('project_status_id', 5)->count();
+
+        return response()->json([
+            'vehiclesData' => [
+                'internal' => $internalVehiclesCount,
+                'external' => $externalVehiclesCount,
+            ],
+            'projectsData' => [
+                'notStarted' => $projectsNotStarted,
+                'inProgress' => $projectsInProgress,
+                'completed' => $projectsCompleted,
+                'cancelled' => $projectsCancelled,
+                'onHold' => $projectsOnHold,
+            ]
+        ]);
     }
 }

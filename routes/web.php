@@ -12,6 +12,7 @@ use App\Http\Controllers\ExternalCarReportController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\ProjectReportController;
 use App\Http\Controllers\InsuranceReportController;
+use App\Http\Controllers\HomeController;
 
 
 
@@ -41,7 +42,6 @@ Route::middleware(['auth'])->group(function () {
     // Routes for password change
     Route::get('/password/change', [App\Http\Controllers\Auth\ChangePasswordController::class, 'showChangePasswordForm'])->name('password.change.form');
     Route::post('/password/change', [App\Http\Controllers\Auth\ChangePasswordController::class, 'changePassword'])->name('password.change.update');
-
 });
 
 // Delete selected routes
@@ -99,3 +99,4 @@ Route::get('/insurance-reports/generate', [InsuranceReportController::class, 'ge
 
 
 Route::get('api/check-vehicle-availability', [TripController::class, 'checkVehicleAvailability']);
+Route::get('/fetch-data', [HomeController::class, 'fetchData'])->name('fetch.data');
