@@ -1,5 +1,3 @@
-<!-- resources/views/modal-viagens-employee.blade.php -->
-
 <div id="trip-modal" class="fixed inset-0 z-50 hidden overflow-y-auto lg:pl-64">
     <div class="flex items-center justify-center min-h-screen p-4 text-center">
         <div class="fixed inset-0 transition-opacity" aria-hidden="true">

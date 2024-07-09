@@ -21,7 +21,7 @@
                             <!-- Pagina Employee -->
                             @include('home-employee')
                             <!-- modal -->
-                            @include('modal-viagens-employee')
+                            @include('components.Modals.modal-viagens-employee')
                         @endif
                     </div>
                 </div>

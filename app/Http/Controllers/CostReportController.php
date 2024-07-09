@@ -23,7 +23,7 @@ class CostReportController extends Controller
                 ->paginate(10);
         }
 
-        return view('pages.Cost-report.index', compact('costs', 'startDate', 'endDate'));
+        return view('pages.TripCostReport.index', compact('costs', 'startDate', 'endDate'));
     }
 
     public function filter(Request $request)
@@ -37,7 +37,7 @@ class CostReportController extends Controller
             ->with(['costType', 'trip'])
             ->paginate(10);
 
-        return view('pages.Cost-report.index', compact('costs', 'startDate', 'endDate'));
+        return view('pages.TripCostReport.index', compact('costs', 'startDate', 'endDate'));
     }
 
     public function generateCostReport(Request $request)
@@ -72,7 +72,7 @@ class CostReportController extends Controller
 
         $pdf->AddPage();
 
-        $html = view('components.Cost-reports.costTrip-pdf-report', $data)->render();
+        $html = view('components.TripCostReport.costTrip-pdf-report', $data)->render();
         $pdf->writeHTML($html, true, false, true, false, '');
 
         $pdf->lastPage();
