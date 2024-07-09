@@ -1,5 +1,6 @@
 @vite(['resources/js/Trips/create.js'])
 <script type="application/json" id="vehicles-data">@json($vehicles)</script>
+<div id="employees-data" style="display: none;">{{ json_encode($employees) }}</div>
 
 <div class="flex justify-center items-start h-screen custom-bg">
     <div class="max-w-lg w-full bg-white rounded-xl shadow-md p-8 custom-card mt-12">
@@ -44,18 +45,32 @@
                 <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
-            <div class="form-group">
+          
+            
+            
+            
+
+                <div class="form-group">
+                <label for="employee_name" class="block text-sm font-medium text-gray-700">Pesquisar Funcionário</label>
+                <input type="text" name="employee_name" id="employee_name" class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm" value="{{ old('employee_name') }}">
+                </div>
+
+                <div class="form-group">
                 <label for="employee_id" class="block text-sm font-medium text-gray-700">Funcionário</label>
-                <select name="employee_id" class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('employee_id') border-red-500 @enderror" required>
-                    <option value="" disabled selected>Selecione um funcionário</option>
-                    @foreach ($employees as $employee)
-                        <option value="{{ $employee->id }}" {{ old('employee_id') == $employee->id ? 'selected' : '' }}>{{ $employee->name }}</option>
-                    @endforeach
+                <select name="employee_id" id="employee_id" class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('employee_id') border-red-500 @enderror" required>
+                <option value="" disabled selected>Selecione um funcionário</option>
+                @foreach ($employees as $employee)
+                <option value="{{ $employee->id }}" {{ old('employee_id') == $employee->id ? 'selected' : '' }}>{{ $employee->name }}</option>
+                @endforeach
                 </select>
+                <div id="employee-error" class="text-red-500">{{ session('employee_error') }}</div>
                 @error('employee_id')
                 <div class="text-red-500">{{ $message }}</div>
                 @enderror
-            </div>
+                </div>
+
+
+
             <div class="form-group">
                 <label for="project_id" class="block text-sm font-medium text-gray-700">Projeto</label>
                 <select name="project_id" class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('project_id') border-red-500 @enderror" required {{ isset($project_id) ? 'disabled' : '' }}>

@@ -5,7 +5,7 @@
 
 @section('content')
     <div class="w-full lg:w-3/4 mx-auto lg:pl-64">
-        @component('components.Insurance.create-insurance')
+        @component('components.Insurance.create-insurance', ['vehicles' => $vehicles])
         @endcomponent
     </div>
 @endsection

@@ -99,6 +99,9 @@ class TripController extends Controller
 
                 $vehicles = Vehicle::where('plate', 'like', '%' . $search . '%')->get();
             }
+            if($search = $request->input('search')){
+                $employees = Employee::where('name', 'like', '%' . $search . '%')->get();
+            }
             return view('pages.Trips.create', [
                 'employees' => $employees,
                 'projects' => $projects,
