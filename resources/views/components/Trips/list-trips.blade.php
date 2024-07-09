@@ -2,10 +2,27 @@
 
 <div class="container">
     @if(Auth::check() && Auth::user()->isMaster())
-        <div class="form-container">
-            <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
-            <a href="{{ route('trips.index', ['clear_filters' => true]) }}" class="px-4 py-2 bg-gray-700 text-white rounded-md shadow-sm hover:bg-gray-800">Limpar</a>
+
+        <div class="p-4 md:p-6 rounded-lg shadow-md mb-3 bg-white">
+            <div class="flex flex-col md:flex-row items-center justify-between mb-4 md:mb-6">
+                <div class="flex items-center space-x-2 md:space-x-4 mb-4 md:mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-700">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
+                    <h1 class="text-lg md:text-2xl font-semibold text-gray-900">Viagens</h1>
+                </div>
+                <div class="flex flex-col space-y-2 w-full md:flex-row md:space-x-4 md:space-y-0 md:w-auto">
+                    <button id="filterBtn" class="w-full md:w-auto px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">
+                        Filtrar
+                    </button>
+                    <a href="{{ route('trips.index', ['clear_filters' => true]) }}"
+                       class="w-full md:w-auto px-4 py-2 bg-gray-700 text-white rounded-md shadow-sm hover:bg-gray-800 text-center">
+                        Limpar
+                    </a>
+                </div>
+            </div>
         </div>
+
 
         <div id="filterModal" class="modal mx-auto lg:pl-64">
             <div class="modal-content">
@@ -34,60 +51,64 @@
     <div class="list-table">
         <table>
             <thead>
-                <tr>
-                    <th></th>
-                    <th>Projeto</th>
-                    <th>Funcionário</th>
-                    <th>Veículo</th>
-                    <th>Data Inicial</th>
-                        <th>Ações</th>
-                </tr>
+            <tr>
+                <th></th>
+                <th>Projeto</th>
+                <th>Funcionário</th>
+                <th>Veículo</th>
+                <th>Data Inicial</th>
+                @if(Auth::check() && Auth::user()->isMaster())
+                    <th>Ações</th>
+                @endif
+            </tr>
             </thead>
             <tbody>
-                @forelse ($trips as $trip)
-                    <tr data-url="{{ url('trips/' . $trip->id) }}" style="cursor:pointer;">
-                        <td>
-                            <input type="checkbox" name="selected_ids[]" value="{{ $trip->id }}" class="form-checkbox">
-                        </td>
-                        <td><a href="{{ route('trips.show', $trip->id) }}">{{ $trip->project->name }}</a></td>
-                        <td>
-                            @foreach ($trip->employees as $employee)
-                                {{ $employee->name }}<br>
-                            @endforeach
-                        </td>
-                        <td>
-                            @foreach ($trip->vehicles as $vehicle)
-                                {{ $vehicle->plate }}<br>
-                            @endforeach
-                        </td>
-                        <td>{{ date('d/m/Y', strtotime($trip->start_date)) }}</td>
+            @forelse ($trips as $trip)
+                <tr data-url="{{ url('trips/' . $trip->id) }}" style="cursor:pointer;">
+                    <td>
+                        <input type="checkbox" name="selected_ids[]" value="{{ $trip->id }}" class="form-checkbox">
+                    </td>
+                    <td><a href="{{ route('trips.show', $trip->id) }}">{{ $trip->project->name }}</a></td>
+                    <td>
+                        @foreach ($trip->employees as $employee)
+                            {{ $employee->name }}<br>
+                        @endforeach
+                    </td>
+                    <td>
+                        @foreach ($trip->vehicles as $vehicle)
+                            {{ $vehicle->plate }}<br>
+                        @endforeach
+                    </td>
+                    <td>{{ date('d/m/Y', strtotime($trip->start_date)) }}</td>
 
-                        <td class="table-actions">
-                                @if(Auth::check() && Auth::user()->isMaster())
+                    <td class="table-actions">
+                        @if(Auth::check() && Auth::user()->isMaster())
+                            <a href="{{ url('trips/' . $trip->id . '/edit') }}" class="btn-action btn-edit">
+                                <i class="fas fa-edit text-xl"></i>
+                            </a>
+                            <button type="button" class="btn-action btn-delete" data-id="{{ $trip->id }}">
+                                <i class="fas fa-trash-alt text-xl"></i>
+                            </button>
+                            <form id="delete-form-{{ $trip->id }}" method="post" action="{{ route('trips.destroy', $trip->id) }}" style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                        @endif
+                        <a href="{{ url('trips/' . $trip->id) }}" class="btn-action btn-view">
+                            <i class="fas fa-eye text-xl"></i>
+                        </a>
+                    </td>
 
-                                <a href="{{ url('trips/' . $trip->id . '/edit') }}" class="btn-action btn-edit">
-                                    <i class="fas fa-edit text-xl"></i>
-                                </a>
-                                <button type="button" class="btn-action btn-delete" data-id="{{ $trip->id }}">
-                                    <i class="fas fa-trash-alt text-xl"></i>
-                                </button>
-                                <form id="delete-form-{{ $trip->id }}" method="post" action="{{ route('trips.destroy', $trip->id) }}" style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                                @endif
-                                <a href="{{ url('trips/' . $trip->id) }}" class="btn-action btn-view">
-                                    <i class="fas fa-eye text-xl"></i>
-                                </a>
-                            </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
-                            Nenhuma viagem encontrada.
-                        </td>
-                    </tr>
-                @endforelse
+
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                        <img src="{{ asset('images/notfounditem.png') }}" alt="Nenhum registro encontrado" class="w-64 h-64 mx-auto">
+                        <p class="mt-4 text-center">Nenhum registro encontrado</p>
+                    </td>
+                </tr>
+            @endforelse
             </tbody>
         </table>
     </div>
@@ -132,4 +153,3 @@
     }
 
 </style>
-

@@ -1,8 +1,8 @@
 @vite('resources/js/Geral/create.js')
 
 <div class="w-full rounded-xl p-7 custom-card mt-12">
-    <div class="flex justify-center mb-6">
-        <h1>Employee Register</h1>
+    <div class="text-center flex-grow mb-6">
+        <h1>Registo de Funcionário</h1>
     </div>
     <form method="POST" action="{{ route('employees.store') }}" class="space-y-6">
         @csrf

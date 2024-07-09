@@ -77,8 +77,9 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="9" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
-                            Nenhum seguro encontrado.
+                        <td colspan="7" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                            <img src="{{ asset('images/notfounditem.png') }}" alt="Nenhum registro encontrado" class="w-64 h-64 mx-auto">
+                            <p class="mt-4 text-center">Nenhum seguro encontrado</p>
                         </td>
                     </tr>
                 @endforelse
