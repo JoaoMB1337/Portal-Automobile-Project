@@ -7,6 +7,8 @@
             <table class="min-w-full bg-white border border-gray-300 rounded-lg">
                 <thead>
                 <tr class="bg-gray-200">
+                    <th class="py-3 px-4 border-b text-left text-gray-700">Projeto</th>
+                    <th class="py-3 px-4 border-b text-left text-gray-700">Viagem</th>
                     <th class="py-3 px-4 border-b text-left text-gray-700">Tipo de Custo</th>
                     <th class="py-3 px-4 border-b text-left text-gray-700">Valor</th>
                     <th class="py-3 px-4 border-b text-left text-gray-700">Data</th>
@@ -15,6 +17,8 @@
                 <tbody>
                 @foreach ($costs as $cost)
                     <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4 border-b text-gray-700">{{ $cost->trip->project->name }}</td>
+                        <td class="py-3 px-4 border-b text-gray-700">{{ $cost->trip->destination }}</td>
                         <td class="py-3 px-4 border-b text-gray-700">{{ $cost->costType->type_name }}</td>
                         <td class="py-3 px-4 border-b text-gray-700">{{ $cost->cost }}</td>
                         <td class="py-3 px-4 border-b text-gray-700">{{ $cost->created_at->format('d/m/Y') }}</td>
@@ -30,7 +34,7 @@
             @csrf
             <input type="hidden" name="start_date" value="{{ $startDate }}">
             <input type="hidden" name="end_date" value="{{ $endDate }}">
-            <button type="submit" class="w-full  bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white px-4 py-3 rounded-md shadow-sm hover:bg-gradient-to-l text-sm font-medium transition duration-300 ease-in-out transform hover:scale-105">Baixar Relatório em PDF</button>
+            <button type="submit" class="w-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white px-4 py-3 rounded-md shadow-sm hover:bg-gradient-to-l text-sm font-medium transition duration-300 ease-in-out transform hover:scale-105">Baixar Relatório em PDF</button>
         </form>
     </div>
 @else
@@ -39,6 +43,8 @@
             <table class="min-w-full bg-white border border-gray-300 rounded-lg">
                 <thead>
                 <tr class="bg-gray-200">
+                    <th class="py-3 px-4 border-b text-left text-gray-700">Projeto</th>
+                    <th class="py-3 px-4 border-b text-left text-gray-700">Viagem</th>
                     <th class="py-3 px-4 border-b text-left text-gray-700">Tipo de Custo</th>
                     <th class="py-3 px-4 border-b text-left text-gray-700">Valor</th>
                     <th class="py-3 px-4 border-b text-left text-gray-700">Data</th>

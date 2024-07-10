@@ -19,15 +19,18 @@
     <table>
         <thead>
             <tr>
+                <th>Projeto</th>
+                <th>Viagem</th>
                 <th>Tipo de Custo</th>
                 <th>Valor</th>
                 <th>Data</th>
-                <th>Viagem</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($costs as $cost)
                 <tr>
+                    <td>{{ $cost->trip->project->name }}</td>
+                    <td>{{ $cost->trip->destination }}</td>
                     <td>{{ $cost->costType->type_name }}</td>
                     <td>{{ number_format($cost->cost, 2, ',', '.') }}</td>
                     <td>{{ $cost->created_at->format('d/m/Y') }}</td>
