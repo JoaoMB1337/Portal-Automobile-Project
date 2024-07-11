@@ -79,7 +79,7 @@ class TwoFactorController extends Controller
         $user = Auth::user();
 
         if (!$user || !$user->uses_two_factor_auth || !$user->google2fa_secret) {
-            return redirect()->route('/2fa/setup');
+            return redirect()->route('2fa.setup'); //route('/2fa/setup');
         }
 
         $google2fa = new Google2FA();

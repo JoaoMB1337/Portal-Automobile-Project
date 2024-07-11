@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Middleware\CheckGoogle2FA;
 use Illuminate\Support\Facades\Route;
@@ -11,6 +12,7 @@ use App\Http\Controllers\CostReportController;
 use App\Http\Controllers\ExternalCarReportController;
 use App\Http\Controllers\ProjectReportController;
 use App\Http\Controllers\InsuranceReportController;
+use App\Http\Middleware\EnsureTwoFactorEnabled;
 
 Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login.form');
 Auth::routes(['register' => false]);
@@ -23,7 +25,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Group routes that require authentication and 2FA
-Route::middleware(['auth', CheckGoogle2FA::class])->group(function () {
+Route::middleware(['auth', CheckGoogle2FA::class, EnsureTwoFactorEnabled::class])->group(function () {
     // Group routes that require the first login check middleware
     Route::middleware([CheckFirstLogin::class])->group(function () {
         Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
