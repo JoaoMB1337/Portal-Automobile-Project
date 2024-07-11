@@ -1,7 +1,7 @@
 @vite('resources/js/Geral/list.js')
 
 <div class="container">
-    <div class="p-4 md:p-6 rounded-lg shadow-md mb-3 bg-white">
+    <div class="p-4 md:p-6 rounded-lg shadow-md mb-3 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300">
         <div class="flex flex-col md:flex-row items-center justify-between mb-4 md:mb-6">
             <div class="flex items-center space-x-2 md:space-x-4 mb-4 md:mb-0">
                 <svg class="w-8 h-8 text-gray-700" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 505 505" xml:space="preserve" fill="#000000">

@@ -3,7 +3,7 @@
 <div class="container">
     @if(Auth::check() && Auth::user()->isMaster())
 
-        <div class="p-4 md:p-6 rounded-lg shadow-md mb-3 bg-white">
+        <div class="p-4 md:p-6 rounded-lg shadow-md mb-3 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300">
             <div class="flex flex-col md:flex-row items-center justify-between mb-4 md:mb-6">
                 <div class="flex items-center space-x-2 md:space-x-4 mb-4 md:mb-0">
 
