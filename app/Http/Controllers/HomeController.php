@@ -34,10 +34,8 @@ class HomeController extends Controller
     {
         $employeeId = auth()->id();
 
-        // Today's date
         $today = Carbon::today();
 
-        // Only count vehicles where the rental_end_date is either null or in the future
         $vehicleActive = Vehicle::where('is_active', 1)
             ->where(function($query) use ($today) {
                 $query->whereNull('rental_end_date')
@@ -76,11 +74,21 @@ class HomeController extends Controller
 
     public function fetchData()
     {
+        $today = Carbon::today();
 
-        $employeeId = auth()->id();
+        $internalVehiclesCount = Vehicle::where('is_external', 0)
+            ->where(function($query) use ($today) {
+                $query->whereNull('rental_end_date')
+                    ->orWhere('rental_end_date', '>=', $today);
+            })
+            ->count();
 
-        $internalVehiclesCount = Vehicle::where('is_external', 0)->count();
-        $externalVehiclesCount = Vehicle::where('is_external', 1)->count();
+        $externalVehiclesCount = Vehicle::where('is_external', 1)
+            ->where(function($query) use ($today) {
+                $query->whereNull('rental_end_date')
+                    ->orWhere('rental_end_date', '>=', $today);
+            })
+            ->count();
 
         $projectsNotStarted = Project::where('project_status_id', 1)->count();
         $projectsInProgress = Project::where('project_status_id', 2)->count();
@@ -102,4 +110,5 @@ class HomeController extends Controller
             ]
         ]);
     }
+
 }
