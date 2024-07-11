@@ -8,7 +8,7 @@
         </div>
     @endif
 
-        <div class="form-container p-4 md:p-6 rounded-lg shadow-md bg-white">
+        <div class="p-4 md:p-6 rounded-lg shadow-md mb-3 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300">
             <div class="flex flex-col md:flex-row items-center justify-between mb-4 md:mb-6">
                 <div class="flex items-center space-x-2 md:space-x-4 mb-4 md:mb-0">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-700">
