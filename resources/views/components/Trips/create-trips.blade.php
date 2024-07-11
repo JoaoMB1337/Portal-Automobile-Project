@@ -15,6 +15,11 @@
             <h1 class="text-2xl font-bold text-gray-800">Criar Viagem</h1>
             <p class="text-gray-600">Preencha os campos abaixo para criar uma nova viagem.</p>
         </div>
+
+        @if(session('error'))
+            <div class="text-red-500 mb-4 text-center">{{ session('error') }}</div>
+        @endif
+
         <form method="POST" action="{{ route('trips.store') }}" class="space-y-6" id="trip-form">
             @csrf
             <div class="form-group">
@@ -45,10 +50,10 @@
                 <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
-          
-            
-            
-            
+
+
+
+
 
                 <div class="form-group">
                 <label for="employee_name" class="block text-sm font-medium text-gray-700">Pesquisar Funcionário</label>
