@@ -34,7 +34,6 @@ class HomeController extends Controller
     {
         $employeeId = auth()->id();
 
-        // Contagem dos veículos internos e externos
         $vehicleActive = Vehicle::where('is_active', 1)->count();
         $vehicleInactive = Vehicle::where('is_active', 0)->count();
 
@@ -64,7 +63,6 @@ class HomeController extends Controller
 
     public function fetchData()
     {
-        Log::info('fetchData method called'); // Adiciona um log
 
         $employeeId = auth()->id();
 
