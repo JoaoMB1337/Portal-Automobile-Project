@@ -61,7 +61,7 @@ class StoreTripRequest extends FormRequest
     protected function prepareForValidation()
     {
         $project = Project::find($this->project_id);
-        if ($project && $project->project_status_id == 3) {
+        if ($project && $project->project_status_id == 3 || $project->project_status_id == 4) {
             $this->merge(['project_id' => null]);
             return redirect()->back()->with('error', 'Não é possível criar viagens para projetos concluídos.')->throwResponse();
         }

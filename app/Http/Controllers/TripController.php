@@ -126,8 +126,8 @@ class TripController extends Controller
         $validatedData = $request->validated();
 
         $project = Project::findOrFail($validatedData['project_id']);
-        if ($project->project_status_id == 3) {
-            return redirect()->back()->with('error', 'Não é possível criar viagens para projetos concluídos.');
+        if ($project->project_status_id == 3 || $project->project_status_id == 4) {
+            return redirect()->back()->with('error', 'Não é possível criar viagens para projetos concluídos/cancelados.');
         }
 
         if (isset($validatedData['vehicle_id'])) {
@@ -282,8 +282,8 @@ class TripController extends Controller
 
         $validatedData = $request->validated();
        $project = Project::findOrFail($validatedData['project_id']);
-        if ($project->project_status_id == 3) {
-            return redirect()->back()->with('error', 'Não é possível atualizar viagens para projetos concluídos.');
+        if ($project->project_status_id == 3 || $project->project_status_id == 4) {
+            return redirect()->back()->with('error', 'Não é possível atualizar viagens para projetos concluídos/ cancelados.');
         }
 
         $trip = Trip::findOrFail($id);
