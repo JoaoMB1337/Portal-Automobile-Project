@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Project;
 use Illuminate\Foundation\Http\FormRequest;
+use Carbon\Carbon;
 
 class StoreTripRequest extends FormRequest
 {
@@ -23,14 +24,14 @@ class StoreTripRequest extends FormRequest
     public function rules()
     {
         return [
-            'start_date' => 'nullable|date',
+            'start_date' => ['nullable', 'date', 'after_or_equal:2024-05-24'],
             'end_date' => 'required|date|after_or_equal:start_date',
             'destination' => 'required|string|max:255',
             'purpose' => 'required|string',
             'project_id' => 'required|exists:projects,id',
             'type_trip_id' => 'required|exists:type_trips,id',
             'employee_id' => 'required|exists:employees,id',
-            'vehicle_id' => 'required|exists:vehicles,id',
+            'vehicle_id' => 'nullable|exists:vehicles,id',
         ];
     }
 
@@ -38,6 +39,7 @@ class StoreTripRequest extends FormRequest
     {
         return [
             'start_date.date' => 'A data de início deve ser uma data válida.',
+            'start_date.after_or_equal' => 'A data de início não pode ser anterior a 24/05/2024.',
             'end_date.required' => 'A data de término é obrigatória.',
             'end_date.date' => 'A data de término deve ser uma data válida.',
             'end_date.after_or_equal' => 'A data de término deve ser igual ou posterior à data de início.',
