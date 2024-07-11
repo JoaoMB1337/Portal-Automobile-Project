@@ -168,6 +168,8 @@ class TripController extends Controller
 
         if (isset($validatedData['vehicle_id'])) {
             $trip->vehicles()->attach($validatedData['vehicle_id']);
+            $vehicle->updateStatus();
+
             if ($vehicle->is_external) {
                 $startDate = new \DateTime($validatedData['start_date']);
                 $endDate = new \DateTime($validatedData['end_date']);
@@ -185,6 +187,8 @@ class TripController extends Controller
 
         return redirect()->route('trips.index');
     }
+
+
 
 
 
@@ -316,6 +320,7 @@ class TripController extends Controller
     
         if (isset($validatedData['vehicle_id'])) {
             $trip->vehicles()->sync($validatedData['vehicle_id']);
+            $vehicle->updateStatus();
         }
     
         return redirect()->route('trips.index');

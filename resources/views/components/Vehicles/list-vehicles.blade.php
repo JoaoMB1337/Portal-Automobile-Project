@@ -21,7 +21,6 @@
         </div>
     </div>
 
-
     <div id="filterModal" class="modal mx-auto lg:pl-64">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -40,10 +39,19 @@
                         </option>
                     @endforeach
                 </select>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="rental_expired" id="filter-rental-expired" value="1" {{ request('rental_expired') == '1' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="filter-rental-expired">
+                        Aluguer Expirado
+                    </label>
+                </div>
                 <button type="submit">Filtrar</button>
             </form>
         </div>
     </div>
+
+
+
 
     <form id="multi-delete-form" action="{{ route('vehicles.deleteSelected') }}" method="POST" style="display: inline-block;">
         @csrf

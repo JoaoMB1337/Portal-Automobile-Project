@@ -28,6 +28,9 @@ class VehicleController extends Controller
     /**
      * Display a listing of the resource.
      */
+    /**
+     * Display a listing of the resource.
+     */
     public function index(Request $request)
     {
         try {
@@ -40,6 +43,7 @@ class VehicleController extends Controller
                 $query->where('plate', 'ilike', '%' . $search . '%');
             }
 
+            // Filter by is_external
             if (($isExternal = $request->input('is_external')) !== null) {
                 if ($isExternal === '0' || $isExternal === '1') {
                     $query->where('is_external', $isExternal);
@@ -49,6 +53,23 @@ class VehicleController extends Controller
             // Filter by fuel type
             if ($fuelTypeId = $request->input('fuel_type')) {
                 $query->where('fuel_type_id', $fuelTypeId);
+            }
+
+            // Filter by rental expired
+            if ($rentalExpired = $request->input('rental_expired')) {
+                if ($rentalExpired == '1') {
+                    $query->where('is_external', 1)
+                        ->where('rental_end_date', '<', now());
+                }
+            } else {
+                // Only show vehicles still rented when no rental_expired filter is applied
+                $query->where(function($query) {
+                    $query->where('is_external', 0)
+                        ->orWhere(function($query) {
+                            $query->where('is_external', 1)
+                                ->where('rental_end_date', '>=', now());
+                        });
+                });
             }
 
             // Pagination with descending order
@@ -62,6 +83,7 @@ class VehicleController extends Controller
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para visualizar veículos.');
         }
     }
+
 
 
     /**
