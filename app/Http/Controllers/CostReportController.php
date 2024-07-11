@@ -10,18 +10,17 @@ class CostReportController extends Controller
 {
     public function index(Request $request)
     {
-        $costs = collect();
-        $startDate = null;
-        $endDate = null;
+        $startDate = $request->input('start_date', Carbon::now()->startOfMonth()->toDateString());
+        $endDate = $request->input('end_date', Carbon::now()->toDateString());
 
-        if ($request->has(['start_date', 'end_date'])) {
-            $startDate = $request->start_date;
-            $endDate = $request->end_date;
-
-            $costs = TripDetail::whereBetween('created_at', [$startDate, $endDate])
-                ->with(['costType', 'trip'])
-                ->paginate(10);
+        if (Carbon::parse($endDate)->isFuture()) {
+            $endDate = Carbon::now()->toDateString();
         }
+
+        $costs = TripDetail::whereBetween('created_at', [$startDate, $endDate])
+            ->with(['trip.vehicles', 'costType']) 
+            ->paginate(10);
+
 
         return view('pages.TripCostReport.index', compact('costs', 'startDate', 'endDate'));
     }
@@ -33,9 +32,14 @@ class CostReportController extends Controller
         $startDate = $request->start_date;
         $endDate = $request->end_date;
 
+        if (Carbon::parse($endDate)->isFuture()) {
+            $endDate = Carbon::now()->toDateString();
+        }
+
         $costs = TripDetail::whereBetween('created_at', [$startDate, $endDate])
-            ->with(['costType', 'trip'])
+            ->with(['trip.vehicles', 'costType']) 
             ->paginate(10);
+    
 
         return view('pages.TripCostReport.index', compact('costs', 'startDate', 'endDate'));
     }
@@ -47,8 +51,12 @@ class CostReportController extends Controller
         $startDate = $request->start_date;
         $endDate = $request->end_date;
 
+        if (Carbon::parse($endDate)->isFuture()) {
+            $endDate = Carbon::now()->toDateString();
+        }
+
         $costs = TripDetail::whereBetween('created_at', [$startDate, $endDate])
-            ->with(['costType', 'trip'])
+            ->with(['trip.vehicles', 'costType']) 
             ->get();
 
         $totalCost = $costs->sum('cost');

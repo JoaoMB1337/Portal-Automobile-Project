@@ -9,16 +9,18 @@ use App\Http\Requests\StoreTripRequest;
 use App\Http\Requests\UpdateTripRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\QueryException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 
 
 use App\Models\Project;
 use App\Models\Employee;
 use App\Models\TypeTrip;
 use App\Models\Vehicle;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\QueryException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Models\TripDetail;
 
 
 class TripController extends Controller
@@ -127,6 +129,12 @@ class TripController extends Controller
             $startDate = $validatedData['start_date'];
             $endDate = $validatedData['end_date'];
 
+            $vehicle = Vehicle::findOrFail($vehicleId);
+
+            if ($vehicle->is_external && $endDate > $vehicle->rental_end_date) {
+                return redirect()->back()->withInput()->with('vehicle_error', 'O veículo externo não pode ser usado após o fim do contrato de aluguel.');
+            }
+
             $conflictingTrips = Trip::whereHas('vehicles', function ($query) use ($vehicleId, $startDate, $endDate) {
                 $query->where('vehicles.id', $vehicleId)
                     ->where(function ($query) use ($startDate, $endDate) {
@@ -159,6 +167,19 @@ class TripController extends Controller
 
         if (isset($validatedData['vehicle_id'])) {
             $trip->vehicles()->attach($validatedData['vehicle_id']);
+            if ($vehicle->is_external) {
+                $startDate = new \DateTime($validatedData['start_date']);
+                $endDate = new \DateTime($validatedData['end_date']);
+                $interval = $startDate->diff($endDate);
+                $days = $interval->days + 1;
+                $cost = $days * $vehicle->rental_price_per_day;
+
+                TripDetail::create([
+                    'trip_id' => $trip->id,
+                    'cost_type_id' => 1,
+                    'cost' => $cost,
+                ]);
+            }
         }
 
         return redirect()->route('trips.index');
@@ -263,13 +284,17 @@ class TripController extends Controller
             return redirect()->back()->withInput()->withErrors(['end_date' => 'A data de fim deve ser posterior à data de início.']);
         }
 
-        // Retrieve the trip before checking for conflicts
         $trip = Trip::findOrFail($id);
 
         if (isset($validatedData['vehicle_id'])) {
             $vehicleId = $validatedData['vehicle_id'];
             $startDate = $validatedData['start_date'];
             $endDate = $validatedData['end_date'];
+
+            $vehicle = Vehicle::findOrFail($vehicleId);
+            if ($vehicle->is_external && $endDate > $vehicle->rental_end_date) {
+                return redirect()->back()->withInput()->withErrors(['vehicle_id' => 'O veículo externo não pode ser usado após o fim do contrato de aluguel.']);
+            }
 
             $conflictingTrips = Trip::whereHas('vehicles', function ($query) use ($vehicleId, $startDate, $endDate, $trip) {
                 $query->where('vehicles.id', $vehicleId)
@@ -287,16 +312,6 @@ class TripController extends Controller
             if ($conflictingTrips) {
                 return redirect()->back()->withInput()->withErrors(['vehicle_id' => 'O veículo já está em uso durante o período selecionado.']);
             }
-
-            $trip->vehicles()->sync([$vehicleId]);
-
-            $vehicle = Vehicle::find($vehicleId);
-            if ($vehicle) {
-                $vehicle->is_active = true;
-                $vehicle->save();
-            } else {
-                return redirect()->back()->withInput()->withErrors(['vehicle_id' => 'Veículo não encontrado.']);
-            }
         }
 
         $trip->start_date = $validatedData['start_date'];
@@ -308,18 +323,16 @@ class TripController extends Controller
         $trip->save();
 
         if (isset($validatedData['employee_id'])) {
-            $trip->employees()->sync([$validatedData['employee_id']]);
+            $trip->employees()->sync($validatedData['employee_id']);
         }
 
-        if ($trip->end_date < now()) {
-            if (isset($vehicle)) {
-                $vehicle->is_active = false;
-                $vehicle->save();
-            }
+        if (isset($validatedData['vehicle_id'])) {
+            $trip->vehicles()->sync($validatedData['vehicle_id']);
         }
 
         return redirect()->route('trips.index');
     }
+     
 
 
     public function checkVehicleAvailability(Request $request)
