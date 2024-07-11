@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Relatório de Projetos</title>
+    <title>Relatório de projetos</title>
     <style>
         body { font-family: Arial, sans-serif; }
         h1, h2 { text-align: center; }

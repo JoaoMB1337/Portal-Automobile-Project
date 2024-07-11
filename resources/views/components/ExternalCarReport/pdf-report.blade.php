@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Relatório de Carros Externos</title>
+    <title>Relatório de carros externos</title>
     <style>
         body { font-family: Arial, sans-serif; }
         h1, h2 { text-align: center; }
@@ -12,7 +12,7 @@
     </style>
 </head>
 <body>
-<h1>Relatório de Carros Externos</h1>
+<h1>>Relatório de carros externos</h1>
 <h2>Período: {{ $start_date }} até {{ $end_date }}</h2>
 
 <h2>Detalhes dos Carros Externos</h2>

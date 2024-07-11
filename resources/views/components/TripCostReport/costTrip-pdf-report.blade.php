@@ -13,7 +13,7 @@
     </style>
 </head>
 <body>
-    <h1>Relatório de Custos</h1>
+    <h1>Relatório de custos de viagem</h1>
     <h2>Período: {{ $start_date }} até {{ $end_date }}</h2>
 
     <h2>Detalhes dos Custos</h2>
