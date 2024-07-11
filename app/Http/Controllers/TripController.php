@@ -16,6 +16,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 
+
 use App\Models\Project;
 use App\Models\Employee;
 use App\Models\TypeTrip;
@@ -132,7 +133,7 @@ class TripController extends Controller
             $vehicle = Vehicle::findOrFail($vehicleId);
 
             if ($vehicle->is_external && $endDate > $vehicle->rental_end_date) {
-                return redirect()->back()->withInput()->with('vehicle_error', 'O veículo externo não pode ser usado após o fim do contrato de aluguel.');
+                return redirect()->back()->withInput()->with('vehicle_error', 'O veículo externo não pode ser usado após o fim do contrato de aluguer.');
             }
 
             $conflictingTrips = Trip::whereHas('vehicles', function ($query) use ($vehicleId, $startDate, $endDate) {
@@ -267,7 +268,7 @@ class TripController extends Controller
      * Update the specified resource in storage.
      */
 
-    public function update(Request $request, $id)
+    public function update(UpdateTripRequest $request, $id)
     {
         $validatedData = $request->validate([
             'start_date' => 'required|date',
@@ -293,7 +294,7 @@ class TripController extends Controller
 
             $vehicle = Vehicle::findOrFail($vehicleId);
             if ($vehicle->is_external && $endDate > $vehicle->rental_end_date) {
-                return redirect()->back()->withInput()->withErrors(['vehicle_id' => 'O veículo externo não pode ser usado após o fim do contrato de aluguel.']);
+                return redirect()->back()->withInput()->withErrors(['vehicle_id' => 'O veículo externo não pode ser usado após o fim do contrato de aluguer.']);
             }
 
             $conflictingTrips = Trip::whereHas('vehicles', function ($query) use ($vehicleId, $startDate, $endDate, $trip) {
@@ -332,7 +333,7 @@ class TripController extends Controller
 
         return redirect()->route('trips.index');
     }
-     
+
 
 
     public function checkVehicleAvailability(Request $request)
