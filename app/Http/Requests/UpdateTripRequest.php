@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+use Carbon\Carbon;
+
 class UpdateTripRequest extends FormRequest
 {
     /**
@@ -22,7 +24,7 @@ class UpdateTripRequest extends FormRequest
     public function rules()
     {
         return [
-            'start_date' => 'required|date|after:today',
+            'start_date' => ['required', 'date','after:today'],
             'end_date' => 'required|date|after_or_equal:start_date',
             'destination' => 'required|string|max:255',
             'purpose' => 'required|string|max:500',
@@ -31,6 +33,8 @@ class UpdateTripRequest extends FormRequest
             'project_id' => 'nullable|exists:projects,id',
         ];
     }
+
+
 
     public function messages()
     {
