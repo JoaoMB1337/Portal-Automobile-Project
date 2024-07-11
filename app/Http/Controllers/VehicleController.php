@@ -108,8 +108,6 @@ class VehicleController extends Controller
             $vehicle->brand_id = $request->brand;
             $vehicle->passenger_quantity = $request->passengers;
 
-
-            // Verificando e ajustando o campo is_external
             if ($request->is_external == null) {
                 $vehicle->is_external = 0;
             }
@@ -142,7 +140,6 @@ class VehicleController extends Controller
                 $vehicle->rental_contact_number = null;
             }
 
-            // Salvando o veículo no banco de dados
             $vehicle->save();
 
             Log::info('Veículo armazenado com sucesso.');
@@ -156,7 +153,6 @@ class VehicleController extends Controller
             throw $e;
         }
     }
-
 
     /**
      * Display the specified resource.
