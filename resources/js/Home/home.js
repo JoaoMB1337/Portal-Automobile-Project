@@ -11,7 +11,6 @@ async function fetchChartData() {
 }
 
 function renderCharts(vehiclesData, projectsData) {
-    // Verificar se não há veículos internos ou externos e ajustar os dados e cores
     let vehicleLabels = ['Internos', 'Externos'];
     let vehicleData = [vehiclesData.internal, vehiclesData.external];
     let vehicleColors = ['#37afa5', '#1b3342'];

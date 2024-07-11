@@ -332,7 +332,6 @@ class TripController extends Controller
             $trip->vehicles()->sync($validatedData['vehicle_id']);
             $vehicle->updateStatus();
         }
-    
         return redirect()->route('trips.index');
     }
 

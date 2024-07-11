@@ -11,6 +11,8 @@ use App\Models\Insurance;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\Log;
+
 class HomeController extends Controller
 {
     /**
@@ -33,8 +35,8 @@ class HomeController extends Controller
         $employeeId = auth()->id();
 
         // Contagem dos veículos internos e externos
-        $vehicleactive = Vehicle::where('is_active', 1)->count();
-        $vehicleinactive = Vehicle::where('is_active', 0)->count();
+        $vehicleActive = Vehicle::where('is_active', 1)->count();
+        $vehicleInactive = Vehicle::where('is_active', 0)->count();
 
         // Seguros prestes a acabar
         $today = Carbon::today();
@@ -52,8 +54,8 @@ class HomeController extends Controller
         $activeTrips = $employee->trips()->paginate(10);
 
         return view('home', compact(
-            'vehicleactive',
-            'vehicleinactive',
+            'vehicleActive',
+            'vehicleInactive',
             'endingInsurances',
             'activeTrips'
         ));
@@ -62,6 +64,8 @@ class HomeController extends Controller
 
     public function fetchData()
     {
+        Log::info('fetchData method called'); // Adiciona um log
+
         $employeeId = auth()->id();
 
         $internalVehiclesCount = Vehicle::where('is_external', 0)->count();

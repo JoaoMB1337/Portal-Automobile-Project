@@ -38,34 +38,37 @@ class VehicleController extends Controller
 
             $query = Vehicle::query();
 
-            // Search by plate
             if ($search = $request->input('search')) {
                 $query->where('plate', 'ilike', '%' . $search . '%');
             }
 
-            // Filter by is_external
             if (($isExternal = $request->input('is_external')) !== null) {
                 if ($isExternal === '0' || $isExternal === '1') {
                     $query->where('is_external', $isExternal);
                 }
             }
 
-            // Filter by fuel type
             if ($fuelTypeId = $request->input('fuel_type')) {
                 $query->where('fuel_type_id', $fuelTypeId);
             }
 
-            // Filter by rental expired
+            if (($vehicleNotUsed = $request->input('filter_activity')) !== null) {
+                if ($vehicleNotUsed === '1') {
+                    $query->where('is_active', 1);
+                } elseif ($vehicleNotUsed === '0') {
+                    $query->where('is_active', 0);
+                }
+            }
+
             if ($rentalExpired = $request->input('rental_expired')) {
                 if ($rentalExpired == '1') {
                     $query->where('is_external', 1)
                         ->where('rental_end_date', '<', now());
                 }
             } else {
-                // Only show vehicles still rented when no rental_expired filter is applied
-                $query->where(function($query) {
+                $query->where(function ($query) {
                     $query->where('is_external', 0)
-                        ->orWhere(function($query) {
+                        ->orWhere(function ($query) {
                             $query->where('is_external', 1)
                                 ->where('rental_end_date', '>=', now());
                         });
@@ -83,6 +86,7 @@ class VehicleController extends Controller
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para visualizar veículos.');
         }
     }
+
 
 
 

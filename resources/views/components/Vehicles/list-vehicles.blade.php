@@ -39,19 +39,22 @@
                         </option>
                     @endforeach
                 </select>
-                <div class="form-check">
+                <div class="form-check"> 
                     <input class="form-check-input" type="checkbox" name="rental_expired" id="filter-rental-expired" value="1" {{ request('rental_expired') == '1' ? 'checked' : '' }}>
                     <label class="form-check-label" for="filter-rental-expired">
                         Aluguer Expirado
+                    </label>
+                    <div class="mr-10"></div> 
+                
+                    <input class="form-check-input" type="checkbox" name="filter_activity" id="filter_activity" value="1" {{ request('filter_activity') == '1' ? 'checked' : '' }}>
+                    <label class="form-check-label" for="filter_activity">
+                        Veiculos não usados
                     </label>
                 </div>
                 <button type="submit">Filtrar</button>
             </form>
         </div>
     </div>
-
-
-
 
     <form id="multi-delete-form" action="{{ route('vehicles.deleteSelected') }}" method="POST" style="display: inline-block;">
         @csrf
@@ -77,6 +80,7 @@
                 <th>Marca</th>
                 <th>Categoria</th>
                 <th>Tipo de Combustível</th>
+                <th>Atividade</th>
                 <th>Externo</th>
                 <th>Ações</th>
             </tr>
@@ -92,6 +96,17 @@
                     <td>{{ $vehicle->carCategory->category }}</td>
                     <td>{{ $vehicle->fuelType->type }}</td>
                     <td>
+                        @if ($vehicle->is_active)
+                            <span class="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                            Em viagem
+                        </span>
+                        @else
+                            <span class="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Sem viagem
+                        </span>
+                        @endif
+                    </td>
+                    <td>
                         @if ($vehicle->is_external)
                             <span class="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                             Sim
@@ -102,6 +117,7 @@
                         </span>
                         @endif
                     </td>
+                    
                     <td class="table-actions">
                         <a href="{{ url('vehicles/' . $vehicle->id . '/edit') }}" class="btn-action btn-edit">
                             <i class="fas fa-edit text-xl"></i>
@@ -120,7 +136,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                    <td colspan="8" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
                         <img src="{{ asset('images/notfounditem.png') }}" alt="Nenhum registro encontrado" class="w-64 h-64 mx-auto">
                         <p class="mt-4 text-center">Nenhum veículo encontrado</p>
                     </td>
