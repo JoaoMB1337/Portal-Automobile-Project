@@ -18,7 +18,7 @@ class CostReportController extends Controller
         }
 
         $costs = TripDetail::whereBetween('created_at', [$startDate, $endDate])
-            ->with(['trip.vehicles', 'costType']) 
+            ->with(['trip.vehicles', 'costType'])
             ->paginate(10);
 
 
@@ -37,9 +37,9 @@ class CostReportController extends Controller
         }
 
         $costs = TripDetail::whereBetween('created_at', [$startDate, $endDate])
-            ->with(['trip.vehicles', 'costType']) 
+            ->with(['trip.vehicles', 'costType'])
             ->paginate(10);
-    
+
 
         return view('pages.TripCostReport.index', compact('costs', 'startDate', 'endDate'));
     }
@@ -56,8 +56,15 @@ class CostReportController extends Controller
         }
 
         $costs = TripDetail::whereBetween('created_at', [$startDate, $endDate])
-            ->with(['trip.vehicles', 'costType']) 
+            ->with(['trip.vehicles', 'costType', 'trip.project'])
             ->get();
+
+
+        foreach ($costs as $cost) {
+            if ($cost->trip->project->project_status_id == 3) {
+                return redirect()->back()->with('error', 'Não é possível gerar relatórios de custos para projetos concluídos.');
+            }
+        }
 
         $totalCost = $costs->sum('cost');
 

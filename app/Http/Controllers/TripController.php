@@ -124,6 +124,11 @@ class TripController extends Controller
     {
         $validatedData = $request->validated();
 
+        $project = Project::findOrFail($validatedData['project_id']);
+        if ($project->project_status_id == 3) {
+            return redirect()->back()->with('error', 'Não é possível criar viagens para projetos concluídos.');
+        }
+
         if (isset($validatedData['vehicle_id'])) {
             $vehicleId = $validatedData['vehicle_id'];
             $startDate = $validatedData['start_date'];
@@ -280,6 +285,12 @@ class TripController extends Controller
             'vehicle_id' => 'nullable|integer|exists:vehicles,id',
         ]);
 
+
+        $project = Project::findOrFail($validatedData['project_id']);
+        if ($project->project_status_id == 3) {
+            return redirect()->back()->with('error', 'Não é possível atualizar viagens para projetos concluídos.');
+        }
+
         if ($validatedData['end_date'] < $validatedData['start_date']) {
             return redirect()->back()->withInput()->withErrors(['end_date' => 'A data de fim deve ser posterior à data de início.']);
         }
@@ -332,7 +343,7 @@ class TripController extends Controller
 
         return redirect()->route('trips.index');
     }
-     
+
 
 
     public function checkVehicleAvailability(Request $request)

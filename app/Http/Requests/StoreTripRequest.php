@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Project;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTripRequest extends FormRequest
@@ -53,5 +54,14 @@ class StoreTripRequest extends FormRequest
             'project_id.exists' => 'O ID do projeto deve existir na tabela de projetos, se fornecido.',
             'vehicle_id.exists' => 'O ID do veículo deve existir na tabela de veículos, se fornecido.',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $project = Project::find($this->project_id);
+        if ($project && $project->project_status_id == 3) {
+            $this->merge(['project_id' => null]);
+            return redirect()->back()->with('error', 'Não é possível criar viagens para projetos concluídos.')->throwResponse();
+        }
     }
 }
