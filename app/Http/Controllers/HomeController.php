@@ -34,11 +34,25 @@ class HomeController extends Controller
     {
         $employeeId = auth()->id();
 
-        $vehicleActive = Vehicle::where('is_active', 1)->count();
-        $vehicleInactive = Vehicle::where('is_active', 0)->count();
+        // Today's date
+        $today = Carbon::today();
+
+        // Only count vehicles where the rental_end_date is either null or in the future
+        $vehicleActive = Vehicle::where('is_active', 1)
+            ->where(function($query) use ($today) {
+                $query->whereNull('rental_end_date')
+                    ->orWhere('rental_end_date', '>=', $today);
+            })
+            ->count();
+
+        $vehicleInactive = Vehicle::where('is_active', 0)
+            ->where(function($query) use ($today) {
+                $query->whereNull('rental_end_date')
+                    ->orWhere('rental_end_date', '>=', $today);
+            })
+            ->count();
 
         // Seguros prestes a acabar
-        $today = Carbon::today();
         $nextMonth = $today->copy()->addDays(30);
         $endingInsurances = Insurance::whereBetween('end_date', [$today, $nextMonth])
             ->orderBy('end_date', 'asc')
@@ -59,7 +73,6 @@ class HomeController extends Controller
             'activeTrips'
         ));
     }
-
 
     public function fetchData()
     {
