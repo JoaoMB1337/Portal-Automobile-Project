@@ -67,7 +67,7 @@ class TripController extends Controller
                 $query->where('end_date', '<=', $endDate);
             }
 
-            $trips = $query->orderBy('id', 'asc')->paginate(10)->appends($request->query());
+            $trips = $query->orderBy('id', 'desc')->paginate(10)->appends($request->query());
 
             return view('pages.Trips.list', [
                 'trips' => $trips,
