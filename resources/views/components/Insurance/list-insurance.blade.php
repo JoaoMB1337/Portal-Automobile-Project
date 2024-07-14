@@ -33,12 +33,14 @@
                     <option value="0">Inativo</option>
                 </select>
                 <label for="filter-terminando">Seguros Terminando em 30 dias:</label>
-                 <input type="checkbox" name="terminando" id="filter-terminando">
-
+                <input type="checkbox" name="terminando" id="filter-terminando">
+                <label for="filter-ending_today">Seguros que Terminam Hoje:</label>
+                <input type="checkbox" name="ending_today" id="filter-ending_today">
                 <button type="submit">Filtrar</button>
             </form>
         </div>
     </div>
+    
 
     <form id="multi-delete-form" action="{{ route('insurances.deleteSelected') }}" method="POST" style="display: inline-block;">
         @csrf

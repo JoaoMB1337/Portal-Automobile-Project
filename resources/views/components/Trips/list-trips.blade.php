@@ -31,10 +31,15 @@
                     <input type="text" name="project" id="filter-project" placeholder="Filtrar por projeto">
                     <input type="date" name="start_date" id="filter-start-date" placeholder="Data de início">
                     <input type="date" name="end_date" id="filter-end-date" placeholder="Data de fim">
+                    <label>
+                        <input type="checkbox" name="insurance_ends_today" id="filter-insurance-ends-today">
+                        Seguros que terminam hoje
+                    </label>
                     <button type="submit">Filtrar</button>
                 </form>
             </div>
         </div>
+
         <form id="multi-delete-form" action="{{ route('trips.deleteSelected') }}" method="POST" style="display: inline-block;">
             @csrf
             @method('DELETE')

@@ -62,13 +62,21 @@ class HomeController extends Controller
                 ->where('end_date', '>=', $today);
         }])->find($employeeId);
 
+        //Viagens que terminam "hoje"
+        $tripsEndingToday = Trip::where('end_date', $today)->count();
+
+        //Seguros que terminam "hoje"
+        $insurancesEndingToday = Insurance::where('end_date', $today)->count();
+
         $activeTrips = $employee->trips()->paginate(10);
 
         return view('home', compact(
             'vehicleActive',
             'vehicleInactive',
             'endingInsurances',
-            'activeTrips'
+            'activeTrips',
+            'tripsEndingToday',
+            'insurancesEndingToday'
         ));
     }
 
@@ -89,6 +97,8 @@ class HomeController extends Controller
                     ->orWhere('rental_end_date', '>=', $today);
             })
             ->count();
+
+
 
         $projectsNotStarted = Project::where('project_status_id', 1)->count();
         $projectsInProgress = Project::where('project_status_id', 2)->count();

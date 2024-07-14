@@ -2,11 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CostType;
-use App\Models\Trip;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreTripRequest;
-use App\Http\Requests\UpdateTripRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -14,9 +9,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreTripRequest;
+use App\Http\Requests\UpdateTripRequest;
 
-
-
+use App\Models\CostType;
+use App\Models\Trip;
 use App\Models\Project;
 use App\Models\Employee;
 use App\Models\TypeTrip;
@@ -34,26 +32,26 @@ class TripController extends Controller
     {
         try {
             $isAdmin = Auth::user()->isMaster();
-
+    
             $query = Trip::query();
-
+    
             if (!$isAdmin) {
                 $employeeId = Auth::id();
                 $query->whereHas('employees', function ($query) use ($employeeId) {
                     $query->where('employees.id', $employeeId);
                 });
             }
-
+    
             if ($request->filled('destination')) {
                 $query->where('destination', 'ilike', '%' . $request->input('destination') . '%');
             }
-
+    
             if ($request->filled('project')) {
                 $query->whereHas('project', function ($q) use ($request) {
                     $q->where('name', 'ilike', '%' . $request->input('project') . '%');
                 });
             }
-
+    
             if ($request->filled('start_date') && $request->filled('end_date')) {
                 $startDate = $request->input('start_date');
                 $endDate = $request->input('end_date');
@@ -66,9 +64,14 @@ class TripController extends Controller
                 $endDate = $request->input('end_date');
                 $query->where('end_date', '<=', $endDate);
             }
-
+    
+            if ($request->filled('insurance_ends_today')) {
+                $today = date('Y-m-d');
+                $query->where('end_date', '=', $today);
+            }
+    
             $trips = $query->orderBy('id', 'desc')->paginate(10)->appends($request->query());
-
+    
             return view('pages.Trips.list', [
                 'trips' => $trips,
                 'employees' => Employee::all(),
@@ -81,6 +84,7 @@ class TripController extends Controller
             return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
         }
     }
+    
 
 
     /**
@@ -334,8 +338,6 @@ class TripController extends Controller
         }
         return redirect()->route('trips.index');
     }
-
-
 
     public function checkVehicleAvailability(Request $request)
     {

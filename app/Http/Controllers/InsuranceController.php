@@ -45,11 +45,13 @@ class InsuranceController extends Controller
             }
 
             if ($request->has('terminando')) {
-                $endDateLimit = Carbon::now()->addDays(7);
+                $endDateLimit = Carbon::now()->addDays(30); // Ajustado para 30 dias conforme o label do checkbox
                 $query->whereBetween('end_date', [Carbon::now(), $endDateLimit]);
             }
 
-            $query = Insurance::query()->whereHas('vehicle');
+            if ($request->has('ending_today')) {
+                $query->whereDate('end_date', Carbon::today());
+            }
 
             $insurances = $query->orderBy('id', 'asc')->paginate(10)->appends($request->query());
 
@@ -80,7 +82,7 @@ class InsuranceController extends Controller
         $vehicle = Vehicle::where('plate', $request->vehicle_plate)->first();
 
         if (!$vehicle) {
-            return redirect()->back()->with('error', 'Veículo com a placa fornecida não encontrado.');
+            return redirect()->back()->with('error', 'Veículo com a matricula fornecida não encontrado.');
         }
 
         if ($this->hasOverlappingInsurance($vehicle->id, $request->start_date, $request->end_date)) {
