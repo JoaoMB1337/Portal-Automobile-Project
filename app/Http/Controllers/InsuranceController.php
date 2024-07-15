@@ -160,7 +160,7 @@ class InsuranceController extends Controller
             'vehicle_id' => $vehicle->id
         ]);
 
-        return redirect()->route('insurances.index')->with('success', 'Seguro atualizado com sucesso.');
+        return redirect()->route('insurances.index')->with('message', 'Seguro atualizado com sucesso.');
     }
 
     public function destroy(Insurance $insurance)
@@ -169,7 +169,7 @@ class InsuranceController extends Controller
             $this->authorize('delete', $insurance);
 
             $insurance->delete();
-            return redirect()->route('insurances.index');
+            return redirect()->route('insurances.index')->with('error', 'Seguro excluido com sucesso.');
         } catch (\Exception $e) {
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir esse funcionário.');
         }
@@ -183,7 +183,7 @@ class InsuranceController extends Controller
             }
         }
 
-        return redirect()->route('insurances.index');
+        return redirect()->route('insurances.index')->with('error', 'Seguros excluidos com sucesso.');
     }
 
     private function hasOverlappingInsurance($vehicleId, $startDate, $endDate, $excludeId = null)

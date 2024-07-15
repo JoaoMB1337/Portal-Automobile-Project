@@ -1,7 +1,22 @@
 @vite(['resources/js/Geral/list.js'])
 
 <div class="container">
+    @if (session('message'))
+        <div class="alert alert-info">
+            {{ session('message') }}
+        </div>
+    @endif
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
 
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="p-4 md:p-6 rounded-lg shadow-md mb-3 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300">
         <div class="flex flex-col md:flex-row items-center justify-between mb-4 md:mb-6">
             <div class="flex items-center space-x-2 md:space-x-4 mb-4 md:mb-0">
@@ -39,13 +54,13 @@
                         </option>
                     @endforeach
                 </select>
-                <div class="form-check"> 
+                <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="rental_expired" id="filter-rental-expired" value="1" {{ request('rental_expired') == '1' ? 'checked' : '' }}>
                     <label class="form-check-label" for="filter-rental-expired">
                         Aluguer Expirado
                     </label>
-                    <div class="mr-10"></div> 
-                
+                    <div class="mr-10"></div>
+
                     <input class="form-check-input" type="checkbox" name="filter_activity" id="filter_activity" value="1" {{ request('filter_activity') == '1' ? 'checked' : '' }}>
                     <label class="form-check-label" for="filter_activity">
                         Veiculos não usados
@@ -117,7 +132,7 @@
                         </span>
                         @endif
                     </td>
-                    
+
                     <td class="table-actions">
                         <a href="{{ url('vehicles/' . $vehicle->id . '/edit') }}" class="btn-action btn-edit">
                             <i class="fas fa-edit text-xl"></i>

@@ -32,26 +32,26 @@ class TripController extends Controller
     {
         try {
             $isAdmin = Auth::user()->isMaster();
-    
+
             $query = Trip::query();
-    
+
             if (!$isAdmin) {
                 $employeeId = Auth::id();
                 $query->whereHas('employees', function ($query) use ($employeeId) {
                     $query->where('employees.id', $employeeId);
                 });
             }
-    
+
             if ($request->filled('destination')) {
                 $query->where('destination', 'ilike', '%' . $request->input('destination') . '%');
             }
-    
+
             if ($request->filled('project')) {
                 $query->whereHas('project', function ($q) use ($request) {
                     $q->where('name', 'ilike', '%' . $request->input('project') . '%');
                 });
             }
-    
+
             if ($request->filled('start_date') && $request->filled('end_date')) {
                 $startDate = $request->input('start_date');
                 $endDate = $request->input('end_date');
@@ -64,14 +64,14 @@ class TripController extends Controller
                 $endDate = $request->input('end_date');
                 $query->where('end_date', '<=', $endDate);
             }
-    
+
             if ($request->filled('insurance_ends_today')) {
                 $today = date('Y-m-d');
                 $query->where('end_date', '=', $today);
             }
-    
+
             $trips = $query->orderBy('id', 'desc')->paginate(10)->appends($request->query());
-    
+
             return view('pages.Trips.list', [
                 'trips' => $trips,
                 'employees' => Employee::all(),
@@ -84,7 +84,7 @@ class TripController extends Controller
             return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
         }
     }
-    
+
 
 
     /**
@@ -194,7 +194,7 @@ class TripController extends Controller
             }
         }
 
-        return redirect()->route('trips.index');
+        return redirect()->route('trips.index')->with('success', 'Viagem  adicionada com sucesso.');
     }
 
 
@@ -291,17 +291,17 @@ class TripController extends Controller
         }
 
         $trip = Trip::findOrFail($id);
-    
+
         if (isset($validatedData['vehicle_id'])) {
             $vehicleId = $validatedData['vehicle_id'];
             $startDate = $validatedData['start_date'];
             $endDate = $validatedData['end_date'];
-    
+
             $vehicle = Vehicle::findOrFail($vehicleId);
             if ($vehicle->is_external && $endDate > $vehicle->rental_end_date) {
                 return redirect()->back()->withInput()->withErrors(['vehicle_id' => 'O veículo externo não pode ser usado após o fim do contrato de aluguer.']);
             }
-    
+
             $conflictingTrips = Trip::whereHas('vehicles', function ($query) use ($vehicleId, $startDate, $endDate, $trip) {
                 $query->where('vehicles.id', $vehicleId)
                     ->where('trips.id', '!=', $trip->id)
@@ -314,12 +314,12 @@ class TripController extends Controller
                             });
                     });
             })->exists();
-    
+
             if ($conflictingTrips) {
                 return redirect()->back()->withInput()->withErrors(['vehicle_id' => 'O veículo já está em uso durante o período selecionado.']);
             }
         }
-    
+
         $trip->start_date = $validatedData['start_date'];
         $trip->end_date = $validatedData['end_date'];
         $trip->destination = $validatedData['destination'];
@@ -327,16 +327,16 @@ class TripController extends Controller
         $trip->project_id = $validatedData['project_id'];
         $trip->type_trip_id = $validatedData['type_trip_id'];
         $trip->save();
-    
+
         if (isset($validatedData['employee_id'])) {
             $trip->employees()->sync($validatedData['employee_id']);
         }
-    
+
         if (isset($validatedData['vehicle_id'])) {
             $trip->vehicles()->sync($validatedData['vehicle_id']);
             $vehicle->updateStatus();
         }
-        return redirect()->route('trips.index');
+        return redirect()->route('trips.index')->with('message', 'Viagem  editada com sucesso.');
     }
 
     public function checkVehicleAvailability(Request $request)
@@ -369,7 +369,7 @@ class TripController extends Controller
         try{
             $this -> authorize('delete', $trip);
             $trip->delete();
-            return redirect()->route('trips.index');
+            return redirect()->route('trips.index')->with('error', 'Viagem  excluida com sucesso.');
         }catch (\Exception $e){
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir essa viagem.');
         }
@@ -380,6 +380,6 @@ class TripController extends Controller
     {
         $ids = $request->input('selected_ids', []);
         Trip::whereIn('id', $ids)->delete();
-        return redirect()->route('trips.index')->with('success', 'Viagem excluídos com sucesso.');
+        return redirect()->route('trips.index')->with('error', 'Viagens excluídos com sucesso.');
     }
 }
