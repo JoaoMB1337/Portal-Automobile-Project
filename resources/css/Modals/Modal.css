@@ -1,4 +1,4 @@
-.modal {
+ .modal {
     display: none;
     position: fixed;
     z-index: 1;
@@ -29,6 +29,7 @@
     text-align: center;
     position: relative;
     animation: slideIn 0.2s ease;
+    border: 5px solid #ccc; 
 }
 
 @keyframes slideIn {
@@ -44,12 +45,19 @@
 
 .close {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: -10px; 
+    right: -10px; 
     color: #939292;
-    font-size: 24px;
+    font-size: 32px;
     font-weight: bold;
     cursor: pointer;
+    background: #fff; 
+    border-radius: 50%; 
+    line-height: 20px; 
+    width: 32px; 
+    height: 32px; 
+    text-align: center; 
+    border: 2px solid #ccc; 
 }
 
 .close:hover {
@@ -87,6 +95,7 @@
 .cancel-button:hover {
     background-color: #8e8e8e;
 }
+
 .confirm-button:hover,
 .confirm-button:focus {
     background-color: #a71f25;
