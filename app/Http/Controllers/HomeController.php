@@ -7,6 +7,9 @@ use App\Models\Vehicle;
 use App\Models\Project;
 use App\Models\Trip;
 use App\Models\Insurance;
+use App\Models\ProjectStatus;
+use App\Models\Country;
+use App\Models\District;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -62,13 +65,21 @@ class HomeController extends Controller
                 ->where('end_date', '>=', $today);
         }])->find($employeeId);
 
+        $projectstatuses = ProjectStatus::all();
+        $countries = Country::all();
+        $districts = District::all();
+
         $activeTrips = $employee->trips()->paginate(10);
 
         return view('home', compact(
             'vehicleActive',
             'vehicleInactive',
             'endingInsurances',
-            'activeTrips'
+            'activeTrips',
+            'projectstatuses',
+            'countries',
+            'districts'
+
         ));
     }
 
