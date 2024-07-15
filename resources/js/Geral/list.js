@@ -12,11 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
             filterModal.style.display = 'none';
         }
 
-        window.onclick = function(event) {
+        window.addEventListener('click', function(event) {
             if (event.target === filterModal) {
                 filterModal.style.display = 'none';
             }
-        }
+        });
     }
 
     const deleteModal = document.getElementById('deleteModal');
@@ -60,8 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const deleteButtons = document.querySelectorAll('.btn-delete');
         deleteButtons.forEach(button => {
             button.addEventListener('click', function() {
-                const employeeId = this.getAttribute('data-id');
-                formToDelete = document.getElementById(`delete-form-${employeeId}`);
+                const tripId = this.getAttribute('data-id');
+                formToDelete = document.getElementById(`delete-form-${tripId}`);
                 deleteModal.style.display = 'block';
             });
         });
@@ -80,11 +80,11 @@ document.addEventListener('DOMContentLoaded', function() {
             deleteModal.style.display = 'none';
         }
 
-        window.onclick = function(event) {
+        window.addEventListener('click', function(event) {
             if (event.target === deleteModal) {
                 deleteModal.style.display = 'none';
             }
-        }
+        });
     }
 
     // Add Button Options
@@ -140,5 +140,4 @@ document.addEventListener('DOMContentLoaded', function() {
             window.history.back();
         }
     }
-
 });
