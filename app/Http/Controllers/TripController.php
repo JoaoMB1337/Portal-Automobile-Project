@@ -98,7 +98,7 @@ class TripController extends Controller
             $project_id = $request->input('project_id');
 
             $employees = Employee::all();
-            $projects = Project::all();
+            $projects = Project::WhereNotIn('project_status_id', [3, 4])->get();
             $typeTrips = TypeTrip::all();
             $vehicles = Vehicle::all();
 
@@ -198,10 +198,6 @@ class TripController extends Controller
     }
 
 
-
-
-
-
     /**
      * Display the specified resource.
      */
@@ -262,7 +258,7 @@ class TripController extends Controller
             $this->authorize('update', $trip);
             $trip = Trip::find($trip->id);
             $employees = Employee::all();
-            $projects = Project::all();
+            $projects = Project::WhereNotIn('project_status_id', [3, 4])->get();
             $typeTrips = TypeTrip::all();
             $vehicles = Vehicle::all();
             return view('pages.Trips.edit', [
