@@ -210,7 +210,7 @@
         <div class="flex justify-center mt-6">
             <button type="submit"
                     class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-300">
-                {{ __('Register') }}
+                {{ __('Registar') }}
             </button>
         </div>
     </form>

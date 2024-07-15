@@ -241,7 +241,7 @@ class EmployeeController extends Controller
             $employee->drivingLicenses()->detach();
         }
 
-        return redirect()->route('employees.index') ->with('error', 'Funcionário ' . $employee->name . ' editado com sucesso.');
+        return redirect()->route('employees.index') ->with('message', 'Funcionário ' . $employee->name . ' editado com sucesso.');
     }
 
 
@@ -291,7 +291,7 @@ class EmployeeController extends Controller
 
         try {
             Employee::whereIn('id', $filteredIds)->delete();
-            return redirect()->route('employees.index')->with('success', 'Funcionário exluido com sucesso.');
+            return redirect()->route('employees.index')->with('success', 'Funcionários excluido com sucesso.');
         } catch (\Exception $e) {
             return redirect()->route('employees.index')->with('error', 'Erro ao excluir funcionários.');
         }
