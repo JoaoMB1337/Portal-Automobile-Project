@@ -7,6 +7,17 @@ use App\Models\Vehicle;
 use App\Models\Project;
 use App\Models\Trip;
 use App\Models\Insurance;
+use App\Models\ProjectStatus;
+use App\Models\Country;
+use App\Models\District;
+use App\Models\VehicleCondition;
+use App\Models\Brand;
+use App\Models\CarCategory;
+use App\Models\FuelType;
+use App\Models\TypeTrip;
+
+
+
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -70,13 +81,39 @@ class HomeController extends Controller
 
         $activeTrips = $employee->trips()->paginate(10);
 
+        $projectstatuses = ProjectStatus::all();
+        $countries = Country::all();
+        $districts = District::all()->groupBy('country_id');
+        $vehicleConditions = VehicleCondition::all();
+        $brands = Brand::all();
+        $carCategories = CarCategory::all();
+        $fuelTypes = FuelType::all();
+        $employees = Employee::all();
+        $projects = Project::all();
+        $typeTrips = Trip::all();
+        $vehicles = Vehicle::all();
+        $typeTrips = TypeTrip::all();
+
+
         return view('home', compact(
             'vehicleActive',
             'vehicleInactive',
             'endingInsurances',
             'activeTrips',
             'tripsEndingToday',
-            'insurancesEndingToday'
+            'insurancesEndingToday',
+            'projectstatuses',
+            'countries',
+            'districts',
+            'vehicleConditions',
+            'brands',
+            'carCategories',
+            'fuelTypes',
+            'employees',
+            'projects',
+            'typeTrips',
+            'vehicles',
+            'typeTrips'
         ));
     }
 

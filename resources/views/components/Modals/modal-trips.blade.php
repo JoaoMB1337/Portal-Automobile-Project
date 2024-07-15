@@ -13,9 +13,7 @@
                 </button>
                 <div class="sm:flex sm:items-start">
                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                            Criar uma Viagem
-                        </h3>
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title"> Criar uma Viagem </h3>
                     </div>
                 </div>
                 <div class="w-full rounded-xl p-7 custom-card mt-6">
@@ -69,7 +67,7 @@
                         </div>
                         <div class="form-group">
                             <label for="project_id" class="block text-sm font-medium text-gray-700">Projeto</label>
-                            <select name="project_id" class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('project_id') border-red-500 @enderror" required>
+                            <select name="project_id" class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('project_id') border-red-500 @enderror" required {{ old('project_id') ? 'disabled' : '' }}>
                                 <option value="" disabled selected>Selecione um projeto</option>
                                 @foreach ($projects as $project)
                                     <option value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>{{ $project->name }}</option>
@@ -97,7 +95,7 @@
                         </div>
                         <div class="form-group">
                             <label for="vehicle_id" class="block text-sm font-medium text-gray-700">Veículo</label>
-                            <select name="vehicle_id" id="vehicle_id" class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('vehicle_id') border-red-500 @enderror">
+                            <select name="vehicle_id" id="vehicle_id" class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('vehicle_id') border-red-500 @enderror" {{ old('vehicle_id') ? 'disabled' : '' }}>
                                 <option value="" disabled selected>Selecione um veículo</option>
                                 @foreach ($vehicles as $vehicle)
                                     <option value="{{ $vehicle->id }}" {{ old('vehicle_id') == $vehicle->id ? 'selected' : '' }}>{{ $vehicle->plate }}</option>
@@ -109,9 +107,7 @@
                             @enderror
                         </div>
                         <div>
-                            <button type="submit" id="submit-button" class="w-full py-2 text-white bg-gray-600 hover:bg-gray-700 rounded-md transition-colors duration-200">
-                                Criar
-                            </button>
+                            <button type="submit" id="submit-button" class="w-full py-2 text-white bg-gray-600 hover:bg-gray-700 rounded-md transition-colors duration-200"> Criar </button>
                         </div>
                     </form>
                 </div>
