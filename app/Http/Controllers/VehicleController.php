@@ -170,7 +170,7 @@ class VehicleController extends Controller
 
             Log::info('Veículo armazenado com sucesso.');
 
-            return redirect()->route('vehicles.index')->with('success', 'Vehicle created successfully.');
+            return redirect()->route('vehicles.index')->with('success', 'Veiculo com a matricula ' . $vehicle->plate . ' foi adicionado.');
         } catch (QueryException $e) {
             Log::error('Erro ao armazenar veículo: ' . $e->getMessage());
             throw $e;
@@ -290,7 +290,7 @@ class VehicleController extends Controller
         $vehicle->save();
 
         // Redirect with success message
-        return redirect()->route('vehicles.index')->with('success', 'Vehicle updated successfully.');
+        return redirect()->route('vehicles.index')->with('message', 'Veiculo com a matricula ' . $vehicle->plate . ' foi atualizado.');
     }
     /**
      * Remove the specified resource from storage.
@@ -300,7 +300,7 @@ class VehicleController extends Controller
         try{
             $this->authorize('delete', $vehicle);
             $vehicle->delete();
-            return redirect()->route('vehicles.index');
+            return redirect()->route('vehicles.index')->with('error', 'Veiculo com a matricula ' . $vehicle->plate . ' foi excluido.');
         }catch (\Exception $e){
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para criar uma viagem.');
         }
@@ -329,7 +329,7 @@ class VehicleController extends Controller
                 Vehicle::whereIn('id', $request->selected_ids)->delete();
             }
         }
-        return redirect()->route('vehicles.index');
+        return redirect()->route('vehicles.index')->with('error', 'Veiculo excluido.');
     }
 
 }
