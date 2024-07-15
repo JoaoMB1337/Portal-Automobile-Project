@@ -25,7 +25,7 @@ class UpdateTripRequest extends FormRequest
     public function rules()
     {
         return [
-            'start_date' => ['required', 'date','after:today'],
+            'start_date' => ['required', 'date','after:2024-05-24'],
             'end_date' => 'required|date|after_or_equal:start_date',
             'destination' => 'required|string|max:255',
             'purpose' => 'required|string|max:500',
