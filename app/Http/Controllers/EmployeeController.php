@@ -241,7 +241,7 @@ class EmployeeController extends Controller
             $employee->drivingLicenses()->detach();
         }
 
-        return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
+        return redirect()->route('employees.index') ->with('error', 'Funcionário ' . $employee->name . ' editado com sucesso.');
     }
 
 
@@ -257,7 +257,7 @@ class EmployeeController extends Controller
         try {
             $this->authorize('delete', $employee);
             $employee->delete();
-            return redirect()->route('employees.index') ->with('error', 'Funcionario ' . $employee->name . ' excluido com sucesso.');
+            return redirect()->route('employees.index') ->with('error', 'Funcionário ' . $employee->name . ' excluido com sucesso.');
         } catch (\Exception $e) {
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir esse funcionário.');
         }
