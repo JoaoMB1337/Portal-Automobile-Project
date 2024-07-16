@@ -8,7 +8,7 @@
                     <p class="text-gray-700">{{ Auth::user()->employee_number }}</p>
                     <p class="text-gray-700">{{ Auth::user()->role->name }}</p>
                     <br>
-                    <a href="{{ route('employees.show', Auth::user()->id) }}" class="text-[#f84525] font-medium text-sm hover:text-red-700">Show profile</a>
+                    <a href="{{ route('employees.show', Auth::user()->id) }}" class="text-[#f84525] font-medium text-sm hover:text-red-700">Ver perfil</a>
                 </div>
             </div>
         </div>
