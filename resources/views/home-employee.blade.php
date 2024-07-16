@@ -36,6 +36,25 @@
                             <td class="py-4 whitespace-nowrap text-center text-gray-800 cursor-pointer" onclick="showTripDetails('{{ $trip->id }}', '{{ $trip->start_date }}', '{{ $trip->end_date }}', '{{ $trip->destination }}', '{{ $trip->details }}')">
                                 {{ $trip->destination }}
                             </td>
+
+                            <td>
+                                @foreach ($trip->vehicles as $vehicle)
+                                    {{ $vehicle->plate }}
+                                @endforeach
+                            </td>
+                            <td>
+                                {{$trip->project->country->name}}
+                            </td>
+                            <td>
+
+                                @if($trip->project->district)
+                                    {{$trip->project->district->name}}
+                                @else
+                                    <p>Sem Distrito</p>
+                                @endif
+                            </td>
+
+
                             <td class="py-4 whitespace-nowrap text-center text-gray-800">
                                 <a href="{{ route('trip-details.create', ['trip_id' => $trip->id]) }}" class="bg-green-700 hover:bg-green-600 text-white font-medium text-sm px-3 py-2 rounded">Adicionar Custo</a>
                             </td>
@@ -46,7 +65,7 @@
                         </tr>
                     @endforelse
                 </tbody>
-                
+
             </table>
             <div class="py-5 flex justify-center">
             {{ $activeTrips->links() }}
@@ -54,3 +73,5 @@
         </div>
     </div>
 </div>
+
+@include('components.Modals.modal-viagens-employee')

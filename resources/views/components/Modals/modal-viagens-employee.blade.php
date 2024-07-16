@@ -35,22 +35,21 @@
 </div>
 
 <script>
-    function showTripDetails(tripId, startDate, endDate, destination) {
-
+    function showTripDetails(tripId, startDate, endDate, destination, plate, country, district) {
         const tripDetails = `
             <p><strong>Data de Início:</strong> ${startDate}</p>
             <p><strong>Data de Término:</strong> ${endDate}</p>
             <p><strong>Destino:</strong> ${destination}</p>
+            <p><strong>Matrícula:</strong> ${plate}</p>
+            <p><strong>País:</strong> ${country ? country : 'N/A'}</p>
+            <p><strong>Distrito:</strong> ${district ? district : 'N/A'}</p>
         `;
         document.getElementById('trip-details').innerHTML = tripDetails;
 
-
         document.getElementById('add-cost-button').href = `/trip-details/create?trip_id=${tripId}`;
 
- 
         const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(destination)}`;
         document.getElementById('maps-button').href = mapsLink;
-
 
         document.getElementById('trip-modal').classList.remove('hidden');
     }
