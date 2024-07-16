@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'sqlite'),
+    'default' => env('DB_CONNECTION', 'pgsql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -79,7 +79,23 @@ return [
             ]) : [],
         ],
 
+
         'pgsql' => [
+            'driver' => 'pgsql',
+            'url' => env('DB_URL'),
+            'host' => env('DB_HOST', 'awseb-e-ixz9q6cdru-stack-awsebrdsdatabase-gpigjiq7bu2a.c98c84c8a7ly.eu-north-1.rds.amazonaws.com'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => env('DB_DATABASE', 'ebdb'),
+            'username' => env('DB_USERNAME', 'innodriveDB'),
+            'password' => env('DB_PASSWORD', 'innodrive123.'),
+            'charset' => env('DB_CHARSET', 'utf8'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
+        /*'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DB_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -92,7 +108,7 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => 'prefer',
-        ],
+        ],*/
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
