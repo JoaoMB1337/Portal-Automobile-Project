@@ -84,16 +84,16 @@
                 @enderror
             </div>
 
-            
             <div class="mb-3">
-    <label for="search_vehicle" class="block text-sm font-semibold text-gray-700 mb-2">Matrícula</label>
-    <input id="search_vehicle" type="text"
-           class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('vehicle_plate') border-red-500 @enderror"
-           name="vehicle_plate" value="{{ old('vehicle_plate') }}" required>
-    @error('vehicle_plate')
-    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-    @enderror
-</div>
+                <label for="search_vehicle" class="block text-sm font-semibold text-gray-700 mb-2">Matrícula</label>
+                <input id="search_vehicle" type="text"
+                       class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('vehicle_plate') border-red-500 @enderror"
+                       name="vehicle_plate" value="{{ old('vehicle_plate') }}" required>
+                @error('vehicle_plate')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
             <div class="form-group">
                 <label for="vehicle_id" class="block text-sm font-medium text-gray-700">Veículo</label>
                 <select name="vehicle_id" id="vehicle_id" class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('vehicle_id') border-red-500 @enderror">
@@ -107,8 +107,8 @@
                 <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
-           
-            
+
+
             <div class="flex justify-center mt-6">
                 <button type="submit"
                         class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-300">
