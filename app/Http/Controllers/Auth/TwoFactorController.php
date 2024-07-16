@@ -76,23 +76,14 @@ class TwoFactorController extends Controller
     {
         $request->validate(['one_time_password' => 'required|string']);
 
-        $user_id = $request->session()->get('2fa:user:id');
-        $remember = $request->session()->get('2fa:auth:remember', false);
+        $user = Auth::user();
 
-        if (!$user_id) {
-            return redirect()->route('login');
-        }
-
-        $user = Employee::find($user_id);
-
-        if (!$user || !$user->uses_two_factor_auth) {
-            return redirect()->route('login');
+        if (!$user || !$user->uses_two_factor_auth || !$user->google2fa_secret) {
+            return redirect()->route('2fa.setup'); //route('/2fa/setup');
         }
 
         $google2fa = new Google2FA();
         $otp_secret = $user->google2fa_secret;
-
-        Log::info('Verifying 2FA for user: ' . $user->employee_number . ' with OTP: ' . $request->one_time_password);
 
         if (!$google2fa->verifyKey($otp_secret, $request->one_time_password)) {
             throw ValidationException::withMessages([
@@ -100,10 +91,13 @@ class TwoFactorController extends Controller
             ]);
         }
 
+        // Store the 2FA verified status in the session
+        $request->session()->put('2fa:user:id', $user->id);
+
+        // Optionally, you can store remember me token
+        $remember = $request->boolean('remember');
         Auth::login($user, $remember);
 
-        $request->session()->forget(['2fa:user:id', '2fa:auth:remember']);
-
-        return redirect()->intended('/');
+        return redirect()->intended('/home');
     }
 }

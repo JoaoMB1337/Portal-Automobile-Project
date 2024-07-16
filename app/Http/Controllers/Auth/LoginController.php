@@ -77,7 +77,7 @@ class LoginController extends Controller
 
         Log::info('Validating login for employee_number: ' . $request->input('employee_number'));
 
-        if (! $this->guard()->attempt(['employee_number' => $request->input('employee_number'), 'password' => $request->input('password')], $request->filled('remember'))) {
+        if (!$this->guard()->attempt(['employee_number' => $request->input('employee_number'), 'password' => $request->input('password')], $request->filled('remember'))) {
             throw ValidationException::withMessages([
                 'employee_number' => [trans('auth.failed')],
             ]);
@@ -101,5 +101,15 @@ class LoginController extends Controller
         }
 
         return redirect()->intended($this->redirectPath());
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login.form');
     }
 }
