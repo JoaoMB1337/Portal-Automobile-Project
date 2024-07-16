@@ -80,7 +80,7 @@ return [
         ],
 
 
-        'pgsql' => [
+       /* 'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DB_URL'),
             'host' => env('DB_HOST', 'awseb-e-ixz9q6cdru-stack-awsebrdsdatabase-gpigjiq7bu2a.c98c84c8a7ly.eu-north-1.rds.amazonaws.com'),
@@ -93,22 +93,22 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => 'prefer',
-        ],
+        ],*/
 
-        /*'pgsql' => [
+        'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DB_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
+            'host' => env('DB_HOST', env('DB_HOST')),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'laravel'),
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
+            'database' => env('DB_DATABASE', env('DB_DATABASE')),
+            'username' => env('DB_USERNAME', env('DB_USERNAME')),
+            'password' => env('DB_PASSWORD', env('DB_PASSWORD')),
             'charset' => env('DB_CHARSET', 'utf8'),
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => 'prefer',
-        ],*/
+        ],
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
