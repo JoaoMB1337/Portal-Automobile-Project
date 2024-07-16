@@ -26,7 +26,6 @@ Route::middleware([NoCacheMiddleware::class])->group(function () {
         Route::get('/2fa/setup', [TwoFactorController::class, 'setup'])->name('2fa.setup');
         Route::post('/2fa/setup', [TwoFactorController::class, 'completeSetup'])->name('2fa.completeSetup');
     });
-
     Route::middleware(['auth'])->group(function () {
         Route::get('/2fa', [TwoFactorController::class, 'showVerifyForm'])->name('2fa.verify');
         Route::post('/2fa', [TwoFactorController::class, 'verify'])->name('2fa.verifyForm');
@@ -45,9 +44,9 @@ Route::middleware(['auth', EnsureTwoFactorEnabled::class, NoCacheMiddleware::cla
         Route::resource('projects', App\Http\Controllers\ProjectController::class);
         Route::resource('trip-details', App\Http\Controllers\TripDetailController::class);
     });
-
-    Route::get('/password/change', [ChangePasswordController::class, 'showChangePasswordForm'])->name('password.change.form');
-    Route::post('/password/change', [ChangePasswordController::class, 'changePassword'])->name('password.change.update');
+    // Routes for password change
+    Route::get('/password/change', [App\Http\Controllers\Auth\ChangePasswordController::class, 'showChangePasswordForm'])->name('password.change');
+    Route::post('/password/change', [App\Http\Controllers\Auth\ChangePasswordController::class, 'changePassword'])->name('password.change.update');
 });
 
 // Rotas de exclusão em massa
@@ -89,3 +88,4 @@ Route::post('/insurance-reports', [InsuranceReportController::class, 'filter'])-
 Route::get('/insurance-reports/generate', [InsuranceReportController::class, 'generateInsuranceReport'])->name('insurance.report.generate');
 
 Route::get('api/check-vehicle-availability', [TripController::class, 'checkVehicleAvailability']);
+Route::get('/fetch-data', [HomeController::class, 'fetchData'])->name('fetch.data');

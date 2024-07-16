@@ -88,7 +88,8 @@
 
                 <div class="col-span-2">
                     <label for="vehicle_id" class="block text-sm font-medium text-gray-700">Veículo</label>
-                    <select name="vehicle_id" id="vehicle_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                    <select name="vehicle_id" id="vehicle_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="" disabled selected>Selecione um veículo</option>
                         @foreach ($vehicles as $vehicle)
                             <option value="{{ $vehicle->id }}" {{ $trip->vehicles->contains($vehicle->id) ? 'selected' : '' }}>{{ $vehicle->plate }}</option>
                         @endforeach

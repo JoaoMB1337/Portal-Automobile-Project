@@ -84,7 +84,7 @@ class ProjectController extends Controller
         }
 
 
-        $projects = $query->orderBy('id', 'asc')->paginate(10) ->appends($request->query());
+        $projects = $query->orderBy('id', 'desc')->paginate(10) ->appends($request->query());
 
         $countries = Country::all();
         $districts = District::all();
@@ -141,7 +141,7 @@ class ProjectController extends Controller
 
         $project->save();
 
-        return redirect()->route('projects.index');
+        return redirect()->route('projects.index')->with('success', 'Projeto ' . $project->name . ' adicionado com sucesso.');
     }
 
     /**
@@ -224,7 +224,7 @@ class ProjectController extends Controller
 
             $project->save();
 
-            return redirect()->route('projects.index')->with('success', 'Project updated successfully!');
+            return redirect()->route('projects.index')->with('message', 'Projeto ' . $project->name . ' editado com sucesso.');
         }catch (QueryException $e) {
             return redirect()->route('error.403')->with('error', 'Database query error.');
         } catch (\Exception $e) {
@@ -241,7 +241,7 @@ class ProjectController extends Controller
         try{
             $this-> authorize('delete', $project);
             $project->delete();
-            return redirect()->route('projects.index');
+            return redirect()->route('projects.index')->with('error', 'Projeto ' . $project->name . ' excluido com sucesso.');
         }catch (QueryException $e) {
             return redirect()->route('error.403')->with('error', 'Database query error.');
         } catch (\Exception $e) {

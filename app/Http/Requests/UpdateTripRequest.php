@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Project;
 use Illuminate\Foundation\Http\FormRequest;
+
+use Carbon\Carbon;
 
 class UpdateTripRequest extends FormRequest
 {
@@ -22,7 +25,7 @@ class UpdateTripRequest extends FormRequest
     public function rules()
     {
         return [
-            'start_date' => 'required|date|after:today',
+            'start_date' => ['required', 'date','after:2024-05-24'],
             'end_date' => 'required|date|after_or_equal:start_date',
             'destination' => 'required|string|max:255',
             'purpose' => 'required|string|max:500',
@@ -31,6 +34,8 @@ class UpdateTripRequest extends FormRequest
             'project_id' => 'nullable|exists:projects,id',
         ];
     }
+
+
 
     public function messages()
     {
@@ -53,5 +58,14 @@ class UpdateTripRequest extends FormRequest
             'type_trip_id.exists' => 'O ID do tipo de viagem deve existir na tabela de tipos de viagem.',
             'project_id.exists' => 'O ID do projeto deve existir na tabela de projetos, se fornecido.',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $project = Project::find($this->project_id);
+        if ($project && $project->project_status_id == 3 || $project->project_status_id == 4) {
+            $this->merge(['project_id' => null]);
+            return redirect()->back()->with('error', 'Não é possível atualizar viagens para projetos concluídos.')->throwResponse();
+        }
     }
 }

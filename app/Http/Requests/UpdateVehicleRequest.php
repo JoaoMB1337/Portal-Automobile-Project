@@ -30,6 +30,7 @@ class UpdateVehicleRequest extends FormRequest
             'fuel_type_id' => 'required|integer|exists:fuel_types,id',
             'car_category_id' => 'required|integer|exists:car_categories,id',
             'brand' => 'required|integer|exists:brands,id',
+            'passenger_quantity' => 'nullable|integer|min:1',
         ];
 
         if ($this->is_external) {
@@ -65,7 +66,8 @@ class UpdateVehicleRequest extends FormRequest
             'car_category_id.exists' => 'A categoria selecionada é inválida.',
             'brand.required' => 'Selecione a marca do veículo.',
             'brand.exists' => 'A marca selecionada é inválida.',
-
+            'passenger_quantity.integer' => 'A quantidade de passageiros deve ser um número inteiro.',
+            'passenger_quantity.min' => 'A quantidade de passageiros deve ser no mínimo 1.',
             'contract_number.required' => 'O número do contrato é obrigatório para veículos externos.',
             'contract_number.unique' => 'O número do contrato já está em uso. Por favor, escolha outro.',
             'rental_price_per_day.required' => 'O preço de locação por dia é obrigatório para veículos externos.',

@@ -13,7 +13,7 @@ class CostTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        $costtypes = array('portagens','combustivel','manutencao','limpeza','estacionamento','reparacao','multas','outros');
+        $costtypes = array('Aluguer','Portagens','Combustivel','Manuteção','Limpeza','Estacionamento','Reparação','Multa','Outros');
 
         foreach ($costtypes as $costtype) {
             CostType::create([

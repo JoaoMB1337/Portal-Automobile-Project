@@ -96,7 +96,10 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td class="py-3 px-4 border-b text-center text-gray-500" colspan="5">Nenhuma viagem encontrada</td>
+                    <td colspan="5" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                        <img src="{{ asset('images/notfounditem.png') }}" alt="Nenhum registro encontrado" class="w-64 h-64 mx-auto">
+                        <p class="mt-4 text-center">Nenhum projeto encontrado</p>
+                    </td>
                 </tr>
                 </tbody>
             </table>

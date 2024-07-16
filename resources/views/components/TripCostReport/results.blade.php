@@ -9,6 +9,7 @@
                 <tr class="bg-gray-200">
                     <th class="py-3 px-4 border-b text-left text-gray-700">Projeto</th>
                     <th class="py-3 px-4 border-b text-left text-gray-700">Viagem</th>
+                    <th class="py-3 px-4 border-b text-left text-gray-700">Veiculo</th>
                     <th class="py-3 px-4 border-b text-left text-gray-700">Tipo de Custo</th>
                     <th class="py-3 px-4 border-b text-left text-gray-700">Valor</th>
                     <th class="py-3 px-4 border-b text-left text-gray-700">Data</th>
@@ -17,11 +18,20 @@
                 <tbody>
                 @foreach ($costs as $cost)
                     <tr class="hover:bg-gray-50">
-                        <td class="py-3 px-4 border-b text-gray-700">{{ $cost->trip->project->name }}</td>
-                        <td class="py-3 px-4 border-b text-gray-700">{{ $cost->trip->destination }}</td>
-                        <td class="py-3 px-4 border-b text-gray-700">{{ $cost->costType->type_name }}</td>
-                        <td class="py-3 px-4 border-b text-gray-700">{{ $cost->cost }}</td>
-                        <td class="py-3 px-4 border-b text-gray-700">{{ $cost->created_at->format('d/m/Y') }}</td>
+                        <td class="py-3 px-4 border-b text-gray-700">{{ $cost->trip->project->name ?? 'NA' }}</td>
+                        <td class="py-3 px-4 border-b text-gray-700">{{ $cost->trip->destination ?? 'NA' }}</td>
+                        <td class="py-3 px-4 border-b text-gray-700">
+                            @if($cost->trip->vehicles->isNotEmpty())
+                                @foreach($cost->trip->vehicles as $vehicle)
+                                    {{ $vehicle->plate }}@if(!$loop->last), @endif
+                                @endforeach
+                            @else
+                                NA
+                            @endif
+                        </td>
+                        <td class="py-3 px-4 border-b text-gray-700">{{ $cost->costType->type_name ?? 'NA'}}</td>
+                        <td class="py-3 px-4 border-b text-gray-700">{{ $cost->cost ?? 'NA'}}</td>
+                        <td class="py-3 px-4 border-b text-gray-700">{{ $cost->created_at->format('d/m/Y')?? 'NA' }}</td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -45,6 +55,7 @@
                 <tr class="bg-gray-200">
                     <th class="py-3 px-4 border-b text-left text-gray-700">Projeto</th>
                     <th class="py-3 px-4 border-b text-left text-gray-700">Viagem</th>
+                    <th class="py-3 px-4 border-b text-left text-gray-700">Veiculo</th>
                     <th class="py-3 px-4 border-b text-left text-gray-700">Tipo de Custo</th>
                     <th class="py-3 px-4 border-b text-left text-gray-700">Valor</th>
                     <th class="py-3 px-4 border-b text-left text-gray-700">Data</th>
@@ -52,7 +63,10 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td class="py-3 px-4 border-b text-center text-gray-500" colspan="3">Nenhum custo encontrado</td>
+                    <td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                        <img src="{{ asset('images/notfounditem.png') }}" alt="Nenhum registro encontrado" class="w-64 h-64 mx-auto">
+                        <p class="mt-4 text-center">Nenhum custo encontrado</p>
+                    </td>
                 </tr>
                 </tbody>
             </table>
