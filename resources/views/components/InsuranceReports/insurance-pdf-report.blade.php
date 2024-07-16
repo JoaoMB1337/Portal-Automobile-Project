@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Relatório de Seguros</title>
+    <title>Relatório de seguros</title>
     <style>
         body { font-family: Arial, sans-serif; }
         h1, h2 { text-align: center; }
@@ -11,7 +11,7 @@
     </style>
 </head>
 <body>
-<h1>Relatório de Seguros</h1>
+<h1>Relatório de seguros</h1>
 <h2>Período: {{ $start_date->format('d/m/Y') }} até {{ $end_date->format('d/m/Y') }}</h2>
 
 <h2>Detalhes dos Seguros</h2>

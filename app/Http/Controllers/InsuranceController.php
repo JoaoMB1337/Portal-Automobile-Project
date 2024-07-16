@@ -45,43 +45,48 @@ class InsuranceController extends Controller
             }
 
             if ($request->has('terminando')) {
-                $endDateLimit = Carbon::now()->addDays(7);
+                $endDateLimit = Carbon::now()->addDays(30); // Ajustado para 30 dias conforme o label do checkbox
                 $query->whereBetween('end_date', [Carbon::now(), $endDateLimit]);
+            }
+
+            if ($request->has('ending_today')) {
+                $query->whereDate('end_date', Carbon::today());
             }
 
             $insurances = $query->orderBy('id', 'asc')->paginate(10)->appends($request->query());
 
-            return view('pages.Insurance.list', ['insurance' => $insurances]);
+            return view('pages.Insurance.list', ['insurance' => $insurances, 'vehicles' => Vehicle::all()]);
         } catch (\Exception $e) {
             return redirect()->route('error.403')->with('error', 'Erro ao buscar os seguros.');
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
         try {
             $this->authorize('create', Insurance::class);
+            $vehicles = Vehicle::all();
 
-            return view('pages.Insurance.create');
+            return view('pages.Insurance.create',
+                [
+                    'vehicles' => $vehicles
+                ]
+            );
         }catch (\Exception $e) {
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir esse funcionário.');
         }
-
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreInsuranceRequest $request)
     {
         $vehicle = Vehicle::where('plate', $request->vehicle_plate)->first();
 
         if (!$vehicle) {
-            return redirect()->back()->with('error', 'Vehicle with the provided plate not found.');
+            return redirect()->back()->with('error', 'Veículo com a matricula fornecida não encontrado.');
+        }
+
+        if ($this->hasOverlappingInsurance($vehicle->id, $request->start_date, $request->end_date)) {
+            return redirect()->back()->with('error', 'Veículo já possui um seguro ativo dentro do período fornecido.');
         }
 
         $insurance = new Insurance();
@@ -91,22 +96,13 @@ class InsuranceController extends Controller
         $insurance->start_date = $request->start_date;
         $insurance->end_date = $request->end_date;
         $insurance->cost = str_replace(',', '.', str_replace('.', '', $request->cost));
-
-        $insuranceExists = Insurance::where('vehicle_id', $vehicle->id)->first();
-        if ($insuranceExists) {
-            return redirect()->back()->with('error', 'Veiculo ja tem seguro.');
-        }
-
         $insurance->vehicle_id = $vehicle->id;
 
         $insurance->save();
 
-        return redirect()->route('insurances.index')->with('success', 'Insurance created successfully.');
+        return redirect()->route('insurances.index')->with('success', 'Seguro criado com sucesso.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
         try {
@@ -128,9 +124,6 @@ class InsuranceController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Insurance $insurance)
     {
         try {
@@ -146,16 +139,16 @@ class InsuranceController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Insurance $insurance)
     {
-
         $vehicle = Vehicle::where('plate', $request->vehicle_plate)->first();
 
         if (!$vehicle) {
-            return redirect()->back()->with('error', 'Vehicle with the provided plate not found.');
+            return redirect()->back()->with('error', 'Veículo com a placa fornecida não encontrado.');
+        }
+
+        if ($this->hasOverlappingInsurance($vehicle->id, $request->start_date, $request->end_date, $insurance->id)) {
+            return redirect()->back()->with('error', 'Veículo já possui um seguro ativo dentro do período fornecido.');
         }
 
         $insurance->update([
@@ -164,42 +157,51 @@ class InsuranceController extends Controller
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'cost' => str_replace(',', '.', str_replace('.', '', $request->cost)),
-
             'vehicle_id' => $vehicle->id
         ]);
 
-        return redirect()->route('insurances.index')->with('success', 'Insurance updated successfully.');
+        return redirect()->route('insurances.index')->with('message', 'Seguro atualizado com sucesso.');
     }
 
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Insurance $insurance)
     {
-        try{
+        try {
             $this->authorize('delete', $insurance);
 
             $insurance->delete();
-            return redirect()->route('insurances.index');
-        }catch (\Exception $e) {
+            return redirect()->route('insurances.index')->with('error', 'Seguro excluido com sucesso.');
+        } catch (\Exception $e) {
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir esse funcionário.');
         }
-
     }
 
     public function deleteSelected(Request $request)
     {
-
         if ($request->has('selected_ids')) {
-
             if (!empty($request->selected_ids)) {
-
                 Insurance::whereIn('id', $request->selected_ids)->delete();
             }
         }
 
-        return redirect()->route('insurances.index');
+        return redirect()->route('insurances.index')->with('error', 'Seguros excluidos com sucesso.');
+    }
+
+    private function hasOverlappingInsurance($vehicleId, $startDate, $endDate, $excludeId = null)
+    {
+        $query = Insurance::where('vehicle_id', $vehicleId)
+            ->where(function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('start_date', [$startDate, $endDate])
+                    ->orWhereBetween('end_date', [$startDate, $endDate])
+                    ->orWhere(function ($query) use ($startDate, $endDate) {
+                        $query->where('start_date', '<=', $startDate)
+                            ->where('end_date', '>=', $endDate);
+                    });
+            });
+
+        if ($excludeId) {
+            $query->where('id', '!=', $excludeId);
+        }
+
+        return $query->exists();
     }
 }

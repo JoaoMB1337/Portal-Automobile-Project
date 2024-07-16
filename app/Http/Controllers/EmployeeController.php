@@ -119,7 +119,7 @@ class EmployeeController extends Controller
             }
         }
 
-        return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
+        return redirect()->route('employees.index')->with('success', 'Funcionario ' . $employee->name . ' adicionado com sucesso.');
     }
 
     public function show(Request $request, $id)
@@ -241,7 +241,7 @@ class EmployeeController extends Controller
             $employee->drivingLicenses()->detach();
         }
 
-        return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
+        return redirect()->route('employees.index') ->with('message', 'Funcionário ' . $employee->name . ' editado com sucesso.');
     }
 
 
@@ -257,7 +257,7 @@ class EmployeeController extends Controller
         try {
             $this->authorize('delete', $employee);
             $employee->delete();
-            return redirect()->route('employees.index');
+            return redirect()->route('employees.index') ->with('error', 'Funcionário ' . $employee->name . ' excluido com sucesso.');
         } catch (\Exception $e) {
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir esse funcionário.');
         }
@@ -270,28 +270,28 @@ class EmployeeController extends Controller
         $ids = $request->input('selected_ids', []);
         $authUserId = Auth::id();
         $authUserIsManager = Auth::user()->isManager();
-    
+
         // Filter out the authenticated user's ID to prevent self-deletion
         $filteredIds = array_filter($ids, function($id) use ($authUserId, $authUserIsManager) {
             $employee = Employee::find($id);
             if (!$employee) {
                 return false;
             }
-    
+
             if ($employee->id == $authUserId) {
                 return false;
             }
-    
+
             if ($authUserIsManager && $employee->employee_role_id == 1) {
                 return false;
             }
-    
+
             return true;
         });
-    
+
         try {
             Employee::whereIn('id', $filteredIds)->delete();
-            return redirect()->route('employees.index')->with('success', 'Funcionários excluídos com sucesso.');
+            return redirect()->route('employees.index')->with('success', 'Funcionários excluido com sucesso.');
         } catch (\Exception $e) {
             return redirect()->route('employees.index')->with('error', 'Erro ao excluir funcionários.');
         }
@@ -337,7 +337,7 @@ class EmployeeController extends Controller
 
     public function import(Request $request)
     {
-       
+
         $request->validate([
             'file' => 'required|file|mimes:csv,txt',
         ]);
@@ -441,5 +441,5 @@ class EmployeeController extends Controller
 
         session()->flash('message', $message);
         return redirect()->route('employees.index');
-    } 
+    }
 }

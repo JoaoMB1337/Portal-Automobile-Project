@@ -11,8 +11,9 @@ class CheckFirstLogin
     public function handle(Request $request, Closure $next)
     {
         if (Auth::check() && Auth::user()->first_login) {
-            return redirect()->route('password.change.form');
+            return redirect()->route('password.change');
         }
+
         return $next($request);
     }
 }

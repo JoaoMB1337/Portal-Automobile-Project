@@ -29,7 +29,7 @@ class InsuranceReportController extends Controller
             $totalResults = $insurances->total();
         }
 
-        return view('pages.Insurance-report.index', compact('insurances', 'startDate', 'endDate', 'totalCost', 'totalResults'));
+        return view('pages.InsuranceReport.index', compact('insurances', 'startDate', 'endDate', 'totalCost', 'totalResults'));
     }
 
     public function filter(Request $request)
@@ -102,7 +102,7 @@ class InsuranceReportController extends Controller
         $pdf->AddPage();
 
         // Definir o conteúdo do PDF
-        $html = view('components.Insurance-reports.insurance-pdf-report', $data)->render();
+        $html = view('components.InsuranceReports.insurance-pdf-report', $data)->render();
 
         $pdf->writeHTML($html, true, false, true, false, '');
 

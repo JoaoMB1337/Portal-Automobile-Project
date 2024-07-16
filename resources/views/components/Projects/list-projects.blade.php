@@ -1,14 +1,56 @@
 @vite('resources/js/Geral/list.js')
 
 <div class="container">
-    <div class="form-container">
-        @if(Auth::check() && Auth::user()->isMaster())
-            <button id="filterBtn" class="px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">Filtrar</button>
-            <a href="{{ route('projects.index', ['clear_filters' => true]) }}"
-               class="px-4 py-2 bg-gray-700 text-white rounded-md shadow-sm hover:bg-gray-800">Limpar
-            </a>
-        @endif
+    @if (session('message'))
+        <div class="alert alert-info">
+            {{ session('message') }}
+        </div>
+    @endif
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    <div class="p-4 md:p-6 rounded-lg shadow-md mb-3 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300">
+        <div class="flex flex-col md:flex-row items-center justify-between mb-4 md:mb-6">
+            <div class="flex items-center space-x-2 md:space-x-4 mb-4 md:mb-0">
+                <svg class="w-8 h-8 text-gray-700" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 505 505" xml:space="preserve" fill="#000000">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <circle style="fill:#324A5E;" cx="252.5" cy="252.5" r="252.5"></circle>
+                        <rect x="161.2" y="139.1" style="fill:#E6E9EE;" width="218.3" height="262.6"></rect>
+                        <rect x="125.5" y="103.3" style="fill:#FFFFFF;" width="218.3" height="262.6"></rect>
+                        <g>
+                            <rect x="149.5" y="143.3" style="fill:#4CDBC4;" width="170.2" height="16.2"></rect>
+                            <rect x="149.5" y="198.8" style="fill:#4CDBC4;" width="170.2" height="16.2"></rect>
+                            <rect x="149.5" y="254.3" style="fill:#4CDBC4;" width="170.2" height="16.2"></rect>
+                            <rect x="149.5" y="309.8" style="fill:#4CDBC4;" width="170.2" height="16.2"></rect>
+                        </g>
+                    </g>
+            </svg>
+                <h1 class="text-lg md:text-2xl font-semibold text-gray-900">Projetos</h1>
+            </div>
+            <div class="flex flex-col space-y-2 w-full md:flex-row md:space-x-4 md:space-y-0 md:w-auto">
+                <button id="filterBtn" class="w-full md:w-auto px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">
+                    Filtrar
+                </button>
+                <a href="{{ route('projects.index', ['clear_filters' => true]) }}"
+                   class="w-full md:w-auto px-4 py-2 bg-gray-700 text-white rounded-md shadow-sm hover:bg-gray-800 text-center">
+                    Limpar
+                </a>
+            </div>
+        </div>
     </div>
+
+
 
     @if(Auth::check() && Auth::user()->isMaster())
         <div id="filterModal" class="modal mx-auto lg:pl-64">
@@ -114,8 +156,9 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="8" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
-                        Nenhum projeto encontrado.
+                    <td colspan="7" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                        <img src="{{ asset('images/notfounditem.png') }}" alt="Nenhum registro encontrado" class="w-64 h-64 mx-auto">
+                        <p class="mt-4 text-center">Nenhum projeto encontrado</p>
                     </td>
                 </tr>
             @endforelse

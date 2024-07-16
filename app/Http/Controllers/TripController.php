@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CostType;
-use App\Models\Trip;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreTripRequest;
-use App\Http\Requests\UpdateTripRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
-
-use App\Models\Project;
-use App\Models\Employee;
-use App\Models\TypeTrip;
-use App\Models\Vehicle;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreTripRequest;
+use App\Http\Requests\UpdateTripRequest;
+
+use App\Models\CostType;
+use App\Models\Trip;
+use App\Models\Project;
+use App\Models\Employee;
+use App\Models\TypeTrip;
+use App\Models\Vehicle;
+use App\Models\TripDetail;
 
 
 class TripController extends Controller
@@ -64,7 +65,12 @@ class TripController extends Controller
                 $query->where('end_date', '<=', $endDate);
             }
 
-            $trips = $query->orderBy('id', 'asc')->paginate(10)->appends($request->query());
+            if ($request->filled('insurance_ends_today')) {
+                $today = date('Y-m-d');
+                $query->where('end_date', '=', $today);
+            }
+
+            $trips = $query->orderBy('id', 'desc')->paginate(10)->appends($request->query());
 
             return view('pages.Trips.list', [
                 'trips' => $trips,
@@ -80,6 +86,7 @@ class TripController extends Controller
     }
 
 
+
     /**
      * Show the form for creating a new resource.
      */
@@ -91,13 +98,16 @@ class TripController extends Controller
             $project_id = $request->input('project_id');
 
             $employees = Employee::all();
-            $projects = Project::all();
+            $projects = Project::WhereNotIn('project_status_id', [3, 4])->get();
             $typeTrips = TypeTrip::all();
             $vehicles = Vehicle::all();
 
             if ($search = $request->input('search')) {
 
                 $vehicles = Vehicle::where('plate', 'like', '%' . $search . '%')->get();
+            }
+            if($search = $request->input('search')){
+                $employees = Employee::where('name', 'like', '%' . $search . '%')->get();
             }
             return view('pages.Trips.create', [
                 'employees' => $employees,
@@ -119,8 +129,41 @@ class TripController extends Controller
     {
         $validatedData = $request->validated();
 
+        $project = Project::findOrFail($validatedData['project_id']);
+        if ($project->project_status_id == 3 || $project->project_status_id == 4) {
+            return redirect()->back()->with('error', 'Não é possível criar viagens para projetos concluídos/cancelados.');
+        }
+
+        if (isset($validatedData['vehicle_id'])) {
+            $vehicleId = $validatedData['vehicle_id'];
+            $startDate = $validatedData['start_date'];
+            $endDate = $validatedData['end_date'];
+
+            $vehicle = Vehicle::findOrFail($vehicleId);
+
+            if ($vehicle->is_external && $endDate > $vehicle->rental_end_date) {
+                return redirect()->back()->withInput()->with('vehicle_error', 'O veículo externo não pode ser usado após o fim do contrato de aluguer.');
+            }
+
+            $conflictingTrips = Trip::whereHas('vehicles', function ($query) use ($vehicleId, $startDate, $endDate) {
+                $query->where('vehicles.id', $vehicleId)
+                    ->where(function ($query) use ($startDate, $endDate) {
+                        $query->whereBetween('start_date', [$startDate, $endDate])
+                            ->orWhereBetween('end_date', [$startDate, $endDate])
+                            ->orWhere(function ($query) use ($startDate, $endDate) {
+                                $query->where('start_date', '<=', $startDate)
+                                    ->where('end_date', '>=', $endDate);
+                            });
+                    });
+            })->exists();
+
+            if ($conflictingTrips) {
+                return redirect()->back()->withInput()->with('vehicle_error', 'O veículo já está em uso durante o período selecionado.');
+            }
+        }
+
         $trip = new Trip();
-        $trip->start_date = $validatedData['start_date'] ?? null;
+        $trip->start_date = $validatedData['start_date'];
         $trip->end_date = $validatedData['end_date'];
         $trip->destination = $validatedData['destination'];
         $trip->purpose = $validatedData['purpose'];
@@ -134,26 +177,26 @@ class TripController extends Controller
 
         if (isset($validatedData['vehicle_id'])) {
             $trip->vehicles()->attach($validatedData['vehicle_id']);
+            $vehicle->updateStatus();
 
+            if ($vehicle->is_external) {
+                $startDate = new \DateTime($validatedData['start_date']);
+                $endDate = new \DateTime($validatedData['end_date']);
+                $interval = $startDate->diff($endDate);
+                $days = $interval->days + 1;
+                $cost = $days * $vehicle->rental_price_per_day;
+
+                TripDetail::create([
+                    'trip_id' => $trip->id,
+                    'cost_type_id' => 1,
+                    'cost' => $cost,
+                ]);
+            }
         }
 
-        $vehicle = Vehicle::find($validatedData['vehicle_id']);
-        $vehicle->is_active = true;
-        $vehicle->save();
-
-        // se o veiculo estiver ativo, não pode ser associado a outra viagem
-         if (!$vehicle->is_active) {
-             return redirect()->back()->withInput()->withErrors(['vehicle_id' => 'Veículo já está em uso.']);
-         }
-
-         // o veiculo para inativo quando passar a data do fim da viagem
-            if ($trip->end_date < now()) {
-                $vehicle->is_active = false;
-                $vehicle->save();
-            }
-
-        return redirect()->route('trips.index');
+        return redirect()->route('trips.index')->with('success', 'Viagem  adicionada com sucesso.');
     }
+
 
     /**
      * Display the specified resource.
@@ -215,7 +258,7 @@ class TripController extends Controller
             $this->authorize('update', $trip);
             $trip = Trip::find($trip->id);
             $employees = Employee::all();
-            $projects = Project::all();
+            $projects = Project::WhereNotIn('project_status_id', [3, 4])->get();
             $typeTrips = TypeTrip::all();
             $vehicles = Vehicle::all();
             return view('pages.Trips.edit', [
@@ -234,27 +277,45 @@ class TripController extends Controller
      * Update the specified resource in storage.
      */
 
-    public function update(Request $request, $id)
+    public function update(UpdateTripRequest $request, $id)
     {
-        // Validação dos dados
-        $validatedData = $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'destination' => 'required|string|max:255',
-            'purpose' => 'required|string|max:500',
-            'project_id' => 'required|integer|exists:projects,id',
-            'type_trip_id' => 'required|integer|exists:type_trips,id',
-            'employee_id' => 'nullable|integer|exists:employees,id',
-            'vehicle_id' => 'nullable|integer|exists:vehicles,id',
-        ]);
 
-        // Verificação da data de fim
-        if ($validatedData['end_date'] < $validatedData['start_date']) {
-            return redirect()->back()->withInput()->withErrors(['end_date' => 'A data de fim deve ser posterior à data de início.']);
+        $validatedData = $request->validated();
+       $project = Project::findOrFail($validatedData['project_id']);
+        if ($project->project_status_id == 3 || $project->project_status_id == 4) {
+            return redirect()->back()->with('error', 'Não é possível atualizar viagens para projetos concluídos/ cancelados.');
         }
 
-        // Recuperar a viagem e atualizar os dados
         $trip = Trip::findOrFail($id);
+
+        if (isset($validatedData['vehicle_id'])) {
+            $vehicleId = $validatedData['vehicle_id'];
+            $startDate = $validatedData['start_date'];
+            $endDate = $validatedData['end_date'];
+
+            $vehicle = Vehicle::findOrFail($vehicleId);
+            if ($vehicle->is_external && $endDate > $vehicle->rental_end_date) {
+                return redirect()->back()->withInput()->withErrors(['vehicle_id' => 'O veículo externo não pode ser usado após o fim do contrato de aluguer.']);
+            }
+
+            $conflictingTrips = Trip::whereHas('vehicles', function ($query) use ($vehicleId, $startDate, $endDate, $trip) {
+                $query->where('vehicles.id', $vehicleId)
+                    ->where('trips.id', '!=', $trip->id)
+                    ->where(function ($query) use ($startDate, $endDate) {
+                        $query->whereBetween('start_date', [$startDate, $endDate])
+                            ->orWhereBetween('end_date', [$startDate, $endDate])
+                            ->orWhere(function ($query) use ($startDate, $endDate) {
+                                $query->where('start_date', '<=', $startDate)
+                                    ->where('end_date', '>=', $endDate);
+                            });
+                    });
+            })->exists();
+
+            if ($conflictingTrips) {
+                return redirect()->back()->withInput()->withErrors(['vehicle_id' => 'O veículo já está em uso durante o período selecionado.']);
+            }
+        }
+
         $trip->start_date = $validatedData['start_date'];
         $trip->end_date = $validatedData['end_date'];
         $trip->destination = $validatedData['destination'];
@@ -263,44 +324,37 @@ class TripController extends Controller
         $trip->type_trip_id = $validatedData['type_trip_id'];
         $trip->save();
 
-
         if (isset($validatedData['employee_id'])) {
-            $trip->employees()->sync([$validatedData['employee_id']]);
+            $trip->employees()->sync($validatedData['employee_id']);
         }
-
 
         if (isset($validatedData['vehicle_id'])) {
-            $trip->vehicles()->sync([$validatedData['vehicle_id']]);
-
-
-            $vehicle = Vehicle::find($validatedData['vehicle_id']);
-            if ($vehicle) {
-
-
-                $vehicle->is_active = true;
-                $vehicle->save();
-
-
-
-            } else {
-                return redirect()->back()->withInput()->withErrors(['vehicle_id' => 'Veículo não encontrado.']);
-            }
+            $trip->vehicles()->sync($validatedData['vehicle_id']);
+            $vehicle->updateStatus();
         }
-
-
-        if ($trip->end_date < now()) {
-            if (isset($vehicle)) {
-                $vehicle->is_active = false;
-                $vehicle->save();
-
-
-            }
-        }
-
-        return redirect()->route('trips.index');
+        return redirect()->route('trips.index')->with('message', 'Viagem  editada com sucesso.');
     }
 
+    public function checkVehicleAvailability(Request $request)
+    {
+        $vehicleId = $request->query('vehicle_id');
+        $startDate = $request->query('start_date');
+        $endDate = $request->query('end_date');
 
+        $conflictingTrips = Trip::whereHas('vehicles', function ($query) use ($vehicleId, $startDate, $endDate) {
+            $query->where('vehicles.id', $vehicleId)
+                ->where(function ($query) use ($startDate, $endDate) {
+                    $query->whereBetween('start_date', [$startDate, $endDate])
+                        ->orWhereBetween('end_date', [$startDate, $endDate])
+                        ->orWhere(function ($query) use ($startDate, $endDate) {
+                            $query->where('start_date', '<=', $startDate)
+                                ->where('end_date', '>=', $endDate);
+                        });
+                });
+        })->exists();
+
+        return response()->json(['available' => !$conflictingTrips]);
+    }
 
 
     /**
@@ -311,7 +365,7 @@ class TripController extends Controller
         try{
             $this -> authorize('delete', $trip);
             $trip->delete();
-            return redirect()->route('trips.index');
+            return redirect()->route('trips.index')->with('error', 'Viagem  excluida com sucesso.');
         }catch (\Exception $e){
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir essa viagem.');
         }
@@ -322,6 +376,6 @@ class TripController extends Controller
     {
         $ids = $request->input('selected_ids', []);
         Trip::whereIn('id', $ids)->delete();
-        return redirect()->route('trips.index')->with('success', 'Viagem excluídos com sucesso.');
+        return redirect()->route('trips.index')->with('error', 'Viagens excluídos com sucesso.');
     }
 }

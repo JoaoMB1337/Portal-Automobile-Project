@@ -52,6 +52,14 @@
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
+            <div>
+                <label for="passenger_quantity" class="block text-sm font-semibold text-gray-700 mb-2">Numero de passageiros</label>
+                <input id="passengers" type="number" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('passengers') border-red-500 @enderror" name="passengers" value="{{ old('passengers') }}" required autocomplete="passengers">
+                @error('passengers')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
 
             <div>
                 <label for=" carCategory" class="block text-sm font-semibold text-gray-700 mb-2">Categoria</label>
@@ -160,7 +168,7 @@
             </div>
 
             <div class="pt-6">
-                <button type="submit" class="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-700 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 custom-btn">Criar</button>
+                <button type="submit" class="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2  custom-btn">Criar</button>
             </div>
         </form>
     </div>

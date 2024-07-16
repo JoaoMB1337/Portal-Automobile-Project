@@ -28,44 +28,66 @@ class VehicleController extends Controller
     /**
      * Display a listing of the resource.
      */
+    /**
+     * Display a listing of the resource.
+     */
     public function index(Request $request)
     {
-        try{
+        try {
             $this->authorize('viewAny', Vehicle::class);
 
             $query = Vehicle::query();
 
-            // Search by plate
             if ($search = $request->input('search')) {
                 $query->where('plate', 'ilike', '%' . $search . '%');
             }
 
             if (($isExternal = $request->input('is_external')) !== null) {
-
                 if ($isExternal === '0' || $isExternal === '1') {
                     $query->where('is_external', $isExternal);
                 }
             }
 
-            // Filter by fuel type
             if ($fuelTypeId = $request->input('fuel_type')) {
                 $query->where('fuel_type_id', $fuelTypeId);
             }
 
-            // Pagination
-            $vehicles = $query->orderBy('id', 'asc')->paginate(15);
+            if (($vehicleNotUsed = $request->input('filter_activity')) !== null) {
+                if ($vehicleNotUsed === '1') {
+                    $query->where('is_active', 1);
+                } elseif ($vehicleNotUsed === '0') {
+                    $query->where('is_active', 0);
+                }
+            }
+
+            if ($rentalExpired = $request->input('rental_expired')) {
+                if ($rentalExpired == '1') {
+                    $query->where('is_external', 1)
+                        ->where('rental_end_date', '<', now());
+                }
+            } else {
+                $query->where(function ($query) {
+                    $query->where('is_external', 0)
+                        ->orWhere(function ($query) {
+                            $query->where('is_external', 1)
+                                ->where('rental_end_date', '>=', now());
+                        });
+                });
+            }
+
+            // Pagination with descending order
+            $vehicles = $query->orderBy('id', 'desc')->paginate(15);
 
             // Get all fuel types for the filter dropdown
             $fuelTypes = FuelType::all();
 
-            $vehicles = $query->orderBy('id', 'asc')->paginate(10);
-
             return view('pages.Vehicles.list', compact('vehicles', 'fuelTypes'));
-        }catch (\Exception $e){
-            return redirect()->route('error.403')->with('error', 'Você não tem permissão para criar uma viagem.');
+        } catch (\Exception $e) {
+            return redirect()->route('error.403')->with('error', 'Você não tem permissão para visualizar veículos.');
         }
-
     }
+
+
 
 
     /**
@@ -110,8 +132,8 @@ class VehicleController extends Controller
             $vehicle->fuel_type_id = $request->fuelTypes;
             $vehicle->car_category_id = $request->carCategory;
             $vehicle->brand_id = $request->brand;
+            $vehicle->passenger_quantity = $request->passengers;
 
-            // Verificando e ajustando o campo is_external
             if ($request->is_external == null) {
                 $vehicle->is_external = 0;
             }
@@ -144,12 +166,11 @@ class VehicleController extends Controller
                 $vehicle->rental_contact_number = null;
             }
 
-            // Salvando o veículo no banco de dados
             $vehicle->save();
 
             Log::info('Veículo armazenado com sucesso.');
 
-            return redirect()->route('vehicles.index')->with('success', 'Vehicle created successfully.');
+            return redirect()->route('vehicles.index')->with('success', 'Veiculo com a matricula ' . $vehicle->plate . ' foi adicionado.');
         } catch (QueryException $e) {
             Log::error('Erro ao armazenar veículo: ' . $e->getMessage());
             throw $e;
@@ -158,7 +179,6 @@ class VehicleController extends Controller
             throw $e;
         }
     }
-
 
     /**
      * Display the specified resource.
@@ -232,6 +252,7 @@ class VehicleController extends Controller
         $vehicle->fuel_type_id = $request->fuel_type_id;
         $vehicle->car_category_id = $request->car_category_id;
         $vehicle->brand_id = $request->brand;
+        $vehicle->passenger_quantity = $request->passenger_quantity;
 
         if ($vehicle->is_external) {
             $vehicle->contract_number = $request->contract_number;
@@ -269,7 +290,7 @@ class VehicleController extends Controller
         $vehicle->save();
 
         // Redirect with success message
-        return redirect()->route('vehicles.index')->with('success', 'Vehicle updated successfully.');
+        return redirect()->route('vehicles.index')->with('message', 'Veiculo com a matricula ' . $vehicle->plate . ' foi atualizado.');
     }
     /**
      * Remove the specified resource from storage.
@@ -279,7 +300,7 @@ class VehicleController extends Controller
         try{
             $this->authorize('delete', $vehicle);
             $vehicle->delete();
-            return redirect()->route('vehicles.index');
+            return redirect()->route('vehicles.index')->with('error', 'Veiculo com a matricula ' . $vehicle->plate . ' foi excluido.');
         }catch (\Exception $e){
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para criar uma viagem.');
         }
@@ -308,7 +329,7 @@ class VehicleController extends Controller
                 Vehicle::whereIn('id', $request->selected_ids)->delete();
             }
         }
-        return redirect()->route('vehicles.index');
+        return redirect()->route('vehicles.index')->with('error', 'Veiculo excluido.');
     }
 
 }

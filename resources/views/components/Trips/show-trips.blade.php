@@ -79,13 +79,23 @@
             <h3 class="text-2xl font-semibold text-gray-900">Detalhes da Viagem</h3>
             <p class="mt-1 text-gray-600">Informações detalhadas sobre os custos da viagem</p>
             @if(Auth::check())
-                <div class="flex justify-between items-center mt-4">
-                    <a href="{{ route('trip-details.create', ['trip_id' => $trip->id]) }}" class="flex items-center px-4 py-2 bg-green-700 hover:bg-green-600 border rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150">
-                        <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                        </svg>
-                        Adicionar Detalhe
-                    </a>
+                <div class="flex flex-col justify-between items-start mt-4">
+                    @if($trip->project->project_status_id != 3)
+                        <a href="{{ route('trip-details.create', ['trip_id' => $trip->id]) }}" class="flex items-center px-4 py-2 bg-green-700 hover:bg-green-600 border rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150">
+                            <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Adicionar Detalhe
+                        </a>
+                    @else
+                        <button id="addDetailBtn" class="flex items-start px-4 py-2 bg-green-700 border rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150 cursor-not-allowed">
+                            <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Adicionar Detalhe
+                        </button>
+                        <p id="errorMessage" class="text-red-500 text-sm mt-2 hidden">O status do projeto está concluído, não é possível adicionar custos.</p>
+                    @endif
                 </div>
             @endif
         </div>
@@ -125,4 +135,23 @@
         max-width: 900px;
         margin: 0 auto;
     }
+    .cursor-not-allowed {
+        cursor: not-allowed;
+    }
+    .text-sm {
+        font-size: 0.875rem;
+    }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var addDetailBtn = document.getElementById('addDetailBtn');
+        var errorMessage = document.getElementById('errorMessage');
+        if (addDetailBtn) {
+            addDetailBtn.addEventListener('click', function(event) {
+                event.preventDefault();
+                errorMessage.classList.remove('hidden');
+            });
+        }
+    });
+</script>

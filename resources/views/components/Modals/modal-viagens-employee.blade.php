@@ -1,5 +1,3 @@
-<!-- resources/views/modal-viagens-employee.blade.php -->
-
 <div id="trip-modal" class="fixed inset-0 z-50 hidden overflow-y-auto lg:pl-64">
     <div class="flex items-center justify-center min-h-screen p-4 text-center">
         <div class="fixed inset-0 transition-opacity" aria-hidden="true">
@@ -15,7 +13,7 @@
                         </h3>
                         <div class="mt-2">
                             <p class="text-sm text-gray-500" id="trip-details">
-                                <!-- Conteúdo dos detalhes da viagem será injetado aqui -->
+
                             </p>
                         </div>
                     </div>
@@ -38,7 +36,7 @@
 
 <script>
     function showTripDetails(tripId, startDate, endDate, destination) {
-        // Define os detalhes da viagem no modal
+
         const tripDetails = `
             <p><strong>Data de Início:</strong> ${startDate}</p>
             <p><strong>Data de Término:</strong> ${endDate}</p>
@@ -46,14 +44,14 @@
         `;
         document.getElementById('trip-details').innerHTML = tripDetails;
 
-        // Atualiza o link do botão "Adicionar Custo"
+
         document.getElementById('add-cost-button').href = `/trip-details/create?trip_id=${tripId}`;
 
-        // Atualiza o link do botão "Abrir no Google Maps"
+ 
         const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(destination)}`;
         document.getElementById('maps-button').href = mapsLink;
 
-        // Mostra o modal
+
         document.getElementById('trip-modal').classList.remove('hidden');
     }
 </script>

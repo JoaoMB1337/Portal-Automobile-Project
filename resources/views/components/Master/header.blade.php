@@ -65,13 +65,14 @@
             flex-shrink: 0;
         }
 
-
         #sidebar a:hover {
             background-color: #4a5568;
         }
 
-
         nav#sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
             z-index: 999;
         }
 
@@ -79,8 +80,6 @@
             z-index: 1000;
             position: relative;
         }
-
-
 
         #mobile-menu-btn {
             background-color: #333;
@@ -174,10 +173,8 @@
             position: relative;
         }
 
-
-
-        .absolute.show {
-            display: block;
+        .show {
+            display: block !important;
         }
 
         #sidebar a:hover {
@@ -187,8 +184,26 @@
         #trips-submenu,
         #vehicles-submenu,
         #reports-submenu {
+            display: none;
             z-index: 1000;
         }
+
+        nav#sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 100vh; 
+            z-index: 999;
+        }
+
+        .overflow-y-auto {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .mt-auto {
+            margin-top: auto;
+        }
+
         @media (max-width: 1025px) {
             #sidebar {
                 transform: translateX(-100%);
@@ -250,7 +265,6 @@
                 z-index: 2000;
             }
         }
-
     </style>
 </head>
 <body>
@@ -280,7 +294,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </a>
-                <ul id="trips-submenu" class="absolute bg-gray-600 text-white w-full mt-1 hidden">
+                <ul id="trips-submenu" class="bg-gray-600 text-white w-full mt-1 hidden">
                     <li>
                         <a href="/trips" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200 ">Ver Viagem</a>
                     </li>
@@ -297,7 +311,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </a>
-                <ul id="vehicles-submenu" class="absolute bg-gray-600 text-white w-full mt-1 hidden">
+                <ul id="vehicles-submenu" class="bg-gray-600 text-white w-full mt-1 hidden">
                     <li>
                         <a href="/vehicles" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Ver Veículos</a>
                     </li>
@@ -317,7 +331,7 @@
                         </svg>
                     </a>
 
-                    <ul id="reports-submenu" class="absolute bg-gray-600 text-white w-full mt-1 hidden">
+                    <ul id="reports-submenu" class="bg-gray-600 text-white w-full mt-1 hidden">
                         <li>
                             <a href="/cost-report" class="block text-white py-2 px-4 hover:bg-gray-700 transition-colors duration-200">Relatórios Viagens</a>
                         </li>
@@ -407,22 +421,16 @@
         tripsMenu.addEventListener('click', function(e) {
             e.preventDefault();
             tripsSubMenu.classList.toggle('show');
-            vehiclesSubMenu.classList.remove('show');
-            reportsSubMenu.classList.remove('show');
         });
 
         vehiclesMenu.addEventListener('click', function(e) {
             e.preventDefault();
             vehiclesSubMenu.classList.toggle('show');
-            tripsSubMenu.classList.remove('show');
-            reportsSubMenu.classList.remove('show');
         });
 
         reportsMenu.addEventListener('click', function(e) {
             e.preventDefault();
             reportsSubMenu.classList.toggle('show');
-            tripsSubMenu.classList.remove('show');
-            vehiclesSubMenu.classList.remove('show');
         });
     });
 </script>

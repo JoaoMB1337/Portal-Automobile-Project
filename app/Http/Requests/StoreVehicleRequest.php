@@ -28,6 +28,7 @@ class StoreVehicleRequest extends FormRequest
             'fuelTypes' => 'required|exists:fuel_types,id',
             'carCategory' => 'required|exists:car_categories,id',
             'brand' => 'required|exists:brands,id',
+            'passenger_quantity' => 'nullable|integer|min:1',
             'rental_price_per_day' => [
                 'nullable',
                 'regex:/^\d{1,6}([.,]\d{1,2})?$/',
@@ -62,6 +63,8 @@ class StoreVehicleRequest extends FormRequest
             'carCategory.exists' => 'A categoria selecionada é inválida.',
             'brand.required' => 'Selecione a marca do veículo.',
             'brand.exists' => 'A marca selecionada é inválida.',
+            'passenger_quantity.integer' => 'A quantidade de passageiros deve ser um número inteiro.',
+            'passenger_quantity.min' => 'A quantidade de passageiros deve ser no mínimo 1.',
             'contract_number.required' => 'O número do contrato é obrigatório para veículos externos.',
             'contract_number.unique' => 'O número do contrato já está em uso. Por favor, escolha outro.',
             'rental_price_per_day.required' => 'O preço de locação por dia é obrigatório para veículos externos.',

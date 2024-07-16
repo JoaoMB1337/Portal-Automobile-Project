@@ -1,7 +1,6 @@
 @extends('components.Master.main')
 @section('content')
     @vite(['resources/js/Geral/list.js'])
-
     <div class="container mx-auto lg:pl-64 p-5 ">
         <div class="flex justify-center mt-10">
             <div class="w-full max-w-sm">
