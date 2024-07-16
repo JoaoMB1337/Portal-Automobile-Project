@@ -6,14 +6,14 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class EnsureTwoFactorEnabled
+class PreventAccessTo2FASetup
 {
     public function handle(Request $request, Closure $next)
     {
         $user = Auth::user();
 
-        if ($user && !$request->session()->has('2fa:user:id')) {
-            return redirect()->route('2fa.verify');
+        if ($user && $user->google2fa_secret) {
+            return redirect()->route('home');
         }
 
         return $next($request);
