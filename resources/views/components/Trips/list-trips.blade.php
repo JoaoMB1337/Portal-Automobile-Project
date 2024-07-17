@@ -29,7 +29,7 @@
                 </div>
                 <div class="flex flex-col space-y-2 w-full md:flex-row md:space-x-4 md:space-y-0 md:w-auto">
                     <button id="filterBtn" class="w-full md:w-auto px-4 py-2 bg-gray-600 text-white rounded-md shadow-sm hover:bg-gray-700">
-                        Filtrar
+                        Filtros
                     </button>
                     <a href="{{ route('trips.index', ['clear_filters' => true]) }}"
                        class="w-full md:w-auto px-4 py-2 bg-gray-700 text-white rounded-md shadow-sm hover:bg-gray-800 text-center">

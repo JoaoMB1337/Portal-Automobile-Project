@@ -59,16 +59,21 @@ class HomeController extends Controller
         // Viagens ativas para o empregado
         $employee = Employee::with(['trips' => function ($query) use ($today) {
             $query->where('start_date', '<=', $today)
-                ->where('end_date', '>=', $today);
+                ->where('end_date', '>=', $today)
+                ->with(['vehicles' => function ($query) {
+                    $query->where('is_active', 1);
+                }]);
         }])->find($employeeId);
 
-        //Viagens que terminam "hoje"
-        $tripsEndingToday = Trip::where('end_date', $today)->count();
+        //Viagens que terminam em 30 dias
+        $tripsEndingToday  = Trip::whereBetween('end_date', [$today, $nextMonth])->count();
 
         //Seguros que terminam "hoje"
         $insurancesEndingToday = Insurance::where('end_date', $today)->count();
 
-        $activeTrips = $employee->trips()->paginate(10);
+        $activeTrips = $employee->trips()->with('vehicles')->paginate(10);
+
+
 
         return view('home', compact(
             'vehicleActive',

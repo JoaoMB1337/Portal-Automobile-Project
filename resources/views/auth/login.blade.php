@@ -54,7 +54,7 @@
                 @csrf
 
                 <div>
-                    <label for="employee_number" class="block text-sm font-semibold text-gray-700 mb-2">Employee Number</label>
+                    <label for="employee_number" class="block text-sm font-semibold text-gray-700 mb-2">Número de funcionário</label>
                     <input id="employee_number" type="text" class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('employee_number') border-red-500 @enderror" name="employee_number" value="{{ old('employee_number') }}" required autocomplete="employee_number" autofocus>
                     @error('employee_number')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -73,7 +73,7 @@
 
                 <div class="flex justify-center">
                     <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-300">
-                         {{ __('Login') }}
+                         {{ __('Entrar') }}
                     </button>
                 </div>
             </form>
