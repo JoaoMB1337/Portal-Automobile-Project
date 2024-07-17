@@ -10,4 +10,4 @@ Artisan::command('inspire', function () {
 
 Artisan::command('vehicles:update-status', function () {
     $this->call(UpdateVehicleStatus::class);
-})->purpose('Update the status of vehicles based on their rental periods and trips')->daily();
+})->purpose('Update the status of vehicles based on their rental periods and trips')->everyMinute();
