@@ -83,17 +83,18 @@ return [
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DB_URL'),
-            'host' => env('DB_HOST', 'awseb-e-ixz9q6cdru-stack-awsebrdsdatabase-gpigjiq7bu2a.c98c84c8a7ly.eu-north-1.rds.amazonaws.com'),
+            'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'ebdb'),
-            'username' => env('DB_USERNAME', 'innodriveDB'),
-            'password' => env('DB_PASSWORD', 'innodrive123.'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
             'charset' => env('DB_CHARSET', 'utf8'),
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
-            'sslmode' => 'prefer',
+            'sslmode' => env('DB_SSLMODE', 'prefer'),
         ],
+
 
         /*'pgsql' => [
             'driver' => 'pgsql',
