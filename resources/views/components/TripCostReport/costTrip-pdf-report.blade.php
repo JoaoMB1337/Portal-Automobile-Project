@@ -1,17 +1,45 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Relatório de Custos</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        h1, h2 { text-align: center; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        tfoot { font-weight: bold; }
-        .total-row td { font-weight: bold; }
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tfoot {
+            font-weight: bold;
+        }
+
+        .total-row td {
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
     <h1>Relatório de custos de viagem</h1>
     <h2>Período: {{ $start_date }} até {{ $end_date }}</h2>
@@ -23,7 +51,7 @@
                 <th>Projeto</th>
                 <th>Viagem</th>
                 <th>Veículo</th>
-                <th>Tipo de Custo</th>
+                <th>Tipo de custo</th>
                 <th>Valor</th>
                 <th>Data</th>
             </tr>
@@ -49,4 +77,5 @@
         </tfoot>
     </table>
 </body>
+
 </html>
