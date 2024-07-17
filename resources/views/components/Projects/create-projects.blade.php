@@ -1,14 +1,13 @@
-
 <div class="w-full rounded-xl p-7 custom-card mt-12">
     <div class="flex justify-center mb-6">
-        <h1>Registro de Projeto</h1>
+        <h1>Registro de projeto</h1>
     </div>
 
     <form method="POST" action="{{ route('projects.store') }}" class="space-y-6">
         @csrf
 
         <div>
-            <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nome do Projeto</label>
+            <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nome do projeto</label>
             <input id="name" type="text"
                 class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('name') border-red-500 @enderror"
                 name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -18,7 +17,7 @@
         </div>
 
         <div>
-            <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">Endereço do Projeto</label>
+            <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">Endereço do projeto</label>
             <input id="address" type="text"
                 class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('address') border-red-500 @enderror"
                 name="address" value="{{ old('address') }}" required autocomplete="address">
@@ -28,11 +27,11 @@
         </div>
 
         <div>
-            <label for="projectstatus" class="block text-sm font-semibold text-gray-700 mb-2">Status do Projeto</label>
+            <label for="projectstatus" class="block text-sm font-semibold text-gray-700 mb-2">Status do projeto</label>
             <select id="projectstatus" name="projectstatus"
                 class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('projectstatus') border-red-500 @enderror"
                 required autocomplete="projectstatus" autofocus>
-                <option value="" selected>Selecione o Status</option>
+                <option value="" selected>Selecione o status</option>
                 @foreach ($projectstatuses as $status)
                     <option value="{{ $status->id }}" @if (old('projectstatus') == $status->id) selected @endif>
                         {{ $status->status_name }}</option>
@@ -48,7 +47,7 @@
             <select id="country" name="country"
                 class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('country') border-red-500 @enderror"
                 required autocomplete="country" autofocus>
-                <option value="" selected>Selecione o País</option>
+                <option value="" selected>Selecione o país</option>
                 @foreach ($countries as $country)
                     <option value="{{ $country->id }}" @if (old('country') == $country->id) selected @endif>
                         {{ $country->name }}</option>
@@ -64,7 +63,7 @@
             <select id="district" name="district"
                 class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('district') border-red-500 @enderror"
                 autocomplete="district" autofocus>
-                <option value="" selected>Selecione o Distrito</option>
+                <option value="" selected>Selecione o distrito</option>
             </select>
             @error('district')
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
