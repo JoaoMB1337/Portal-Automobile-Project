@@ -18,6 +18,11 @@ class UpdateVehicleStatus extends Command
 
     public function handle()
     {
+        Log::info('DB Host: ' . env('DB_HOST'));
+        Log::info('DB Database: ' . env('DB_DATABASE'));
+        Log::info('DB Username: ' . env('DB_USERNAME'));
+        Log::info('DB Password: ' . env('DB_PASSWORD'));
+        
         $vehicles = Vehicle::all();
 
         foreach ($vehicles as $vehicle) {
