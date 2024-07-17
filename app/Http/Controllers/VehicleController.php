@@ -332,4 +332,40 @@ class VehicleController extends Controller
         return redirect()->route('vehicles.index')->with('error', 'Veiculo excluido.');
     }
 
+
+    public function updateAllVehicleStatuses()
+    {
+        $vehicles = Vehicle::all();
+
+        foreach ($vehicles as $vehicle) {
+            $this->updateVehicleStatus($vehicle);
+        }
+
+        Log::info('Vehicle statuses updated successfully.');
+    }
+
+    private function updateVehicleStatus(Vehicle $vehicle)
+    {
+        $today = \Carbon\Carbon::today();
+
+        // Veículo externo ativo dentro do período de aluguel
+        if ($vehicle->is_external) {
+            if ($today->greaterThanOrEqualTo($vehicle->rental_start_date) && $today->lessThanOrEqualTo($vehicle->rental_end_date)) {
+                $vehicle->is_active = true;
+            } else {
+                $vehicle->is_active = false;
+            }
+        } else {
+            $vehicle->is_active = true;
+        }
+
+        // Desativar se o período de viagem terminou
+        $activeTrips = $vehicle->trips()->where('end_date', '>=', $today)->exists();
+        if (!$activeTrips) {
+            $vehicle->is_active = false;
+        }
+
+        $vehicle->save();
+    }
+
 }

@@ -63,27 +63,5 @@ class Vehicle extends Model
         return $this->belongsToMany(Trip::class, 'trip_vehicle_associations');
     }
 
-    public function updateStatus()
-    {
-        $today = Carbon::today();
-
-        // Veículo externo ativo dentro do período de aluguel
-        if ($this->is_external) {
-            if ($today->greaterThanOrEqualTo($this->rental_start_date) && $today->lessThanOrEqualTo($this->rental_end_date)) {
-                $this->is_active = true;
-            } else {
-                $this->is_active = false;
-            }
-        } else {
-            $this->is_active = true;
-        }
-
-        // Desativar se o período de viagem terminou
-        $activeTrips = $this->trips()->where('end_date', '>=', $today)->exists();
-        if (!$activeTrips) {
-            $this->is_active = false;
-        }
-
-        $this->save();
-    }
+    
 }
