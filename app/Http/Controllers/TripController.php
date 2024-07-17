@@ -65,18 +65,21 @@ class TripController extends Controller
                 $query->where('end_date', '<=', $endDate);
             }
 
-            if ($request->filled('insurance_ends_today')) {
+            if ($request->filled('trips_ending_today')) {
                 $today = date('Y-m-d');
                 $query->where('end_date', '=', $today);
             }
 
             $trips = $query->orderBy('id', 'desc')->paginate(10)->appends($request->query());
 
+            $tripsEndingToday = Trip::where('end_date', '=', date('Y-m-d'))->count();
+
             return view('pages.Trips.list', [
                 'trips' => $trips,
                 'employees' => Employee::all(),
                 'project' => Project::all(),
                 'vehicles' => Vehicle::all(),
+                'tripsEndingToday' => $tripsEndingToday,
             ]);
         } catch (QueryException $e) {
             return redirect()->route('error.403')->with('error', 'Database query error.');
