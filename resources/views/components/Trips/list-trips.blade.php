@@ -49,8 +49,8 @@
                     <input type="date" name="start_date" id="filter-start-date" placeholder="Data de início">
                     <input type="date" name="end_date" id="filter-end-date" placeholder="Data de fim">
                     <label>
-                        <input type="checkbox" name="insurance_ends_today" id="filter-insurance-ends-today">
-                        Seguros que terminam hoje
+                        <input type="checkbox" name="trips_ending_today" id="filter-trips-ending-today">
+                        Viagens que terminam hoje
                     </label>
                     <button type="submit">Filtrar</button>
                 </form>
