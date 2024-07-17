@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Http\Controllers\VehicleController;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class UpdateVehicleStatus extends Command
