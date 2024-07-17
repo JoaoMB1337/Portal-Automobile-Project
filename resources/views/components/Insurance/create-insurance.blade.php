@@ -1,5 +1,5 @@
 @vite(['resources/js/Trips/create.js'])
-<script type="application/json" id="vehicles-data">@json($vehicles)</script>
+
 
 
 

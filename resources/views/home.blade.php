@@ -1,6 +1,7 @@
 @extends('components.Master.main')
 @vite(['resources/js/Home/home.js'])
 
+
 @section('content')
     @if (Auth::check())
         <body class="bg-gray-100 h-screen">
