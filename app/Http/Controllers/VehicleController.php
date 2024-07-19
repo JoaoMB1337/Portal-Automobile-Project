@@ -344,11 +344,11 @@ class VehicleController extends Controller
         Log::info('Vehicle statuses updated successfully.');
     }
 
-    public function updateVehicleStatus(Vehicle $vehicle)
+    private function updateVehicleStatus(Vehicle $vehicle)
     {
         $today = \Carbon\Carbon::today();
 
-        // Veículo externo ativo dentro do período de aluguel
+        // Verifica se o veículo é externo e se está dentro do período de aluguel
         if ($vehicle->is_external) {
             if ($today->greaterThanOrEqualTo($vehicle->rental_start_date) && $today->lessThanOrEqualTo($vehicle->rental_end_date)) {
                 $vehicle->is_active = true;
@@ -359,13 +359,22 @@ class VehicleController extends Controller
             $vehicle->is_active = true;
         }
 
-        // Desativar se o período de viagem terminou
+        // Verifica se há viagens ativas
         $activeTrips = $vehicle->trips()->where('end_date', '>=', $today)->exists();
-        if (!$activeTrips) {
+
+        if ($activeTrips) {
+            // Verifica se a viagem começou ou vai começar hoje
+            $activeTripStartingTodayOrLater = $vehicle->trips()->where('start_date', '<=', $today)->where('end_date', '>=', $today)->exists();
+            if ($activeTripStartingTodayOrLater) {
+                $vehicle->is_active = true;
+            } else {
+                $vehicle->is_active = false;
+            }
+        } else {
+            // Desativa o veículo se não houver viagens ativas
             $vehicle->is_active = false;
         }
 
         $vehicle->save();
     }
-
 }
