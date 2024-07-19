@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\Auth\TwoFactorController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +15,7 @@ use App\Http\Middleware\EnsureTwoFactorEnabled;
 use App\Http\Middleware\NoCacheMiddleware;
 use App\Http\Middleware\EnsureTwoFactorSetup;
 use App\Http\Middleware\PreventAccessTo2FASetup;
+use App\Http\Middleware\CheckValid2FA;
 
 // Middleware para prevenir cache em rotas sensíveis
 Route::middleware([NoCacheMiddleware::class])->group(function () {
@@ -33,17 +33,15 @@ Route::middleware([NoCacheMiddleware::class])->group(function () {
 });
 
 // Middleware para proteger rotas autenticadas e 2FA
-Route::middleware(['auth', EnsureTwoFactorEnabled::class, NoCacheMiddleware::class])->group(function () {
-    Route::middleware(['auth', EnsureTwoFactorEnabled::class, NoCacheMiddleware::class])->group(function () {
-        Route::get('/home', [HomeController::class, 'index'])->name('home');
-        Route::get('/vehicles/{vehicle}/download-pdf', [VehicleController::class, 'downloadPdf'])->name('vehicles.downloadPdf');
-        Route::resource('employees', EmployeeController::class);
-        Route::resource('trips', TripController::class);
-        Route::resource('vehicles', VehicleController::class);
-        Route::resource('insurances', App\Http\Controllers\InsuranceController::class);
-        Route::resource('projects', App\Http\Controllers\ProjectController::class);
-        Route::resource('trip-details', App\Http\Controllers\TripDetailController::class);
-    });
+Route::middleware(['auth', EnsureTwoFactorEnabled::class, NoCacheMiddleware::class, CheckValid2FA::class])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/vehicles/{vehicle}/download-pdf', [VehicleController::class, 'downloadPdf'])->name('vehicles.downloadPdf');
+    Route::resource('employees', EmployeeController::class);
+    Route::resource('trips', TripController::class);
+    Route::resource('vehicles', VehicleController::class);
+    Route::resource('insurances', App\Http\Controllers\InsuranceController::class);
+    Route::resource('projects', App\Http\Controllers\ProjectController::class);
+    Route::resource('trip-details', App\Http\Controllers\TripDetailController::class);
     // Routes for password change
     Route::get('/password/change', [App\Http\Controllers\Auth\ChangePasswordController::class, 'showChangePasswordForm'])->name('password.change');
     Route::post('/password/change', [App\Http\Controllers\Auth\ChangePasswordController::class, 'changePassword'])->name('password.change.update');
