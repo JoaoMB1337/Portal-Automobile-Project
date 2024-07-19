@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Support\Facades\Artisan;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTripRequest;
@@ -73,7 +74,6 @@ class TripController extends Controller
             $trips = $query->orderBy('id', 'desc')->paginate(10)->appends($request->query());
 
             $tripsEndingToday = Trip::where('end_date', '=', date('Y-m-d'))->count();
-
             return view('pages.Trips.list', [
                 'trips' => $trips,
                 'employees' => Employee::all(),
@@ -180,7 +180,7 @@ class TripController extends Controller
 
         if (isset($validatedData['vehicle_id'])) {
             $trip->vehicles()->attach($validatedData['vehicle_id']);
-            $vehicle->updateStatus();
+            Artisan::call('vehicles:update-status');
 
             if ($vehicle->is_external) {
                 $startDate = new \DateTime($validatedData['start_date']);
@@ -196,7 +196,6 @@ class TripController extends Controller
                 ]);
             }
         }
-
         return redirect()->route('trips.index')->with('success', 'Viagem  adicionada com sucesso.');
     }
 
@@ -333,8 +332,9 @@ class TripController extends Controller
 
         if (isset($validatedData['vehicle_id'])) {
             $trip->vehicles()->sync($validatedData['vehicle_id']);
-            $vehicle->updateStatus();
+            Artisan::call('vehicles:update-status');
         }
+        
         return redirect()->route('trips.index')->with('message', 'Viagem  editada com sucesso.');
     }
 
@@ -368,6 +368,7 @@ class TripController extends Controller
         try{
             $this -> authorize('delete', $trip);
             $trip->delete();
+            Artisan::call('vehicles:update-status');
             return redirect()->route('trips.index')->with('error', 'Viagem  excluida com sucesso.');
         }catch (\Exception $e){
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir essa viagem.');
@@ -379,6 +380,7 @@ class TripController extends Controller
     {
         $ids = $request->input('selected_ids', []);
         Trip::whereIn('id', $ids)->delete();
+        Artisan::call('vehicles:update-status');
         return redirect()->route('trips.index')->with('error', 'Viagens excluídos com sucesso.');
     }
 }

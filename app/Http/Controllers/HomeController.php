@@ -33,8 +33,8 @@ class HomeController extends Controller
     public function index()
     {
         $employeeId = auth()->id();
-
         $today = Carbon::today();
+        $nextMonth = $today->copy()->addDays(30);
 
         $vehicleActive = Vehicle::where('is_active', 1)
             ->where(function($query) use ($today) {
@@ -51,7 +51,6 @@ class HomeController extends Controller
             ->count();
 
         // Seguros prestes a acabar
-        $nextMonth = $today->copy()->addDays(30);
         $endingInsurances = Insurance::whereBetween('end_date', [$today, $nextMonth])
             ->orderBy('end_date', 'asc')
             ->paginate(10);
@@ -65,15 +64,13 @@ class HomeController extends Controller
                 }]);
         }])->find($employeeId);
 
-        //Viagens que terminam em 30 dias
-        $tripsEndingToday  = Trip::whereBetween('end_date', [$today, $nextMonth])->count();
+        // Viagens que terminam hoje
+        $tripsEndingToday = Trip::whereDate('end_date', $today)->count();
 
-        //Seguros que terminam "hoje"
-        $insurancesEndingToday = Insurance::where('end_date', $today)->count();
+        // Seguros que terminam em 30 dias
+        $insurancesEndingIn30Days = Insurance::whereBetween('end_date', [$today, $nextMonth])->count();
 
         $activeTrips = $employee->trips()->with('vehicles')->paginate(10);
-
-
 
         return view('home', compact(
             'vehicleActive',
@@ -81,9 +78,10 @@ class HomeController extends Controller
             'endingInsurances',
             'activeTrips',
             'tripsEndingToday',
-            'insurancesEndingToday'
+            'insurancesEndingIn30Days'
         ));
     }
+
 
     public function fetchData()
     {

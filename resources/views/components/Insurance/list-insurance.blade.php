@@ -67,7 +67,6 @@
             </div>
         </div>
 
-
         <div id="filterModal" class="modal mx-auto lg:pl-64">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -89,7 +88,6 @@
                 </form>
             </div>
         </div>
-
 
         <form id="multi-delete-form" action="{{ route('insurances.deleteSelected') }}" method="POST"
             style="display: inline-block;">
@@ -123,11 +121,11 @@
                                     <input type="checkbox" name="selected_ids[]" value="{{ $insurance->id }}"
                                         class="form-checkbox">
                                 </td>
-                                <td><a href="{{ route('insurances.show', $insurance->id) }}">{{ $insurance->insurance_company }}
+                                <td><a href="{{ route('insurances.show', $insurance->id) }}">{{ $insurance->insurance_company ?? 'N/A' }}
                                 </td>
-                                <td>{{ $insurance->policy_number }}</td>
-                                <td>{{ number_format($insurance->cost, 2, ',', '.') }}</td>
-                                <td>{{ $insurance->vehicle->plate }}</td>
+                                <td>{{ $insurance->policy_number ?? 'N/A' }}</td>
+                                <td>{{ number_format($insurance->cost ?? 0, 2, ',', '.') }}</td>
+                                <td>{{ $insurance->vehicle->plate ?? 'N/A' }}</td>
                                 <td class="table-actions">
                                     <a href="{{ route('insurances.edit', $insurance->id) }}" class="p-2">
                                         <i class="fas fa-edit text-xl"></i>
@@ -335,3 +333,4 @@
             });
         });
     </script>
+</body>

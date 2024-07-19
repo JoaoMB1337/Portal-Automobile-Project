@@ -344,7 +344,7 @@ class VehicleController extends Controller
         Log::info('Vehicle statuses updated successfully.');
     }
 
-    private function updateVehicleStatus(Vehicle $vehicle)
+    public function updateVehicleStatus(Vehicle $vehicle)
     {
         $today = \Carbon\Carbon::today();
 
