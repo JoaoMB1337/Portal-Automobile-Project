@@ -10,17 +10,18 @@ class CostReportController extends Controller
 {
     public function index(Request $request)
     {
-        $startDate = $request->input('start_date', Carbon::now()->startOfMonth()->toDateString());
+        $startDate = $request;
         $endDate = $request->input('end_date', Carbon::now()->toDateString());
 
         if (Carbon::parse($endDate)->isFuture()) {
             $endDate = Carbon::now()->toDateString();
         }
 
+        $endDate = Carbon::parse($endDate)->endOfDay();
+
         $costs = TripDetail::whereBetween('created_at', [$startDate, $endDate])
             ->with(['trip.vehicles', 'costType'])
             ->paginate(10);
-
 
         return view('pages.TripCostReport.index', compact('costs', 'startDate', 'endDate'));
     }
@@ -36,10 +37,12 @@ class CostReportController extends Controller
             $endDate = Carbon::now()->toDateString();
         }
 
+        // Ajustar a data de término para o final do dia
+        $endDate = Carbon::parse($endDate)->endOfDay();
+
         $costs = TripDetail::whereBetween('created_at', [$startDate, $endDate])
             ->with(['trip.vehicles', 'costType'])
             ->paginate(10);
-
 
         return view('pages.TripCostReport.index', compact('costs', 'startDate', 'endDate'));
     }
@@ -55,10 +58,12 @@ class CostReportController extends Controller
             $endDate = Carbon::now()->toDateString();
         }
 
+        // Ajustar a data de término para o final do dia
+        $endDate = Carbon::parse($endDate)->endOfDay();
+
         $costs = TripDetail::whereBetween('created_at', [$startDate, $endDate])
             ->with(['trip.vehicles', 'costType', 'trip.project'])
             ->get();
-
 
         foreach ($costs as $cost) {
             if ($cost->trip->project->project_status_id == 3) {
@@ -111,11 +116,6 @@ class CostReportController extends Controller
                 'required',
                 'date',
                 'after_or_equal:start_date',
-                function ($attribute, $value, $fail) {
-                    if (Carbon::parse($value)->isFuture()) {
-                        $fail('A data de término não deve ser uma data futura.');
-                    }
-                },
             ],
         ], [
             'start_date.required' => 'A data de início é obrigatória.',
@@ -123,7 +123,6 @@ class CostReportController extends Controller
             'start_date.before_or_equal' => 'A data de início deve ser anterior ou igual à data de término.',
             'end_date.required' => 'A data de término é obrigatória.',
             'end_date.date' => 'A data de término deve ser uma data válida.',
-            'end_date.after_or_equal' => 'A data de término deve ser posterior ou igual à data de início.',
         ]);
     }
 }
