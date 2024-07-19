@@ -79,7 +79,7 @@ class TwoFactorController extends Controller
         $user = Auth::user();
 
         if (!$user || !$user->uses_two_factor_auth || !$user->google2fa_secret) {
-            return redirect()->route('2fa.setup'); //route('/2fa/setup');
+            return redirect()->route('2fa.setup');
         }
 
         $google2fa = new Google2FA();
@@ -92,7 +92,7 @@ class TwoFactorController extends Controller
         }
 
         // Store the 2FA verified status in the session
-        $request->session()->put('2fa:user:id', $user->id);
+        $request->session()->put('is_2fa_valid', true);
 
         // Optionally, you can store remember me token
         $remember = $request->boolean('remember');
