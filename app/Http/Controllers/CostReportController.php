@@ -123,6 +123,7 @@ class CostReportController extends Controller
             'start_date.before_or_equal' => 'A data de início deve ser anterior ou igual à data de término.',
             'end_date.required' => 'A data de término é obrigatória.',
             'end_date.date' => 'A data de término deve ser uma data válida.',
+            'end_date.after_or_equal' => 'A data de término deve ser posterior ou igual à data de início.',
         ]);
     }
 }
