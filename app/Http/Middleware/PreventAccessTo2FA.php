@@ -12,7 +12,7 @@ class PreventAccessTo2FA
     {
         $user = Auth::user();
 
-        if ($user && $user->google2fa_secret && $request->session()->has('2fa:user:id')) {
+        if ($user && $user->google2fa_secret && $request->session()->has('is_2fa_valid')) {
             return redirect()->route('home');
         }
 
