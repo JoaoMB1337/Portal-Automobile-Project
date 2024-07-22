@@ -10,7 +10,7 @@ class CostReportController extends Controller
 {
     public function index(Request $request)
     {
-        $startDate = $request;
+        $startDate = $request->input('start_date', Carbon::now()->startOfMonth()->toDateString());
         $endDate = $request->input('end_date', Carbon::now()->toDateString());
 
         if (Carbon::parse($endDate)->isFuture()) {
