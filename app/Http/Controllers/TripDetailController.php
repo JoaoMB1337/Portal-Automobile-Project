@@ -103,7 +103,7 @@ class TripDetailController extends Controller
         return redirect()->route('trips.show', ['trip' => $trip->id])->with('success', 'Detalhe de viagem criado com sucesso!');
     }
 
-    
+
 
 
 
@@ -124,7 +124,6 @@ class TripDetailController extends Controller
                 'project' => $project
             ]);
         } catch (AuthorizationException $e) {
-            // Redirecionar para a página de erro 403 personalizada
             return redirect()->route('error.403');
         }
     }
@@ -134,15 +133,63 @@ class TripDetailController extends Controller
      */
     public function edit(TripDetail $tripDetail)
     {
-        //
+        $this->authorize('update', $tripDetail);
+
+        $projects = Project::all();
+        $costTypes = CostType::all();
+        $trips = Trip::all();
+        $employees = Employee::all();
+
+        return view('pages.TripDetails.edit', [
+            'tripDetail' => $tripDetail,
+            'projects' => $projects,
+            'costTypes' => $costTypes,
+            'trips' => $trips,
+            'employees' => $employees,
+        ]);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateTripDetailRequest $request, TripDetail $tripDetail)
     {
-        //
+        $this->authorize('update', $tripDetail);
+
+        $validated = $request->validated();
+
+        $tripDetail->trip_id = $validated['trip_id'];
+        $tripDetail->cost_type_id = $validated['cost_type_id'];
+        $tripDetail->cost = $validated['cost'];
+
+        $trip = Trip::findOrFail($validated['trip_id']);
+        $project = $trip->project;
+        $directory = 'projects/' . $project->id . '/trips/' . $tripDetail->trip_id . '/receipts';
+
+        if ($request->hasFile('receipt_gallery')) {
+            $request->validate([
+                'receipt_gallery' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
+            $file = $request->file('receipt_gallery');
+            $fileName = hash('sha256', time() . '_' . $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
+            $file->storeAs($directory, $fileName, 'public');
+            $tripDetail->file = $fileName;
+        } elseif ($request->hasFile('receipt_camera')) {
+            $request->validate([
+                'receipt_camera' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
+            $file = $request->file('receipt_camera');
+            $fileName = hash('sha256', time() . '_' . $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
+            $file->storeAs($directory, $fileName, 'public');
+            $tripDetail->file = $fileName;
+        }
+
+        $tripDetail->save();
+
+        return redirect()->route('trips.show', ['trip' => $trip->id])->with('success', 'Detalhe de viagem atualizado com sucesso!');
     }
 
     /**
