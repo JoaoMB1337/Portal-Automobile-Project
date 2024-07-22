@@ -33,7 +33,7 @@ class TripDetailPolicy
      */
     public function create(Employee $employee): bool
     {
-        //
+        return $employee->isMaster();
     }
 
     /**
@@ -41,7 +41,7 @@ class TripDetailPolicy
      */
     public function update(Employee $employee, TripDetail $tripDetail): bool
     {
-        //
+        return $employee->isMaster();
     }
 
     /**
