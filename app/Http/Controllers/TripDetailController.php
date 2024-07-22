@@ -124,7 +124,6 @@ class TripDetailController extends Controller
                 'project' => $project
             ]);
         } catch (AuthorizationException $e) {
-            // Redirecionar para a página de erro 403 personalizada
             return redirect()->route('error.403');
         }
     }
