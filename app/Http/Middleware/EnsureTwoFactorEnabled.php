@@ -12,8 +12,8 @@ class EnsureTwoFactorEnabled
     {
         $user = Auth::user();
 
-        if ($user && !$request->session()->has('2fa:user:id')) {
-            return redirect()->route('2fa.verify');
+        if ($user && !$user->google2fa_secret) {
+            return redirect()->route('2fa.setup');
         }
 
         return $next($request);

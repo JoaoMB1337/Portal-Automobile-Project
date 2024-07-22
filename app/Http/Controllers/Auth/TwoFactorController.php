@@ -91,13 +91,14 @@ class TwoFactorController extends Controller
             ]);
         }
 
-        // Store the 2FA verified status in the session
+        // Limpar a verificação 2FA anterior e definir o status 2FA como válido
         $request->session()->put('is_2fa_valid', true);
 
-        // Optionally, you can store remember me token
+        // Logar o usuário com o status "lembrar-me" se aplicável
         $remember = $request->boolean('remember');
         Auth::login($user, $remember);
 
         return redirect()->intended('/home');
     }
+
 }
