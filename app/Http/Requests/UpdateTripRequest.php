@@ -32,6 +32,7 @@ class UpdateTripRequest extends FormRequest
             'employee_id' => 'required|exists:employees,id',
             'type_trip_id' => 'required|exists:type_trips,id',
             'project_id' => 'nullable|exists:projects,id',
+            'vehicle_id' => 'nullable|exists:vehicles,id',
         ];
     }
 
@@ -57,6 +58,8 @@ class UpdateTripRequest extends FormRequest
             'type_trip_id.required' => 'O tipo de viagem é obrigatório.',
             'type_trip_id.exists' => 'O ID do tipo de viagem deve existir na tabela de tipos de viagem.',
             'project_id.exists' => 'O ID do projeto deve existir na tabela de projetos, se fornecido.',
+            'vehicle_id.exists' => 'O ID do veículo deve existir na tabela de veículos, se fornecido.',
+            'vehicle_id.nullable' => 'O ID do veículo deve ser nulo ou existir na tabela de veículos.',
         ];
     }
 

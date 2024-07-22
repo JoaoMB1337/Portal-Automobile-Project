@@ -27,14 +27,24 @@
                 <tbody>
                     @foreach ($insurances as $insurance)
                         <tr class="hover:bg-gray-50">
-                            <td class="py-3 px-4 border-b">{{ $insurance->insurance_company }}</td>
-                            <td class="py-3 px-4 border-b">{{ $insurance->policy_number }}</td>
                             <td class="py-3 px-4 border-b">
-                                {{ \Carbon\Carbon::parse($insurance->start_date)->format('d/m/Y') }}</td>
+                                {{ $insurance->insurance_company ?? 'N/A' }}
+                            </td>
                             <td class="py-3 px-4 border-b">
-                                {{ \Carbon\Carbon::parse($insurance->end_date)->format('d/m/Y') }}</td>
-                            <td class="py-3 px-4 border-b">{{ $insurance->vehicle->plate }}</td>
-                            <td class="py-3 px-4 border-b">{{ number_format($insurance->cost, 2, ',', '.') }}</td>
+                                {{ $insurance->policy_number ?? 'N/A'}}
+                            </td>
+                            <td class="py-3 px-4 border-b">
+                                {{ \Carbon\Carbon::parse($insurance->start_date)->format('d/m/Y') ?? 'N/A'}}
+                            </td>
+                            <td class="py-3 px-4 border-b">
+                                {{ \Carbon\Carbon::parse($insurance->end_date)->format('d/m/Y') ?? 'N/A'}}
+                            </td>
+                            <td class="py-3 px-4 border-b">
+                                {{ $insurance->vehicle->plate ?? 'N/A' }}
+                                </td>
+                            <td class="py-3 px-4 border-b">
+                                {{ number_format($insurance->cost, 2, ',', '.') ?? 'N/A'}}
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

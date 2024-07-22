@@ -34,7 +34,7 @@ class EmployeeSeeder extends Seeder
                 'email_verified_at' => '2021-01-01',
                 'password' => bcrypt('12345678'),
                 'remember_token' => '123456789',
-                'first_login' => false, // Added to avoid 'first_login' column being 'null
+                'first_login' => false, 
                 'created_at' => '2021-01-01',
                 'updated_at' => '2021-01-01',
             ],
@@ -52,7 +52,7 @@ class EmployeeSeeder extends Seeder
                 'email_verified_at' => '2021-01-01',
                 'password' => bcrypt('12345678'),
                 'remember_token' => '123456789',
-                'first_login' => false, // Added to avoid 'first_login' column being 'null
+                'first_login' => false, 
                 'created_at' => '2021-01-01',
                 'updated_at' => '2021-01-01',
             ],
@@ -70,7 +70,7 @@ class EmployeeSeeder extends Seeder
                 'email_verified_at' => '2021-01-01',
                 'password' => bcrypt('12345678'),
                 'remember_token' => '123456789',
-                'first_login' => false, // Added to avoid 'first_login' column being 'null
+                'first_login' => false, 
                 'created_at' => '2021-01-01',
                 'updated_at' => '2021-01-01',
             ],
@@ -88,7 +88,7 @@ class EmployeeSeeder extends Seeder
                 'email_verified_at' => '2021-01-01',
                 'password' => bcrypt('12345678'),
                 'remember_token' => '123456789',
-                'first_login' => false, // Added to avoid 'first_login' column being 'null
+                'first_login' => false, 
                 'created_at' => '2021-01-01',
                 'updated_at' => '2021-01-01',
             ],
@@ -106,7 +106,7 @@ class EmployeeSeeder extends Seeder
                 'email_verified_at' => '2021-01-01',
                 'password' => bcrypt('12345678'),
                 'remember_token' => '123456789',
-                'first_login' => false, // Added to avoid 'first_login' column being 'null
+                'first_login' => false, 
                 'created_at' => '2021-01-01',
                 'updated_at' => '2021-01-01',
             ],
@@ -124,39 +124,70 @@ class EmployeeSeeder extends Seeder
                 'email_verified_at' => '2021-01-01',
                 'password' => bcrypt('12345678'),
                 'remember_token' => '123456789',
-                'first_login' => false, // Added to avoid 'first_login' column being 'null
+                'first_login' => false, 
+                'created_at' => '2021-01-01',
+                'updated_at' => '2021-01-01',
+            ],
+
+            [
+                'name' => 'Ruben Canelas',
+                'employee_number' => '0006',
+                'gender'=> 'Male',
+                'birth_date' => '1995-07-15',
+                'CC' => '112233445',
+                'NIF' => '544332211',
+                'address' => 'Rua das ruas,123',
+                'employee_role_id' => 1,
+                'email' => 'ruben.canelas@innodrive.com',
+                'phone' => '932123456',
+                'email_verified_at' => '2021-01-01',
+                'password' => bcrypt('12345678'),
+                'remember_token' => '123456789',
+                'first_login' => false, 
+                'created_at' => '2021-01-01',
+                'updated_at' => '2021-01-01',
+            ],
+            [
+                'name' => 'Goncalo Garrido',
+                'employee_number' => '0007',
+                'gender'=> 'Male',
+                'birth_date' => '1995-07-15',
+                'CC' => '221133445',
+                'NIF' => '544223311',
+                'address' => 'Rua das ruas,123',
+                'employee_role_id' => 1,
+                'email' => 'goncalo.garrido@innodrive.com',
+                'phone' => '910658166',
+                'email_verified_at' => '2021-01-01',
+                'password' => bcrypt('12345678'),
+                'remember_token' => '123456789',
+                'first_login' => false, 
+                'created_at' => '2021-01-01',
+                'updated_at' => '2021-01-01',
+            ],
+            [
+                'name' => 'Sara Azevedo',
+                'employee_number' => '0008',
+                'gender'=> 'Male',
+                'birth_date' => '1995-07-15',
+                'CC' => '331133445',
+                'NIF' => '544331133',
+                'address' => 'Rua das ruas,123',
+                'employee_role_id' => 1,
+                'email' => 'sara.azevedo@innodrive.com',
+                'phone' => '932123496',
+                'email_verified_at' => '2021-01-01',
+                'password' => bcrypt('12345678'),
+                'remember_token' => '123456789',
+                'first_login' => false, 
                 'created_at' => '2021-01-01',
                 'updated_at' => '2021-01-01',
             ]
+
         ];
-
-
-
 
         foreach ($employees as $employee) {
             Employee::create($employee);
-        }
-
-        // Criação de 200 funcionários fictícios
-        for ($i = 0; $i < 10; $i++) {
-            Employee::create([
-                'name' => $faker->name,
-                'employee_number' => str_pad($i + 6, 4, '0', STR_PAD_LEFT), // Employee numbers starting from 0002
-                'gender' => $faker->randomElement(['Male', 'Female']),
-                'birth_date' => $faker->date(),
-                'CC' => $faker->unique()->numerify('#########'),
-                'NIF' => $faker->unique()->numerify('#########'),
-                'address' => $faker->address,
-                'employee_role_id' => $faker->numberBetween(1, 3),
-                'email' => $faker->unique()->safeEmail,
-                'phone' => $faker->phoneNumber,
-                'email_verified_at' => $faker->dateTimeThisDecade(),
-                'password' => bcrypt('12345678'),
-                'remember_token' => $faker->uuid,
-                'first_login' => false,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
         }
     }
 }

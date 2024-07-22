@@ -51,12 +51,12 @@
         <tbody>
             @foreach ($insurances as $insurance)
                 <tr>
-                    <td>{{ $insurance->insurance_company }}</td>
-                    <td>{{ $insurance->policy_number }}</td>
-                    <td>{{ \Carbon\Carbon::parse($insurance->start_date)->format('d/m/Y') }}</td>
-                    <td>{{ \Carbon\Carbon::parse($insurance->end_date)->format('d/m/Y') }}</td>
-                    <td>{{ $insurance->vehicle->plate }}</td>
-                    <td>{{ $insurance->cost }}</td>
+                    <td>{{ $insurance->insurance_company ?? 'N/A'}}</td>
+                    <td>{{ $insurance->policy_number ?? 'N/A'}}</td>
+                    <td>{{ \Carbon\Carbon::parse($insurance->start_date)->format('d/m/Y') ?? 'N/A'}}</td>
+                    <td>{{ \Carbon\Carbon::parse($insurance->end_date)->format('d/m/Y') ?? 'N/A'}}</td>
+                    <td>{{ $insurance->vehicle->plate ?? 'N/A'}}</td>
+                    <td>{{ $insurance->cost ?? 'N/A'}}</td>
                 </tr>
             @endforeach
         </tbody>
