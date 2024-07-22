@@ -26,29 +26,26 @@
                         class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Companhia
                     </th>
                     <th scope="col"
-                        class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Número da
-                        apólice</th>
+                        class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Número da apólice
+                    </th>
                     <th scope="col"
-                        class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data de
-                        expiração</th>
+                        class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data de expiração
+                    </th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 @forelse ($endingInsurances as $insurance)
                     <tr>
-                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $insurance->vehicle->plate }}
-                        </td>
-                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">
-                            {{ $insurance->insurance_company }}</td>
-                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $insurance->policy_number }}
-                        </td>
-                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $insurance->end_date }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $insurance->vehicle->plate ?? 'N/A' }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $insurance->insurance_company ?? 'N/A' }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $insurance->policy_number ?? 'N/A' }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $insurance->end_date ?? 'N/A' }}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4"
-                            class="px-4 py-2 whitespace-nowrap text-center text-lg font-medium text-gray-500">Nenhum
-                            seguro a terminar.</td>
+                        <td colspan="4"class="px-4 py-2 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                            Nenhum seguro a terminar.
+                        </td>
                     </tr>
                 @endforelse
             </tbody>

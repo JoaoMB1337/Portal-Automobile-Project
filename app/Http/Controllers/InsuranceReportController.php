@@ -56,7 +56,7 @@ class InsuranceReportController extends Controller
         $totalCost = $insurances->sum('cost');
         $totalResults = $insurances->total();
 
-        return view('pages.Insurance-report.index', compact('insurances', 'startDate', 'endDate', 'totalCost', 'totalResults'));
+        return view('pages.InsuranceReport.index', compact('insurances', 'startDate', 'endDate', 'totalCost', 'totalResults'));
     }
 
     public function generateInsuranceReport(Request $request)

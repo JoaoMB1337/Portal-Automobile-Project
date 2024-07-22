@@ -67,7 +67,6 @@
             </div>
         </div>
 
-
         <div id="filterModal" class="modal mx-auto lg:pl-64">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -89,7 +88,6 @@
                 </form>
             </div>
         </div>
-
 
         <form id="multi-delete-form" action="{{ route('insurances.deleteSelected') }}" method="POST"
             style="display: inline-block;">
@@ -123,11 +121,11 @@
                                     <input type="checkbox" name="selected_ids[]" value="{{ $insurance->id }}"
                                         class="form-checkbox">
                                 </td>
-                                <td><a href="{{ route('insurances.show', $insurance->id) }}">{{ $insurance->insurance_company }}
+                                <td><a href="{{ route('insurances.show', $insurance->id) }}">{{ $insurance->insurance_company ?? 'N/A' }}
                                 </td>
-                                <td>{{ $insurance->policy_number }}</td>
-                                <td>{{ number_format($insurance->cost, 2, ',', '.') }}</td>
-                                <td>{{ $insurance->vehicle->plate }}</td>
+                                <td>{{ $insurance->policy_number ?? 'N/A' }}</td>
+                                <td>{{ number_format($insurance->cost ?? 0, 2, ',', '.') }}</td>
+                                <td>{{ $insurance->vehicle->plate ?? 'N/A' }}</td>
                                 <td class="table-actions">
                                     <a href="{{ route('insurances.edit', $insurance->id) }}" class="p-2">
                                         <i class="fas fa-edit text-xl"></i>
@@ -167,171 +165,4 @@
         </div>
         <a href="{{ route('insurances.create') }}" class="add-button"><i class="fas fa-plus"></i></a>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Modal Filter
-            var filterBtn = document.getElementById("filterBtn");
-            var filterModal = document.getElementById("filterModal");
-            var closeSpan = document.getElementsByClassName("close")[0];
-
-            filterBtn.onclick = function() {
-                filterModal.style.display = "block";
-            }
-
-            closeSpan.onclick = function() {
-                filterModal.style.display = "none";
-            }
-
-            window.onclick = function(event) {
-                if (event.target == filterModal) {
-                    filterModal.style.display = "none";
-                }
-            }
-
-            // Add Button Options
-            var addButton = document.getElementById("addButton");
-            var addOptions = document.getElementById("addOptions");
-            var importCsvBtn = document.getElementById("importCsvBtn");
-
-            addButton.onclick = function() {
-                if (addOptions.style.display === "block") {
-                    addOptions.style.display = "none";
-                } else {
-                    addOptions.style.display = "block";
-                }
-            }
-
-            importCsvBtn.onclick = function(event) {
-                event.preventDefault();
-
-                var importCsvForm = document.createElement("form");
-                importCsvForm.method = "POST";
-                importCsvForm.action = "{{ route('employees.importCsv') }}";
-                importCsvForm.enctype = "multipart/form-data";
-                importCsvForm.style.display = "none";
-
-                var csrfTokenInput = document.createElement("input");
-                csrfTokenInput.type = "hidden";
-                csrfTokenInput.name = "_token";
-                csrfTokenInput.value = "{{ csrf_token() }}";
-
-                var fileInput = document.createElement("input");
-                fileInput.type = "file";
-                fileInput.name = "file";
-                fileInput.accept = ".csv";
-
-                var submitButton = document.createElement("button");
-                submitButton.type = "submit";
-                submitButton.textContent = "Importar";
-
-                importCsvForm.appendChild(csrfTokenInput);
-                importCsvForm.appendChild(fileInput);
-                importCsvForm.appendChild(submitButton);
-
-                document.body.appendChild(importCsvForm);
-
-                fileInput.addEventListener("change", function() {
-                    importCsvForm.submit();
-                });
-
-                fileInput.click();
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const filterBtn = document.getElementById('filterBtn');
-            const filterModal = document.getElementById('filterModal');
-            const closeModal = document.getElementsByClassName('close')[0];
-
-            if (filterBtn && filterModal && closeModal) {
-                filterBtn.onclick = function() {
-                    filterModal.style.display = 'block';
-                }
-
-                closeModal.onclick = function() {
-                    filterModal.style.display = 'none';
-                }
-
-                window.onclick = function(event) {
-                    if (event.target === filterModal) {
-                        filterModal.style.display = 'none';
-                    }
-                }
-            }
-
-            const deleteForm = document.getElementById('multi-delete-form');
-            const checkboxes = document.querySelectorAll('input[name="selected_ids[]"]');
-            const deleteModal = document.getElementById('deleteModal');
-            const closeModalDelete = deleteModal ? deleteModal.querySelector('.close') : null;
-            const confirmDeleteButton = document.getElementById('confirmDelete');
-            const cancelDeleteButton = document.getElementById('cancelDelete');
-
-            function collectSelectedIds() {
-                // Remove old hidden inputs if any
-                const oldInputs = document.querySelectorAll(
-                    '#multi-delete-form input[type="hidden"][name="selected_ids[]"]');
-                oldInputs.forEach(input => input.remove());
-
-                checkboxes.forEach(checkbox => {
-                    if (checkbox.checked) {
-                        const input = document.createElement('input');
-                        input.type = 'hidden';
-                        input.name = 'selected_ids[]';
-                        input.value = checkbox.value;
-                        deleteForm.appendChild(input);
-                    }
-                });
-            }
-
-            if (deleteForm && deleteModal && closeModalDelete && confirmDeleteButton && cancelDeleteButton) {
-                const deleteButton = deleteForm.querySelector('button[type="submit"]');
-
-                deleteButton.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    collectSelectedIds();
-                    if (document.querySelectorAll(
-                            '#multi-delete-form input[type="hidden"][name="selected_ids[]"]').length > 0) {
-                        deleteModal.style.display = 'block';
-                    }
-                });
-
-                closeModalDelete.addEventListener('click', function() {
-                    deleteModal.style.display = 'none';
-                });
-
-                cancelDeleteButton.addEventListener('click', function() {
-                    deleteModal.style.display = 'none';
-                });
-
-                confirmDeleteButton.addEventListener('click', function() {
-                    deleteForm.submit();
-                });
-
-                window.addEventListener('click', function(event) {
-                    if (event.target === deleteModal) {
-                        deleteModal.style.display = 'none';
-                    }
-                });
-
-                checkboxes.forEach(checkbox => {
-                    checkbox.addEventListener('click', function(event) {
-                        event.stopPropagation();
-                    });
-                });
-            }
-
-            const rows = document.querySelectorAll('.list-table tbody tr');
-            rows.forEach(row => {
-                row.addEventListener('click', function(event) {
-                    if (event.target.type === 'checkbox') {
-                        event.stopPropagation();
-                    } else {
-                        if (row.dataset.url) {
-                            window.location = row.dataset.url;
-                        }
-                    }
-                });
-            });
-        });
-    </script>
+</body>

@@ -14,37 +14,37 @@
             <div class="flex-grow text-center">
                 <h1 class="text-2xl font-semibold text-gray-900">Detalhes do seguro</h1>
             </div>
-            <div class="w-10 h-10"></div> <!-- Espaço vazio para alinhar o título ao centro -->
+            <div class="w-10 h-10"></div> 
         </div>
 
         <div class="mb-6">
             <div class="font-semibold">Companhia de seguros:</div>
-            <div>{{ $insurance->insurance_company }}</div>
+            <div>{{ $insurance->insurance_company ?? 'N/A' }}</div>
         </div>
 
         <div class="mb-6">
             <div class="font-semibold">Número da apólice:</div>
-            <div>{{ $insurance->policy_number }}</div>
+            <div>{{ $insurance->policy_number ?? 'N/A' }}</div>
         </div>
 
         <div class="mb-6">
             <div class="font-semibold">Data de início:</div>
-            <div>{{ $insurance->start_date }}</div>
+            <div>{{ $insurance->start_date ?? 'N/A' }}</div>
         </div>
 
         <div class="mb-6">
             <div class="font-semibold">Data de fim:</div>
-            <div>{{ $insurance->end_date }}</div>
+            <div>{{ $insurance->end_date ?? 'N/A' }}</div>
         </div>
 
         <div class="mb-6">
             <div class="font-semibold">Custo:</div>
-            <div>{{ number_format($insurance->cost, 2, ',', '.') }}</div>
+            <div>{{ number_format($insurance->cost ?? 0, 2, ',', '.') }}</div>
         </div>
 
         <div class="mb-6">
             <div class="font-semibold">Matrícula:</div>
-            <div>{{ $insurance->vehicle->plate }}</div>
+            <div>{{ $insurance->vehicle->plate ?? 'N/A' }}</div>
         </div>
 
         <div class="px-6 py-4 flex flex-col sm:flex-row gap-4">

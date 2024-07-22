@@ -18,7 +18,7 @@
                 required {{ isset($tripId) ? 'disabled' : '' }}>
                 <option value="">Selecione a viagem</option>
                 @foreach ($trips as $trip)
-                    <option value="{{ $trip->id }}" {{ isset($tripId) && $trip->id == $tripId ? 'selected' : '' }}>
+                    <option value="{{ $trip->id }}" {{ old('trip_id', isset($tripId) ? $tripId : '') == $trip->id ? 'selected' : '' }}>
                         {{ $trip->destination }}</option>
                 @endforeach
             </select>
@@ -38,7 +38,8 @@
                 required>
                 <option value="">Selecione o tipo de custo</option>
                 @foreach ($costTypes as $costType)
-                    <option value="{{ $costType->id }}">{{ $costType->type_name }}</option>
+                    <option value="{{ $costType->id }}" {{ old('cost_type_id') == $costType->id ? 'selected' : '' }}>
+                        {{ $costType->type_name }}</option>
                 @endforeach
             </select>
             @error('cost_type_id')
@@ -68,7 +69,7 @@
                 <label for="camera"
                     class="flex items-center justify-center w-full py-2 rounded-md bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold cursor-pointer">
                     Tirar uma foto
-                    <input id="camera" type="file" accept="capture=camera" class="hidden" name="receipt_camera"
+                    <input id="camera" type="file" accept="image/*" capture="camera" class="hidden" name="receipt_camera"
                         onchange="handleFileSelect('camera')">
                 </label>
             </div>
@@ -86,20 +87,18 @@
     </form>
 </div>
 
-
 <script>
     function handleFileSelect(source) {
         const galleryInput = document.getElementById('gallery');
         const cameraInput = document.getElementById('camera');
-
-        if (source === 'gallery') {
-            cameraInput.value = ''; // Clear the camera input value
-            cameraInput.disabled = true; // Disable the camera input
-            galleryInput.disabled = false; // Ensure the gallery input is enabled
+        if (source === 'gallery') { 
+            cameraInput.value = ''; 
+            cameraInput.disabled = true; 
+            galleryInput.disabled = false; 
         } else if (source === 'camera') {
-            galleryInput.value = ''; // Clear the gallery input value
-            galleryInput.disabled = true; // Disable the gallery input
-            cameraInput.disabled = false; // Ensure the camera input is enabled
+            galleryInput.value = ''; 
+            galleryInput.disabled = true;
+            cameraInput.disabled = false; 
         }
     }
 </script>
