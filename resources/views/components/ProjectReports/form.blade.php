@@ -4,11 +4,11 @@
     <h1 class="text-3xl text-center text-gray-800 mb-6">Gerar relatório de viagens por projeto</h1>
 
     <div class="form-group">
-        <label for="project_name" class="block text-sm font-medium text-gray-700">Nome do projeto:</label>
-        <input type="text" name="project_name" id="project_name"
-               class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
-               value="{{ old('project_name') }}">
-    </div>
+    <label for="project_name" class="block text-sm font-medium text-gray-700">Nome do projeto:</label>
+    <input type="text" name="project_name" id="project_name"
+           class="form-control mt-1 block w-full rounded-md border-gray-200 border-2 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+           value="{{ old('project_name') }}">
+</div>
 
     <div class="mb-5">
         <label for="project_id" class="block text-gray-700 text-sm font-medium mb-2">Projeto:</label>
