@@ -6,7 +6,15 @@
                     <div class="alert alert-success">
                         {{ session('success') }}
                     </div>
-                @endif
+                  @endif
+
+
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                 <div class="flex items-center justify-between mb-4">
                     <a href="{{ route('employees.index') }}" class="flex items-center justify-center w-10 h-10 mb-3">
                         <button type="button"
@@ -111,13 +119,10 @@
                             Eliminar
                         </button>
 
-                        <form action="{{ route('employees.reset2fa', $employee->id) }}" method="POST" class="w-full sm:w-32">
-                            @csrf
-                            @method('PUT')
-                            <button type="submit" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full h-12 text-center">
-                                Resetar 2FA
-                            </button>
-                        </form>
+                        <button id="openReset2FAModalBtn" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full h-12 text-center"
+                                data-action="{{ route('employees.reset2fa', $employee->id) }}">
+                            Resetar 2FA
+                        </button>
                     </div>
                 @endif
             </div>
@@ -125,6 +130,7 @@
     </div>
 </div>
 @include('components.Modals.modal-delete-single')
+@include('components.Modals.modal-confirm-reset-2fa')
 
 <style>
     .container {

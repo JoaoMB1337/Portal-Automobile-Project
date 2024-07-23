@@ -102,10 +102,14 @@ class TwoFactorController extends Controller
 
     public function reset2FA(Employee $employee)
     {
-        // Somente administrador ou gestor pode resetar 2FA
         $user = Auth::user();
+
         if (!$user->isAdmin() && !$user->isManager()) {
-            abort(403, 'Unauthorized action.');
+            return redirect()->back()->with('error', 'Você não tem permissão para resetar a 2FA de um administrador.');
+        }
+
+        if ($user->isManager() && $employee->isAdmin()) {
+            return redirect()->back()->with('error', 'Você não tem permissão para resetar a 2FA de um administrador.');
         }
 
         // Resetar 2FA
@@ -113,7 +117,7 @@ class TwoFactorController extends Controller
         $employee->uses_two_factor_auth = false;
         $employee->save();
 
-        return redirect()->back()->with('success', 'A Dupla Autenticação do ' . $employee->name . ' foi restaurada.');
+        return redirect()->back()->with('success', 'A Dupla Autenticação de ' . $employee->name . ' foi restaurada.');
     }
 
 }

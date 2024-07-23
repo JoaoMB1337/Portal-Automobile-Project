@@ -1,17 +1,34 @@
-<div class="modal fade" id="confirmReset2FAModal" tabindex="-1" aria-labelledby="confirmReset2FALabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmReset2FALabel">Confirmar Reset 2FA</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Tem certeza de que deseja resetar a autenticação de dois fatores para este funcionário?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" onclick="document.getElementById('reset2fa-form').submit();">Confirmar</button>
-            </div>
+<div id="reset2faModal" class="modal mx-auto lg:pl-64">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Deseja resetar a autenticação de dois fatores para este funcionário?</p>
+        <div class="modal-actions">
+            <form id="reset2faForm" method="post" action="">
+                @csrf
+                @method('PUT')
+                <button id="confirmReset2FA" class="confirm-button">Confirmar</button>
+            </form>
         </div>
     </div>
 </div>
+
+<script>
+    // Abrir modal
+    document.getElementById('openReset2FAModalBtn').addEventListener('click', function() {
+        document.getElementById('reset2faModal').style.display = 'block';
+        document.getElementById('reset2faForm').action = this.dataset.action;
+    });
+
+    // Fechar modal
+    document.querySelectorAll('.close, #cancelReset2FA').forEach(function(element) {
+        element.addEventListener('click', function() {
+            document.getElementById('reset2faModal').style.display = 'none';
+        });
+    });
+
+    // Enviar o formulário
+    document.getElementById('confirmReset2FA').addEventListener('click', function(event) {
+        event.preventDefault();
+        document.getElementById('reset2faForm').submit();
+    });
+</script>
