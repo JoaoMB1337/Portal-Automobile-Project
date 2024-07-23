@@ -23,6 +23,7 @@ export default defineConfig({
 
                 'resources/css/Geral/create.css',
                 'resources/css/Geral/styles.css',
+                'resources/css/Header/header.css',
 
                 'resources/css/Employees/employee-list.css',
                 'resources/css/Employees/employee-create.css',
