@@ -73,16 +73,16 @@ class TripDetailController extends Controller
         $tripDetail->trip_id = $validated['trip_id'];
         $tripDetail->cost_type_id = $validated['cost_type_id'];
         $tripDetail->cost = $validated['cost'];
-
         $trip = Trip::findOrFail($validated['trip_id']);
         $project = $trip->project;
         $directory = 'projects/' . $project->id . '/trips/' . $tripDetail->trip_id . '/receipts';
+
 
         if ($request->hasFile('receipt_gallery')) {
             $request->validate([
                 'receipt_gallery' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-
+        
             $file = $request->file('receipt_gallery');
             $fileName = hash('sha256', time() . '_' . $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
             $file->storeAs($directory, $fileName, 'public');
@@ -91,7 +91,7 @@ class TripDetailController extends Controller
             $request->validate([
                 'receipt_camera' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-
+        
             $file = $request->file('receipt_camera');
             $fileName = hash('sha256', time() . '_' . $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
             $file->storeAs($directory, $fileName, 'public');

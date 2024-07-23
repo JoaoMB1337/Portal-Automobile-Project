@@ -89,16 +89,18 @@
 
 <script>
     function handleFileSelect(source) {
-        const galleryInput = document.getElementById('gallery');
-        const cameraInput = document.getElementById('camera');
-        if (source === 'gallery') { 
-            cameraInput.value = ''; 
-            cameraInput.disabled = true; 
-            galleryInput.disabled = false; 
-        } else if (source === 'camera') {
-            galleryInput.value = ''; 
-            galleryInput.disabled = true;
-            cameraInput.disabled = false; 
-        }
+    const galleryInput = document.getElementById('gallery');
+    const cameraInput = document.getElementById('camera');
+    if (source === 'gallery') { 
+        cameraInput.value = ''; 
+        cameraInput.disabled = true; 
+        galleryInput.disabled = false; 
+        console.log("Gallery selected");
+    } else if (source === 'camera') {
+        galleryInput.value = ''; 
+        galleryInput.disabled = true;
+        cameraInput.disabled = false; 
+        console.log("Camera selected");
     }
+}
 </script>

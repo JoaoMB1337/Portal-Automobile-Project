@@ -94,7 +94,10 @@ class CostReportController extends Controller
         $pdf->writeHTML($html, true, false, true, false, '');
 
         $pdf->lastPage();
-        return $pdf->Output('cost_report.pdf', 'D');
+
+        $fileName = sprintf('relatorio_de_custos_%s_%s.pdf', $startDate, Carbon::parse($endDate)->toDateString());
+
+        return $pdf->Output($fileName, 'D');
     }
 
     private function validateDate(Request $request)
