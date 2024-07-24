@@ -1,4 +1,20 @@
 <div class="container py-8 px-4">
+    @if (session('message'))
+        <div class="alert alert-info">
+            {{ session('message') }}
+        </div>
+    @endif
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="w-full">
         <div class="bg-white shadow sm:rounded-lg p-6">
             <div class="flex items-center justify-between mb-4">
@@ -141,7 +157,7 @@
                 <div class="px-6 py-4">
                     <h3 class="text-2xl font-semibold text-gray-900">Seguros</h3>
                     <p class="mt-1 text-gray-600">Lista de seguros associados ao veículo</p>
-                    @if (Auth::check() && Auth::user()->isAdmin())
+                    @if (Auth::check() && Auth::user()->isMaster())
                         <div class="flex justify-between items-center mt-4">
                             <a href="{{ route('insurances.create', ['vehicle_id' => $vehicle->id]) }}"
                                 class="flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-green-900 focus:ring ring-green-300 disabled:opacity-25 transition ease-in-out duration-150">
@@ -181,57 +197,51 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @forelse ($insurances as $insurance)
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                        {{ $insurance->insurance_company }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                        {{ $insurance->policy_number }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                        {{ number_format($insurance->cost, 2, ',', '.') }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                        {{ $insurance->ativo ? 'Sim' : 'Não' }}
-                                    </td>
-                                    <td class="flex space-x-2 justify-center px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                        <a href="{{ route('insurances.edit', $insurance->id) }}" class="p-2">
-                                            <i class="fas fa-edit text-xl"></i>
-                                        </a>
-                                        <button type="button" class="btn-delete p-2"
-                                            data-id="{{ $insurance->id }}">
-                                            <i class="fas fa-trash-alt text-xl text-red-600"></i>
-                                        </button>
-                                        <form id="delete-form-{{ $insurance->id }}" method="post"
-                                            action="{{ route('insurances.destroy', $insurance->id) }}"
-                                            style="display: none;">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
-                                        <a href="{{ url('insurances/' . $insurance->id) }}" class="p-2">
-                                            <i class="fas fa-eye text-xl"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="5"
-                                        class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
-                                        Nenhum seguro encontrado.
-                                    </td>
-                                </tr>
-                            @endforelse
+                        @forelse ($insurances as $insurance)
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                    {{ $insurance->insurance_company }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                    {{ $insurance->policy_number }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                    {{ number_format($insurance->cost, 2, ',', '.') }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                    {{ $insurance->ativo ? 'Sim' : 'Não' }}
+                                </td>
+                                <td class="flex space-x-2 justify-center px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                    <a href="{{ route('insurances.edit', $insurance->id) }}" class="p-2">
+                                        <i class="fas fa-edit text-xl"></i>
+                                    </a>
+                                    <button type="button" class="btn-delete p-2" data-id="{{ $insurance->id }}">
+                                        <i class="fas fa-trash-alt text-xl text-red-600"></i>
+                                    </button>
+                                    <a href="{{ url('insurances/' . $insurance->id) }}" class="p-2">
+                                        <i class="fas fa-eye text-xl"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-4 whitespace-nowrap text-center text-lg font-medium text-gray-500">
+                                    Nenhum seguro encontrado.
+                                </td>
+                            </tr>
+                        @endforelse
                         </tbody>
+
                     </table>
                     <div class="mt-4">
-                        {{ $insurances->links() }} 
+                        {{ $insurances->links() }}
                     </div>
                 </div>
             </div>
         </div>
-        @include('components.Modals.modal-delete-single')
     </div>
 </div>
-
+@include('components.Modals.modal-delete-single')
 <style>
     .container {
         max-width: 900px;
