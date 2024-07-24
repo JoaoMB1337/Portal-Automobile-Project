@@ -85,17 +85,12 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-
                 <div class="form-group">
                     <label for="vehicle_id" class="block text-sm font-medium text-gray-700">Veículo</label>
                     <select name="vehicle_id" id="vehicle_id"
-                        class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('vehicle_id') border-red-500 @enderror">
+                        class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('vehicle_id') border-red-500 @enderror"
+                        disabled>
                         <option value="" disabled selected>Selecione um veículo</option>
-                        @foreach ($vehicles as $vehicle)
-                            <option value="{{ $vehicle->id }}"
-                                {{ old('vehicle_id') == $vehicle->id ? 'selected' : '' }}>{{ $vehicle->plate }}
-                            </option>
-                        @endforeach
                     </select>
                     <div id="vehicle-error" class="text-red-500">{{ session('vehicle_error') }}</div>
                     @error('vehicle_id')
@@ -123,7 +118,6 @@
 
             function filterVehicles() {
                 const searchValue = searchInput.value.toLowerCase();
-
                 vehicleSelect.innerHTML = '<option value="" disabled selected>Selecione um veículo</option>';
 
                 let foundMatch = false;
@@ -156,14 +150,19 @@
                 const selectedVehicle = vehicles.find(vehicle => vehicle.id == vehicleId);
                 if (selectedVehicle) {
                     searchInput.value = selectedVehicle.plate;
-
+                    searchInput.disabled = true;
+                    
                     vehicleSelect.innerHTML = '<option value="" disabled>Selecione um veículo</option>';
                     const option = document.createElement('option');
                     option.value = selectedVehicle.id;
                     option.text = selectedVehicle.plate;
                     vehicleSelect.appendChild(option);
                     vehicleSelect.value = selectedVehicle.id;
+                    vehicleSelect.disabled = true;
                 }
+            } else {
+                searchInput.disabled = false;
+                vehicleSelect.disabled = false;
             }
         });
     </script>

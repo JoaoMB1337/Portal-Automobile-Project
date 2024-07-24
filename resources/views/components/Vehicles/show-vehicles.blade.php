@@ -179,11 +179,7 @@
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Ativo
-                                </th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Ações
+                                    Data fim
                                 </th>
                             </tr>
                         </thead>
@@ -191,7 +187,8 @@
                         @forelse ($insurances as $insurance)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                    {{ $insurance->insurance_company }}
+                                    <a href="{{ route('insurances.show', ['insurance' => $insurance->id]) }}">
+                                        {{ $insurance->insurance_company }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                     {{ $insurance->policy_number }}
@@ -200,26 +197,7 @@
                                     {{ number_format($insurance->cost, 2, ',', '.') }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                    {{ $insurance->ativo ? 'Sim' : 'Não' }}
-                                </td>
-                                <td class="flex space-x-2 justify-center px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                    <a href="{{ route('insurances.edit', $insurance->id) }}" class="p-2">
-                                        <i class="fas fa-edit text-xl"></i>
-                                    </a>
-
-                                    <button type="button" class="btn-delete p-2" data-id="{{ $insurance->id }}">
-                                        <i class="fas fa-trash-alt text-xl text-red-600"></i>
-                                    </button>
-                                    <form id="delete-form-{{ $insurance->id }}" method="post"
-                                          action="{{ route('insurances.destroy', $insurance->id) }}"
-                                          style="display: none;">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
-
-                                    <a href="{{ url('insurances/' . $insurance->id) }}" class="p-2">
-                                        <i class="fas fa-eye text-xl"></i>
-                                    </a>
+                                    {{ $insurance->end_date }}
                                 </td>
                             </tr>
                         @empty
