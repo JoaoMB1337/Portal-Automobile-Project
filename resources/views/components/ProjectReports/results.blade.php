@@ -51,7 +51,7 @@
                                                         {{ $detail->created_at->format('d/m/Y') }}</td>
                                                     <td class="py-3 px-4 border-b text-gray-700">
                                                         @if ($detail->file)
-                                                            <a href="{{ asset('storage/' . $detail->file) }}"
+                                                            <a href="{{ asset('storage/projects/' . $projectId . '/trips/' . $detail->trip_id . '/receipts/' . $detail->file) }}"
                                                                 target="_blank" class="text-blue-500">Ver
                                                                 comprovante</a>
                                                         @else

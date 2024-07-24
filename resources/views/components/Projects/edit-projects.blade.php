@@ -79,8 +79,9 @@
 
             <div>
                 <button type="submit" class="custom-btn w-full py-2 rounded-md">Salvar</button>
-                <a href="{{ url('projects') }}"
-                    class="block text-center mt-4 text-sm font-semibold text-gray-700">Cancelar</a>
+                <a href="javascript:history.back()"
+                class="block text-center mt-4 text-sm font-semibold text-gray-700">Cancelar</a>
+
             </div>
         </form>
     </div>
