@@ -181,8 +181,8 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @forelse ($vehicle->insurances as $insurance)
-                                <tr data-url="{{ url('insurances/' . $insurance->id) }}" style="cursor:pointer;">
+                            @forelse ($insurances as $insurance)
+                                <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                         {{ $insurance->insurance_company }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
@@ -193,8 +193,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                         {{ $insurance->ativo ? 'Sim' : 'Não' }}
                                     </td>
-                                    <td
-                                        class="flex space-x-2 justify-center px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                    <td class="flex space-x-2 justify-center px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                         <a href="{{ route('insurances.edit', $insurance->id) }}" class="p-2">
                                             <i class="fas fa-edit text-xl"></i>
                                         </a>
@@ -223,6 +222,9 @@
                             @endforelse
                         </tbody>
                     </table>
+                    <div class="mt-4">
+                        {{ $insurances->links() }} 
+                    </div>
                 </div>
             </div>
         </div>

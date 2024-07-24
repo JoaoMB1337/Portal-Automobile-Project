@@ -55,4 +55,12 @@ class UpdateInsuranceRequest extends FormRequest
             'cost.regex' => 'O custo não esta no formato',
         ];
     }
+
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'cost' => str_replace('.', ',', $this->cost),
+        ]);
+    }
 }

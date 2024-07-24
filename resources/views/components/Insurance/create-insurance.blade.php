@@ -1,10 +1,5 @@
 @vite(['resources/js/Trips/create.js'])
-
-
-
-
 <body class="custom-bg">
-
     <div class="flex justify-center items-start h-screen">
         <div class="w-full max-w-md bg-white rounded-xl p-7 custom-card mt-6">
             <div class="flex items-center justify-between mb-4">
@@ -91,7 +86,7 @@
                     <label for="search_vehicle" class="block text-sm font-semibold text-gray-700 mb-2">Matrícula</label>
                     <input id="search_vehicle" type="text"
                         class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('vehicle_plate') border-red-500 @enderror"
-                        name="vehicle_plate" value="{{ old('vehicle_plate') }}" required>
+                        name="vehicle_plate" value="{{ old('vehicle_plate') }}" required readonly>
                     @error('vehicle_plate')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
@@ -124,3 +119,25 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var urlParams = new URLSearchParams(window.location.search);
+            var vehicleId = urlParams.get('vehicle_id');
+            
+            var vehicles = @json($vehicles);
+            
+            if (vehicleId) {
+                var selectedVehicle = vehicles.find(vehicle => vehicle.id == vehicleId);
+                if (selectedVehicle) {
+                    var vehiclePlateInput = document.getElementById('search_vehicle');
+                    vehiclePlateInput.value = selectedVehicle.plate;
+                    vehiclePlateInput.readOnly = true;
+
+                    var vehicleSelect = document.getElementById('vehicle_id');
+                    vehicleSelect.value = selectedVehicle.id;
+                }
+            }
+        });
+    </script>
+</body>

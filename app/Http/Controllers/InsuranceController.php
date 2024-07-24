@@ -53,7 +53,7 @@ class InsuranceController extends Controller
                 $query->whereDate('end_date', Carbon::today());
             }
 
-            $insurances = $query->orderBy('id', 'asc')->paginate(10)->appends($request->query());
+            $insurances = Insurance::with('vehicle')->orderBy('id', 'desc')->paginate(10)->appends($request->query());
 
             return view('pages.Insurance.list', ['insurance' => $insurances, 'vehicles' => Vehicle::all()]);
         } catch (\Exception $e) {
