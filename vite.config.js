@@ -16,6 +16,8 @@ export default defineConfig({
 
                 'resources/js/Home/home.js',
 
+                'resources/css/2fa/2fa-setup.css',
+
                 'resources/js/Insurance/insurance-list.js',
 
                 'resources/js/Vehicles/vehicles-list.js',

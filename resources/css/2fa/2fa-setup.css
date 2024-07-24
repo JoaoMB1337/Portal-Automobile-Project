@@ -1,0 +1,66 @@
+.custom-card {
+    background-color: #ffffff;
+    box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+}
+
+.custom-logo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.custom-btn {
+    background-color: #000;
+    color: #fff;
+    transition: background-color 0.3s ease;
+    border-radius: 30px;
+}
+
+.custom-btn:hover {
+    background-color: #222;
+}
+
+.form-input, .form-control {
+    border: 2px solid #ccc;
+    transition: border-color 0.3s ease;
+    border-radius: 8px;
+}
+
+.form-input:focus, .form-control:focus {
+    border-color: #888;
+    outline: none;
+    box-shadow: 0 0 5px rgba(136, 136, 136, 0.5);
+}
+
+@media (max-width: 640px) {
+    .custom-logo {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+.download-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.download-links a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.download-links img {
+    width: 20px;
+    vertical-align: middle;
+}
+
+body {
+    background-color: #f1f1f1;
+}

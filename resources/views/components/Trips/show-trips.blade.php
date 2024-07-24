@@ -8,28 +8,35 @@
   </head>
   <body>
     <!-- Modal de Imagem -->
-    <div id="imageModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
-      <div class="relative top-1/4 mx-auto p-5 border w-11/12 h-11/12 shadow-lg rounded-md bg-white">
-        <div class="flex justify-between items-center pb-3">
-          <p class="text-2xl font-bold">Comprovante</p>
-          <div class="cursor-pointer z-50" id="closeModal">&times;</div>
+    <div id="imageModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="text-2xl  mb-3">Comprovativo</h2>
+            <img id="modalImage" src="" alt="Comprovante de gasto" class="modal-img w-full h-auto" style="max-height: 75vh; object-fit: contain;">
         </div>
-        <div class="image-container">
-          <img id="modalImage" src="" alt="Comprovante de gasto" class="modal-img">
-        </div>
-      </div>
     </div>
     <!-- Conteúdo Principal -->
     <div class="container py-8 px-4 sm:px-6 lg:px-8">
+        @if (session('message'))
+            <div class="alert alert-info">
+                {{ session('message') }}
+            </div>
+        @endif
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
       <div class="bg-white shadow overflow-hidden sm:rounded-lg p-6">
         <div class="flex items-center justify-between mb-4">
-          <a href="{{ route('trips.index') }}" class="mr-3">
-            <button type="button" class="flex items-center justify-center px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-gray-600 border rounded-lg gap-x-2 hover:bg-gray-500">
-              <svg class="w-5 h-5 rtl:rotate-180 text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-              </svg>
-            </button>
-          </a>
+          @include('components.ButtonComponents.backButton')
+
           <div class="text-center flex-grow mb-4">
             <h3 class="text-lg leading-6 font-medium text-gray-900">Detalhes da viagem</h3>
           </div>
@@ -125,35 +132,34 @@
       }
     </style>
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var viewImageBtns = document.querySelectorAll('.viewImageBtn');
-        var modal = document.getElementById('imageModal');
-        var modalImage = document.getElementById('modalImage');
-        var closeModal = document.getElementById('closeModal');
-        viewImageBtns.forEach(function(btn) {
-          btn.addEventListener('click', function(event) {
-            event.preventDefault();
-            var imageUrl = btn.getAttribute('data-image-url');
-            if (imageUrl) {
-              modalImage.src = imageUrl;
-              modal.classList.remove('hidden');
-              document.body.classList.add('modal-open');
-            } else {
-              console.error('URL da imagem não encontrada.');
-            }
-          });
+        document.addEventListener('DOMContentLoaded', function() {
+            var modal = document.getElementById('imageModal');
+            var modalImage = document.getElementById('modalImage');
+            var closeModal = document.querySelector('.close-modal');
+
+            document.querySelectorAll('.viewImageBtn').forEach(function(btn) {
+                btn.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    var imageUrl = btn.getAttribute('data-image-url');
+                    if (imageUrl) {
+                        modalImage.src = imageUrl;
+                        document.body.classList.add('modal-open');
+                    } else {
+                        console.error('URL da imagem não encontrada.');
+                    }
+                });
+            });
+
+            closeModal.addEventListener('click', function() {
+                document.body.classList.remove('modal-open');
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    document.body.classList.remove('modal-open');
+                }
+            });
         });
-        closeModal.addEventListener('click', function() {
-          modal.classList.add('hidden');
-          document.body.classList.remove('modal-open');
-        });
-        window.addEventListener('click', function(event) {
-          if (event.target == modal) {
-            modal.classList.add('hidden');
-            document.body.classList.remove('modal-open');
-          }
-        });
-      });
     </script>
   </body>
 </html>

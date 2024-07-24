@@ -1,50 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <style>
-        .custom-card {
-            background-color: #ffffff;
-            box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 20px;
-        }
+    @vite('resources/css/2fa/2fa-setup.css')
 
-        .custom-logo {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .custom-btn {
-            background-color: #000;
-            color: #fff;
-            transition: background-color 0.3s ease;
-            border-radius: 30px;
-        }
-
-        .custom-btn:hover {
-            background-color: #222;
-        }
-
-        .form-input, .form-control {
-            border: 2px solid #ccc;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-input:focus, .form-control:focus {
-            border-color: #888;
-        }
-
-        @media (max-width: 640px) {
-            .custom-logo {
-                width: 80px;
-                height: 80px;
-            }
-        }
-    </style>
-
-    <div class="flex justify-center items-start h-screen bg-gray-200">
-        <div class="max-w-md w-full bg-white rounded-xl p-7 custom-card mt-12">
+    <div class="flex justify-center items-center min-h-screen">
+        <div class="max-w-md w-full bg-white rounded-xl p-7 custom-card mt-6 shadow-lg">
             <div class="mb-6 text-center">
                 <h2 class="text-2xl font-semibold text-gray-800">Autenticação</h2>
                 <p class="text-gray-600">Digitalize o código QR com seu aplicativo Google Authenticator ou insira a chave manualmente</p>
@@ -73,10 +33,14 @@
             </form>
             <div class="text-center mt-6">
                 <p class="text-gray-600">Se você não possui o aplicativo Google Authenticator, pode baixá-lo nos links abaixo:</p>
-                <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" class="text-blue-500 underline" target="_blank">Download para Android</a>
-                <br>
-                <a href="https://apps.apple.com/app/google-authenticator/id388497605" class="text-blue-500 underline" target="_blank">Download para iOS</a>
+                <div class="download-links">
+                    <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" class="text-blue-500 underline" target="_blank">
+                        <img src="https://www.svgrepo.com/show/475631/android-color.svg" alt="Android Icon"> Download para Android
+                    </a>
+                    <a href="https://apps.apple.com/app/google-authenticator/id388497605" class="text-blue-500 underline" target="_blank">
+                        <img src="https://www.svgrepo.com/show/475633/apple-color.svg" alt="Apple Icon"> Download para iOS
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
 @endsection
