@@ -2,12 +2,19 @@
     <form method="POST" action="{{ route('trip-details.store') }}" enctype="multipart/form-data"
         class="space-y-10 bg-white p-6 rounded-lg shadow-md">
         @csrf
-        @include('components.ButtonComponents.backButton')
+
+        <div class="flex items-center justify-between mb-6">
+            @include('components.ButtonComponents.backButton')
+            <div class="flex-grow text-center">
+                <h1 class="text-lg leading-6 font-medium text-gray-900">Criar detalhe de viagem</h1>
+            </div>
+            <div class="w-10 h-10"></div>
+        </div>
         
         <div>
             <label for="trip_id" class="block text-sm font-semibold text-gray-700 mb-2">Viagem</label>
             <select name="trip_id" id="trip_id"
-                class="form-select w-full rounded-md  focus:border-gray-400 focus:ring focus:ring-gray-200 @error('trip_id') border-red-500 @enderror"
+                class="form-select w-full rounded-md focus:border-gray-400 focus:ring focus:ring-gray-200 @error('trip_id') border-red-500 @enderror"
                 required {{ isset($tripId) ? 'disabled' : '' }}>
                 <option value="">Selecione a viagem</option>
                 @foreach ($trips as $trip)
@@ -27,7 +34,7 @@
         <div>
             <label for="cost_type_id" class="block text-sm font-semibold text-gray-700 mb-2">Tipo de custo</label>
             <select name="cost_type_id" id="cost_type_id"
-                class="form-select w-full rounded-md  focus:border-gray-400 focus:ring focus:ring-gray-200 @error('cost_type_id') border-red-500 @enderror"
+                class="form-select w-full rounded-md focus:border-gray-400 focus:ring focus:ring-gray-200 @error('cost_type_id') border-red-500 @enderror"
                 required>
                 <option value="">Selecione o tipo de custo</option>
                 @foreach ($costTypes as $costType)
@@ -71,9 +78,9 @@
             @enderror
         </div>
 
-        <div>
+        <div class="flex justify-between items-center">
             <button type="submit"
-                class=" w-full py-2 rounded-md bg-gray-800 hover:bg-gray-700 text-white font-semibold">
+                class="py-2 px-4 rounded-md bg-gray-800 hover:bg-gray-700 text-white font-semibold">
                 Salvar
             </button>
         </div>
@@ -82,18 +89,18 @@
 
 <script>
     function handleFileSelect(source) {
-    const galleryInput = document.getElementById('gallery');
-    const cameraInput = document.getElementById('camera');
-    if (source === 'gallery') { 
-        cameraInput.value = ''; 
-        cameraInput.disabled = true; 
-        galleryInput.disabled = false; 
-        console.log("Gallery selected");
-    } else if (source === 'camera') {
-        galleryInput.value = ''; 
-        galleryInput.disabled = true;
-        cameraInput.disabled = false; 
-        console.log("Camera selected");
+        const galleryInput = document.getElementById('gallery');
+        const cameraInput = document.getElementById('camera');
+        if (source === 'gallery') { 
+            cameraInput.value = ''; 
+            cameraInput.disabled = true; 
+            galleryInput.disabled = false; 
+            console.log("Gallery selected");
+        } else if (source === 'camera') {
+            galleryInput.value = ''; 
+            galleryInput.disabled = true;
+            cameraInput.disabled = false; 
+            console.log("Camera selected");
+        }
     }
-}
 </script>

@@ -2,7 +2,15 @@
     <form method="POST" action="{{ route('trip-details.update', ['trip_detail' => $tripDetail->id]) }}" enctype="multipart/form-data" class="space-y-10 bg-white p-6 rounded-lg shadow-md">
         @csrf
         @method('PUT')
-        @include('components.ButtonComponents.backButton')
+
+        <div class="flex items-center justify-between mb-6">
+            @include('components.ButtonComponents.backButton')
+            <div class="flex-grow text-center">
+                <h1 class="text-lg leading-6 font-medium text-gray-900">Editar detalhe de viagem</h1>
+            </div>
+            <div class="w-10 h-10"></div>
+        </div>
+        
 
         <div>
             <label for="trip_id" class="block text-sm font-semibold text-gray-700 mb-2">Viagem</label>

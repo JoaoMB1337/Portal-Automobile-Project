@@ -22,7 +22,7 @@
                                 </div>
                                 @include('components.HomeComponents.table-component')
                             </div>
-                        @elseif (Auth::user()->isFuncionario())
+                        @elseif (Auth::user()->isBaseEmployee())
                             <!-- Pagina Employee -->
                             @include('home-employee')
                             <!-- modal -->

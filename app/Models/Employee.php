@@ -85,9 +85,4 @@ class Employee extends Authenticatable
     }
 
 
-    public function isFuncionario()
-    {
-        return $this->role->name === 'Funcionario';
-    }
-
 }
