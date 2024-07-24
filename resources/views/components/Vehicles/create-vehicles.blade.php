@@ -1,9 +1,12 @@
 @vite('resources/js/Vehicles/vehicles-create.js')
 
 <div class="w-full  rounded-xl p-7 custom-card mt-12">
-    <div class="flex justify-center mb-6">
-        <h1>Registro de veículo</h1>
-    </div>
+    @include('components.ButtonComponents.backButton')
+
+        <div class="text-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Criar veículo</h1>
+            <p class="text-gray-600">Preencha os campos abaixo para criar um novo veículo.</p>
+        </div>
 
     <form method="POST" action="{{ route('vehicles.store') }}" enctype="multipart/form-data" class="space-y-6">
         @csrf

@@ -63,5 +63,15 @@ class Vehicle extends Model
         return $this->belongsToMany(Trip::class, 'trip_vehicle_associations');
     }
 
+    public function getTotalRentalCostAttribute()
+    {
+        $rentalStartDate = Carbon::parse($this->rental_start_date);
+        $rentalEndDate = Carbon::parse($this->rental_end_date);
+
+        $days = $rentalStartDate->diffInDays($rentalEndDate) + 1; 
+
+        return $days * $this->rental_price_per_day;
+    }
+
     
 }

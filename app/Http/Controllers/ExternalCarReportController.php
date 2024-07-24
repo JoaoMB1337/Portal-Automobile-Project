@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -28,9 +26,25 @@ class ExternalCarReportController extends Controller
             // Paginação com 10 itens por página
             $vehicles = $query->paginate(10);
 
-            // Calcula o total de veículos e o custo total fora da paginação
+            // Calcula o total de veículos
             $totalVehicles = $query->count();
-            $totalCost = $query->sum('rental_price_per_day');
+
+            // Calcula o custo total
+            $totalCost = $query->get()->reduce(function ($carry, $vehicle) use ($startDate, $endDate) {
+                $rentalStart = Carbon::parse($vehicle->rental_start_date);
+                $rentalEnd = Carbon::parse($vehicle->rental_end_date);
+
+                // Ajuste para o intervalo solicitado
+                $effectiveStartDate = max($rentalStart, Carbon::parse($startDate));
+                $effectiveEndDate = min($rentalEnd, Carbon::parse($endDate));
+
+                if ($effectiveStartDate <= $effectiveEndDate) {
+                    $days = $effectiveStartDate->diffInDays($effectiveEndDate) + 1; // +1 porque o início e o fim são inclusivos
+                    return $carry + ($days * $vehicle->rental_price_per_day);
+                }
+                
+                return $carry;
+            }, 0);
         } else {
             // Retorna uma instância paginada vazia se não houver datas de início e fim
             $vehicles = Vehicle::whereNotNull('rental_company')->paginate(10);
@@ -49,10 +63,29 @@ class ExternalCarReportController extends Controller
         $query = Vehicle::whereBetween('rental_start_date', [$startDate, $endDate])
             ->whereNotNull('rental_company');
 
+        // Paginando os veículos
         $vehicles = $query->paginate(10);
 
+        // Calculando o total de veículos
         $totalVehicles = $query->count();
-        $totalCost = $query->sum('rental_price_per_day');
+
+        // Calculando o custo total
+        $totalCost = $vehicles->reduce(function ($carry, $vehicle) use ($startDate, $endDate) {
+            $rentalStartDate = Carbon::parse($vehicle->rental_start_date);
+            $rentalEndDate = Carbon::parse($vehicle->rental_end_date);
+
+            $effectiveStartDate = max($rentalStartDate, Carbon::parse($startDate));
+            $effectiveEndDate = min($rentalEndDate, Carbon::parse($endDate));
+
+            if ($effectiveStartDate <= $effectiveEndDate) {
+                $numberOfDays = $effectiveStartDate->diffInDays($effectiveEndDate) + 1; // +1 para incluir o último dia
+                if ($vehicle->rental_price_per_day > 0) {
+                    return $carry + ($numberOfDays * $vehicle->rental_price_per_day);
+                }
+            }
+
+            return $carry;
+        }, 0);
 
         return view('pages.ExternalCarReport.index', compact('vehicles', 'startDate', 'endDate', 'totalVehicles', 'totalCost'));
     }
@@ -70,8 +103,22 @@ class ExternalCarReportController extends Controller
             ->get();
 
         $totalVehicles = $vehicles->count();
-        // Substitua 'total_rental_cost' pela coluna correta
-        $totalCost = $vehicles->sum('rental_price_per_day');
+        $totalCost = $vehicles->reduce(function ($carry, $vehicle) use ($startDate, $endDate) {
+            $rentalStartDate = Carbon::parse($vehicle->rental_start_date);
+            $rentalEndDate = Carbon::parse($vehicle->rental_end_date);
+
+            $effectiveStartDate = max($rentalStartDate, Carbon::parse($startDate));
+            $effectiveEndDate = min($rentalEndDate, Carbon::parse($endDate));
+
+            if ($effectiveStartDate <= $effectiveEndDate) {
+                $numberOfDays = $effectiveStartDate->diffInDays($effectiveEndDate) + 1; // +1 para incluir o último dia
+                if ($vehicle->rental_price_per_day > 0) {
+                    return $carry + ($numberOfDays * $vehicle->rental_price_per_day);
+                }
+            }
+
+            return $carry;
+        }, 0);
 
         $data = [
             'vehicles' => $vehicles,
@@ -112,15 +159,11 @@ class ExternalCarReportController extends Controller
                 'required',
                 'date',
                 'before_or_equal:end_date',
-                function ($attribute, $value, $fail) {
-                },
             ],
             'end_date' => [
                 'required',
                 'date',
                 'after_or_equal:start_date',
-                function ($attribute, $value, $fail) {
-                },
             ],
         ], [
             'start_date.required' => 'A data inicial é obrigatória.',

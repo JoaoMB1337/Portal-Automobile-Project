@@ -34,13 +34,17 @@
                         <tr class="hover:bg-gray-50">
                             <td class="py-3 px-4 border-b">{{ $vehicle->plate }}</td>
                             <td class="py-3 px-4 border-b">
-                                {{ number_format($vehicle->rental_price_per_day, 2, ',', '.') }}</td>
+                                {{ number_format($vehicle->rental_price_per_day, 2, ',', '.') }}
+                            </td>
                             <td class="py-3 px-4 border-b">{{ $vehicle->rental_company }}</td>
                             <td class="py-3 px-4 border-b">
-                                {{ \Carbon\Carbon::parse($vehicle->rental_start_date)->format('d/m/Y') }}</td>
+                                {{ \Carbon\Carbon::parse($vehicle->rental_start_date)->format('d/m/Y') }}
+                            </td>
                             <td class="py-3 px-4 border-b">
-                                {{ \Carbon\Carbon::parse($vehicle->rental_end_date)->format('d/m/Y') }}</td>
-                            <td class="py-3 px-4 border-b">{{ number_format($vehicle->total_rental_cost, 2, ',', '.') }}
+                                {{ \Carbon\Carbon::parse($vehicle->rental_end_date)->format('d/m/Y') }}
+                            </td>
+                            <td class="py-3 px-4 border-b">
+                                {{ number_format($vehicle->total_rental_cost, 2, ',', '.') }}
                             </td>
                         </tr>
                     @endforeach
@@ -67,6 +71,17 @@
     </div>
 @else
     <div class="mt-8 bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+        <div class="mb-6">
+            <div class="flex justify-between items-center">
+                <div>
+                    <span class="text-xl font-bold text-gray-700">Total de veículos:</span>
+                    <span class="text-xl font-semibold text-green-600">0</span>
+                    <br>
+                    <span class="text-xl font-bold text-gray-700">Total de custos:</span>
+                    <span class="text-xl font-semibold text-green-600">{{ number_format($totalCost, 2, ',', '.') }}</span>
+                </div>
+            </div>
+        </div>
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white border border-gray-300 rounded-lg">
                 <thead>
