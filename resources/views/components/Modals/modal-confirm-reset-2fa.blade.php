@@ -31,4 +31,11 @@
         event.preventDefault();
         document.getElementById('reset2faForm').submit();
     });
+
+    // Fechar modal ao clicar fora
+    window.addEventListener('click', function(event) {
+        if (event.target === document.getElementById('reset2faModal')) {
+            document.getElementById('reset2faModal').style.display = 'none';
+        }
+    });
 </script>
