@@ -17,9 +17,11 @@
                 </div>
             </div>
 
+            <!-- Display session error messages -->
             @if (session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <strong class="font-bold">Erro:</strong>
+                    <span class="block sm:inline">{{ session('error') }}</span>
                 </div>
             @endif
 
@@ -32,7 +34,7 @@
                         class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('insurance_company') border-red-500 @enderror"
                         name="insurance_company" value="{{ old('insurance_company') }}" required>
                     @error('insurance_company')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        <p class="text-red-500 text-xs mt-1 bg-red-50 border border-red-300 p-2 rounded">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -42,7 +44,7 @@
                         class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('policy_number') border-red-500 @enderror"
                         name="policy_number" value="{{ old('policy_number') }}" required>
                     @error('policy_number')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        <p class="text-red-500 text-xs mt-1 bg-red-50 border border-red-300 p-2 rounded">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -52,7 +54,7 @@
                         class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('start_date') border-red-500 @enderror"
                         name="start_date" value="{{ old('start_date') }}" required>
                     @error('start_date')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        <p class="text-red-500 text-xs mt-1 bg-red-50 border border-red-300 p-2 rounded">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -62,7 +64,7 @@
                         class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('end_date') border-red-500 @enderror"
                         name="end_date" value="{{ old('end_date') }}" required>
                     @error('end_date')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        <p class="text-red-500 text-xs mt-1 bg-red-50 border border-red-300 p-2 rounded">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -72,7 +74,7 @@
                         class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('cost') border-red-500 @enderror"
                         name="cost" value="{{ old('cost', number_format((float) old('cost'), 2, ',', '.')) }}" required>
                     @error('cost')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        <p class="text-red-500 text-xs mt-1 bg-red-50 border border-red-300 p-2 rounded">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -82,9 +84,10 @@
                         class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('vehicle_plate') border-red-500 @enderror"
                         name="vehicle_plate" value="{{ old('vehicle_plate') }}" required>
                     @error('vehicle_plate')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        <p class="text-red-500 text-xs mt-1 bg-red-50 border border-red-300 p-2 rounded">{{ $message }}</p>
                     @enderror
                 </div>
+
                 <div class="form-group">
                     <label for="vehicle_id" class="block text-sm font-medium text-gray-700">Veículo</label>
                     <select name="vehicle_id" id="vehicle_id"
@@ -92,9 +95,9 @@
                         disabled>
                         <option value="" disabled selected>Selecione um veículo</option>
                     </select>
-                    <div id="vehicle-error" class="text-red-500">{{ session('vehicle_error') }}</div>
+                    <div id="vehicle-error" class="text-red-500 mt-1">{{ session('vehicle_error') }}</div>
                     @error('vehicle_id')
-                        <div class="text-red-500">{{ $message }}</div>
+                        <div class="text-red-500 mt-1 bg-red-50 border border-red-300 p-2 rounded">{{ $message }}</div>
                     @enderror
                 </div>
 
