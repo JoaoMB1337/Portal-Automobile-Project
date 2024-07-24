@@ -18,16 +18,7 @@
     <div class="bg-white shadow-md rounded-lg overflow-hidden">
         <div class="px-6 py-4">
             <div class="flex items-center justify-between mb-4">
-                <a href="{{ route('projects.index') }}">
-                    <button type="button"
-                        class="flex items-center justify-center px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-gray-600 border rounded-lg gap-x-2 hover:bg-gray-500">
-                        <svg class="w-5 h-5 rtl:rotate-180 text-white" xmlns="http://www.w3.org/2000/svg"
-                            fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-                        </svg>
-                    </button>
-                </a>
+                @include('components.ButtonComponents.backButton')
                 <div class="flex-grow text-center">
                     <h3 class="text-2xl font-semibold text-gray-900">Detalhes do projeto</h3>
                 </div>
