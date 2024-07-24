@@ -53,7 +53,7 @@ class InsuranceController extends Controller
                 $query->whereDate('end_date', Carbon::today());
             }
 
-            $insurances = $query->orderBy('id', 'asc')->paginate(10)->appends($request->query());
+            $insurances = Insurance::with('vehicle')->orderBy('id', 'desc')->paginate(10)->appends($request->query());
 
             return view('pages.Insurance.list', ['insurance' => $insurances, 'vehicles' => Vehicle::all()]);
         } catch (\Exception $e) {
@@ -100,7 +100,7 @@ class InsuranceController extends Controller
 
         $insurance->save();
 
-        return redirect()->route('insurances.index')->with('success', 'Seguro criado com sucesso.');
+        return redirect()->route('vehicles.show', $vehicle->id)->with('success', 'Seguro criado com sucesso para a matrícula ' . $vehicle->plate);
     }
 
     public function show($id)
@@ -160,16 +160,16 @@ class InsuranceController extends Controller
             'vehicle_id' => $vehicle->id
         ]);
 
-        return redirect()->route('insurances.index')->with('message', 'Seguro atualizado com sucesso.');
+        return redirect()->route('vehicles.show', $vehicle->id)->with('success', 'Seguro editado com sucesso para a matrícula ' . $vehicle->plate);
     }
 
     public function destroy(Insurance $insurance)
     {
         try {
             $this->authorize('delete', $insurance);
-
+            $vehicle = $insurance->vehicle;
             $insurance->delete();
-            return redirect()->route('insurances.index')->with('error', 'Seguro excluido com sucesso.');
+            return redirect()->route('vehicles.show', $vehicle->id)->with('success', 'Seguro excluido com sucesso para a matrícula ' . $vehicle->plate);
         } catch (\Exception $e) {
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para excluir esse funcionário.');
         }

@@ -29,6 +29,7 @@ Route::middleware([NoCacheMiddleware::class])->group(function () {
     Route::middleware(['auth'])->group(function () {
         Route::get('/2fa', [TwoFactorController::class, 'showVerifyForm'])->name('2fa.verify');
         Route::post('/2fa', [TwoFactorController::class, 'verify'])->name('2fa.verifyForm');
+        Route::put('/employees/{employee}/reset2fa', [TwoFactorController::class, 'reset2FA'])->name('employees.reset2fa');
     });
 });
 

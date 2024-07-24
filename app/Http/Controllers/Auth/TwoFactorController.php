@@ -27,7 +27,6 @@ class TwoFactorController extends Controller
             $secret
         );
 
-        // Gerar QR Code como SVG
         $renderer = new ImageRenderer(
             new RendererStyle(400),
             new SvgImageBackEnd()
@@ -99,6 +98,26 @@ class TwoFactorController extends Controller
         Auth::login($user, $remember);
 
         return redirect()->intended('/home');
+    }
+
+    public function reset2FA(Employee $employee)
+    {
+        $user = Auth::user();
+
+        if (!$user->isAdmin() && !$user->isManager()) {
+            return redirect()->back()->with('error', 'Você não tem permissão para resetar a 2FA de um administrador.');
+        }
+
+        if ($user->isManager() && $employee->isAdmin()) {
+            return redirect()->back()->with('error', 'Você não tem permissão para resetar a 2FA de um administrador.');
+        }
+
+        // Resetar 2FA
+        $employee->google2fa_secret = null;
+        $employee->uses_two_factor_auth = false;
+        $employee->save();
+
+        return redirect()->back()->with('success', 'A Dupla Autenticação de ' . $employee->name . ' foi restaurada.');
     }
 
 }

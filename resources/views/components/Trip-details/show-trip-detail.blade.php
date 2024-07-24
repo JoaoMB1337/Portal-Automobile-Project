@@ -30,16 +30,8 @@
         <div class="bg-white shadow-md rounded-lg overflow-hidden">
             <div class="bg-white shadow overflow-hidden sm:rounded-lg p-6">
                 <div class="flex items-center justify-between mb-4">
-                    <a class="mr-3" id="pageBack">
-                        <button type="button"
-                            class="flex items-center justify-center px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-gray-600 border rounded-lg gap-x-2 hover:bg-gray-500">
-                            <svg class="w-5 h-5 rtl:rotate-180 text-white" xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-                            </svg>
-                        </button>
-                    </a>
+                    @include('components.ButtonComponents.backButton')
+
                     <div class="flex-grow text-center">
                         <h3 class="text-lg leading-6 font-medium text-gray-900">Detalhes da viagem</h3>
                     </div>
@@ -78,6 +70,17 @@
                             </dd>
                         </div>
                     </dl>
+                </div>
+                <div class="flex justify-content-end mt-4">
+                    <a href="{{ route('trip-details.edit', ['trip_detail' => $tripDetail->id]) }}">
+                        <button type="button" class="flex items-center justify-center px-5 py-2 text-sm text-white transition-colors duration-200 bg-blue-600 border rounded-lg gap-x-2 hover:bg-blue-500">
+                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 3.487a2.1 2.1 0 112.971 2.971l-10.06 10.06a4.2 4.2 0 01-1.636.971l-4.8 1.2a.6.6 0 01-.729-.729l1.2-4.8a4.2 4.2 0 01.971-1.636l10.06-10.06z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.621 6.258L17.742 4.379m-9.192 6.365L4.879 15.121a2.1 2.1 0 002.971 2.971l2.971-2.971m0 0L15.621 10.5" />
+                            </svg>
+                            Editar
+                        </button>
+                    </a>
                 </div>
             </div>
         </div>

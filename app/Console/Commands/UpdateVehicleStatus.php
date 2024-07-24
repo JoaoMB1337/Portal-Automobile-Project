@@ -24,7 +24,6 @@ class UpdateVehicleStatus extends Command
     {
         $this->vehicleController->updateAllVehicleStatuses();
 
-        Log::info('Vehicle statuses updated successfully.');
         $this->info('Vehicle status updated successfully.');
     }
 }

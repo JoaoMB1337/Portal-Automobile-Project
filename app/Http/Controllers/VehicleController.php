@@ -194,16 +194,22 @@ class VehicleController extends Controller
 
             $this->authorize('view', $vehicle);
 
-            return view('pages.Vehicles.show', compact('vehicle'));
+            
+            $insurances = $vehicle->insurances()
+                ->orderBy('created_at', 'desc') 
+                ->paginate(10);
+
+            return view('pages.Vehicles.show', compact('vehicle', 'insurances'));
+            
         } catch (AuthorizationException $e) {
             return redirect()->route('error.403')->with('error', 'Unauthorized access.');
         } catch (QueryException $e) {
             return redirect()->route('error.403')->with('error', 'Database query error.');
         } catch (\Exception $e) {
-            // Handle all other exceptions
             return redirect()->route('error.403')->with('error', 'An unexpected error occurred.');
         }
     }
+
 
     /**
      * Show the form for editing the specified resource.

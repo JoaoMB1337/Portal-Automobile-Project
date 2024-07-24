@@ -53,7 +53,6 @@ class StoreTripDetailRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        // Substitui vírgulas por pontos no campo "cost"
         if ($this->has('cost')) {
             $this->merge([
                 'cost' => str_replace(',', '.', $this->input('cost'))

@@ -16,6 +16,8 @@ export default defineConfig({
 
                 'resources/js/Home/home.js',
 
+                'resources/css/2fa/2fa-setup.css',
+
                 'resources/js/Insurance/insurance-list.js',
 
                 'resources/js/Vehicles/vehicles-list.js',
@@ -23,6 +25,7 @@ export default defineConfig({
 
                 'resources/css/Geral/create.css',
                 'resources/css/Geral/styles.css',
+                'resources/css/Header/header.css',
 
                 'resources/css/Employees/employee-list.css',
                 'resources/css/Employees/employee-create.css',
@@ -34,6 +37,7 @@ export default defineConfig({
                 'resources/css/Projects/project-edit.css',
 
                 'resources/css/Trips/trip-create.css',
+                'resources/css/Trips/trip-show.css',
 
                 'resources/css/Vehicles/vehicle-list.css',
                 'resources/js/Home/home.js',

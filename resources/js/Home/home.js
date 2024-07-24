@@ -73,22 +73,22 @@ function renderCharts(vehiclesData, projectsData) {
 
     function atualizarDataHora() {
         const diasSemana = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
-
+    
         const dataAtual = new Date();
-
+    
         const dataFormatada = `${("0" + dataAtual.getDate()).slice(-2)}/${("0" + (dataAtual.getMonth() + 1)).slice(-2)}/${dataAtual.getFullYear()}`;
         const diaSemana = diasSemana[dataAtual.getDay()];
         const horaAtual = `${("0" + dataAtual.getHours()).slice(-2)}:${("0" + dataAtual.getMinutes()).slice(-2)}:${("0" + dataAtual.getSeconds()).slice(-2)}`;
-
+    
         const datetimeContainer = document.getElementById("datetimeContainer");
-
+    
         datetimeContainer.innerHTML = `
-        <p class="text-lg font-bold">${horaAtual}</p>
-        <p class="text-md">${diaSemana}</p>
-        <p class="text-sm text-gray-600">${dataFormatada}</p>
-    `;
+            <p class="text-lg font-bold">${horaAtual}</p>
+            <p class="text-md">${diaSemana}</p>
+            <p class="text-sm text-gray-600">${dataFormatada}</p>
+        `;
     }
-
+    
     atualizarDataHora();
     setInterval(atualizarDataHora, 1000);
 

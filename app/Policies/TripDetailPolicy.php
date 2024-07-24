@@ -5,6 +5,7 @@ namespace App\Policies;
 use Illuminate\Auth\Access\Response;
 use App\Models\TripDetail;
 use App\Models\Employee;
+use App\Models\Trip;
 
 class TripDetailPolicy
 {
@@ -22,26 +23,24 @@ class TripDetailPolicy
      */
     public function view(Employee $employee ,TripDetail $tripDetail): bool
     {
-        if($employee->isMaster()){
-            return true;
-        }
-        return $tripDetail->trip->employees()->where('employee_id', $employee->id)->exists();
+        //o user ou e master ou esta dentro do trip
+        return $employee->isMaster() || $employee->trips->contains($tripDetail->trip);
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(Employee $employee): bool
+    public function create(Employee $employee, Trip $trip): bool
     {
-        //
+        return $employee->isMaster() || $employee->trips->contains($trip);
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(Employee $employee, TripDetail $tripDetail): bool
+    public function update(Employee $employee, Trip $trip): bool
     {
-        //
+        return $employee->isMaster() || $employee->trips->contains($trip);
     }
 
     /**

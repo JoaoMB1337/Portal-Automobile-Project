@@ -3,10 +3,11 @@
 @section('content')
     <div class=" mx-auto lg:pl-64">
         @component('components.Trip-details.edit-trip-detail', [
-            'cost' => $cost,
+            'tripDetail' => $tripDetail,
             'projects' => $projects,
-            'costtypes' => $costtypes,
-            'currencies' => $currencies,
+            'costTypes' => $costTypes,
+            'trips' => $trips,
+            'employees' => $employees,
         ])
         @endcomponent
     </div>
