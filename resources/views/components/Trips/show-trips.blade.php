@@ -8,16 +8,12 @@
   </head>
   <body>
     <!-- Modal de Imagem -->
-    <div id="imageModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
-      <div class="relative top-1/4 mx-auto p-5 border w-11/12 h-11/12 shadow-lg rounded-md bg-white">
-        <div class="flex justify-between items-center pb-3">
-          <p class="text-2xl font-bold">Comprovante</p>
-          <div class="cursor-pointer z-50" id="closeModal">&times;</div>
+    <div id="imageModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="text-2xl  mb-3">Comprovativo</h2>
+            <img id="modalImage" src="" alt="Comprovante de gasto" class="modal-img w-full h-auto" style="max-height: 75vh; object-fit: contain;">
         </div>
-        <div class="image-container">
-          <img id="modalImage" src="" alt="Comprovante de gasto" class="modal-img">
-        </div>
-      </div>
     </div>
     <!-- Conteúdo Principal -->
     <div class="container py-8 px-4 sm:px-6 lg:px-8">
@@ -136,35 +132,34 @@
       }
     </style>
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var viewImageBtns = document.querySelectorAll('.viewImageBtn');
-        var modal = document.getElementById('imageModal');
-        var modalImage = document.getElementById('modalImage');
-        var closeModal = document.getElementById('closeModal');
-        viewImageBtns.forEach(function(btn) {
-          btn.addEventListener('click', function(event) {
-            event.preventDefault();
-            var imageUrl = btn.getAttribute('data-image-url');
-            if (imageUrl) {
-              modalImage.src = imageUrl;
-              modal.classList.remove('hidden');
-              document.body.classList.add('modal-open');
-            } else {
-              console.error('URL da imagem não encontrada.');
-            }
-          });
+        document.addEventListener('DOMContentLoaded', function() {
+            var modal = document.getElementById('imageModal');
+            var modalImage = document.getElementById('modalImage');
+            var closeModal = document.querySelector('.close-modal');
+
+            document.querySelectorAll('.viewImageBtn').forEach(function(btn) {
+                btn.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    var imageUrl = btn.getAttribute('data-image-url');
+                    if (imageUrl) {
+                        modalImage.src = imageUrl;
+                        document.body.classList.add('modal-open');
+                    } else {
+                        console.error('URL da imagem não encontrada.');
+                    }
+                });
+            });
+
+            closeModal.addEventListener('click', function() {
+                document.body.classList.remove('modal-open');
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    document.body.classList.remove('modal-open');
+                }
+            });
         });
-        closeModal.addEventListener('click', function() {
-          modal.classList.add('hidden');
-          document.body.classList.remove('modal-open');
-        });
-        window.addEventListener('click', function(event) {
-          if (event.target == modal) {
-            modal.classList.add('hidden');
-            document.body.classList.remove('modal-open');
-          }
-        });
-      });
     </script>
   </body>
 </html>
