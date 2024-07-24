@@ -2,6 +2,19 @@
     <div class="w-full  ">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg p-6">
             @if (Auth::check() && Auth::user()->isMaster())
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                  @endif
+
+
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                 <div class="flex items-center justify-between mb-4">
                     <a href="{{ route('employees.index') }}" class="flex items-center justify-center w-10 h-10 mb-3">
                         <button type="button"
@@ -94,16 +107,21 @@
                 @if (Auth::check() && Auth::user()->isMaster())
                     <div class="flex flex-col sm:flex-row justify-center py-4 gap-2 pt-10">
                         <a href="{{ route('employees.edit', ['employee' => $employee->id]) }}"
-                            class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out text-center">
+                           class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out text-center  sm:w-32 h-12">
                             Editar
                         </a>
                         <a href="{{ route('employees.exportCsv', ['id' => $employee->id]) }}"
-                            class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out text-center">
+                           class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out text-center w-full sm:w-32 h-12">
                             Exportar CSV
                         </a>
                         <button id="openModalBtn"
-                            class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full sm:w-32 text-center">
+                                class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full sm:w-32 h-12 text-center">
                             Eliminar
+                        </button>
+
+                        <button id="openReset2FAModalBtn" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full h-12 text-center"
+                                data-action="{{ route('employees.reset2fa', $employee->id) }}">
+                            Resetar 2FA
                         </button>
                     </div>
                 @endif
@@ -112,6 +130,7 @@
     </div>
 </div>
 @include('components.Modals.modal-delete-single')
+@include('components.Modals.modal-confirm-reset-2fa')
 
 <style>
     .container {
