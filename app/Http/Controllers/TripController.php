@@ -200,7 +200,7 @@ class TripController extends Controller
                 ]);
             }
         }
-        return redirect()->route('trips.index')->with('success', 'Viagem  adicionada com sucesso.');
+        return redirect()->route('projects.show', $project->id)->with('success', 'Viagem adicionada com sucesso.');
     }
 
 
@@ -289,26 +289,26 @@ class TripController extends Controller
     {
         $validatedData = $request->validated();
         $project = Project::findOrFail($validatedData['project_id']);
-    
+
         if ($project->project_status_id == 3 || $project->project_status_id == 4) {
             return redirect()->back()->with('error', 'Não é possível atualizar viagens para projetos concluídos/cancelados.');
         }
-    
+
         $trip = Trip::findOrFail($id);
-    
+
         if (isset($validatedData['vehicle_id'])) {
             $vehicleId = $validatedData['vehicle_id'];
             $startDate = $validatedData['start_date'];
             $endDate = $validatedData['end_date'];
-    
+
             Log::info('Dados do veículo:', ['vehicle_id' => $vehicleId, 'start_date' => $startDate, 'end_date' => $endDate]);
-    
+
             $vehicle = Vehicle::findOrFail($vehicleId);
             if ($vehicle->is_external && $endDate > $vehicle->rental_end_date) {
                 Log::error('Erro: O veículo externo não pode ser usado após o fim do contrato de aluguer.');
                 return redirect()->back()->withInput()->withErrors(['vehicle_id' => 'O veículo externo não pode ser usado após o fim do contrato de aluguer.']);
             }
-    
+
             $conflictingTrips = Trip::whereHas('vehicles', function ($query) use ($vehicleId, $startDate, $endDate, $trip) {
                 $query->where('vehicles.id', $vehicleId)
                     ->where('trips.id', '!=', $trip->id)
@@ -321,13 +321,13 @@ class TripController extends Controller
                             });
                     });
             })->exists();
-    
+
             if ($conflictingTrips) {
                 Log::error('Erro: O veículo já está em uso durante o período selecionado.');
                 return redirect()->back()->withInput()->withErrors(['vehicle_id' => 'O veículo já está em uso durante o período selecionado.']);
             }
         }
-    
+
         $trip->start_date = $validatedData['start_date'];
         $trip->end_date = $validatedData['end_date'];
         $trip->destination = $validatedData['destination'];
@@ -335,33 +335,33 @@ class TripController extends Controller
         $trip->project_id = $validatedData['project_id'];
         $trip->type_trip_id = $validatedData['type_trip_id'];
         $trip->save();
-    
-    
+
+
         // Sincronização dos funcionários
         if (isset($validatedData['employee_id'])) {
             $trip->employees()->sync($validatedData['employee_id']);
         } else {
             $trip->employees()->detach();
         }
-    
-    
+
+
         // Sincronização dos veículos
         $trip->vehicles()->detach();
-    
+
         if (isset($validatedData['vehicle_id'])) {
             $vehicleId = $validatedData['vehicle_id'];
             $trip->vehicles()->attach($vehicleId);
             Log::info('Novo veículo anexado:', ['vehicle_id' => $vehicleId]);
-    
+
             // Atualiza o status dos veículos
             Artisan::call('vehicles:update-status');
-    
+
             // Verifica a data para veículos externos
             if ($vehicle->is_external) {
                 $startDate = new \DateTime($validatedData['start_date']);
                 $endDate = new \DateTime($validatedData['end_date']);
                 $interval = $startDate->diff($endDate);
-    
+
                 Log::info('Intervalo de data calculado:', [
                     'start_date' => $startDate->format('Y-m-d'),
                     'end_date' => $endDate->format('Y-m-d'),
@@ -369,10 +369,10 @@ class TripController extends Controller
                 ]);
             }
         }
-    
+
         return redirect()->route('trips.index')->with('message', 'Viagem atualizada com sucesso!');
     }
-     
+
 
     public function checkVehicleAvailability(Request $request)
     {

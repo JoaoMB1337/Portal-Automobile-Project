@@ -1,4 +1,20 @@
 <div class="container py-8 px-4 sm:px-6 lg:px-8">
+    @if (session('message'))
+        <div class="alert alert-info">
+            {{ session('message') }}
+        </div>
+    @endif
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="bg-white shadow-md rounded-lg overflow-hidden">
         <div class="px-6 py-4">
             <div class="flex items-center justify-between mb-4">

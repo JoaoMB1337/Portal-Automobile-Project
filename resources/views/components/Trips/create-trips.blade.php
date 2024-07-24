@@ -3,6 +3,22 @@
 <div id="employees-data" style="display: none;">{{ json_encode($employees) }}</div>
 
 <div class="flex justify-center items-start h-screen custom-bg">
+    @if (session('message'))
+        <div class="alert alert-info">
+            {{ session('message') }}
+        </div>
+    @endif
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="max-w-lg w-full bg-white rounded-xl shadow-md p-8 custom-card mt-12">
         <a href="{{ route('trips.index') }}">
             <button type="button"
