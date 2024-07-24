@@ -82,7 +82,7 @@ class TripDetailController extends Controller
             $request->validate([
                 'receipt_gallery' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-        
+
             $file = $request->file('receipt_gallery');
             $fileName = hash('sha256', time() . '_' . $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
             $file->storeAs($directory, $fileName, 'public');
@@ -91,7 +91,7 @@ class TripDetailController extends Controller
             $request->validate([
                 'receipt_camera' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-        
+
             $file = $request->file('receipt_camera');
             $fileName = hash('sha256', time() . '_' . $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
             $file->storeAs($directory, $fileName, 'public');
@@ -100,7 +100,7 @@ class TripDetailController extends Controller
 
         $tripDetail->save();
 
-        return redirect()->route('trips.show', ['trip' => $trip->id])->with('success', 'Detalhe de viagem criado com sucesso!');
+        return redirect()->route('trips.show', ['trip' => $trip->id])->with('success', 'Custo de '.$tripDetail->costType->type_name.' adicionado com sucesso!');
     }
 
 
