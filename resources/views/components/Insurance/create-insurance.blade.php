@@ -1,8 +1,16 @@
-@vite(['resources/js/Trips/create.js'])
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Seguros</title>
+    <link rel="stylesheet" href="path-to-your-stylesheet.css">
+</head>
 <body class="custom-bg">
     <div class="flex justify-center items-start h-screen">
         <div class="w-full max-w-md bg-white rounded-xl p-7 custom-card mt-6">
             <div class="flex items-center justify-between mb-4">
+                <!-- Back Button Component -->
                 @include('components.ButtonComponents.backButton')
                 <div class="text-center flex-grow mb-6">
                     <h1>Registo de seguros</h1>
@@ -19,8 +27,7 @@
                 @csrf
 
                 <div>
-                    <label for="insurance_company" class="block text-sm font-semibold text-gray-700 mb-2">Companhia de
-                        seguros</label>
+                    <label for="insurance_company" class="block text-sm font-semibold text-gray-700 mb-2">Companhia de seguros</label>
                     <input id="insurance_company" type="text"
                         class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('insurance_company') border-red-500 @enderror"
                         name="insurance_company" value="{{ old('insurance_company') }}" required>
@@ -30,9 +37,7 @@
                 </div>
 
                 <div>
-                    <label for="policy_number" class="block text-sm font-semibold text-gray-700 mb-2">Número da apólice
-                        de
-                        seguro</label>
+                    <label for="policy_number" class="block text-sm font-semibold text-gray-700 mb-2">Número da apólice de seguro</label>
                     <input id="policy_number" type="text"
                         class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('policy_number') border-red-500 @enderror"
                         name="policy_number" value="{{ old('policy_number') }}" required>
@@ -42,8 +47,7 @@
                 </div>
 
                 <div>
-                    <label for="start_date" class="block text-sm font-semibold text-gray-700 mb-2">Data de
-                        início</label>
+                    <label for="start_date" class="block text-sm font-semibold text-gray-700 mb-2">Data de início</label>
                     <input id="start_date" type="date"
                         class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('start_date') border-red-500 @enderror"
                         name="start_date" value="{{ old('start_date') }}" required>
@@ -66,8 +70,7 @@
                     <label for="cost" class="block text-sm font-semibold text-gray-700 mb-2">Custo total</label>
                     <input id="cost" type="text"
                         class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('cost') border-red-500 @enderror"
-                        name="cost" value="{{ old('cost', number_format((float) old('cost'), 2, ',', '.')) }}"
-                        required>
+                        name="cost" value="{{ old('cost', number_format((float) old('cost'), 2, ',', '.')) }}" required>
                     @error('cost')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
@@ -77,7 +80,7 @@
                     <label for="search_vehicle" class="block text-sm font-semibold text-gray-700 mb-2">Matrícula</label>
                     <input id="search_vehicle" type="text"
                         class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('vehicle_plate') border-red-500 @enderror"
-                        name="vehicle_plate" value="{{ old('vehicle_plate') }}" required readonly>
+                        name="vehicle_plate" value="{{ old('vehicle_plate') }}" required>
                     @error('vehicle_plate')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
@@ -100,7 +103,6 @@
                     @enderror
                 </div>
 
-
                 <div class="flex justify-center mt-6">
                     <button type="submit"
                         class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-300">
@@ -111,24 +113,59 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var urlParams = new URLSearchParams(window.location.search);
-            var vehicleId = urlParams.get('vehicle_id');
-            
-            var vehicles = @json($vehicles);
-            
-            if (vehicleId) {
-                var selectedVehicle = vehicles.find(vehicle => vehicle.id == vehicleId);
-                if (selectedVehicle) {
-                    var vehiclePlateInput = document.getElementById('search_vehicle');
-                    vehiclePlateInput.value = selectedVehicle.plate;
-                    vehiclePlateInput.readOnly = true;
+    <script type="application/json" id="vehicles-data">@json($vehicles)</script>
 
-                    var vehicleSelect = document.getElementById('vehicle_id');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const vehicles = JSON.parse(document.getElementById('vehicles-data').textContent);
+            const searchInput = document.getElementById('search_vehicle');
+            const vehicleSelect = document.getElementById('vehicle_id');
+
+            function filterVehicles() {
+                const searchValue = searchInput.value.toLowerCase();
+
+                vehicleSelect.innerHTML = '<option value="" disabled selected>Selecione um veículo</option>';
+
+                let foundMatch = false;
+
+                vehicles.forEach(vehicle => {
+                    if (vehicle.plate.toLowerCase().includes(searchValue)) {
+                        const option = document.createElement('option');
+                        option.value = vehicle.id;
+                        option.text = vehicle.plate;
+                        vehicleSelect.appendChild(option);
+
+                        if (!foundMatch) {
+                            vehicleSelect.value = vehicle.id;
+                            foundMatch = true;
+                        }
+                    }
+                });
+
+                if (!foundMatch) {
+                    vehicleSelect.value = "";
+                }
+            }
+
+            searchInput.addEventListener('input', filterVehicles);
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const vehicleId = urlParams.get('vehicle_id');
+
+            if (vehicleId) {
+                const selectedVehicle = vehicles.find(vehicle => vehicle.id == vehicleId);
+                if (selectedVehicle) {
+                    searchInput.value = selectedVehicle.plate;
+
+                    vehicleSelect.innerHTML = '<option value="" disabled>Selecione um veículo</option>';
+                    const option = document.createElement('option');
+                    option.value = selectedVehicle.id;
+                    option.text = selectedVehicle.plate;
+                    vehicleSelect.appendChild(option);
                     vehicleSelect.value = selectedVehicle.id;
                 }
             }
         });
     </script>
 </body>
+</html>
