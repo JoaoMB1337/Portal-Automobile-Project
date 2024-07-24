@@ -215,9 +215,17 @@
                                     <a href="{{ route('insurances.edit', $insurance->id) }}" class="p-2">
                                         <i class="fas fa-edit text-xl"></i>
                                     </a>
+
                                     <button type="button" class="btn-delete p-2" data-id="{{ $insurance->id }}">
                                         <i class="fas fa-trash-alt text-xl text-red-600"></i>
                                     </button>
+                                    <form id="delete-form-{{ $insurance->id }}" method="post"
+                                          action="{{ route('insurances.destroy', $insurance->id) }}"
+                                          style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+
                                     <a href="{{ url('insurances/' . $insurance->id) }}" class="p-2">
                                         <i class="fas fa-eye text-xl"></i>
                                     </a>

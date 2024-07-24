@@ -72,7 +72,7 @@
                     <label>
                         <input type="checkbox"  name="trips_ending_today" id="filter-trips-ending-today">
                         Viagens que terminam hoje
-                    </label> 
+                    </label>
                     <button type="submit">Filtrar</button>
                 </form>
             </div>
@@ -101,9 +101,7 @@
                     <th>Funcionário</th>
                     <th>Veículo</th>
                     <th>Data inicial</th>
-                    @if (Auth::check() && Auth::user()->isMaster())
                         <th>Ações</th>
-                    @endif
                 </tr>
             </thead>
             <tbody>
