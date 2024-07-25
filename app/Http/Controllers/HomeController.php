@@ -33,9 +33,6 @@ class HomeController extends Controller
     public function index()
     {
         $employeeId = auth()->id();
-        if(auth()->user()->first_login) {
-            return redirect()->route('password.change');
-        }
         $today = Carbon::today();
         $nextMonth = $today->copy()->addDays(30);
 
