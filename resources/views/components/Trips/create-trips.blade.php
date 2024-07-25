@@ -31,7 +31,8 @@
             <div class="text-red-500 mb-4 text-center">{{ session('error') }}</div>
         @endif
 
-        <form method="POST" action="{{ route('trips.store') }}" class="space-y-6" id="trip-form">
+        <form method="POST" action="{{ route('trips.store') }}" onsubmit="disableSubmitButton(event)"
+        class="space-y-6" id="trip-form">
             @csrf
             <div class="form-group">
                 <label for="start_date" class="block text-sm font-medium text-gray-700">Data de início</label>
@@ -107,7 +108,7 @@
                     required {{ isset($project_id) ? 'disabled' : '' }}>
                     @if (isset($project_id))
                         <option value="{{ $project_id }}" selected>
-                            {{ $projects->firstWhere('id', $project_id)->name }}</option>
+                            {{ $projects->where('id', $project_id)->first()->name }}
                     @else
                         <option value="" disabled selected>Selecione um projeto</option>
                         @foreach ($projects as $project)
@@ -172,3 +173,13 @@
         </form>
     </div>
 </div>
+
+<script>
+
+    function disableSubmitButton(event) {
+            const submitButton = document.getElementById('submit-button');
+            submitButton.disabled = true;
+            submitButton.innerText = 'Aguarde...';
+        }
+
+</script>

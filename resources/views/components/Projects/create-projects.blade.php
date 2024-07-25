@@ -6,7 +6,8 @@
             <p class="text-gray-600">Preencha os campos abaixo para criar um novo projeto.</p>
         </div>
 
-    <form method="POST" action="{{ route('projects.store') }}" class="space-y-6">
+    <form method="POST" action="{{ route('projects.store') }}" 
+        class="space-y-6" onsubmit="disableSubmitButton(event)">
         @csrf
 
         <div>
@@ -74,7 +75,7 @@
         </div>
 
         <div>
-            <button type="submit" class="custom-btn w-full py-2 rounded-md">
+            <button type="submit" id="submit-button" class="custom-btn w-full py-2 rounded-md">
                 Criar
             </button>
         </div>
@@ -102,4 +103,9 @@
         countrySelect.addEventListener('change', updateDistricts);
         updateDistricts();
     });
+    function disableSubmitButton(event) {
+            const submitButton = document.getElementById('submit-button');
+            submitButton.disabled = true;
+            submitButton.innerText = 'Aguarde...';
+        }
 </script>
