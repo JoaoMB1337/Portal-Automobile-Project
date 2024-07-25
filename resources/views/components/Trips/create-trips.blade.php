@@ -107,16 +107,27 @@
                     class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('project_id') border-red-500 @enderror"
                     required {{ isset($project_id) ? 'disabled' : '' }}>
                     @if (isset($project_id))
+                    @php
+                        $project = $projects->where('id', $project_id)->first();
+                    @endphp
+                    @if ($project)
                         <option value="{{ $project_id }}" selected>
-                            {{ $projects->where('id', $project_id)->first()->name }}
+                            {{ $project->name }}
+                        </option>
                     @else
-                        <option value="" disabled selected>Selecione um projeto</option>
-                        @foreach ($projects as $project)
-                            <option value="{{ $project->id }}"
-                                {{ old('project_id') == $project->id ? 'selected' : '' }}>{{ $project->name }}
-                            </option>
-                        @endforeach
+                        <option value="{{ $project_id }}" selected>
+                            Projeto não encontrado
+                        </option>
                     @endif
+                @else
+                    <option value="" disabled selected>Selecione um projeto</option>
+                    @foreach ($projects as $project)
+                        <option value="{{ $project->id }}"
+                            {{ old('project_id') == $project->id ? 'selected' : '' }}>
+                            {{ $project->name }}
+                        </option>
+                    @endforeach
+                @endif
                 </select>
                 @if (isset($project_id))
                     <input type="hidden" name="project_id" value="{{ $project_id }}">

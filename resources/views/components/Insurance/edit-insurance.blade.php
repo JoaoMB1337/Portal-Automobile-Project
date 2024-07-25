@@ -36,7 +36,7 @@
                 @include('components.ButtonComponents.backButton')
 
                 <div class="flex-grow text-center">
-                    <h1>Editar seguro</h1>
+                    <h1>Editar seguro Cao</h1>
                 </div>
                 <div class="w-10 h-10"></div>
             </div>
@@ -44,7 +44,6 @@
             <form method="POST" action="{{ route('insurances.update', $insurance->id) }}" class="space-y-6">
                 @csrf
                 @method('PUT')
-
                 <div>
                     <label for="insurance_company" class="block text-sm font-semibold text-gray-700 mb-2">Companhia de
                         seguros</label>
@@ -118,6 +117,5 @@
                     </button>
                 </div>
             </form>
-
         </div>
     </div>
