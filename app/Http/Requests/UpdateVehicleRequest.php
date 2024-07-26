@@ -37,7 +37,7 @@ class UpdateVehicleRequest extends FormRequest
 
         if ($this->is_external) {
             $rules = array_merge($rules, [
-                'contract_number' => 'nullable|string|max:255|unique:vehicles,contract_number,' . $vehicleId,
+                'contract_number' => 'nullable|string|max:255|unique:vehicles,contract_number,' . $vehicleId . '|regex:/^\d+$/',
                 'rental_price_per_day' => 'required|regex:/^\d{1,6}([.,]\d{1,2})?$/|min:0',
                 'rental_start_date' => 'required|date',
                 'rental_end_date' => 'required|date|after_or_equal:rental_start_date',
@@ -82,6 +82,9 @@ class UpdateVehicleRequest extends FormRequest
             'contract_number.string' => 'O número do contrato deve ser uma string.',
             'contract_number.max' => 'O número do contrato não pode ter mais de 255 caracteres.',
             'contract_number.unique' => 'O número do contrato já está em uso. Por favor, escolha outro.',
+            'contract_number.regex' => 'O número do contrato não pode ser negativo.',
+            'rental_contact_person' => 'O nome do contato não pode ser negativo.',
+
             'rental_price_per_day.required' => 'O preço de locação por dia é obrigatório para veículos externos.',
             'rental_price_per_day.regex' => 'O preço de locação por dia deve ser um número com até 6 dígitos e 2 casas decimais.',
             'rental_price_per_day.min' => 'O preço de locação por dia não pode ser negativo.',
@@ -95,7 +98,7 @@ class UpdateVehicleRequest extends FormRequest
             'rental_company.max' => 'O nome da empresa de locação não pode ter mais de 255 caracteres.',
             'rental_contact_person.required' => 'O nome do contato da locação é obrigatório para veículos externos.',
             'rental_contact_person.string' => 'O nome do contato deve ser uma string.',
-            'rental_contact_person.regex' => 'O nome do contato deve ter pelo menos 3 letras e não deve conter números.',
+            'rental_contact_person.regex' => 'O nome do contato deve conter apenas letras e espaços e não pode ser negativo.',
             'rental_contact_number.required' => 'O número de contato da locação é obrigatório para veículos externos.',
             'rental_contact_number.string' => 'O número de contato deve ser uma string.',
             'rental_contact_number.max' => 'O número de contato não pode ter mais de 12 caracteres.',
