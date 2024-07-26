@@ -1,3 +1,4 @@
+@vite(['resources/js/Geral/list.js'])
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
     <div class="bg-white p-4 rounded-lg shadow-sm flex items-center justify-center md:col-span-1">
@@ -36,7 +37,7 @@
             <tbody class="bg-white divide-y divide-gray-200">
                 @forelse ($endingInsurances as $insurance)
                     <tr>
-                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $insurance->vehicle->plate ?? 'N/A' }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800"><a href="{{ route('insurances.show', $insurance->id) }}">{{ $insurance->vehicle->plate ?? 'N/A' }}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $insurance->insurance_company ?? 'N/A' }}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $insurance->policy_number ?? 'N/A' }}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $insurance->end_date ?? 'N/A' }}</td>
