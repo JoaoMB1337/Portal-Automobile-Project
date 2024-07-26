@@ -8,7 +8,7 @@
         <p class="text-gray-600">Preencha os campos abaixo para criar um novo veículo.</p>
     </div>
 
-    <form method="POST" action="{{ route('vehicles.store') }}" enctype="multipart/form-data" class="space-y-6">
+    <form method="POST" action="{{ route('vehicles.store') }}" onsubmit="disableSubmitButton(event)" enctype="multipart/form-data" class="space-y-6">
         @csrf
 
         <div>
@@ -220,8 +220,16 @@
         </div>
 
         <div class="pt-6">
-            <button type="submit"
+            <button type="submit" id="submit-button"
                 class="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2  custom-btn">Criar</button>
         </div>
     </form>
 </div>
+
+<script>
+    function disableSubmitButton(event) {
+        const submitButton = document.getElementById('submit-button');
+        submitButton.disabled = true;
+        submitButton.innerText = 'Aguarde...';
+    }
+</script>

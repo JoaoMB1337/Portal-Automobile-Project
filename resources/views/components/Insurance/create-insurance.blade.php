@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Seguros</title>
-    <link rel="stylesheet" href="path-to-your-stylesheet.css">
+    <title>Formulário de Registo de Seguros</title>
+    @vite(['resources/js/Trips/create.js'])
+    <style>
+        /* Adicione seus estilos aqui, se necessário */
+    </style>
 </head>
 <body class="custom-bg">
     <div class="flex justify-center items-start h-screen">
@@ -82,17 +85,18 @@
                     <label for="search_vehicle" class="block text-sm font-semibold text-gray-700 mb-2">Matrícula</label>
                     <input id="search_vehicle" type="text"
                         class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('vehicle_plate') border-red-500 @enderror"
-                        name="vehicle_plate" value="{{ old('vehicle_plate') }}" required>
+                        value="{{ old('vehicle_plate') }}" readonly>
                     @error('vehicle_plate')
                         <p class="text-red-500 text-xs mt-1 bg-red-50 border border-red-300 p-2 rounded">{{ $message }}</p>
                     @enderror
                 </div>
 
+                <input type="hidden" name="vehicle_id" id="vehicle_id">
+
                 <div class="form-group">
-                    <label for="vehicle_id" class="block text-sm font-medium text-gray-700">Veículo</label>
-                    <select name="vehicle_id" id="vehicle_id"
-                        class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('vehicle_id') border-red-500 @enderror"
-                        disabled>
+                    <label for="vehicle_select" class="block text-sm font-medium text-gray-700">Veículo</label>
+                    <select id="vehicle_select"
+                        class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('vehicle_id') border-red-500 @enderror">
                         <option value="" disabled selected>Selecione um veículo</option>
                     </select>
                     <div id="vehicle-error" class="text-red-500 mt-1">{{ session('vehicle_error') }}</div>
@@ -111,13 +115,14 @@
         </div>
     </div>
 
+    <!-- Include vehicles data in a script tag -->
     <script type="application/json" id="vehicles-data">@json($vehicles)</script>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const vehicles = JSON.parse(document.getElementById('vehicles-data').textContent);
             const searchInput = document.getElementById('search_vehicle');
-            const vehicleSelect = document.getElementById('vehicle_id');
+            const vehicleSelect = document.getElementById('vehicle_select');
+            const vehicleIdInput = document.getElementById('vehicle_id');
 
             function filterVehicles() {
                 const searchValue = searchInput.value.toLowerCase();
@@ -146,6 +151,16 @@
 
             searchInput.addEventListener('input', filterVehicles);
 
+            vehicleSelect.addEventListener('change', function() {
+                const selectedId = vehicleSelect.value;
+                vehicleIdInput.value = selectedId;
+
+                const selectedVehicle = vehicles.find(vehicle => vehicle.id == selectedId);
+                if (selectedVehicle) {
+                    searchInput.value = selectedVehicle.plate;
+                }
+            });
+
             const urlParams = new URLSearchParams(window.location.search);
             const vehicleId = urlParams.get('vehicle_id');
 
@@ -153,8 +168,8 @@
                 const selectedVehicle = vehicles.find(vehicle => vehicle.id == vehicleId);
                 if (selectedVehicle) {
                     searchInput.value = selectedVehicle.plate;
-                    searchInput.disabled = true;
-                    
+                    searchInput.readOnly = true;
+
                     vehicleSelect.innerHTML = '<option value="" disabled>Selecione um veículo</option>';
                     const option = document.createElement('option');
                     option.value = selectedVehicle.id;
@@ -162,9 +177,11 @@
                     vehicleSelect.appendChild(option);
                     vehicleSelect.value = selectedVehicle.id;
                     vehicleSelect.disabled = true;
+                    
+                    vehicleIdInput.value = selectedVehicle.id;
                 }
             } else {
-                searchInput.disabled = false;
+                searchInput.readOnly = false;
                 vehicleSelect.disabled = false;
             }
         });

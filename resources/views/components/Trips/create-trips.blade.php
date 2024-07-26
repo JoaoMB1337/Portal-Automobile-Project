@@ -31,7 +31,8 @@
             <div class="text-red-500 mb-4 text-center">{{ session('error') }}</div>
         @endif
 
-        <form method="POST" action="{{ route('trips.store') }}" class="space-y-6" id="trip-form">
+        <form method="POST" action="{{ route('trips.store') }}" onsubmit="disableSubmitButton(event)"
+        class="space-y-6" id="trip-form">
             @csrf
             <div class="form-group">
                 <label for="start_date" class="block text-sm font-medium text-gray-700">Data de início</label>
@@ -106,16 +107,27 @@
                     class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('project_id') border-red-500 @enderror"
                     required {{ isset($project_id) ? 'disabled' : '' }}>
                     @if (isset($project_id))
+                    @php
+                        $project = $projects->where('id', $project_id)->first();
+                    @endphp
+                    @if ($project)
                         <option value="{{ $project_id }}" selected>
-                            {{ $projects->firstWhere('id', $project_id)->name }}</option>
+                            {{ $project->name }}
+                        </option>
                     @else
-                        <option value="" disabled selected>Selecione um projeto</option>
-                        @foreach ($projects as $project)
-                            <option value="{{ $project->id }}"
-                                {{ old('project_id') == $project->id ? 'selected' : '' }}>{{ $project->name }}
-                            </option>
-                        @endforeach
+                        <option value="{{ $project_id }}" selected>
+                            Projeto não encontrado
+                        </option>
                     @endif
+                @else
+                    <option value="" disabled selected>Selecione um projeto</option>
+                    @foreach ($projects as $project)
+                        <option value="{{ $project->id }}"
+                            {{ old('project_id') == $project->id ? 'selected' : '' }}>
+                            {{ $project->name }}
+                        </option>
+                    @endforeach
+                @endif
                 </select>
                 @if (isset($project_id))
                     <input type="hidden" name="project_id" value="{{ $project_id }}">
@@ -170,3 +182,13 @@
         </form>
     </div>
 </div>
+
+<script>
+
+    function disableSubmitButton(event) {
+            const submitButton = document.getElementById('submit-button');
+            submitButton.disabled = true;
+            submitButton.innerText = 'Aguarde...';
+        }
+
+</script>

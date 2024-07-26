@@ -5,11 +5,7 @@
         <h1 class="text-2xl font-bold text-gray-800">Registo de funcionário</h1>
         <p class="text-gray-600">Preencha os campos abaixo para registar um novo funcionário.</p>
     </div>
-
-
-
-
-    <form method="POST" action="{{ route('employees.store') }}" class="space-y-6">
+    <form method="POST" action="{{ route('employees.store') }}"  onsubmit="disableSubmitButton(event)" class="space-y-6">
         @csrf
         <div>
             <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nome</label>
@@ -224,7 +220,7 @@
         </div>
 
         <div class="flex justify-center mt-6">
-            <button type="submit"
+            <button type="submit" id ="submit-button"
                 class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-300">
                 {{ __('Registar') }}
             </button>
@@ -234,4 +230,11 @@
 
 <script>
     window.contactTypes = @json($contactTypes);
+
+
+    function disableSubmitButton(event) {
+        const submitButton = document.getElementById('submit-button');
+        submitButton.disabled = true;
+        submitButton.innerText = 'Aguarde...';
+    }
 </script>

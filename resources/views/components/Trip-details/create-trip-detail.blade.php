@@ -9,7 +9,7 @@
 <body>
     <div class="mt-8">
         <form method="POST" action="{{ route('trip-details.store') }}" enctype="multipart/form-data"
-            class="space-y-10 bg-white p-6 rounded-lg shadow-md">
+            class="space-y-10 bg-white p-6 rounded-lg shadow-md" onsubmit="disableSubmitButton(event)">
             @csrf
 
             <div class="flex items-center justify-between mb-6">
@@ -88,15 +88,15 @@
             </div>
 
             <div class="flex justify-between items-center">
-                <button type="submit"
+                <button type="submit" id="submit-button"
                     class="py-2 px-4 rounded-md bg-gray-800 hover:bg-gray-700 text-white font-semibold">
                     Salvar
                 </button>
             </div>
         </form>
     </div>
-
     <script>
+        
         function handleFileSelect(source) {
             const galleryInput = document.getElementById('gallery');
             const cameraInput = document.getElementById('camera');
@@ -111,7 +111,7 @@
             }
         }
 
-        //detetar se esta num telemovel ou se num computador
+        //check se esta num computador ou telemovel
         function detectDeviceAndAdjustOptions() {
             const isMobile = /Mobi|Android/i.test(navigator.userAgent);
             const galleryLabel = document.getElementById('gallery-label');
@@ -125,7 +125,11 @@
                 cameraLabel.style.display = 'none';
             }
         }
-
+        function disableSubmitButton() {
+            const submitButton = document.getElementById('submit-button');
+            submitButton.disabled = true;
+            submitButton.innerText = 'Aguarde...';
+        }
         document.addEventListener('DOMContentLoaded', detectDeviceAndAdjustOptions);
     </script>
 </body>

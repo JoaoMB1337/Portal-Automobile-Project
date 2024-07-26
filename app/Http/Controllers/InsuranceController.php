@@ -79,10 +79,10 @@ class InsuranceController extends Controller
 
     public function store(StoreInsuranceRequest $request)
     {
-        $vehicle = Vehicle::where('plate', $request->vehicle_plate)->first();
+        $vehicle = Vehicle::find($request->vehicle_id);
 
         if (!$vehicle) {
-            return redirect()->back()->with('error', 'Veículo com a matricula fornecida não encontrado.');
+            return redirect()->back()->with('error', 'Veículo com o ID fornecido não encontrado.');
         }
 
         if ($this->hasOverlappingInsurance($vehicle->id, $request->start_date, $request->end_date)) {
@@ -95,7 +95,9 @@ class InsuranceController extends Controller
         $insurance->policy_number = $request->policy_number;
         $insurance->start_date = $request->start_date;
         $insurance->end_date = $request->end_date;
+
         $insurance->cost = str_replace(',', '.', str_replace('.', '', $request->cost));
+        
         $insurance->vehicle_id = $vehicle->id;
 
         $insurance->save();
@@ -182,7 +184,6 @@ class InsuranceController extends Controller
                 Insurance::whereIn('id', $request->selected_ids)->delete();
             }
         }
-
         return redirect()->route('insurances.index')->with('error', 'Seguros excluidos com sucesso.');
     }
 
