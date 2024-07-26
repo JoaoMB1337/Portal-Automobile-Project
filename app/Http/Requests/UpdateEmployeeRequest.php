@@ -18,7 +18,7 @@ class UpdateEmployeeRequest extends FormRequest
 
         return [
             'name' => 'required|string|regex:/^[a-zA-Z\s]+$/|max:255',
-            'employee_number' => 'required|nullable|string|max:255|unique:employees,employee_number,' . $employeeId,
+            'employee_number' => 'required|nullable|string|max:10|unique:employees,employee_number,' . $employeeId,
             'gender' => 'required|string',
             'birth_date' => ['required', 'date', function ($attribute, $value, $fail) {
                 $current_date = Carbon::now();
@@ -74,6 +74,7 @@ class UpdateEmployeeRequest extends FormRequest
             'name.max' => 'O nome do funcionário não pode ter mais de 255 caracteres.',
             'employee_number.required' => 'Por favor, insira o número de funcionário.',
             'employee_number.unique' => 'Este número de funcionário já está em uso. Por favor, escolha outro.',
+            'employee_number.max' => 'O número de funcionário não pode ter mais de 10 caracteres.',
             'gender.required' => 'Por favor, selecione o género do funcionário.',
             'birth_date.required' => 'Por favor, insira a data de nascimento do funcionário.',
             'birth_date.date' => 'A data de nascimento deve ser uma data válida.',

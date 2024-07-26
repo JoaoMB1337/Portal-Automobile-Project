@@ -29,4 +29,11 @@
     document.getElementById('confirmDelete').addEventListener('click', function() {
         document.getElementById('deleteForm').submit();
     });
+    //Fechar modal ao clicar fora
+    window.addEventListener('click', function(event) {
+        if (event.target == document.getElementById('deleteModal')) {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+    });
+
 </script>

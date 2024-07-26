@@ -1,13 +1,12 @@
 <div class="w-full rounded-xl p-7 custom-card mt-12">
     @include('components.ButtonComponents.backButton')
 
-        <div class="text-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Criar projeto</h1>
-            <p class="text-gray-600">Preencha os campos abaixo para criar um novo projeto.</p>
-        </div>
+    <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Criar projeto</h1>
+        <p class="text-gray-600">Preencha os campos abaixo para criar um novo projeto.</p>
+    </div>
 
-    <form method="POST" action="{{ route('projects.store') }}" 
-        class="space-y-6" onsubmit="disableSubmitButton(event)">
+    <form method="POST" action="{{ route('projects.store') }}" class="space-y-6" onsubmit="disableSubmitButton(event)">
         @csrf
 
         <div>
@@ -74,10 +73,15 @@
             @enderror
         </div>
 
-        <div>
-            <button type="submit" id="submit-button" class="custom-btn w-full py-2 rounded-md">
+        <div class="flex justify-center mt-6">
+            <button type="submit" id="submit-button"
+                class="ml-3 inline-flex justify-center py-2 px-12 border border-transparent shadow-sm bg-gray-600  rounded-lg gap-x-2 hover:bg-gray-500 text-white">
                 Criar
             </button>
+            <a href="{{ url('projects') }}"
+                class="ml-2 inline-flex justify-center px-10 py-2 gap-x-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 ">
+                Cancelar
+            </a>
         </div>
     </form>
 </div>
@@ -103,9 +107,10 @@
         countrySelect.addEventListener('change', updateDistricts);
         updateDistricts();
     });
+
     function disableSubmitButton(event) {
-            const submitButton = document.getElementById('submit-button');
-            submitButton.disabled = true;
-            submitButton.innerText = 'Aguarde...';
-        }
+        const submitButton = document.getElementById('submit-button');
+        submitButton.disabled = true;
+        submitButton.innerText = 'Aguarde...';
+    }
 </script>
