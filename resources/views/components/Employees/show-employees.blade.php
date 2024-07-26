@@ -106,9 +106,10 @@
                     </button>
 
                     <a href="{{ route('employees.exportCsv', ['id' => $employee->id]) }}"
-                        class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold  px-4 rounded transition duration-300 ease-in-out w-full sm:w-32 h-12 text-center">
+                        class="bg-gray-700 hover:bg-gray-600 text-white font-bold px-4 py-2 rounded transition duration-300 ease-in-out w-full sm:w-32 h-12 text-center flex items-center justify-center text-sm">
                         Exportar CSV
                     </a>
+
 
                     <button id="openReset2FAModalBtn"
                         class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-3 px-4 rounded transition duration-300 ease-in-out w-full sm:w-32 h-12 text-center"
