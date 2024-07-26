@@ -31,8 +31,8 @@
             <div class="text-red-500 mb-4 text-center">{{ session('error') }}</div>
         @endif
 
-        <form method="POST" action="{{ route('trips.store') }}" onsubmit="disableSubmitButton(event)"
-        class="space-y-6" id="trip-form">
+        <form method="POST" action="{{ route('trips.store') }}" onsubmit="disableSubmitButton(event)" class="space-y-6"
+            id="trip-form">
             @csrf
             <div class="form-group">
                 <label for="start_date" class="block text-sm font-medium text-gray-700">Data de início</label>
@@ -107,27 +107,27 @@
                     class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('project_id') border-red-500 @enderror"
                     required {{ isset($project_id) ? 'disabled' : '' }}>
                     @if (isset($project_id))
-                    @php
-                        $project = $projects->where('id', $project_id)->first();
-                    @endphp
-                    @if ($project)
-                        <option value="{{ $project_id }}" selected>
-                            {{ $project->name }}
-                        </option>
+                        @php
+                            $project = $projects->where('id', $project_id)->first();
+                        @endphp
+                        @if ($project)
+                            <option value="{{ $project_id }}" selected>
+                                {{ $project->name }}
+                            </option>
+                        @else
+                            <option value="{{ $project_id }}" selected>
+                                Projeto não encontrado
+                            </option>
+                        @endif
                     @else
-                        <option value="{{ $project_id }}" selected>
-                            Projeto não encontrado
-                        </option>
+                        <option value="" disabled selected>Selecione um projeto</option>
+                        @foreach ($projects as $project)
+                            <option value="{{ $project->id }}"
+                                {{ old('project_id') == $project->id ? 'selected' : '' }}>
+                                {{ $project->name }}
+                            </option>
+                        @endforeach
                     @endif
-                @else
-                    <option value="" disabled selected>Selecione um projeto</option>
-                    @foreach ($projects as $project)
-                        <option value="{{ $project->id }}"
-                            {{ old('project_id') == $project->id ? 'selected' : '' }}>
-                            {{ $project->name }}
-                        </option>
-                    @endforeach
-                @endif
                 </select>
                 @if (isset($project_id))
                     <input type="hidden" name="project_id" value="{{ $project_id }}">
@@ -175,20 +175,23 @@
                 @enderror
             </div>
 
-            <div>
+            <div class="flex justify-center mt-6">
                 <button type="submit" id="submit-button"
-                    class="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2  custom-btn">Criar</button>
+                    class="ml-3 inline-flex justify-center py-2 px-12 border border-transparent shadow-sm bg-gray-600  rounded-lg gap-x-2 hover:bg-gray-500 text-white">Criar
+                </button>
+                <a href="{{ url('trips') }}"
+                    class="ml-2 inline-flex items-center px-10 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 ">
+                    Cancelar
+                </a>
             </div>
         </form>
     </div>
 </div>
 
 <script>
-
     function disableSubmitButton(event) {
-            const submitButton = document.getElementById('submit-button');
-            submitButton.disabled = true;
-            submitButton.innerText = 'Aguarde...';
-        }
-
+        const submitButton = document.getElementById('submit-button');
+        submitButton.disabled = true;
+        submitButton.innerText = 'Aguarde...';
+    }
 </script>

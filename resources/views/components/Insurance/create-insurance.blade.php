@@ -17,7 +17,8 @@
         @csrf
 
         <div>
-            <label for="insurance_company" class="block text-sm font-semibold text-gray-700 mb-2">Companhia de seguros</label>
+            <label for="insurance_company" class="block text-sm font-semibold text-gray-700 mb-2">Companhia de
+                seguros</label>
             <input id="insurance_company" type="text"
                 class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('insurance_company') border-red-500 @enderror"
                 name="insurance_company" value="{{ old('insurance_company') }}" required>
@@ -27,7 +28,8 @@
         </div>
 
         <div>
-            <label for="policy_number" class="block text-sm font-semibold text-gray-700 mb-2">Número da apólice de seguro</label>
+            <label for="policy_number" class="block text-sm font-semibold text-gray-700 mb-2">Número da apólice de
+                seguro</label>
             <input id="policy_number" type="text"
                 class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('policy_number') border-red-500 @enderror"
                 name="policy_number" value="{{ old('policy_number') }}" required>
@@ -92,9 +94,13 @@
 
         <div class="flex justify-center mt-6">
             <button type="submit" id="submit-button"
-                class="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 custom-btn">
+                class="ml-3 inline-flex justify-center py-2 px-12 border border-transparent shadow-sm bg-gray-600  rounded-lg gap-x-2 hover:bg-gray-500 text-white">
                 Criar
             </button>
+            <a href="{{ url('insurances') }}"
+                class="ml-2 inline-flex items-center px-10 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 ">
+                Cancelar
+            </a>
         </div>
     </form>
 </div>
@@ -161,7 +167,7 @@
                 vehicleSelect.appendChild(option);
                 vehicleSelect.value = selectedVehicle.id;
                 vehicleSelect.disabled = true;
-                
+
                 vehicleIdInput.value = selectedVehicle.id;
             }
         } else {
@@ -169,9 +175,10 @@
             vehicleSelect.disabled = false;
         }
     });
+
     function disableSubmitButton(event) {
-            const submitButton = document.getElementById('submit-button');
-            submitButton.disabled = true;
-            submitButton.innerText = 'Aguarde...';
-        }
+        const submitButton = document.getElementById('submit-button');
+        submitButton.disabled = true;
+        submitButton.innerText = 'Aguarde...';
+    }
 </script>

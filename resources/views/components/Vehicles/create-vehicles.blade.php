@@ -8,7 +8,8 @@
         <p class="text-gray-600">Preencha os campos abaixo para criar um novo veículo.</p>
     </div>
 
-    <form method="POST" action="{{ route('vehicles.store') }}" onsubmit="disableSubmitButton(event)" enctype="multipart/form-data" class="space-y-6">
+    <form method="POST" action="{{ route('vehicles.store') }}" onsubmit="disableSubmitButton(event)"
+        enctype="multipart/form-data" class="space-y-6">
         @csrf
 
         <div>
@@ -219,9 +220,13 @@
             </div>
         </div>
 
-        <div class="pt-6">
+        <div class="flex justify-center mt-6">
             <button type="submit" id="submit-button"
-                class="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2  custom-btn">Criar</button>
+                class="ml-3 inline-flex justify-center py-2 px-12 border border-transparent shadow-sm bg-gray-600  rounded-lg gap-x-2 hover:bg-gray-500 text-white">Criar</button>
+            <a href="{{ url('vehicles') }}"
+                class="ml-2 inline-flex items-center px-10 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 ">
+                Cancelar
+            </a>
         </div>
     </form>
 </div>
