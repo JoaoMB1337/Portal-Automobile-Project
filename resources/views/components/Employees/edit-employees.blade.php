@@ -183,6 +183,10 @@
                         class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm bg-gray-600  rounded-lg gap-x-2 hover:bg-gray-500 text-white">
                         Atualizar
                     </button>
+                    <a href="{{ url('employees') }}"
+                        class="ml-2 inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 ">
+                        Cancelar
+                    </a>
                 </div>
             </form>
         </div>

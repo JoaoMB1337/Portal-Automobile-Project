@@ -1,12 +1,12 @@
 @vite('resources/js/Vehicles/vehicles-create.js')
 
-<div class="w-full  rounded-xl p-7 custom-card mt-12">
+<div class="w-full rounded-xl p-7 custom-card mt-12">
     @include('components.ButtonComponents.backButton')
 
-        <div class="text-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Criar veículo</h1>
-            <p class="text-gray-600">Preencha os campos abaixo para criar um novo veículo.</p>
-        </div>
+    <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Criar veículo</h1>
+        <p class="text-gray-600">Preencha os campos abaixo para criar um novo veículo.</p>
+    </div>
 
     <form method="POST" action="{{ route('vehicles.store') }}" enctype="multipart/form-data" class="space-y-6">
         @csrf
@@ -14,13 +14,13 @@
         <div>
             <label for="plate" class="block text-sm font-semibold text-gray-700 mb-2">Matrícula</label>
             <input id="plate" type="text" maxlength="20"
-                   class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('plate') border-red-500 @enderror"
-                   name="plate" value="{{ old('plate') }}" required autocomplete="plate" autofocus>
+                class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('plate') border-red-500 @enderror"
+                name="plate" value="{{ old('plate') }}" required autocomplete="plate" autofocus>
             @error('plate')
-            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @else
                 <p class="text-gray-500 text-xs mt-1">A matrícula deve ser única.</p>
-                @enderror
+            @enderror
         </div>
 
         <div>
@@ -67,12 +67,13 @@
         </div>
 
         <div>
-            <label for="passenger_quantity" class="block text-sm font-semibold text-gray-700 mb-2">Número de passageiros</label>
+            <label for="passenger_quantity" class="block text-sm font-semibold text-gray-700 mb-2">Número de
+                passageiros</label>
             <input id="passengers" type="number" max="170"
-                   class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('passengers') border-red-500 @enderror"
-                   name="passengers" value="{{ old('passengers') }}" required autocomplete="passengers">
+                class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('passengers') border-red-500 @enderror"
+                name="passengers" value="{{ old('passengers') }}" required autocomplete="passengers">
             @error('passengers')
-            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @enderror
         </div>
 
@@ -129,18 +130,20 @@
         </div>
 
         <div class="external-field" style="display: none;">
-            <div>
-                <label for="contract_number" class="block text-sm font-semibold text-gray-700 mb-2">Número de contrato</label>
+            <div class="mb-5">
+                <label for="contract_number" class="block text-sm font-semibold text-gray-700 mb-2">Número de
+                    contrato</label>
                 <input id="contract_number" type="text" maxlength="20"
-                       class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('contract_number') border-red-500 @enderror"
-                       name="contract_number" value="{{ old('contract_number') }}">
+                    class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('contract_number') border-red-500 @enderror"
+                    name="contract_number" value="{{ old('contract_number') }}">
                 @error('contract_number')
-                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
-            <div>
-                <label for="rental_price_per_day" class="block text-sm font-semibold text-gray-700 mb-2">Preço de aluger por dia</label>
+            <div class="mb-5">
+                <label for="rental_price_per_day" class="block text-sm font-semibold text-gray-700 mb-2">Preço de
+                    aluger por dia</label>
                 <input id="rental_price_per_day" type="text"
                     class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('rental_price_per_day') border-red-500 @enderror"
                     name="rental_price_per_day" value="{{ old('rental_price_per_day') }}"
@@ -150,7 +153,7 @@
                 @enderror
             </div>
 
-            <div>
+            <div class="mb-5">
                 <label for="rental_start_date" class="block text-sm font-semibold text-gray-700 mb-2">Data de início
                     do aluguer</label>
                 <input id="rental_start_date" type="date"
@@ -161,7 +164,7 @@
                 @enderror
             </div>
 
-            <div>
+            <div class="mb-5">
                 <label for="rental_end_date" class="block text-sm font-semibold text-gray-700 mb-2">Data de fim do
                     aluguer</label>
                 <input id="rental_end_date" type="date"
@@ -171,7 +174,7 @@
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
-            <div>
+            <div class="mb-5">
                 <label for="rental_company" class="block text-sm font-semibold text-gray-700 mb-2">Empresa de
                     rentCar</label>
                 <input id="rental_company" type="text"
@@ -182,7 +185,7 @@
                 @enderror
             </div>
 
-            <div>
+            <div class="mb-5">
                 <label for="rental_contact_person" class="block text-sm font-semibold text-gray-700 mb-2">Pessoa de
                     contato do rentCar</label>
                 <input id="rental_contact_person" type="text"
@@ -194,7 +197,7 @@
                 @enderror
             </div>
 
-            <div>
+            <div class="mb-5">
                 <label for="rental_contact_number" class="block text-sm font-semibold text-gray-700 mb-2">Número de
                     contato do rentCar</label>
                 <input id="rental_contact_number" type="text"
@@ -205,7 +208,7 @@
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
-            <div>
+            <div class="mb-5">
                 <label for="pdf_file" class="block text-sm font-semibold text-gray-700 mb-2">PDF</label>
                 <input id="pdf_file" type="file"
                     class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('pdf_file') border-red-500 @enderror"

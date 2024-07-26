@@ -31,11 +31,11 @@
 <body>
 
     <div class="flex justify-center items-start h-screen custom-bg">
-        <div class="w-full max-w-md bg-white rounded-xl p-7 custom-card mt-12">
+        <div class="max w-full bg-white rounded-xl p-7 custom-card mt-12">
             <div class="flex items-center justify-between mb-4">
                 @include('components.ButtonComponents.backButton')
 
-                <div class="flex-grow text-center">
+                <div class="text-lg leading-6 font-medium text-gray-900">
                     <h1>Editar seguro</h1>
                 </div>
                 <div class="w-10 h-10"></div>
@@ -93,8 +93,7 @@
                     <label for="cost" class="block text-sm font-semibold text-gray-700 mb-2">Custo</label>
                     <input id="cost" type="text"
                         class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('cost') border-red-500 @enderror"
-                        name="cost" value="{{ old('cost', number_format($insurance->cost, 2, ',', '.')) }}"
-                        required>
+                        name="cost" value="{{ old('cost', number_format($insurance->cost, 2, ',', '.')) }}" required>
                     @error('cost')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror

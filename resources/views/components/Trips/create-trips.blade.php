@@ -19,7 +19,7 @@
             {{ session('error') }}
         </div>
     @endif
-    <div class="max-w-lg w-full bg-white rounded-xl shadow-md p-8 custom-card mt-12">
+    <div class="w-full rounded-xl p-7 custom-card mt-12">
         @include('components.ButtonComponents.backButton')
 
         <div class="text-center mb-6">
@@ -165,9 +165,7 @@
 
             <div>
                 <button type="submit" id="submit-button"
-                    class="w-full py-2 text-white bg-gray-600 hover:bg-gray-700 rounded-md transition-colors duration-200">
-                    Criar
-                </button>
+                    class="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2  custom-btn">Criar</button>
             </div>
         </form>
     </div>

@@ -6,17 +6,17 @@
                     <div class="alert alert-success">
                         {{ session('success') }}
                     </div>
-                  @endif
+                @endif
 
 
-                    @if (session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                    @endif
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
 
                 <div class="flex items-center justify-between mb-4">
-                 @include('components.ButtonComponents.backButton')
+                    @include('components.ButtonComponents.backButton')
                     <div class="flex-grow text-center">
                         <h3 class="text-lg leading-6 font-medium text-gray-900">Detalhes principais</h3>
                         <p class="max-w-2xl text-sm text-gray-500">Detalhes pessoais e informações de contato</p>
@@ -93,22 +93,23 @@
                     </div>
                 </dl>
                 @if (Auth::check() && Auth::user()->isMaster())
-                    <div class="flex flex-col sm:flex-row justify-center py-4 gap-2 pt-10">
+                    <div class="flex flex-col sm:flex-row justify-center py-5 gap-2 pt-10">
                         <a href="{{ route('employees.edit', ['employee' => $employee->id]) }}"
-                           class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out text-center  sm:w-32 h-12">
+                            class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded transition duration-300 ease-in-out text-center  sm:w-32 h-12">
                             Editar
                         </a>
                         <a href="{{ route('employees.exportCsv', ['id' => $employee->id]) }}"
-                           class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out text-center w-full sm:w-32 h-12">
+                            class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold  px-4 rounded transition duration-300 ease-in-out text-center w-full sm:w-32 h-12">
                             Exportar CSV
                         </a>
                         <button id="openModalBtn"
-                                class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full sm:w-32 h-12 text-center">
+                            class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full sm:w-32 h-12 text-center">
                             Eliminar
                         </button>
 
-                        <button id="openReset2FAModalBtn" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full h-12 text-center"
-                                data-action="{{ route('employees.reset2fa', $employee->id) }}">
+                        <button id="openReset2FAModalBtn"
+                            class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full h-12 text-center"
+                            data-action="{{ route('employees.reset2fa', $employee->id) }}">
                             Resetar 2FA
                         </button>
                     </div>

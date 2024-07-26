@@ -2,8 +2,13 @@
 
 <div class="w-full rounded-xl p-7 custom-card mt-12">
     <div class="text-center flex-grow mb-6">
-        <h1>Registo de funcionário</h1>
+        <h1 class="text-2xl font-bold text-gray-800">Registo de funcionário</h1>
+        <p class="text-gray-600">Preencha os campos abaixo para registar um novo funcionário.</p>
     </div>
+
+
+
+
     <form method="POST" action="{{ route('employees.store') }}" class="space-y-6">
         @csrf
         <div>

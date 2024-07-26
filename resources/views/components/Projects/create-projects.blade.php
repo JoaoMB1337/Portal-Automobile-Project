@@ -1,10 +1,10 @@
 <div class="w-full rounded-xl p-7 custom-card mt-12">
     @include('components.ButtonComponents.backButton')
 
-        <div class="text-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Criar projeto</h1>
-            <p class="text-gray-600">Preencha os campos abaixo para criar um novo projeto.</p>
-        </div>
+    <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Criar projeto</h1>
+        <p class="text-gray-600">Preencha os campos abaixo para criar um novo projeto.</p>
+    </div>
 
     <form method="POST" action="{{ route('projects.store') }}" class="space-y-6">
         @csrf
@@ -74,7 +74,8 @@
         </div>
 
         <div>
-            <button type="submit" class="custom-btn w-full py-2 rounded-md">
+            <button type="submit"
+                class="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2  custom-btn">
                 Criar
             </button>
         </div>

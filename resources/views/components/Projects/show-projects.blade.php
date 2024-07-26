@@ -15,16 +15,16 @@
             {{ session('error') }}
         </div>
     @endif
-    <div class="bg-white shadow-md rounded-lg overflow-hidden">
-        <div class="px-6 py-4">
-            <div class="flex items-center justify-between mb-4">
-                @include('components.ButtonComponents.backButton')
-                <div class="flex-grow text-center">
-                    <h3 class="text-2xl font-semibold text-gray-900">Detalhes do projeto</h3>
-                </div>
-                <div class="w-10 h-10"></div>
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg p-6">
+
+        <div class="flex items-center justify-between mb-4">
+            @include('components.ButtonComponents.backButton')
+            <div class="flex-grow text-center">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Detalhes do projeto</h3>
             </div>
         </div>
+
+        <p class="mt-1 max-w-2xl text-sm text-gray-500">Detalhes do projeto</p>
         <div class="border-t border-gray-200">
             <dl>
                 <div class="bg-gray-50 px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -52,22 +52,23 @@
                 <div class="bg-white px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">Total do projeto</dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {{ number_format($totalProjectCost, 2, ',', '.') }}</dd>
+                        {{ number_format($totalProjectCost, 2, ',', '.') }}
+                    </dd>
                 </div>
+                @if (Auth::check() && Auth::user()->isAdmin())
+                    <div class="mt-10 flex flex-col sm:flex-row gap-4">
+                        <a href="{{ route('projects.edit', ['project' => $project->id]) }}"
+                            class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out text-center w-full sm:w-auto">
+                            Editar
+                        </a>
+                        <button id="openModalBtn"
+                            class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full sm:w-auto text-center">
+                            Eliminar
+                        </button>
+                    </div>
+                @endif
             </dl>
         </div>
-        @if (Auth::check() && Auth::user()->isAdmin())
-            <div class="px-6 py-4 flex flex-col sm:flex-row gap-4">
-                <a href="{{ route('projects.edit', ['project' => $project->id]) }}"
-                    class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
-                    Editar
-                </a>
-                <button id="openModalBtn"
-                    class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full sm:w-auto text-center">
-                    Eliminar
-                </button>
-            </div>
-        @endif
     </div>
     @include('components.Modals.modal-delete-single')
 
