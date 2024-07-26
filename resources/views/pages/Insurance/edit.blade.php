@@ -1,5 +1,3 @@
-@extends('layouts.app')
-
 @extends('components.Master.main')
 @section('content')
     <div class=" mx-auto lg:pl-64">

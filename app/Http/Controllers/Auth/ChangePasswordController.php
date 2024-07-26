@@ -11,6 +11,9 @@ class ChangePasswordController extends Controller
 {
     public function showChangePasswordForm()
     {
+        if(!Auth::user()->first_login) {
+            return redirect()->route("error.403");
+        }
         return view('auth.passwords.change');
     }
 

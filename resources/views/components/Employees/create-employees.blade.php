@@ -2,9 +2,10 @@
 
 <div class="w-full rounded-xl p-7 custom-card mt-12">
     <div class="text-center flex-grow mb-6">
-        <h1>Registo de funcionário</h1>
+        <h1 class="text-2xl font-bold text-gray-800">Registo de funcionário</h1>
+        <p class="text-gray-600">Preencha os campos abaixo para registar um novo funcionário.</p>
     </div>
-    <form method="POST" action="{{ route('employees.store') }}" class="space-y-6">
+    <form method="POST" action="{{ route('employees.store') }}" onsubmit="disableSubmitButton(event)" class="space-y-6">
         @csrf
         <div>
             <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nome</label>
@@ -169,7 +170,7 @@
                 <div class="w-10 h-10"></div> <!-- Adicionei esta div para ocupar espaço simétrico -->
             </div>
             <button type="button" id="add-contact-btn"
-                class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn">Adicionar
+                class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm bg-gray-600  rounded-lg gap-x-2 hover:bg-gray-500 text-white">Adicionar
                 contacto</button>
         </div>
 
@@ -219,14 +220,25 @@
         </div>
 
         <div class="flex justify-center mt-6">
-            <button type="submit"
-                class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-300">
+            <button type="submit" id ="submit-button"
+                class="ml-3 inline-flex justify-center py-2 px-10 border border-transparent shadow-sm bg-gray-600  rounded-lg gap-x-2 hover:bg-gray-500 text-white">
                 {{ __('Registar') }}
             </button>
+            <a href="{{ url('employees') }}"
+                class="ml-2 inline-flex items-center px-10 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 ">
+                Cancelar
+            </a>
         </div>
     </form>
 </div>
 
 <script>
     window.contactTypes = @json($contactTypes);
+
+
+    function disableSubmitButton(event) {
+        const submitButton = document.getElementById('submit-button');
+        submitButton.disabled = true;
+        submitButton.innerText = 'Aguarde...';
+    }
 </script>

@@ -119,9 +119,6 @@ class TripDetailController extends Controller
     }
 
 
-
-
-
     /**
      * Display the specified resource.
      */
@@ -148,14 +145,14 @@ class TripDetailController extends Controller
      */
     public function edit(TripDetail $tripDetail)
     {
-        try{
+        try {
             $this->authorize('update', $tripDetail);
 
             $projects = Project::all();
             $costTypes = CostType::all();
             $trips = Trip::all();
             $employees = Employee::all();
-    
+
             return view('pages.TripDetails.edit', [
                 'tripDetail' => $tripDetail,
                 'projects' => $projects,
@@ -163,11 +160,9 @@ class TripDetailController extends Controller
                 'trips' => $trips,
                 'employees' => $employees,
             ]);
-        }
-        catch (AuthorizationException $e) {
+        } catch (AuthorizationException $e) {
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para editar uma viagem.');
         }
-        
     }
 
 
@@ -176,24 +171,24 @@ class TripDetailController extends Controller
      */
     public function update(UpdateTripDetailRequest $request, TripDetail $tripDetail)
     {
-        try{
+        try {
             $this->authorize('update', $tripDetail);
 
             $validated = $request->validated();
-    
+
             $tripDetail->trip_id = $validated['trip_id'];
             $tripDetail->cost_type_id = $validated['cost_type_id'];
             $tripDetail->cost = $validated['cost'];
-    
+
             $trip = Trip::findOrFail($validated['trip_id']);
             $project = $trip->project;
             $directory = 'projects/' . $project->id . '/trips/' . $tripDetail->trip_id . '/receipts';
-    
+
             if ($request->hasFile('receipt_gallery')) {
                 $request->validate([
                     'receipt_gallery' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 ]);
-    
+
                 $file = $request->file('receipt_gallery');
                 $fileName = hash('sha256', time() . '_' . $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
                 $file->storeAs($directory, $fileName, 'public');
@@ -202,19 +197,17 @@ class TripDetailController extends Controller
                 $request->validate([
                     'receipt_camera' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 ]);
-    
+
                 $file = $request->file('receipt_camera');
                 $fileName = hash('sha256', time() . '_' . $file->getClientOriginalName()) . '.' . $file->getClientOriginalExtension();
                 $file->storeAs($directory, $fileName, 'public');
                 $tripDetail->file = $fileName;
             }
-    
-            $tripDetail->save();
-    
-            return redirect()->route('trips.show', ['trip' => $trip->id])->with('success', 'Detalhe de viagem atualizado com sucesso!');
 
-        }
-        catch (AuthorizationException $e) {
+            $tripDetail->save();
+
+            return redirect()->route('trips.show', ['trip' => $trip->id])->with('success', 'Detalhe de viagem atualizado com sucesso!');
+        } catch (AuthorizationException $e) {
             return redirect()->route('error.403')->with('error', 'Você não tem permissão para editar uma viagem.');
         }
     }

@@ -1,5 +1,5 @@
 <div class="flex justify-center items-start h-screen custom-bg">
-    <div class="max-w-md w-full bg-white rounded-xl p-7 custom-card mt-12">
+    <div class="max w-full bg-white rounded-xl p-7 custom-card mt-12">
         <div class="flex items-center justify-between mb-6">
             @include('components.ButtonComponents.backButton')
             <div class="flex-grow text-center">
@@ -77,11 +77,13 @@
                 @enderror
             </div>
 
-            <div>
-                <button type="submit" class="custom-btn w-full py-2 rounded-md">Salvar</button>
-                <a href="javascript:history.back()"
-                class="block text-center mt-4 text-sm font-semibold text-gray-700">Cancelar</a>
-
+            <div class="mt-8 flex justify-end">
+                <button type="submit"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 ">Atualizar</button>
+                <a href="{{ url('projects') }}"
+                    class="ml-2 inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 ">
+                    Cancelar
+                </a>
             </div>
         </form>
     </div>

@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\Auth\TwoFactorController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -16,8 +17,9 @@ use App\Http\Middleware\NoCacheMiddleware;
 use App\Http\Middleware\EnsureTwoFactorSetup;
 use App\Http\Middleware\PreventAccessTo2FASetup;
 use App\Http\Middleware\CheckValid2FA;
+use App\Http\Middleware\CheckFirstLogin;
 
-// Middleware para prevenir cache em rotas sensíveis
+//rotas para por o middleware de autenticação
 Route::middleware([NoCacheMiddleware::class])->group(function () {
     Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login.form');
     Auth::routes(['register' => false]);
@@ -33,22 +35,26 @@ Route::middleware([NoCacheMiddleware::class])->group(function () {
     });
 });
 
-// Middleware para proteger rotas autenticadas e 2FA
+//rotas para por o middleware de autenticação
 Route::middleware(['auth', EnsureTwoFactorEnabled::class, NoCacheMiddleware::class, CheckValid2FA::class])->group(function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::get('/vehicles/{vehicle}/download-pdf', [VehicleController::class, 'downloadPdf'])->name('vehicles.downloadPdf');
-    Route::resource('employees', EmployeeController::class);
-    Route::resource('trips', TripController::class);
-    Route::resource('vehicles', VehicleController::class);
-    Route::resource('insurances', App\Http\Controllers\InsuranceController::class);
-    Route::resource('projects', App\Http\Controllers\ProjectController::class);
-    Route::resource('trip-details', App\Http\Controllers\TripDetailController::class);
-    // Routes for password change
-    Route::get('/password/change', [App\Http\Controllers\Auth\ChangePasswordController::class, 'showChangePasswordForm'])->name('password.change');
-    Route::post('/password/change', [App\Http\Controllers\Auth\ChangePasswordController::class, 'changePassword'])->name('password.change.update');
+    Route::middleware(CheckFirstLogin::class)-> group(function () {
+        Route::get('/home', [HomeController::class, 'index'])->name('home');
+        Route::get('/vehicles/{vehicle}/download-pdf', [VehicleController::class, 'downloadPdf'])->name('vehicles.downloadPdf');
+        Route::resource('employees', EmployeeController::class);
+        Route::resource('trips', TripController::class);
+        Route::resource('vehicles', VehicleController::class);
+        Route::resource('insurances', App\Http\Controllers\InsuranceController::class);
+        Route::resource('projects', App\Http\Controllers\ProjectController::class);
+        Route::resource('trip-details', App\Http\Controllers\TripDetailController::class);
+    });
+    
+
+    // rotas de mudar password no primeiro login
+    Route::get('/password/change', [ChangePasswordController::class, 'showChangePasswordForm'])->name('password.change');
+    Route::post('/password/change', [ChangePasswordController::class, 'changePassword'])->name('password.change.update');
 });
 
-// Rotas de exclusão em massa
+// destruição massiva
 Route::delete('employees.deleteSelected', [EmployeeController::class, 'deleteSelected'])->name('employees.deleteSelected');
 Route::delete('vehicles.deleteSelected', [VehicleController::class, 'deleteSelected'])->name('vehicles.deleteSelected');
 Route::delete('projects.deleteSelected', [App\Http\Controllers\ProjectController::class, 'deleteSelected'])->name('projects.deleteSelected');

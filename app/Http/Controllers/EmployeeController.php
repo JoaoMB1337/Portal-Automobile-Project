@@ -291,7 +291,7 @@ class EmployeeController extends Controller
 
         try {
             Employee::whereIn('id', $filteredIds)->delete();
-            return redirect()->route('employees.index')->with('success', 'Funcionários excluido com sucesso.');
+            return redirect()->route('employees.index')->with('error', 'Funcionários excluido com sucesso.');
         } catch (\Exception $e) {
             return redirect()->route('employees.index')->with('error', 'Erro ao excluir funcionários.');
         }
@@ -337,7 +337,6 @@ class EmployeeController extends Controller
 
     public function import(Request $request)
     {
-
         $request->validate([
             'file' => 'required|file|mimes:csv,txt',
         ]);
@@ -362,84 +361,137 @@ class EmployeeController extends Controller
         $addedCount = 0;
         $duplicateCount = 0;
 
-        foreach ($data as $index => $row) {
-            $row = array_combine($header, $row);
+        try {
+            foreach ($data as $index => $row) {
+                $row = array_combine($header, $row);
 
-            if (!isset($row['numFuncionario']) || empty($row['nome'])) {
-                continue;
+                if (!isset($row['numFuncionario']) || empty($row['nome'])) {
+                    continue;
+                }
+
+                $employeeNumber = $row['numFuncionario'];
+                $name = $row['nome'];
+
+                if (!preg_match('/^[a-zA-Z\s]+$/', $name)) {
+                    continue;
+                }
+
+                // Verificar se o funcionário existe, incluindo os excluídos com SoftDeletes
+                $existingEmployee = Employee::withTrashed()->where('employee_number', $employeeNumber)->first();
+
+                if ($existingEmployee) {
+                    if ($existingEmployee->trashed()) {
+                        $existingEmployee->restore();
+
+                        // Verificar e atualizar CC com um valor único
+                        $CC = $row['CC'] ?? $defaultCC;
+                        if (Employee::withTrashed()->where('CC', $CC)->where('id', '!=', $existingEmployee->id)->exists()) {
+                            $ccSuffix = 1;
+                            do {
+                                $CC = $defaultCC . str_pad($ccSuffix++, 1, '0', STR_PAD_LEFT);
+                            } while (Employee::withTrashed()->where('CC', $CC)->exists());
+                        }
+
+                        // Verificar e atualizar NIF com um valor único
+                        $NIF = $row['NIF'] ?? $defaultNIF;
+                        if (Employee::withTrashed()->where('NIF', $NIF)->where('id', '!=', $existingEmployee->id)->exists()) {
+                            $nifSuffix = 1;
+                            do {
+                                $NIF = $defaultNIF . str_pad($nifSuffix++, 1, '0', STR_PAD_LEFT);
+                            } while (Employee::withTrashed()->where('NIF', $NIF)->exists());
+                        }
+
+                        // Verificar e atualizar phone com um valor único
+                        $phone = $row['phone'] ?? $defaultPhone;
+                        if (Employee::withTrashed()->where('phone', $phone)->where('id', '!=', $existingEmployee->id)->exists()) {
+                            $phoneSuffix = 1;
+                            do {
+                                $phone = $defaultPhone . str_pad($phoneSuffix++, 1, '0', STR_PAD_LEFT);
+                            } while (Employee::withTrashed()->where('phone', $phone)->exists());
+                        }
+
+                        $existingEmployee->update([
+                            'name' => $name,
+                            'gender' => $defaultGender,
+                            'birth_date' => $defaultBirthDate,
+                            'CC' => $CC,
+                            'NIF' => $NIF,
+                            'address' => $row['address'] ?? $defaultAddress,
+                            'employee_role_id' => $defaultEmployeeRoleId,
+                            'email' => $row['email'] ?? ($defaultEmailPrefix . $index . $defaultEmailDomain),
+                            'phone' => $phone,
+                            'password' => Hash::make($defaultPassword),
+                            'role' => $defaultRole,
+                        ]);
+                        $addedCount++;
+                    } else {
+                        $duplicateCount++;
+                    }
+                    continue;
+                }
+
+                $CC = $row['CC'] ?? $defaultCC;
+                if (Employee::withTrashed()->where('CC', $CC)->exists()) {
+                    $ccSuffix = 1;
+                    do {
+                        $CC = $defaultCC . str_pad($ccSuffix++, 1, '0', STR_PAD_LEFT);
+                    } while (Employee::withTrashed()->where('CC', $CC)->exists());
+                }
+
+                $NIF = $row['NIF'] ?? $defaultNIF;
+                if (Employee::withTrashed()->where('NIF', $NIF)->exists()) {
+                    $nifSuffix = 1;
+                    do {
+                        $NIF = $defaultNIF . str_pad($nifSuffix++, 1, '0', STR_PAD_LEFT);
+                    } while (Employee::withTrashed()->where('NIF', $NIF)->exists());
+                }
+
+                $address = $row['address'] ?? $defaultAddress;
+
+                $email = $row['email'] ?? ($defaultEmailPrefix . $index . $defaultEmailDomain);
+                $emailSuffix = 1;
+                while (Employee::where('email', $email)->exists()) {
+                    $email = $defaultEmailPrefix . $index . str_pad($emailSuffix++, 1, '0', STR_PAD_LEFT) . $defaultEmailDomain;
+                }
+
+                $phone = $row['phone'] ?? $defaultPhone;
+                if (Employee::withTrashed()->where('phone', $phone)->exists()) {
+                    $phoneSuffix = 1;
+                    do {
+                        $phone = $defaultPhone . str_pad($phoneSuffix++, 1, '0', STR_PAD_LEFT);
+                    } while (Employee::withTrashed()->where('phone', $phone)->exists());
+                }
+
+                $role = $defaultRole;
+
+                Employee::create([
+                    'name' => $name,
+                    'employee_number' => $employeeNumber,
+                    'gender' => $defaultGender,
+                    'birth_date' => $defaultBirthDate,
+                    'CC' => $CC,
+                    'NIF' => $NIF,
+                    'address' => $address,
+                    'employee_role_id' => $defaultEmployeeRoleId,
+                    'email' => $email,
+                    'phone' => $phone,
+                    'password' => Hash::make($defaultPassword),
+                    'role' => $role,
+                ]);
+
+                $addedCount++;
             }
 
-            $employeeNumber = $row['numFuncionario'];
-            $name = $row['nome'];
-
-
-            if (!preg_match('/^[a-zA-Z\s]+$/', $name)) {
-                continue;
+            $message = "Importação concluída. $addedCount funcionários adicionados.";
+            if ($duplicateCount > 0) {
+                $message .= " $duplicateCount funcionários duplicados não foram adicionados.";
             }
 
-
-            $existingEmployee = Employee::where('employee_number', $employeeNumber)->first();
-            if ($existingEmployee) {
-                $duplicateCount++;
-                continue;
-            }
-
-            $gender = $defaultGender;
-            $birthDate = $defaultBirthDate;
-
-            $CC = $row['CC'] ?? $defaultCC;
-            $ccSuffix = 1;
-            while (Employee::where('CC', $CC)->exists()) {
-                $CC = $defaultCC . str_pad($ccSuffix++, 1, '0', STR_PAD_LEFT);
-            }
-
-            $NIF = $row['NIF'] ?? $defaultNIF;
-            $nifSuffix = 1;
-            while (Employee::where('NIF', $NIF)->exists()) {
-                $NIF = $defaultNIF . str_pad($nifSuffix++, 1, '0', STR_PAD_LEFT);
-            }
-
-            $address = $row['address'] ?? $defaultAddress;
-
-            $email = $row['email'] ?? ($defaultEmailPrefix . $index . $defaultEmailDomain);
-            $emailSuffix = 1;
-            while (Employee::where('email', $email)->exists()) {
-                $email = $defaultEmailPrefix . $index . str_pad($emailSuffix++, 1, '0', STR_PAD_LEFT) . $defaultEmailDomain;
-            }
-
-            $phone = $row['phone'] ?? $defaultPhone;
-            $phoneSuffix = 1;
-            while (Employee::where('phone', $phone)->exists()) {
-                $phone = $defaultPhone . str_pad($phoneSuffix++, 1, '0', STR_PAD_LEFT);
-            }
-
-            $role = $defaultRole;
-
-
-            Employee::create([
-                'name' => $name,
-                'employee_number' => $employeeNumber,
-                'gender' => $gender,
-                'birth_date' => $birthDate,
-                'CC' => $CC,
-                'NIF' => $NIF,
-                'address' => $address,
-                'employee_role_id' => $defaultEmployeeRoleId,
-                'email' => $email,
-                'phone' => $phone,
-                'password' => Hash::make($defaultPassword),
-                'role' => $role,
-            ]);
-
-            $addedCount++;
+            session()->flash('message', $message);
+        } catch (QueryException $e) {
+            session()->flash('error', 'Ocorreu um erro durante a importação: ' . $e->getMessage());
         }
 
-        $message = "Importação concluída. $addedCount funcionários adicionados.";
-        if ($duplicateCount > 0) {
-            $message .= " $duplicateCount funcionários duplicados não foram adicionados.";
-        }
-
-        session()->flash('message', $message);
         return redirect()->route('employees.index');
     }
 }

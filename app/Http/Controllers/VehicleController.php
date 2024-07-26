@@ -124,39 +124,43 @@ class VehicleController extends Controller
         try {
             Log::info('Iniciando o processo de armazenamento de um novo veículo.');
 
-            $vehicle = new Vehicle();
-            $vehicle->plate = $request->plate;
+            $existingVehicle = Vehicle::withTrashed()->where('plate', $request->plate)->first();
+
+            if ($existingVehicle) {
+                if ($existingVehicle->trashed()) {
+                    $existingVehicle->restore();
+                }
+                $vehicle = $existingVehicle;
+            } else {
+                $vehicle = new Vehicle();
+                $vehicle->plate = $request->plate;
+            }
+
             $vehicle->km = $request->km;
             $vehicle->vehicle_condition_id = $request->condition;
-            $vehicle->is_external = $request->is_external;
+            $vehicle->is_external = $request->is_external ?? 0;
             $vehicle->fuel_type_id = $request->fuelTypes;
             $vehicle->car_category_id = $request->carCategory;
             $vehicle->brand_id = $request->brand;
             $vehicle->passenger_quantity = $request->passengers;
 
-            if ($request->is_external == null) {
-                $vehicle->is_external = 0;
-            }
-
-            // Preenchendo os dados adicionais se o veículo for externo
-            if ($request->is_external) {
+            if ($vehicle->is_external) {
                 $vehicle->contract_number = $request->contract_number;
-                $rental_price_per_day = str_replace(',', '.', $request->rental_price_per_day);
-                $vehicle->rental_price_per_day = $rental_price_per_day;
+                $vehicle->rental_price_per_day = str_replace(',', '.', $request->rental_price_per_day);
                 $vehicle->rental_start_date = $request->rental_start_date;
                 $vehicle->rental_end_date = $request->rental_end_date;
                 $vehicle->rental_company = $request->rental_company;
                 $vehicle->rental_contact_person = $request->rental_contact_person;
                 $vehicle->rental_contact_number = $request->rental_contact_number;
 
-                // Salvar o arquivo PDF se existir
+                // Guardar pdf se existir
                 if ($request->hasFile('pdf_file')) {
                     $pdf = $request->file('pdf_file');
                     $pdfPath = $pdf->storeAs('pdfs', $request->plate . '.' . $pdf->getClientOriginalExtension(), 'public');
                     $vehicle->pdf_file = $pdfPath;
                 }
             } else {
-                // Se não for externo, limpar os campos relacionados
+                //se nao for externo deixar os campos como null
                 $vehicle->contract_number = null;
                 $vehicle->rental_price_per_day = null;
                 $vehicle->rental_start_date = null;

@@ -1,8 +1,8 @@
 @vite(['resources/js/Trips/edit.js'])
 <script type="application/json" id="vehicles-data">@json($vehicles)</script>
 
-<div class="flex justify-center items-start h-screen custom-bg">
-    <div class="max-w-lg w-full bg-white rounded-xl shadow-md p-8 custom-card mt-12">
+<div class="container py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w w-full bg-white rounded-xl shadow-md p-8 custom-card mt-12">
         <div class="flex items-center justify-between mb-4">
             @include('components.ButtonComponents.backButton')
 
@@ -110,9 +110,13 @@
                     <div id="vehicle-error" class="text-red-500"></div>
                 </div>
 
-                <div class="col-span-2">
+                <div class="col-span-2 mt-8 flex justify-end">
                     <button type="submit" id="submit-button"
                         class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700">Atualizar</button>
+                    <a href="{{ url('trips') }}"
+                        class="ml-2 inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 ">
+                        Cancelar
+                    </a>
                 </div>
             </div>
         </form>

@@ -22,7 +22,7 @@ class StoreInsuranceRequest extends FormRequest
     public function rules()
     {
         return [
-            'vehicle_plate' => 'required|string|exists:vehicles,plate',
+            'vehicle_id' => 'required|exists:vehicles,id',
             'insurance_company' => 'required|string|max:255',
             'policy_number' => 'required|string|max:255|unique:insurances,policy_number',
             'start_date' => 'required|date|before:end_date',
@@ -34,9 +34,9 @@ class StoreInsuranceRequest extends FormRequest
     public function messages()
     {
         return [
-            'vehicle_plate.required' => 'A matrícula do veículo é obrigatória.',
-            'vehicle_plate.string' => 'A matrícula do veículo deve ser uma string.',
-            'vehicle_plate.exists' => 'Veículo com a matrícula fornecida não encontrado.',
+            'vehicle_id.required' => 'O veículo é obrigatório.',
+            'vehicle_id.exists' => 'O veículo selecionado não existe.',
+            'vehicle_id.integer' => 'O veículo deve ser um número inteiro.',
             'insurance_company.required' => 'A companhia de seguros é obrigatória.',
             'insurance_company.string' => 'A companhia de seguros deve ser uma string.',
             'insurance_company.max' => 'A companhia de seguros não pode ter mais de 255 caracteres.',
