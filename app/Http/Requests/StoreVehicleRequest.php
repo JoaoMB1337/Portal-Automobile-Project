@@ -1,7 +1,8 @@
-<?php
+<?php 
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\UniqueWithTrashed;
 
 class StoreVehicleRequest extends FormRequest
 {
@@ -20,8 +21,15 @@ class StoreVehicleRequest extends FormRequest
      */
     public function rules(): array
     {
+        $vehicleId = $this->route('vehicle'); // Assuming route model binding or ID passed as route parameter
+
         $rules = [
-            'plate' => 'required|string|max:20|unique:vehicles,plate',
+            'plate' => [
+                'required',
+                'string',
+                'max:20',
+                new UniqueWithTrashed('vehicles', 'plate', $vehicleId),
+            ],
             'km' => 'required|numeric|min:0|max:9999999',
             'condition' => 'required|exists:vehicle_conditions,id',
             'is_external' => 'nullable|boolean',
@@ -34,7 +42,12 @@ class StoreVehicleRequest extends FormRequest
         ];
 
         if ($this->is_external) {
-            $rules['contract_number'] = 'required|string|max:20|unique:vehicles,contract_number';
+            $rules['contract_number'] = [
+                'required',
+                'string',
+                'max:20',
+                new UniqueWithTrashed('vehicles', 'contract_number', $vehicleId),
+            ];
             $rules['rental_price_per_day'] = [
                 'required',
                 'regex:/^\d{1,6}([.,]\d{1,2})?$/',
@@ -48,8 +61,6 @@ class StoreVehicleRequest extends FormRequest
 
         return $rules;
     }
-
-
 
     /**
      * Get custom messages for validator errors.
@@ -88,7 +99,6 @@ class StoreVehicleRequest extends FormRequest
             'rental_contact_person.required' => 'O nome do contato da locação é obrigatório para veículos externos.',
             'rental_contact_person.regex' => 'O nome do contato deve ter pelo menos 3 letras e não deve conter números.',
             'rental_contact_number.required' => 'O número de contato da locação é obrigatório para veículos externos.',
-
             'pdf_file.file' => 'O arquivo deve ser do tipo PDF.',
             'pdf_file.mimes' => 'O arquivo deve ser do tipo PDF.',
             'pdf_file.max' => 'O tamanho máximo do arquivo é 2MB.',

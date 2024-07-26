@@ -94,13 +94,15 @@
                         </dd>
                     </div>
                     @if (Auth::check() && Auth::user()->isAdmin())
-                        <div class=" mt-10 flex flex-col sm:flex-row gap-4">
+                        <div class="mt-10 flex flex-col sm:flex-row gap-4">
                             <a href="{{ route('trips.edit', ['trip' => $trip->id]) }}"
                                 class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out text-center w-full sm:w-auto">
-                                Editar </a>
+                                Editar 
+                            </a>
                             <button id="openModalBtn"
                                 class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full sm:w-auto text-center">
-                                Eliminar </button>
+                                Eliminar 
+                            </button>
                         </div>
                     @endif
                 </dl>

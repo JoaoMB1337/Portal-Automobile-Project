@@ -1,3 +1,4 @@
+@vite(['resources/css/Trips/trip-show.css'])
 <div class="flex justify-center items-start h-screen custom-bg">
     <div class="w-full max-w-2xl bg-white rounded-xl p-7 custom-card mt-12">
         <div class="flex items-center justify-between mb-4">

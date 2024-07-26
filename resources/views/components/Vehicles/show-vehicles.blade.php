@@ -1,3 +1,4 @@
+@vite(['resources/css/Trips/trip-show.css'])
 <div class="container py-8 px-4">
     @if (session('message'))
         <div class="alert alert-info">

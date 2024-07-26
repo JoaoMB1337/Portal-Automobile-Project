@@ -1,3 +1,4 @@
+@vite(['resources/css/Trips/trip-show.css'])
 <div class="container py-8 px-4 ">
     <div class="w-full  ">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg p-6">
@@ -93,26 +94,28 @@
                     </div>
                 </dl>
                 @if (Auth::check() && Auth::user()->isMaster())
-                    <div class="flex flex-col sm:flex-row justify-center py-5 gap-2 pt-10">
-                        <a href="{{ route('employees.edit', ['employee' => $employee->id]) }}"
-                            class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded transition duration-300 ease-in-out text-center  sm:w-32 h-12">
-                            Editar
-                        </a>
-                        <a href="{{ route('employees.exportCsv', ['id' => $employee->id]) }}"
-                            class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold  px-4 rounded transition duration-300 ease-in-out text-center w-full sm:w-32 h-12">
-                            Exportar CSV
-                        </a>
-                        <button id="openModalBtn"
-                            class="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full sm:w-32 h-12 text-center">
-                            Eliminar
-                        </button>
+                <div class="flex flex-col sm:flex-row justify-center py-5 gap-2 pt-10">
+                    <a href="{{ route('employees.edit', ['employee' => $employee->id]) }}"
+                        class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded transition duration-300 ease-in-out w-full sm:w-32 h-12 text-center">
+                        Editar
+                    </a>
 
-                        <button id="openReset2FAModalBtn"
-                            class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-2 px-4 rounded transition duration-300 ease-in-out w-full h-12 text-center"
-                            data-action="{{ route('employees.reset2fa', $employee->id) }}">
-                            Resetar 2FA
-                        </button>
-                    </div>
+                    <button id="openModalBtn"
+                        class="bg-red-800 hover:bg-red-700 text-white font-bold py-3 px-4 rounded transition duration-300 ease-in-out w-full sm:w-32 h-12 text-center">
+                        Eliminar
+                    </button>
+
+                    <a href="{{ route('employees.exportCsv', ['id' => $employee->id]) }}"
+                        class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded transition duration-300 ease-in-out w-full sm:w-32 h-12 text-center">
+                        Exportar CSV
+                    </a>
+
+                    <button id="openReset2FAModalBtn"
+                        class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold py-3 px-4 rounded transition duration-300 ease-in-out w-full sm:w-32 h-12 text-center"
+                        data-action="{{ route('employees.reset2fa', $employee->id) }}">
+                        Resetar 2FA
+                    </button>
+                </div>
                 @endif
             </div>
         </div>
