@@ -106,7 +106,7 @@
                     </button>
 
                     <a href="{{ route('employees.exportCsv', ['id' => $employee->id]) }}"
-                        class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded transition duration-300 ease-in-out w-full sm:w-32 h-12 text-center">
+                        class="inline-block bg-gray-700 hover:bg-gray-600 text-white font-bold  px-4 rounded transition duration-300 ease-in-out w-full sm:w-32 h-12 text-center">
                         Exportar CSV
                     </a>
 
