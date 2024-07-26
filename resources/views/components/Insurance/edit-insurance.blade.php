@@ -108,11 +108,15 @@
                     @enderror
                 </div>
 
-                <div class="flex justify-center mt-6">
+                <div class="mt-8 flex justify-end">
                     <button type="submit"
-                        class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-full custom-btn focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-300">
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700">
                         Atualizar
                     </button>
+                    <a href="{{ url('insurances') }}"
+                        class="ml-2 inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 ">
+                        Cancelar
+                    </a>
                 </div>
             </form>
         </div>
