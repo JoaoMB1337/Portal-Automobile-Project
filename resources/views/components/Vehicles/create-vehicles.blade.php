@@ -50,7 +50,6 @@
             @enderror
         </div>
 
-
         <div>
             <label for="brand" class="block text-sm font-semibold text-gray-700 mb-2">Marca</label>
             <select id="brand" name="brand"
@@ -68,9 +67,8 @@
         </div>
 
         <div>
-            <label for="passenger_quantity" class="block text-sm font-semibold text-gray-700 mb-2">Número de
-                passageiros</label>
-            <input id="passengers" type="number" max="170"
+            <label for="passenger_quantity" class="block text-sm font-semibold text-gray-700 mb-2">Número de passageiros</label>
+            <input id="passengers" type="number" max="150"
                 class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('passengers') border-red-500 @enderror"
                 name="passengers" value="{{ old('passengers') }}" required autocomplete="passengers">
             @error('passengers')
@@ -78,19 +76,18 @@
             @enderror
         </div>
 
-
         <div>
-            <label for=" carCategory" class="block text-sm font-semibold text-gray-700 mb-2">Categoria</label>
-            <select id=" carCategory" name=" carCategory"
-                class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error(' carCategory') border-red-500 @enderror"
-                required autocomplete=" carCategory" autofocus>
+            <label for="carCategory" class="block text-sm font-semibold text-gray-700 mb-2">Categoria</label>
+            <select id="carCategory" name="carCategory"
+                class="form-select w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('carCategory') border-red-500 @enderror"
+                required autocomplete="carCategory" autofocus>
                 <option value="" disabled selected>Selecione a categoria</option>
                 @foreach ($carCategories as $carCategory)
-                    <option value="{{ $carCategory->id }}" @if (old(' carCategory') == $carCategory->id) selected @endif>
+                    <option value="{{ $carCategory->id }}" @if (old('carCategory') == $carCategory->id) selected @endif>
                         {{ $carCategory->category }}</option>
                 @endforeach
             </select>
-            @error(' carCategory')
+            @error('carCategory')
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @enderror
         </div>
@@ -102,7 +99,7 @@
                 required autocomplete="fuelTypes" autofocus>
                 <option value="" disabled selected>Selecione o tipo de combustível</option>
                 @foreach ($fuelTypes as $fuelType)
-                    <option value="{{ $fuelType->id }}" @if (old('type_fuel') == $fuelType->id) selected @endif>
+                    <option value="{{ $fuelType->id }}" @if (old('fuelTypes') == $fuelType->id) selected @endif>
                         {{ $fuelType->type }}</option>
                 @endforeach
             </select>
@@ -132,8 +129,7 @@
 
         <div class="external-field" style="display: none;">
             <div class="mb-5">
-                <label for="contract_number" class="block text-sm font-semibold text-gray-700 mb-2">Número de
-                    contrato</label>
+                <label for="contract_number" class="block text-sm font-semibold text-gray-700 mb-2">Número de contrato</label>
                 <input id="contract_number" type="text" maxlength="20"
                     class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('contract_number') border-red-500 @enderror"
                     name="contract_number" value="{{ old('contract_number') }}">
@@ -143,8 +139,7 @@
             </div>
 
             <div class="mb-5">
-                <label for="rental_price_per_day" class="block text-sm font-semibold text-gray-700 mb-2">Preço de
-                    aluger por dia</label>
+                <label for="rental_price_per_day" class="block text-sm font-semibold text-gray-700 mb-2">Preço de aluger por dia</label>
                 <input id="rental_price_per_day" type="text"
                     class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('rental_price_per_day') border-red-500 @enderror"
                     name="rental_price_per_day" value="{{ old('rental_price_per_day') }}"
@@ -155,8 +150,7 @@
             </div>
 
             <div class="mb-5">
-                <label for="rental_start_date" class="block text-sm font-semibold text-gray-700 mb-2">Data de início
-                    do aluguer</label>
+                <label for="rental_start_date" class="block text-sm font-semibold text-gray-700 mb-2">Data de início do aluguer</label>
                 <input id="rental_start_date" type="date"
                     class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('rental_start_date') border-red-500 @enderror"
                     name="rental_start_date" value="{{ old('rental_start_date') }}">
@@ -166,8 +160,7 @@
             </div>
 
             <div class="mb-5">
-                <label for="rental_end_date" class="block text-sm font-semibold text-gray-700 mb-2">Data de fim do
-                    aluguer</label>
+                <label for="rental_end_date" class="block text-sm font-semibold text-gray-700 mb-2">Data de fim do aluguer</label>
                 <input id="rental_end_date" type="date"
                     class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('rental_end_date') border-red-500 @enderror"
                     name="rental_end_date" value="{{ old('rental_end_date') }}">
@@ -175,9 +168,9 @@
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
+
             <div class="mb-5">
-                <label for="rental_company" class="block text-sm font-semibold text-gray-700 mb-2">Empresa de
-                    rentCar</label>
+                <label for="rental_company" class="block text-sm font-semibold text-gray-700 mb-2">Empresa de rentCar</label>
                 <input id="rental_company" type="text"
                     class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('rental_company') border-red-500 @enderror"
                     name="rental_company" value="{{ old('rental_company') }}" autocomplete="rental_company">
@@ -187,8 +180,7 @@
             </div>
 
             <div class="mb-5">
-                <label for="rental_contact_person" class="block text-sm font-semibold text-gray-700 mb-2">Pessoa de
-                    contato do rentCar</label>
+                <label for="rental_contact_person" class="block text-sm font-semibold text-gray-700 mb-2">Pessoa de contato do rentCar</label>
                 <input id="rental_contact_person" type="text"
                     class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('rental_contact_person') border-red-500 @enderror"
                     name="rental_contact_person" value="{{ old('rental_contact_person') }}"
@@ -199,8 +191,7 @@
             </div>
 
             <div class="mb-5">
-                <label for="rental_contact_number" class="block text-sm font-semibold text-gray-700 mb-2">Número de
-                    contato do rentCar</label>
+                <label for="rental_contact_number" class="block text-sm font-semibold text-gray-700 mb-2">Número de contato do rentCar</label>
                 <input id="rental_contact_number" type="text"
                     class="form-input w-full rounded-md border-gray-300 focus:border-gray-400 focus:ring focus:ring-gray-200 @error('rental_contact_number') border-red-500 @enderror"
                     name="rental_contact_number" value="{{ old('rental_contact_number') }}"
@@ -209,6 +200,7 @@
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
+
             <div class="mb-5">
                 <label for="pdf_file" class="block text-sm font-semibold text-gray-700 mb-2">PDF</label>
                 <input id="pdf_file" type="file"

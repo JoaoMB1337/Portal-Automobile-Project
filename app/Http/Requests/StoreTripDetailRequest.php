@@ -24,7 +24,7 @@ class StoreTripDetailRequest extends FormRequest
         return [
             'trip_id' => 'required|exists:trips,id',
             'cost_type_id' => 'required|exists:cost_types,id',
-            'cost' => 'required|numeric|min:0',
+            'cost' => 'required|numeric|min:0|max:9999999',
         ];
     }
 
@@ -43,6 +43,7 @@ class StoreTripDetailRequest extends FormRequest
             'cost.required' => 'O valor é um campo obrigatório.',
             'cost.numeric' => 'O valor tem quer um numero',
             'cost.min' => 'O valor nao pode ser nagtivo',
+            'cost.max' => 'O valor nao pode ser maior que 9999999',
         ];
     }
 
