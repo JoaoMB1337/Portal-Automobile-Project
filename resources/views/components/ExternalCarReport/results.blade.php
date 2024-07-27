@@ -59,13 +59,13 @@
 
         <!-- Formulário para Download PDF -->
         <div class="mt-6 text-right">
-            <form action="{{ route('external.car.report.generate') }}" method="GET" class="inline-block">
+            <form action="{{ route('external.car.report.generate') }}" method="GET" class="mt-6 flex justify-center">
                 @csrf
                 <input type="hidden" name="start_date" value="{{ $startDate }}">
                 <input type="hidden" name="end_date" value="{{ $endDate }}">
                 <button type="submit"
-                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300">Baixar
-                    relatório PDF</button>
+                        class="flex items-center px-4 py-2 bg-green-700 hover:bg-green-600 border rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150">
+                    Baixar relatório em PDF</button>
             </form>
         </div>
     </div>

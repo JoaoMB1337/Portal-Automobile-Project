@@ -107,11 +107,11 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Companhia</th>
-                            <th>Número da apólice</th>
-                            <th>Custo</th>
-                            <th>Matrícula</th>
-                            <th>Ações</th>
+                            <th>COMPANHIA</th>
+                            <th>NÚMERO DA APÓLICE</th>
+                            <th>CUSTO</th>
+                            <th>MATRÍCULA</th>
+                            <th>AÇÕES</th>
                         </tr>
                     </thead>
                     <tbody>

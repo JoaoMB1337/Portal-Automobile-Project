@@ -78,11 +78,11 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>Funcionario</th>
-                    <th>Número</th>
-                    <th>Email</th>
-                    <th>Cargo</th>
-                    <th>Ações</th>
+                    <th>NOME</th>
+                    <th>NÚMERO</th>
+                    <th>EMAIL</th>
+                    <th>CARGO</th>
+                    <th>AÇÕES</th>
                 </tr>
             </thead>
             <tbody>
