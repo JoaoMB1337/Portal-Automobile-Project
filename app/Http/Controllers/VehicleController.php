@@ -324,7 +324,7 @@ class VehicleController extends Controller
             return Storage::disk('public')->download($pdfPath);
         } else {
             // Usando session()->flash() para passar a mensagem de erro para a view
-            session()->flash('error', 'No PDF file found for this vehicle.');
+            session()->flash('error', 'Não foi possível encontrar o arquivo PDF.');
             return redirect()->back(); // Redireciona para a página anterior
         }
     }
