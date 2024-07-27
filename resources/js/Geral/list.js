@@ -120,14 +120,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const importCsvForm = document.createElement('form');
             importCsvForm.method = 'POST';
-            importCsvForm.action = importCsvBtn.getAttribute('data-action'); // Certifique-se de que este atributo está definido corretamente
+            importCsvForm.action = importCsvBtn.getAttribute('data-action');
             importCsvForm.enctype = 'multipart/form-data';
             importCsvForm.style.display = 'none';
 
             const csrfTokenInput = document.createElement('input');
             csrfTokenInput.type = 'hidden';
             csrfTokenInput.name = '_token';
-            csrfTokenInput.value = importCsvBtn.getAttribute('data-token'); // Certifique-se de que este atributo está definido corretamente
+            csrfTokenInput.value = importCsvBtn.getAttribute('data-token');
 
             const fileInput = document.createElement('input');
             fileInput.type = 'file';
@@ -155,7 +155,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const pageBack = document.getElementById('pageBack');
     if (pageBack) {
         pageBack.onclick = function() {
+            console.log("Page Back button clicked");
             window.history.back();
         };
     }
+
 });
