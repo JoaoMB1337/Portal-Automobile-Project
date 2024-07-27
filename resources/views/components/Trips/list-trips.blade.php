@@ -97,11 +97,11 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>Projeto</th>
-                    <th>Funcionário</th>
-                    <th>Veículo</th>
-                    <th>Data inicial</th>
-                        <th>Ações</th>
+                    <th>PROJETO</th>
+                    <th>FUNCIONÁRIO</th>
+                    <th>VEÍCULO</th>
+                    <th>DATA INICIAL</th>
+                        <th>AÇÕES</th>
                 </tr>
             </thead>
             <tbody>

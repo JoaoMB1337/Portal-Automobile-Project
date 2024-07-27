@@ -109,14 +109,14 @@
                         <th>
                         </th>
                     @endif
-                    <th>Nome</th>
-                    <th>Distrito</th>
-                    <th>País</th>
+                    <th>NOME</th>
+                    <th>DISTRITO</th>
+                    <th>PAÍS</th>
                     @if (Auth::check() && Auth::user()->isMaster())
-                        <th>Viagem</th>
+                        <th>VIAGEM</th>
                     @endif
 
-                    <th>Ações</th>
+                    <th>AÇÕES</th>
 
                 </tr>
             </thead>
