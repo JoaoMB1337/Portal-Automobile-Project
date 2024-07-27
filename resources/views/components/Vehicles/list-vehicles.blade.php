@@ -759,13 +759,13 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>Matrícula</th>
-                    <th>Marca</th>
-                    <th>Categoria</th>
-                    <th>Tipo de combustível</th>
-                    <th>Atividade</th>
-                    <th>Externo</th>
-                    <th>Ações</th>
+                    <th>MATRÍCULA</th>
+                    <th>MARCA</th>
+                    <th>CATEGORIA</th>
+                    <th>TIPO DE COMBUSTÍVEL</th>
+                    <th>ATIVIDADE</th>
+                    <th>EXTERNO</th>
+                    <th>AÇÕES</th>
                 </tr>
             </thead>
             <tbody>
