@@ -44,14 +44,15 @@
         <div class="mt-4">
             {{ $costs->appends(request()->query())->links() }}
         </div>
-        <form action="{{ route('cost.report.generate') }}" method="GET" class="mt-6">
+        <form action="{{ route('cost.report.generate') }}" method="GET" class="mt-6 flex justify-center">
             @csrf
             <input type="hidden" name="start_date" value="{{ $startDate }}">
             <input type="hidden" name="end_date" value="{{ $endDate }}">
             <button type="submit"
-                class="w-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white px-4 py-3 rounded-md shadow-sm hover:bg-gradient-to-l text-sm font-medium transition duration-300 ease-in-out transform hover:scale-105">Baixar
-                relatório em PDF</button>
+                    class="flex items-center px-4 py-2 bg-green-700 hover:bg-green-600 border rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150">
+                Baixar relatório em PDF</button>
         </form>
+
     </div>
 @else
     <div class="mt-8 bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
