@@ -58,7 +58,7 @@ class EmployeeSeeder extends Seeder
             ],
             [
                 'name' => 'Ruben Canelas',
-                'employee_number' => '0003',
+                'employee_number' => '0002',
                 'gender'=> 'Male',
                 'birth_date' => '1995-07-15',
                 'CC' => '112233445',
@@ -91,7 +91,7 @@ class EmployeeSeeder extends Seeder
                 'first_login' => false, 
                 'created_at' => '2021-01-01',
                 'updated_at' => '2021-01-01',
-            ],
+            ]
             
             
 
