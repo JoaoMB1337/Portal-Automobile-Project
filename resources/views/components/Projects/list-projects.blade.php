@@ -55,6 +55,7 @@
 
 
 
+    @if (Auth::check() && Auth::user()->isMaster())
         <div id="filterModal" class="modal mx-auto lg:pl-64">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -98,6 +99,7 @@
         <a href="{{ route('projects.create') }}" class="add-button">
             <i class="fas fa-plus"></i>
         </a>
+    @endif
 
     <div class="list-table">
         <table>
@@ -107,14 +109,14 @@
                         <th>
                         </th>
                     @endif
-                    <th>NOME</th>
-                    <th>DISTRITO</th>
-                    <th>PAÍS</th>
+                    <th>Nome</th>
+                    <th>Distrito</th>
+                    <th>País</th>
                     @if (Auth::check() && Auth::user()->isMaster())
-                        <th>VIAGEM</th>
+                        <th>Viagem</th>
                     @endif
 
-                    <th>AÇÕES</th>
+                    <th>Ações</th>
 
                 </tr>
             </thead>

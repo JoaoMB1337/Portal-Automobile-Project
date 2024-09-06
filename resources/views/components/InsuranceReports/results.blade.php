@@ -53,14 +53,11 @@
 
         <!-- Botão para download do PDF -->
         <div class="mt-6 text-right">
-            <form action="{{ route('insurance.report.generate') }}" method="GET" class="mt-6 flex justify-center">
+            <form action="{{ route('insurance.report.generate') }}" method="GET">
                 @csrf
                 <input type="hidden" name="start_date" value="{{ $startDate }}">
                 <input type="hidden" name="end_date" value="{{ $endDate }}">
-                <button type="submit"
-                        class="flex items-center px-4 py-2 bg-green-700 hover:bg-green-600 border rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150">
-                    Baixar relatório em PDF
-                </button>
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Baixar relatório PDF</button>
             </form>
         </div>
 

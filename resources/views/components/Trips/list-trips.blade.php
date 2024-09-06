@@ -1,6 +1,7 @@
 @vite(['resources/js/Geral/list.js'])
 
 <div class="container">
+    @if (Auth::check() && Auth::user()->isMaster())
 
         @if (session('message'))
             <div class="alert alert-info">
@@ -87,6 +88,7 @@
                 <i class="fas fa-trash-alt text-lg"></i>
             </button>
         </form>
+    @endif
 
     @include('components.Modals.modal-delete')
 
@@ -95,11 +97,11 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>PROJETO</th>
-                    <th>FUNCIONÁRIO</th>
-                    <th>VEÍCULO</th>
-                    <th>DATA INICIAL</th>
-                        <th>AÇÕES</th>
+                    <th>Projeto</th>
+                    <th>Funcionário</th>
+                    <th>Veículo</th>
+                    <th>Data inicial</th>
+                        <th>Ações</th>
                 </tr>
             </thead>
             <tbody>

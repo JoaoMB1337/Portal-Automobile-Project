@@ -25,7 +25,7 @@
                                 {{ number_format($summary['total_cost'], 2, ',', '.') }}</td>
                             <td class="py-3 px-4 border-b text-gray-700">
                                 <button
-                                    class="expand-details bg-gray-600  text-white px-2 py-1 rounded">Expandir</button>
+                                    class="expand-details bg-blue-500 text-white px-2 py-1 rounded">Expandir</button>
                             </td>
                         </tr>
                         <tr class="details hidden">
@@ -71,14 +71,10 @@
         </div>
 
         <!-- Botão para download do PDF -->
-        <!-- Botão para download do PDF -->
-        <div class="mt-6 flex justify-center">
+        <div class="mt-6 text-right">
             <a href="{{ route('project.report.generate', ['project_id' => $projectId]) }}"
-               class="flex items-center px-4 py-2 bg-green-700 hover:bg-green-600 border rounded-md font-semibold text-xs text-white uppercase tracking-widest transition ease-in-out duration-150">
-                Baixar relatório em PDF
-            </a>
+                class="bg-green-500 text-white px-4 py-2 rounded">Baixar relatório PDF</a>
         </div>
-
 
         <div class="mt-6">
             {{ $trips->appends(request()->input())->links() }}

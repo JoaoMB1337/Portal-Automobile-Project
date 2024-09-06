@@ -271,7 +271,7 @@ class EmployeeController extends Controller
         $authUserId = Auth::id();
         $authUserIsManager = Auth::user()->isManager();
 
-        // Filtrar IDs inválidos, incluindo o próprio usuário e gerentes
+        // Filter out the authenticated user's ID to prevent self-deletion
         $filteredIds = array_filter($ids, function($id) use ($authUserId, $authUserIsManager) {
             $employee = Employee::find($id);
             if (!$employee) {
@@ -282,7 +282,6 @@ class EmployeeController extends Controller
                 return false;
             }
 
-            // Evitar que gerentes excluam outros gerentes
             if ($authUserIsManager && $employee->employee_role_id == 1) {
                 return false;
             }
@@ -291,17 +290,12 @@ class EmployeeController extends Controller
         });
 
         try {
-            if (!empty($filteredIds)) {
-                Employee::whereIn('id', $filteredIds)->delete();
-                return redirect()->route('employees.index')->with('success', 'Funcionários excluídos com sucesso.');
-            } else {
-                return redirect()->route('employees.index')->with('error', 'Nenhum funcionário válido selecionado para exclusão.');
-            }
+            Employee::whereIn('id', $filteredIds)->delete();
+            return redirect()->route('employees.index')->with('error', 'Funcionários excluido com sucesso.');
         } catch (\Exception $e) {
             return redirect()->route('employees.index')->with('error', 'Erro ao excluir funcionários.');
         }
     }
-
 
     public function exportCsv($id)
     {

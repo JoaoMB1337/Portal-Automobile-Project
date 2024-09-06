@@ -18,8 +18,6 @@ export default defineConfig({
 
                 'resources/css/2fa/2fa-setup.css',
 
-                'resources/js/ErrorPage/Error.js',
-
                 'resources/js/Insurance/insurance-list.js',
 
                 'resources/js/Vehicles/vehicles-list.js',

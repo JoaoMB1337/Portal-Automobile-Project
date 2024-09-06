@@ -1,23 +1,24 @@
 @vite(['resources/js/Trips/create.js'])
 <script type="application/json" id="vehicles-data">@json($vehicles)</script>
 <div id="employees-data" style="display: none;">{{ json_encode($employees) }}</div>
-@if (session('message'))
-    <div class="alert alert-info">
-        {{ session('message') }}
-    </div>
-@endif
-@if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
 
-@if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
 <div class="flex justify-center items-start h-screen custom-bg">
+    @if (session('message'))
+        <div class="alert alert-info">
+            {{ session('message') }}
+        </div>
+    @endif
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="w-full rounded-xl p-7 custom-card mt-12">
         @include('components.ButtonComponents.backButton')
 
